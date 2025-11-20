@@ -2002,21 +2002,23 @@ const RSVP = () => {
     e.preventDefault();
     
     try {
+      // Formspree expects form-encoded data, not JSON
+      const formDataToSend = new URLSearchParams();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('guests', formData.guests);
+      formDataToSend.append('attending', formData.attending);
+      formDataToSend.append('dietary', formData.dietary || 'None');
+      formDataToSend.append('song', formData.song || 'None');
+      formDataToSend.append('_subject', 'Wedding RSVP from ' + formData.name);
+
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          guests: formData.guests,
-          attending: formData.attending,
-          dietary: formData.dietary,
-          song: formData.song,
-          _subject: 'Wedding RSVP from ' + formData.name
-        }),
+        body: formDataToSend.toString(),
       });
 
       if (response.ok) {
@@ -2028,9 +2030,12 @@ const RSVP = () => {
           colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
         });
       } else {
+        const errorData = await response.json();
+        console.error('Formspree error:', errorData);
         alert('Something went wrong. Please try again or contact us directly.');
       }
     } catch (error) {
+      console.error('Submission error:', error);
       alert('Something went wrong. Please try again or contact us directly.');
     }
   };
