@@ -713,53 +713,6 @@ const Hero = ({ onScrollToSection }) => (
 
 
 
-               {/* Interactive Hotspots */}
-
-               <InteractiveHotspot
-
-                 position={{ top: '45%', left: '30%' }}
-
-                 tooltip="Bailey - The two-faced beauty!"
-
-                 onClick={() => onScrollToSection?.('dogs')}
-
-               >
-
-                 <PawPrint className="w-6 h-6 text-[#B8D4E8]" />
-
-               </InteractiveHotspot>
-
-
-
-               <InteractiveHotspot
-
-                 position={{ top: '50%', right: '25%' }}
-
-                 tooltip="Cookie - Queen of the ceremony!"
-
-                 onClick={() => onScrollToSection?.('dogs')}
-
-               >
-
-                 <PawPrint className="w-6 h-6 text-[#D4A5A5]" />
-
-               </InteractiveHotspot>
-
-
-
-               <InteractiveHotspot
-
-                 position={{ bottom: '20%', left: '50%', transform: 'translateX(-50%)' }}
-
-                 tooltip="Click to see our story!"
-
-                 onClick={() => onScrollToSection?.('our-story')}
-
-               >
-
-                 <Heart className="w-6 h-6 text-[#D4A5A5]" />
-
-               </InteractiveHotspot>
 
             </motion.div>
 
@@ -2400,21 +2353,21 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
       {/* Cookie & Bailey section */}
       <FadeInWhenVisible delay={0.1}>
         <div className="flex flex-col items-center">
-          <div className="flex items-center gap-4 bg-white/15 backdrop-blur-md px-8 py-5 sketchy-border border-[3px] border-[#D4A5A5]/50 rounded-lg hover:border-[#D4A5A5] transition-all group shadow-lg">
-            <PawPrint size={28} className="text-[#D4A5A5] group-hover:scale-110 transition-transform" /> 
-            <span className="text-xl md:text-2xl font-hand font-bold text-[#F5F0E8]">Cookie & Bailey</span>
-            <PawPrint size={28} className="text-[#B8D4E8] group-hover:scale-110 transition-transform" />
+          <div className="flex items-center gap-4 bg-white/25 backdrop-blur-md px-8 py-5 sketchy-border border-[3px] border-[#D4A5A5] rounded-lg hover:border-[#D4A5A5] hover:bg-white/35 transition-all group shadow-xl">
+            <PawPrint size={28} className="text-[#D4A5A5] group-hover:scale-110 transition-transform fill-current" /> 
+            <span className="text-xl md:text-2xl font-hand font-bold text-navy">Cookie & Bailey</span>
+            <PawPrint size={28} className="text-[#B8D4E8] group-hover:scale-110 transition-transform fill-current" />
           </div>
         </div>
       </FadeInWhenVisible>
 
       {/* Bottom section */}
       <FadeInWhenVisible delay={0.2}>
-        <div className="border-t-2 border-[#F5F0E8]/30 pt-10 md:pt-12 space-y-4">
-          <p className="text-sm md:text-base uppercase tracking-widest text-[#F5F0E8]/80 font-hand">
+        <div className="border-t-2 border-[#F5F0E8]/40 pt-10 md:pt-12 space-y-4">
+          <p className="text-sm md:text-base uppercase tracking-widest text-[#F5F0E8] font-hand font-semibold">
             Made with love, momos & feni
           </p>
-          <p className="text-xs md:text-sm text-[#F5F0E8]/70">
+          <p className="text-xs md:text-sm text-[#F5F0E8]/90 font-medium">
             Goa 2026
           </p>
         </div>
@@ -2534,16 +2487,16 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
       onClick={() => onScrollToRSVP('rsvp')}
 
-      className="fixed bottom-6 right-6 z-[100] bg-[#D4A5A5] text-white sketchy-border border-[3px] border-white shadow-2xl px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
-      style={{ position: 'fixed' }}
+      className="fixed bottom-6 right-6 z-[100] bg-navy text-white sketchy-border border-[3px] border-white shadow-2xl px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
+      style={{ position: 'fixed', backgroundColor: '#1B3A57', color: '#F5F0E8' }}
 
       aria-label="Go to RSVP"
 
     >
 
-      <Heart className="w-4 h-4 group-hover:scale-110 transition-transform" />
+      <Heart className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform fill-current" />
 
-      <span>RSVP</span>
+      <span className="font-bold">RSVP</span>
 
     </button>
 
@@ -3306,8 +3259,6 @@ const App = () => {
 
     { id: 'dogs', name: 'Dogs', component: CookieAndBailey },
 
-    { id: 'excited', name: 'Excited', component: WhatWeAreExcitedAbout },
-
     ...(isFamilyMode ? [
 
       { id: 'kidena-house', name: 'Kidena', component: KidenaHouse },
@@ -3481,21 +3432,12 @@ const App = () => {
         </section>
 
 
-
+        
         <section id="dogs" className="scroll-section flex items-center justify-center">
 
         <CookieAndBailey />
 
         </section>
-
-
-
-        <section id="excited" className="scroll-section flex items-center justify-center">
-
-        <WhatWeAreExcitedAbout />
-
-        </section>
-        
 
 
         {isFamilyMode && (
