@@ -827,11 +827,11 @@ const Story = () => (
 
               <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
 
-              <p>Her house party. Bangalore. A friend dragged him along.</p>
+              <p>House party in Bangalore. Her place. His friend insisted he come along.</p>
 
-              <p>They talked for hours. Bengali boy from Assam meets Goan girl from Abu Dhabi. Easy conversation, good vibes.</p>
+              <p>They talked for hours that night. Bengali boy from Assam meets Goan girl from Abu Dhabi. The conversation was easy, natural. Good vibes all around.</p>
 
-              <p>Then the party ended. Three years of radio silence.</p>
+              <p>Then the party ended. They didn't exchange numbers. Three years of complete radio silence.</p>
 
             </div>
 
@@ -857,11 +857,13 @@ const Story = () => (
 
               <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
 
-              <p>New job, same office corridor. There he was.</p>
+              <p>She starts new job, walks down office corridor, there he is.</p>
 
-              <p>Coffee runs became late nights. Friendship felt safe. Then a friend threw him a half-hearted birthday, and she realized: she cared more than friends should.</p>
+              <p>Coffee runs became a daily thing. Then late nights at the office turned into dinners after work. It felt comfortable, safe. Like really good friendship.</p>
 
-              <p>Two weeks later, he kissed her. By month's end, official.</p>
+              <p>Then someone threw him a half-hearted birthday party. She showed up and realized something had shifted. She cared way more than friends should care about someone's birthday.</p>
+
+              <p>Two weeks later, he kissed her. They were official by the end of June.</p>
 
             </div>
 
@@ -911,11 +913,11 @@ const Story = () => (
 
               <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
 
-              <p>She took him to Goa. Twice a year, every year. Palolem, Colomb Bay—their sanctuary.</p>
+              <p>She took him to Goa. Made it a ritual. Twice a year, every single year. Palolem Beach, Colomb Bay. Their sanctuary. The place they'd go to reset and remember what mattered.</p>
 
-              <p>He learned to trust the ocean. She taught him to dive. He taught her calm in chaos.</p>
+              <p>He didn't trust the ocean at first. She taught him to dive, to let go underwater. He taught her how to stay calm when life felt chaotic.</p>
 
-              <p>COVID hit. Bailey had puppies. They rescued four, lost two. The hardest, most beautiful thing. Shubs brought Bailey to Bangalore. Cookie and Bailey: family.</p>
+              <p>Then COVID hit. Bailey had puppies during lockdown. Six of them. They kept four, lost two. The hardest, most beautiful thing they'd ever done together. When it was time, Shubs brought Bailey to Bangalore. Cookie and Bailey became family.</p>
 
             </div>
 
@@ -941,11 +943,11 @@ const Story = () => (
 
               <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
 
-              <p>Back at Palolem Beach. He had plans: underwater proposal (ring might float away), Kakolim beach (she was too lazy).</p>
+              <p>Back at Palolem Beach. He'd made plans. Plan A: underwater proposal (ring might sink, she might panic). Plan B: Kakolim Beach at sunset (neither of them wanted to make the trek that day).</p>
 
-              <p>So, Plan C. They were walking. He stopped. She turned around.</p>
+              <p>So he went with Plan C. Keep it simple. Wing it. They were walking on Palolem. He stopped. She turned around.</p>
 
-              <p>He was on his knees. YES. Immediate. No hesitation.</p>
+              <p>He was on his knees. Ring in hand. She said yes before he even finished asking. Immediate. No hesitation.</p>
 
             </div>
 
@@ -987,39 +989,9 @@ const CookieAndBailey = () => (
 
       <div className="grid md:grid-cols-2 gap-16">
 
-        {/* Bailey */}
-
-        <FadeInWhenVisible delay={0.1} className="relative group">
-
-            <div className="absolute inset-0 bg-[#B8D4E8] transform rotate-3 rounded-lg opacity-20"></div>
-
-            <motion.div 
-
-              className="sketchy-border bg-white p-8 relative transform -rotate-2 transition-transform group-hover:rotate-0"
-
-              whileHover={{ rotate: 0, scale: 1.02 }}
-
-            >
-
-                <div className="w-48 h-48 mx-auto mb-6 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
-
-                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
-
-                </div>
-
-                <h4 className="font-bold text-3xl text-navy font-hand">Bailey</h4>
-
-                <p className="font-hand text-xl mt-2">Our rescue. Two faced (literally). Had six puppies during COVID—we saved four. Shubs brought her to Bangalore, making her family.</p>
-
-            </motion.div>
-
-        </FadeInWhenVisible>
-
-
-
         {/* Cookie */}
 
-        <FadeInWhenVisible delay={0.15} className="relative group">
+        <FadeInWhenVisible delay={0.1} className="relative group">
 
             <div className="absolute inset-0 bg-[#D4A5A5] transform -rotate-3 rounded-lg opacity-20"></div>
 
@@ -1039,7 +1011,37 @@ const CookieAndBailey = () => (
 
                 <h4 className="font-bold text-3xl text-navy font-hand">Cookie</h4>
 
-                <p className="font-hand text-xl mt-2">Alysha's first love. 12 years old. Will absolutely bark at you during the ceremony. We're not sorry.</p>
+                <p className="font-hand text-xl mt-2">Alysha's first love. Been around for 12 years. Will absolutely bark at you during the ceremony. Multiple times, probably. We're not apologizing for it.</p>
+
+            </motion.div>
+
+        </FadeInWhenVisible>
+
+
+
+        {/* Bailey */}
+
+        <FadeInWhenVisible delay={0.15} className="relative group">
+
+            <div className="absolute inset-0 bg-[#B8D4E8] transform rotate-3 rounded-lg opacity-20"></div>
+
+            <motion.div 
+
+              className="sketchy-border bg-white p-8 relative transform -rotate-2 transition-transform group-hover:rotate-0"
+
+              whileHover={{ rotate: 0, scale: 1.02 }}
+
+            >
+
+                <div className="w-48 h-48 mx-auto mb-6 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+
+                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
+
+                </div>
+
+                <h4 className="font-bold text-3xl text-navy font-hand">Bailey</h4>
+
+                <p className="font-hand text-xl mt-2">Their rescue dog. She's two-faced, literally. Half her face is a different color. Shubs brought her to Bangalore after COVID. She's family now.</p>
 
             </motion.div>
 
@@ -1061,14 +1063,14 @@ const WhatWeAreExcitedAbout = () => (
 
     <FadeInWhenVisible className="max-w-4xl mx-auto text-center">
 
-      <h3 className="text-3xl font-hand text-navy mb-8">What We Can't Wait For</h3>
+      <h3 className="text-3xl font-hand text-navy mb-8">What We're Most Excited About</h3>
 
       <div className="grid md:grid-cols-3 gap-8 font-hand text-xl text-navy/80">
 
         {[
-          { icon: <SketchIcon type="palm" className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'The Ocean at Sunset' },
-          { icon: <SketchIcon type="plate" className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'Kalwa Sukka for Everyone' },
-          { icon: <Music className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'Dancing Until Our Feet Hurt' }
+          { icon: <Heart className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'All of You in One Place' },
+          { icon: <PawPrint className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'Cookie & Bailey as Ringbearers' },
+          { icon: <Music className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'The Dance Floor Opening' }
         ].map((item, idx) => (
           <FadeInWhenVisible key={item.text} delay={0.1 * idx}>
             <motion.div 
@@ -1133,7 +1135,7 @@ const KidenaHouse = () => (
                     </div>
                     <div className="flex-1">
                         <h3 className="font-bold text-[#D4A5A5] text-2xl md:text-3xl font-hand mb-3">The House</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">6 bedrooms, 9 bathrooms. Private pool and a private lake. Plenty of space to spread out.</p>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">6 bedrooms, 9 bathrooms. Private pool and a private lake on the property. Three acres of space to spread out and breathe.</p>
                     </div>
                 </div>
             </div>
@@ -1145,7 +1147,7 @@ const KidenaHouse = () => (
                     </div>
                     <div className="flex-1">
                         <h3 className="font-bold text-[#B8D4E8] text-2xl md:text-3xl font-hand mb-3">No Cooking, No Cleaning</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Chefs will make whatever you're craving—breakfast, lunch, midnight snacks. Butlers handle the rest.</p>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Personal chefs will cook whatever you're craving. Breakfast, lunch, dinner, midnight snacks. Whatever. Butlers handle everything else. You just relax.</p>
                     </div>
                 </div>
             </div>
@@ -1157,7 +1159,7 @@ const KidenaHouse = () => (
                     </div>
                     <div className="flex-1">
                         <h3 className="font-bold text-[#D4A5A5] text-2xl md:text-3xl font-hand mb-3">Spa</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">There's an on-site spa if you need to unwind before the chaos.</p>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">There's an on-site spa if you need to decompress before all the wedding chaos starts.</p>
                     </div>
                 </div>
             </div>
@@ -1169,7 +1171,7 @@ const KidenaHouse = () => (
                     </div>
                     <div className="flex-1">
                         <h3 className="font-bold text-[#B8D4E8] text-2xl md:text-3xl font-hand mb-3">Keep Busy (or Don't)</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, fishing in the lake, cycling around. Or just lounge by the pool.</p>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, fishing in the private lake, bicycles to ride around. Or just lounge by the pool all day. Your choice.</p>
                     </div>
                 </div>
         </div>
@@ -1183,7 +1185,7 @@ const KidenaHouse = () => (
                     <Calendar className="text-[#D4A5A5]" size={32} />
                     <h3 className="font-bold text-2xl md:text-3xl font-hand text-navy">March 18-22, 2026</h3>
                 </div>
-                <p className="font-hand text-xl md:text-2xl text-navy/80 leading-relaxed">This is home base. Where we'll all be together before the big day.</p>
+                <p className="font-hand text-xl md:text-2xl text-navy/80 leading-relaxed">This is home base for the family. Where we'll all be together in the days leading up to the wedding. The calm before the beautiful storm.</p>
             </div>
         </div>
 
@@ -1225,7 +1227,7 @@ const FamilyItinerary = () => (
                     day: "Thursday, March 19", 
                     time: "All Day",
                     title: "Arrival & Pool Party", 
-                    desc: "You're here! We'll have cars waiting to bring you to Kidena House. Unpack, settle in, and we'll order the best Goan food we can find. Then—pool party. Later that night, we're hitting Panjim for a pub crawl. Joseph's, Miguel's, all our favorite spots. Come along or stay back and relax—whatever feels right.",
+                    desc: "You're finally here. We'll have cars waiting at the airport to bring you straight to Kidena House. Take your time unpacking and settling into your rooms. We'll order the best Goan food we can find for dinner. Then: pool party. Later that evening, some of us are heading to Panjim for a pub crawl. Joseph's Bar, Miguel's, all our favorite haunts from the past seven years. Come along if you want, or stay back at the house and relax by the pool. Whatever feels right.",
                     icon: Home,
                     color: "#D4A5A5"
                 },
@@ -1234,7 +1236,7 @@ const FamilyItinerary = () => (
                     day: "Friday, March 20", 
                     time: "Morning",
                     title: "Rehearsal Day", 
-                    desc: "Breakfast together at the house. Then those of us in the ceremony head to Blu Missel for rehearsal. Kids can stay back and enjoy the pool—no need to drag them along.",
+                    desc: "We'll all have breakfast together at the house. Slow morning, good coffee, no rush. Then those of us actually in the ceremony will head to Blu Missel for rehearsal. Kids can absolutely stay back at Kidena and enjoy the pool. No need to drag them to a boring rehearsal.",
                     icon: Sun,
                     color: "#B8D4E8"
                 },
@@ -1243,7 +1245,7 @@ const FamilyItinerary = () => (
                     day: "Friday, March 20", 
                     time: "Afternoon",
                     title: "The Wedding", 
-                    desc: "This is it! Cars leave Kidena at 2:30 PM. We're sorting rentals and cabs, but please be ready on time. (We're talking to you, family members who are always fashionably late.)",
+                    desc: "This is it. The day we've been planning for months. Cars leave Kidena House at 2:30 PM sharp. We're still figuring out the mix of rental cars and cabs, but we'll have it sorted. Just please be ready on time. (Yes, we're talking to specific family members who are always fashionably late.)",
                     icon: Heart,
                     color: "#D4A5A5"
                 },
@@ -1252,7 +1254,7 @@ const FamilyItinerary = () => (
                     day: "Saturday, March 21", 
                     time: "All Day",
                     title: "Recovery & Chill", 
-                    desc: "Sleep in. No agenda. Pool, spa, whatever you need. Later in the evening, let's meet at Bar Outrigger—it's this beautiful spot by the beach with a little cove. Sunset drinks, good company.",
+                    desc: "Sleep as late as you need to. No agenda today. No schedule. Pool, spa, naps, whatever your body is asking for after last night. Later in the evening, let's all meet up at Bar Outrigger. It's this gorgeous spot right by the beach with a little cove. Perfect for sunset. We'll have drinks, decompress together, soak in the fact that we actually pulled this off.",
                     icon: Anchor,
                     color: "#B8D4E8"
                 },
@@ -1261,7 +1263,7 @@ const FamilyItinerary = () => (
                     day: "Sunday, March 22", 
                     time: "All Day",
                     title: "Rest & Goodbyes", 
-                    desc: "Take your time. Leave when you need to. We'll be around to say proper goodbyes and soak in these last moments together. Thanks for being here. It means everything.",
+                    desc: "People can leave whenever their flights are. Take your time checking out. We'll be around all day to say proper goodbyes and squeeze in a few more hours together. Thank you for being here for all of this. For showing up, for celebrating with us, for making this week exactly what we hoped it would be. It means absolutely everything.",
                     icon: Coffee,
                     color: "#D4A5A5"
                 }
@@ -1387,7 +1389,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                 <div className="bg-[#F5F0E8] p-3 rounded-sm border-2 border-navy/20 transform -rotate-1">
 
-                   <p className="font-hand text-lg">Expect Goan specialties, fresh seafood, and surprises from Alysha's home state!</p>
+                   <p className="font-hand text-lg">Riverside setting. Goan feast with fresh seafood. Open bar all night. Everything you need.</p>
 
                 </div>
 
@@ -1407,19 +1409,19 @@ const Celebration = ({ isFamilyMode }) => (
 
               {[
 
-                  { time: '3:30 PM', event: 'Wedding Ceremony', note: 'Riverside vows (Cookie & Bailey ringbearers)', icon: Heart },
+                  { time: '3:30 PM', event: 'Wedding Ceremony', note: 'Riverside vows. Cookie & Bailey bringing the rings (or trying to).', icon: Heart },
 
-                  { time: '4:30 PM', event: 'Hi-Tea & Photos', note: "Golden hour. We'll be posing, you mingle", icon: SketchIcon, type: 'wine' },
+                  { time: '4:30 PM', event: 'Hi-Tea & Photos', note: "Golden hour light. We'll be posing for photos. You grab snacks and mingle.", icon: SketchIcon, type: 'wine' },
 
-                  { time: '6:00 PM', event: 'Cocktails', note: 'Bar opens. Signature drinks on deck', icon: SketchIcon, type: 'wine' },
+                  { time: '6:00 PM', event: 'Cocktails', note: 'Bar officially opens. Signature drinks on the deck.', icon: SketchIcon, type: 'wine' },
 
-                  { time: '6:45 PM', event: 'Reception', note: 'Grand entrance, toasts, cake cutting', icon: Anchor },
+                  { time: '6:45 PM', event: 'Reception', note: 'Grand entrance, toasts from people we love, cake cutting.', icon: Anchor },
 
-                  { time: '7:15 PM', event: 'Dance Floor', note: 'DJ starts. Get ready', icon: Music },
+                  { time: '7:15 PM', event: 'Dance Floor', note: 'DJ takes over. Time to move.', icon: Music },
 
-                  { time: '9:00 PM', event: 'Dinner', note: 'Goan feast buffet style', icon: SketchIcon, type: 'plate' },
+                  { time: '9:00 PM', event: 'Dinner', note: 'Full Goan feast. Buffet style. Come hungry.', icon: SketchIcon, type: 'plate' },
 
-                  { time: '10:00 PM', event: 'Last Call', note: "Music ends, but the party doesn't", icon: Sun }
+                  { time: '10:00 PM', event: 'Last Call', note: "Music officially ends. But honestly, the party probably continues somewhere.", icon: Sun }
 
               ].map((item, i) => (
 
@@ -1503,13 +1505,13 @@ const DressCode = () => {
 
             <div className="space-y-4 font-hand text-xl text-navy/80 leading-relaxed">
 
-              <p>Think flowy dresses, linen suits, and comfortable shoes (we'll be on grass!). We want you to feel beautiful but relaxed.</p>
+              <p>Think flowy dresses, linen suits, comfortable shoes. We're on grass, so heels will sink. We want you to feel beautiful but also relaxed enough to actually enjoy yourself.</p>
 
               <div className="flex items-start gap-2 pt-2 border-t border-navy/10">
 
                 <Sun className="w-5 h-5 text-[#ffbd7b] mt-1 flex-shrink-0" />
 
-                <p className="font-hand text-lg text-navy/60 italic">March in Goa is warm. Pack light.</p>
+                <p className="font-hand text-lg text-navy/60 italic"><span className="font-bold">Weather check:</span> March in Goa is warm. Not unbearably hot, but definitely t-shirt weather. Pack light.</p>
 
               </div>
 
@@ -1523,7 +1525,7 @@ const DressCode = () => {
 
               <h3 className="text-3xl font-hand mb-2 text-navy font-bold">Our Color Palette</h3>
 
-              <p className="text-navy/60 font-hand text-sm">Feel free to incorporate these hues</p>
+              <p className="text-navy/60 font-hand text-sm">Feel free to incorporate these colors if you want</p>
 
             </div>
 
@@ -1569,7 +1571,7 @@ const DressCode = () => {
 
             <div className="mt-8 pt-6 border-t border-navy/10 text-center">
 
-              <p className="text-xs text-navy/50 font-hand italic">These colors are suggestions, not requirements</p>
+              <p className="text-xs text-navy/50 font-hand italic">These are suggestions, not requirements. Wear what makes you happy.</p>
 
             </div>
 
@@ -1597,15 +1599,13 @@ const ExploreGoa = () => {
 
       items: [
 
-        { name: "Joseph's Bar", type: "drink", desc: "Old Goa charm, cold beer, locals" },
+        { name: "Joseph's Bar", type: "drink", desc: "Old Goa charm, cold beer, locals only vibe" },
 
-        { name: "Miguel's", type: "drink", desc: "Wine, conversation, ambiance" },
+        { name: "Miguel's", type: "drink", desc: "Good wine, quiet conversations, perfect ambiance" },
 
-        { name: "Bar Outrigger", type: "drink", desc: "Sunset views by the river" },
+        { name: "Bombil", type: "food", desc: "Fresh seafood, authentic Goan classics" },
 
-        { name: "Bombil", type: "food", desc: "Fresh seafood, Goan classics" },
-
-        { name: "Kokum Curry", type: "food", desc: "Authentic home-style cooking" }
+        { name: "Kokum Curry", type: "food", desc: "Home-style cooking that actually tastes like home" }
 
       ]
 
@@ -1617,15 +1617,17 @@ const ExploreGoa = () => {
 
       items: [
 
-        { name: "Kakolim Beach Trek", type: "beach", desc: "Hidden cove, worth the walk" },
+        { name: "Kakolim Beach Trek", type: "beach", desc: "Hidden cove at the end. Worth the walk." },
 
-        { name: "Colomb Bay", type: "beach", desc: "Our sanctuary. Quiet, beautiful." },
+        { name: "Colomb Bay", type: "beach", desc: "Our sanctuary. Quiet, beautiful, untouched." },
 
-        { name: "Palolem Beach", type: "beach", desc: "Perfect for a swim, best at sunrise" },
+        { name: "Palolem Beach", type: "beach", desc: "Perfect for swimming. Best at sunrise." },
 
-        { name: "Tejas Bar", type: "food", desc: "The BEST kalwa sukka. Trust us." },
+        { name: "Tejas Bar", type: "food", desc: "Hands down the BEST kalwa sukka in Goa. Trust us on this." },
 
-        { name: "Kala Bahia", type: "party", desc: "Dance until dawn" }
+        { name: "Kala Bahia", type: "party", desc: "Dance until the sun comes up." },
+
+        { name: "Bar Outrigger", type: "drink", desc: "Beautiful spot by the beach with a little cove. Perfect for sunset drinks." }
 
       ]
 
@@ -1711,9 +1713,9 @@ const ExploreGoa = () => {
 
           <p className="text-navy/70 italic font-hand text-lg">
 
-            Palolem is where we got engaged. Colomb Bay is where we learned to dive. 
+            Palolem is where we got engaged. Colomb Bay is where we learned to dive together. 
 
-            These places are ours—now they're yours too.
+            These places belong to us. Now they're yours too.
 
           </p>
 
@@ -1795,15 +1797,15 @@ const Travel = ({ isFamilyMode }) => (
 
                      <div className="bg-[#B8D4E8]/30 p-3 rounded-sm mt-4 text-base transform -rotate-1">
 
-                       <p className="font-bold">Family Pickup:</p>
+                       <p className="font-bold">Family pickup:</p>
 
-                       <p>We're coordinating rides for March 18 arrivals!</p>
+                       <p>We're coordinating airport pickups for everyone arriving on March 18. We'll send details closer to the date.</p>
 
                      </div>
 
                  ) : (
 
-                     <p className="text-base pt-2 opacity-80">Tip: Pre-book a taxi or use GoaMiles. Window seat mandatory.</p>
+                     <p className="text-base pt-2 opacity-80">Pre-book a taxi before you land, or use GoaMiles app when you arrive.</p>
 
                  )}
 
@@ -1837,11 +1839,11 @@ const Travel = ({ isFamilyMode }) => (
 
                    <p className="text-2xl font-bold text-[#D4A5A5]">Kidena House</p>
 
-                   <p className="text-base mt-2">You're with us! Rooms assigned, fridge stocked, pool ready.</p>
+                   <p className="text-base mt-2">You're with us for the full four days. Rooms are already assigned. Fridge will be stocked. Pool will be ready.</p>
 
                </div>
 
-               <p className="text-sm opacity-60">Check-in: March 18, 12:00 PM</p>
+               <p className="text-sm opacity-60">Check-in starts at 12:00 PM on March 18.</p>
 
             </div>
 
@@ -1857,7 +1859,7 @@ const Travel = ({ isFamilyMode }) => (
 
                     <p className="font-bold">Alila Diwa Goa</p>
 
-                    <p className="text-sm opacity-70">Closest to venue (20 min). Luxury.</p>
+                    <p className="text-sm opacity-70">Closest to the venue (20 minutes). Luxury resort option.</p>
 
                  </div>
 
@@ -1871,7 +1873,7 @@ const Travel = ({ isFamilyMode }) => (
 
                     <p className="font-bold">Airbnb / Villas</p>
 
-                    <p className="text-sm opacity-70">Look in Cavelossim or Betul.</p>
+                    <p className="text-sm opacity-70">Look in Cavelossim or Betul areas. Great for groups.</p>
 
                  </div>
 
@@ -1879,7 +1881,7 @@ const Travel = ({ isFamilyMode }) => (
 
                <li className="text-center pt-2">
 
-                  <span className="bg-white px-3 py-1 border border-navy rounded-full text-sm">Book Early!</span>
+                  <span className="bg-white px-3 py-1 border border-navy rounded-full text-sm"><span className="font-bold">Important:</span> Book early. March is peak wedding season in Goa.</span>
 
                </li>
 
@@ -1903,15 +1905,15 @@ const QnA = () => {
 
   const questions = [
 
-    { q: "Are kids invited?", a: "Yes! Cookie & Bailey insist on having playmates." },
+    { q: "Are kids invited?", a: "Yes! Cookie & Bailey are demanding playmates. Bring the little ones." },
 
-    { q: "Plus ones?", a: "If your invite says 'and guest', bring them! Otherwise, we're keeping it intimate." },
+    { q: "What about plus ones?", a: "If your invitation says 'and guest', absolutely bring them. If it doesn't, we're keeping numbers intimate. Nothing personal." },
 
-    { q: "Open bar?", a: "Absolutely. We're not monsters." },
+    { q: "Open bar?", a: "Of course. We're not monsters." },
 
-    { q: "Gifts?", a: "Your presence > presents. But if you insist, a contribution to our honeymoon fund works!" },
+    { q: "What about gifts?", a: "Honestly? Your presence means more than presents. But if you really want to give something, a contribution toward our honeymoon fund would be amazing." },
 
-    { q: "Dietary restrictions?", a: "We'll have veg and non-veg options. Let us know in the RSVP." }
+    { q: "Dietary restrictions?", a: "We'll have both vegetarian and non-vegetarian options. Let us know your specific restrictions or allergies in the RSVP form below." }
 
   ];
 
@@ -1961,7 +1963,7 @@ const QnA = () => {
 
              <p className="font-hand text-xl text-navy/80 ml-5">
 
-                Contact Priya Sharma (Coordinator)<br/>
+                Contact our coordinator Priya Sharma<br/>
 
                 +91 98765 43210<br/>
 
@@ -2118,7 +2120,7 @@ const RSVP = () => {
 
           <h2 className="text-5xl text-navy mb-2 font-hand">R.S.V.P.</h2>
 
-          <p className="text-navy/50 text-sm uppercase tracking-widest">Please respond by Jan 20th</p>
+          <p className="text-navy/50 text-sm uppercase tracking-widest">Please respond by January 20, 2026</p>
 
         </div>
 
@@ -2269,7 +2271,7 @@ const RSVP = () => {
                  value={formData.dietary}
                  onChange={handleChange}
                  className="modern-input" 
-                 placeholder="Allergies, vegetarian, etc." 
+                 placeholder="Allergies, vegetarian preferences, etc." 
                />
 
             </div>
@@ -2286,7 +2288,7 @@ const RSVP = () => {
                  value={formData.song}
                  onChange={handleChange}
                  className="modern-input" 
-                 placeholder="I promise to dance to..." 
+                 placeholder="What will guarantee you on the dance floor?" 
                />
 
             </div>
