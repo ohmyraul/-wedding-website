@@ -11,7 +11,37 @@ import confetti from 'canvas-confetti';
 
 const styles = `
 
-  @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@300;400;500;600;700&family=La+Belle+Aurore&display=swap');
+  /* 
+   * FONT OPTIONS - Currently using Option A
+   * 
+   * To switch: Comment out current @import, uncomment your choice, 
+   * and update font-family declarations below (lines 72, 86, 95)
+   * 
+   * OPTION A: Elevated Sketchy (CURRENT - Best for Mario Miranda vibe)
+   * - Headings: Crimson Pro (warm serif with character, matches coral/beige)
+   * - Body: Inter (ultra-readable, designed for screens)
+   * - Accents: Kalam (refined handwritten, maintains sketchy feel)
+   * 
+   * OPTION B: Modern Romantic (Claude's suggestion - Lora + DM Sans)
+   * - Headings: Lora (elegant serif, wedding industry favorite)
+   * - Body: DM Sans (geometric, modern, 2025 trending)
+   * - Accents: Kalam (handwritten for playful moments)
+   * 
+   * OPTION C: Warm & Playful (More handwritten feel)
+   * - Headings: Kalam (refined handwritten, still playful)
+   * - Body: Inter (clean, readable)
+   * - Accents: Caveat (elegant script for special moments)
+   */
+  
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Kalam:wght@300;400;700&display=swap');
+  
+  /* Option B (uncomment to use):
+  @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Kalam:wght@300;400;700&display=swap');
+  */
+  
+  /* Option C (uncomment to use):
+  @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400;600;700&display=swap');
+  */
 
 
 
@@ -62,7 +92,7 @@ const styles = `
 
     color: var(--text-navy);
 
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Inter', sans-serif;
 
     overflow: hidden;
 
@@ -76,7 +106,8 @@ const styles = `
 
   h1, h2, h3, .font-hand {
 
-    font-family: 'Patrick Hand', cursive;
+    font-family: 'Crimson Pro', serif;
+    font-weight: 600;
 
   }
 
@@ -84,7 +115,8 @@ const styles = `
 
   .font-script {
 
-    font-family: 'La Belle Aurore', cursive;
+    font-family: 'Kalam', cursive;
+    font-weight: 400;
 
   }
 
