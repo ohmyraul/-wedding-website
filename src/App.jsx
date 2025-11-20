@@ -2002,9 +2002,21 @@ const RSVP = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Trim and validate all fields
+    const trimmedName = (formData.name || '').trim();
+    const trimmedEmail = (formData.email || '').trim();
+    const trimmedPhone = (formData.phone || '').trim();
+    
     // Validate required fields
-    if (!formData.name || !formData.email || !formData.phone || !formData.attending) {
+    if (!trimmedName || !trimmedEmail || !trimmedPhone || !formData.attending) {
       alert('Please fill in all required fields.');
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      alert('Please enter a valid email address.');
       return;
     }
 
@@ -2013,18 +2025,26 @@ const RSVP = () => {
     try {
       // Create FormData object (native form data format)
       const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('name', trimmedName);
+      formDataToSend.append('email', trimmedEmail); // Must be valid email
+      formDataToSend.append('phone', trimmedPhone);
       formDataToSend.append('guests', formData.guests);
       formDataToSend.append('attending', formData.attending);
-      if (formData.dietary) formDataToSend.append('dietary', formData.dietary);
-      if (formData.song) formDataToSend.append('song', formData.song);
-      formDataToSend.append('_subject', 'Wedding RSVP from ' + formData.name);
+      if (formData.dietary && formData.dietary.trim()) {
+        formDataToSend.append('dietary', formData.dietary.trim());
+      }
+      if (formData.song && formData.song.trim()) {
+        formDataToSend.append('song', formData.song.trim());
+      }
+      formDataToSend.append('_subject', 'Wedding RSVP from ' + trimmedName);
       formDataToSend.append('_format', 'json'); // Request JSON response
 
+      // Debug: Log all form data
       console.log('Submitting to:', FORMSPREE_ENDPOINT);
+      console.log('Form state:', formData);
+      console.log('Trimmed email:', trimmedEmail);
       console.log('Form data entries:', Array.from(formDataToSend.entries()));
+      console.log('Email value being sent:', formDataToSend.get('email'));
 
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
