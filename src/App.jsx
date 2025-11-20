@@ -2011,31 +2011,43 @@ const RSVP = () => {
     setIsSubmitting(true);
     
     try {
-      // Use FormData for better compatibility with Formspree
-      const formDataToSend = new FormData();
+      // Use URLSearchParams for form-encoded data (Formspree prefers this)
+      const formDataToSend = new URLSearchParams();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('phone', formData.phone);
       formDataToSend.append('guests', formData.guests);
       formDataToSend.append('attending', formData.attending);
-      formDataToSend.append('dietary', formData.dietary || 'None');
-      formDataToSend.append('song', formData.song || 'None');
+      if (formData.dietary) formDataToSend.append('dietary', formData.dietary);
+      if (formData.song) formDataToSend.append('song', formData.song);
       formDataToSend.append('_subject', 'Wedding RSVP from ' + formData.name);
+
+      console.log('Submitting to:', FORMSPREE_ENDPOINT);
+      console.log('Form data:', formDataToSend.toString());
 
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: formDataToSend,
+        body: formDataToSend.toString(),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
       let responseData;
-      try {
+      const contentType = response.headers.get('content-type');
+      
+      if (contentType && contentType.includes('application/json')) {
         responseData = await response.json();
-      } catch (jsonError) {
-        // If response is not JSON, check status
+        console.log('Response data:', responseData);
+      } else {
+        const text = await response.text();
+        console.log('Response text:', text);
         if (response.ok) {
+          // Success but not JSON response
           setSubmitted(true);
           setIsSubmitting(false);
           confetti({
@@ -2046,7 +2058,7 @@ const RSVP = () => {
           });
           return;
         }
-        throw new Error('Invalid response from server');
+        responseData = { error: text || 'Unknown error' };
       }
 
       if (response.ok) {
@@ -2060,19 +2072,26 @@ const RSVP = () => {
         });
       } else {
         setIsSubmitting(false);
-        console.error('Formspree error:', responseData);
+        console.error('Formspree error response:', response.status, responseData);
+        console.error('Full error details:', JSON.stringify(responseData, null, 2));
+        
         if (responseData.error) {
           alert('Error: ' + responseData.error);
         } else if (responseData.errors) {
-          alert('Error: ' + JSON.stringify(responseData.errors));
+          const errorMessages = Array.isArray(responseData.errors) 
+            ? responseData.errors.map(e => e.message || e).join(', ')
+            : JSON.stringify(responseData.errors);
+          alert('Error: ' + errorMessages);
         } else {
-          alert('Something went wrong. Please try again or contact us directly.');
+          alert('Something went wrong. Status: ' + response.status + '. Check console (F12) for details.');
         }
       }
     } catch (error) {
       setIsSubmitting(false);
       console.error('Submission error:', error);
-      alert('Network error. Please check your connection and try again. Error: ' + error.message);
+      console.error('Error stack:', error.stack);
+      console.error('Error details:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+      alert('Network error. Please check your connection and try again. Error: ' + (error.message || error.toString()));
     }
   };
 
