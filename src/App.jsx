@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 
 import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, MapPin, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
@@ -3280,7 +3280,8 @@ const App = () => {
 
   // Define sections for navigation
 
-  const sections = [
+  // Memoize sections array to prevent infinite re-renders
+  const sections = useMemo(() => [
 
     { id: 'hero', name: 'Home', component: Hero },
 
@@ -3310,7 +3311,7 @@ const App = () => {
 
     { id: 'rsvp', name: 'RSVP', component: RSVP }
 
-  ];
+  ], [isFamilyMode]);
 
 
 
