@@ -603,7 +603,7 @@ const Nav = ({ isFamilyMode }) => {
 
 
 
-const Hero = () => (
+const Hero = ({ onScrollToSection }) => (
 
   <section className="min-h-screen flex flex-col items-center justify-center px-4 pt-20 md:pt-24 pb-8 md:pb-12 relative">
 
@@ -721,7 +721,7 @@ const Hero = () => (
 
                  tooltip="Bailey - The two-faced beauty!"
 
-                 onClick={() => {}}
+                 onClick={() => onScrollToSection?.('dogs')}
 
                >
 
@@ -737,7 +737,7 @@ const Hero = () => (
 
                  tooltip="Cookie - Queen of the ceremony!"
 
-                 onClick={() => {}}
+                 onClick={() => onScrollToSection?.('dogs')}
 
                >
 
@@ -753,11 +753,7 @@ const Hero = () => (
 
                  tooltip="Click to see our story!"
 
-                 onClick={() => {
-
-                   document.getElementById('our-story')?.scrollIntoView({ behavior: 'smooth' });
-
-                 }}
+                 onClick={() => onScrollToSection?.('our-story')}
 
                >
 
@@ -1037,7 +1033,7 @@ const CookieAndBailey = () => (
 
                    <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} />
 
-            </div>
+                </div>
 
                 <h4 className="font-bold text-3xl md:text-4xl text-navy font-hand mb-4">Cookie</h4>
 
@@ -2160,7 +2156,7 @@ const RSVP = () => {
         <div className="text-center mb-12 md:mb-14 mt-2">
 
           <h2 className="text-5xl md:text-6xl text-navy mb-4 font-hand">R.S.V.P.</h2>
-          
+
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-4"></div>
 
           <p className="text-navy/60 text-sm md:text-base uppercase tracking-widest font-hand">Please respond by January 20, 2026</p>
@@ -2902,8 +2898,6 @@ const CardStack = ({ cards, isFamilyMode, fullContent }) => {
 
         ))}
 
-        <MusicPlayer />
-
       </div>
 
     );
@@ -3013,10 +3007,6 @@ const CardStack = ({ cards, isFamilyMode, fullContent }) => {
         →
 
       </button>
-
-
-
-      <MusicPlayer />
 
     </div>
 
@@ -3129,6 +3119,7 @@ const FloatingMusicNotes = () => {
 const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
 
   const [isHovered, setIsHovered] = useState(false);
+  const [isTapped, setIsTapped] = useState(false);
 
 
 
@@ -3136,7 +3127,7 @@ const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
 
     <motion.button
 
-      className="absolute z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#D4A5A5]/80 backdrop-blur-sm border-2 border-white shadow-lg flex items-center justify-center text-white text-base md:text-2xl touch-manipulation"
+      className="absolute z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#D4A5A5]/90 backdrop-blur-sm border-2 border-white shadow-lg flex items-center justify-center text-white text-base md:text-2xl touch-manipulation cursor-pointer active:scale-95"
 
       style={position}
 
@@ -3148,7 +3139,18 @@ const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
 
       onHoverEnd={() => setIsHovered(false)}
 
-      onClick={onClick}
+      onTouchStart={() => setIsTapped(true)}
+
+      onTouchEnd={() => {
+        setIsTapped(false);
+        if (onClick) onClick();
+      }}
+
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (onClick) onClick();
+      }}
 
       aria-label={tooltip}
 
@@ -3156,7 +3158,7 @@ const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
 
       {children}
 
-      {isHovered && (
+      {(isHovered || isTapped) && (
 
         <motion.div
 
@@ -3455,7 +3457,7 @@ const App = () => {
 
         <section id="hero" className="scroll-section flex items-center justify-center">
 
-        <Hero />
+        <Hero onScrollToSection={scrollToSection} />
 
         </section>
 
