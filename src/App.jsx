@@ -2029,11 +2029,11 @@ const RSVP = () => {
               });
             }}
           >
-            <button className="w-full bg-[#1B3A57] text-white font-bold text-lg py-5 md:py-6 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-200 hover:rotate-1 flex items-center justify-center gap-3">
+            <div className="w-full bg-[#1B3A57] text-white font-bold text-lg py-5 md:py-6 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-200 hover:rotate-1 flex items-center justify-center gap-3 cursor-pointer">
               <Heart className="w-6 h-6" />
               <span>RSVP Now</span>
               <ArrowDown className="w-5 h-5 rotate-[-90deg]" />
-            </button>
+            </div>
           </a>
 
           <p className="text-navy/50 text-sm font-hand italic mt-4">
