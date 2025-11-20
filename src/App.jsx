@@ -1985,7 +1985,62 @@ const QnA = () => {
 
 const RSVP = () => {
 
-  const GOOGLE_FORM_URL = "https://forms.gle/5xAoy5A8erKMaL9K8";
+  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    guests: '1',
+    attending: '',
+    dietary: '',
+    song: ''
+  });
+
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mnnwwold";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          guests: formData.guests,
+          attending: formData.attending,
+          dietary: formData.dietary,
+          song: formData.song,
+          _subject: 'Wedding RSVP from ' + formData.name
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        confetti({
+          particleCount: 120,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
+        });
+      } else {
+        alert('Something went wrong. Please try again or contact us directly.');
+      }
+    } catch (error) {
+      alert('Something went wrong. Please try again or contact us directly.');
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   return (
 
@@ -2009,38 +2064,199 @@ const RSVP = () => {
 
 
 
-        <div className="text-center space-y-6">
+        {!submitted ? (
 
-          <p className="text-navy/70 font-hand text-lg leading-relaxed">
-            We'd love to celebrate with you! Click the button below to RSVP.
-          </p>
+          <form onSubmit={handleSubmit} className="space-y-6">
 
-          <a
-            href={GOOGLE_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block w-full"
-            onClick={() => {
-              confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
-              });
-            }}
-          >
-            <div className="w-full bg-[#1B3A57] text-white font-bold text-lg py-5 md:py-6 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-200 hover:rotate-1 flex items-center justify-center gap-3 cursor-pointer">
-              <Heart className="w-6 h-6" />
-              <span>RSVP Now</span>
-              <ArrowDown className="w-5 h-5 rotate-[-90deg]" />
-            </div>
-          </a>
+            <div>
 
-          <p className="text-navy/50 text-sm font-hand italic mt-4">
-            Opens in a new tab • All responses saved automatically
-          </p>
+              <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
+
+              <input 
+                type="text" 
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="modern-input" 
+                placeholder="Who are we celebrating with?" 
+                required 
+              />
 
             </div>
+
+
+
+            <div className="grid grid-cols-2 gap-4">
+
+                <div>
+
+                   <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
+
+                   <input 
+                     type="email" 
+                     name="email"
+                     value={formData.email}
+                     onChange={handleChange}
+                     className="modern-input" 
+                     placeholder="name@email.com" 
+                     required 
+                   />
+
+                </div>
+
+                <div>
+
+                   <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
+
+                   <input 
+                     type="tel" 
+                     name="phone"
+                     value={formData.phone}
+                     onChange={handleChange}
+                     className="modern-input" 
+                     placeholder="+91..." 
+                     required 
+                   />
+
+                </div>
+
+            </div>
+
+
+
+            <div>
+
+                <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
+
+                <select 
+                  name="guests"
+                  value={formData.guests}
+                  onChange={handleChange}
+                  className="modern-input bg-white"
+                >
+
+                  <option value="1">1 Guest</option>
+
+                  <option value="2">2 Guests</option>
+
+                  <option value="3">3 Guests</option>
+
+                  <option value="4">4 Guests</option>
+
+                </select>
+
+            </div>
+
+            
+
+            <div className="grid grid-cols-2 gap-4 pt-2">
+
+              <label className="cursor-pointer group">
+
+                <input 
+                  type="radio" 
+                  name="attending" 
+                  value="Count Me In"
+                  checked={formData.attending === 'Count Me In'}
+                  onChange={handleChange}
+                  className="hidden peer" 
+                  required
+                />
+
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
+
+                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
+
+                  <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
+
+                </div>
+
+              </label>
+
+              <label className="cursor-pointer group">
+
+                <input 
+                  type="radio" 
+                  name="attending" 
+                  value="Cannot Attend"
+                  checked={formData.attending === 'Cannot Attend'}
+                  onChange={handleChange}
+                  className="hidden peer" 
+                  required
+                />
+
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
+
+                  <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
+
+                  <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
+
+                </div>
+
+              </label>
+
+            </div>
+
+
+
+            <div>
+
+               <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
+
+               <input 
+                 type="text" 
+                 name="dietary"
+                 value={formData.dietary}
+                 onChange={handleChange}
+                 className="modern-input" 
+                 placeholder="Allergies, vegetarian, etc." 
+               />
+
+            </div>
+
+
+
+            <div>
+
+               <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2 flex items-center gap-2">Song Request</label>
+
+               <input 
+                 type="text" 
+                 name="song"
+                 value={formData.song}
+                 onChange={handleChange}
+                 className="modern-input" 
+                 placeholder="I promise to dance to..." 
+               />
+
+            </div>
+
+            
+
+            <button 
+              type="submit"
+              className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1"
+            >
+
+              Send RSVP
+
+            </button>
+
+          </form>
+
+        ) : (
+
+          <div className="text-center py-12 animate-in fade-in zoom-in duration-500">
+
+            <CheckCircle size={64} className="mx-auto text-[#D4A5A5] mb-4" />
+
+            <h3 className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
+
+            <p className="text-navy/60 mt-2">We can't wait to celebrate with you.</p>
+
+          </div>
+
+        )}
 
       </FadeInWhenVisible>
 
