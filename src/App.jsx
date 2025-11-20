@@ -777,13 +777,13 @@ const Story = () => (
 
           <h2 className="text-4xl md:text-6xl font-hand text-navy inline-block sketchy-text mb-2">
 
-            How This Happened
+          How This Happened
 
-          </h2>
+        </h2>
 
-          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
+        <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
 
-        </div>
+      </div>
 
       </StickyHeader>
 
@@ -809,17 +809,17 @@ const Story = () => (
 
             <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-2 order-2 md:order-1 photo-frame">
 
-              <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-                 <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%' }} />
+               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%' }} />
 
-              </div>
+            </div>
 
-              <p className="text-center font-hand text-navy/50 mt-2">Alysha (The Host)</p>
+            <p className="text-center font-hand text-navy/50 mt-2">Alysha (The Host)</p>
 
             </ParallaxWrapper>
 
-            <div className="order-1 md:order-2">
+          <div className="order-1 md:order-2">
 
               <span className="inline-block bg-[#D4A5A5] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-2deg] shadow-sm">2015</span>
 
@@ -827,17 +827,17 @@ const Story = () => (
 
               <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
 
-                <p>Her house party. Bangalore. A friend dragged him along.</p>
+              <p>Her house party. Bangalore. A friend dragged him along.</p>
 
-                <p>They talked for hours. Bengali boy from Assam meets Goan girl from Abu Dhabi. Easy conversation, good vibes.</p>
+              <p>They talked for hours. Bengali boy from Assam meets Goan girl from Abu Dhabi. Easy conversation, good vibes.</p>
 
-                <p>Then the party ended. Three years of radio silence.</p>
-
-              </div>
+              <p>Then the party ended. Three years of radio silence.</p>
 
             </div>
 
           </div>
+
+        </div>
 
         </FadeInWhenVisible>
 
@@ -849,7 +849,7 @@ const Story = () => (
 
           <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
 
-            <div>
+          <div>
 
               <span className="inline-block bg-[#B8D4E8] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">June 2018</span>
 
@@ -857,29 +857,29 @@ const Story = () => (
 
               <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
 
-                <p>New job, same office corridor. There he was.</p>
+              <p>New job, same office corridor. There he was.</p>
 
-                <p>Coffee runs became late nights. Friendship felt safe. Then a friend threw him a half-hearted birthday, and she realized: she cared more than friends should.</p>
+              <p>Coffee runs became late nights. Friendship felt safe. Then a friend threw him a half-hearted birthday, and she realized: she cared more than friends should.</p>
 
-                <p>Two weeks later, he kissed her. By month's end, official.</p>
-
-              </div>
+              <p>Two weeks later, he kissed her. By month's end, official.</p>
 
             </div>
 
+          </div>
+
             <ParallaxWrapper offset={-20} hoverEffect className="sketchy-border p-3 bg-white -rotate-2 photo-frame">
 
-              <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-                 <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%' }} />
+               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%' }} />
 
-              </div>
+            </div>
 
-               <p className="text-center font-hand text-navy/50 mt-2">Shubs (The Coworker)</p>
+             <p className="text-center font-hand text-navy/50 mt-2">Shubs (The Coworker)</p>
 
             </ParallaxWrapper>
 
-          </div>
+        </div>
 
         </FadeInWhenVisible>
 
@@ -893,17 +893,17 @@ const Story = () => (
 
             <ParallaxWrapper offset={30} hoverEffect className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
 
-              <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-                 <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%' }} />
+               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%' }} />
 
-              </div>
+            </div>
 
-              <p className="text-center font-hand text-navy/50 mt-2">Chaos & Love</p>
+            <p className="text-center font-hand text-navy/50 mt-2">Chaos & Love</p>
 
             </ParallaxWrapper>
 
-            <div className="order-1 md:order-2">
+          <div className="order-1 md:order-2">
 
               <span className="inline-block bg-[#D4A5A5] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-1deg] shadow-sm">2018-2021</span>
 
@@ -911,17 +911,17 @@ const Story = () => (
 
               <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
 
-                <p>She took him to Goa. Twice a year, every year. Palolem, Colomb Bay—their sanctuary.</p>
+              <p>She took him to Goa. Twice a year, every year. Palolem, Colomb Bay—their sanctuary.</p>
 
-                <p>He learned to trust the ocean. She taught him to dive. He taught her calm in chaos.</p>
+              <p>He learned to trust the ocean. She taught him to dive. He taught her calm in chaos.</p>
 
-                <p>COVID hit. Bailey had puppies. They rescued four, lost two. The hardest, most beautiful thing. Shubs brought Bailey to Bangalore. Cookie and Bailey: family.</p>
-
-              </div>
+              <p>COVID hit. Bailey had puppies. They rescued four, lost two. The hardest, most beautiful thing. Shubs brought Bailey to Bangalore. Cookie and Bailey: family.</p>
 
             </div>
 
           </div>
+
+        </div>
 
         </FadeInWhenVisible>
 
@@ -933,7 +933,7 @@ const Story = () => (
 
           <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
 
-            <div>
+          <div>
 
               <span className="inline-block bg-[#B8D4E8] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">January 6, 2025</span>
 
@@ -941,31 +941,31 @@ const Story = () => (
 
               <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
 
-                <p>Back at Palolem Beach. He had plans: underwater proposal (ring might float away), Kakolim beach (she was too lazy).</p>
+              <p>Back at Palolem Beach. He had plans: underwater proposal (ring might float away), Kakolim beach (she was too lazy).</p>
 
-                <p>So, Plan C. They were walking. He stopped. She turned around.</p>
+              <p>So, Plan C. They were walking. He stopped. She turned around.</p>
 
-                <p>He was on his knees. YES. Immediate. No hesitation.</p>
-
-              </div>
+              <p>He was on his knees. YES. Immediate. No hesitation.</p>
 
             </div>
 
+          </div>
+
             <ParallaxWrapper offset={-25} hoverEffect className="sketchy-border p-4 bg-white -rotate-1">
 
-               <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
+             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-                  <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%' }} />
+                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%' }} />
 
-               </div>
+             </div>
 
             </ParallaxWrapper>
 
-          </div>
+        </div>
 
         </FadeInWhenVisible>
 
-      </div>
+    </div>
 
     </FadeInWhenVisible>
 
@@ -1081,7 +1081,7 @@ const WhatWeAreExcitedAbout = () => (
           </FadeInWhenVisible>
         ))}
 
-      </div>
+        </div>
 
     </FadeInWhenVisible>
 
@@ -1108,7 +1108,7 @@ const KidenaHouse = () => (
         <div className="text-center mb-16 md:mb-20">
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-hand mb-6 text-[#F5F0E8] leading-tight">Where You'll Stay</h2>
             <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80">Kidena House • Batim Village, Goa Velha</p>
-        </div>
+    </div>
 
         {/* Hero Image - Full Width */}
         <div className="mb-16 md:mb-20">
@@ -1172,7 +1172,7 @@ const KidenaHouse = () => (
                         <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, fishing in the lake, cycling around. Or just lounge by the pool.</p>
                     </div>
                 </div>
-            </div>
+        </div>
 
         </div>
 
@@ -1203,7 +1203,7 @@ const FamilyItinerary = () => (
 
         <SketchIcon type="palm" className="absolute top-20 right-20 w-96 h-96 text-navy rotate-12" />
 
-    </div>
+                    </div>
 
      <FadeInWhenVisible className="max-w-5xl mx-auto relative z-10">
 
@@ -1213,7 +1213,7 @@ const FamilyItinerary = () => (
 
             <p className="text-navy/70 font-hand text-xl md:text-2xl">Your guide to four days in Goa</p>
 
-        </div>
+                    </div>
 
         
 
@@ -1281,7 +1281,7 @@ const FamilyItinerary = () => (
 
                                     <item.icon className="w-8 h-8" style={{ color: item.color }} />
 
-                                </div>
+        </div>
 
                                 <div className="flex-1 md:min-w-[140px]">
 
@@ -1308,7 +1308,7 @@ const FamilyItinerary = () => (
 
                         </div>
 
-                    </div>
+                </div>
 
                 </FadeInWhenVisible>
 
@@ -1338,7 +1338,7 @@ const Celebration = ({ isFamilyMode }) => (
 
           <h2 className="text-4xl md:text-6xl font-hand text-navy inline-block border-b-4 border-[#D4A5A5] pb-2" style={{ borderRadius: '50% 20% / 10% 40%' }}>The Big Party</h2>
 
-        </div>
+      </div>
 
       </StickyHeader>
 
@@ -1641,83 +1641,83 @@ const ExploreGoa = () => {
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
-      <div className="text-center mb-16">
+        <div className="text-center mb-16">
 
-        <h2 className="text-5xl font-hand text-navy mb-4"><span className="text-[#D4A5A5]">Explore</span> Goa</h2>
+          <h2 className="text-5xl font-hand text-navy mb-4"><span className="text-[#D4A5A5]">Explore</span> Goa</h2>
 
-        <p className="text-navy/60 max-w-2xl mx-auto">
+          <p className="text-navy/60 max-w-2xl mx-auto">
 
-          Our favorite spots. The places we go back to, year after year.
+            Our favorite spots. The places we go back to, year after year.
 
-        </p>
+          </p>
 
-      </div>
+        </div>
 
 
 
-      <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-12">
 
-        {recommendations.map((section, idx) => (
+          {recommendations.map((section, idx) => (
 
           <FadeInWhenVisible key={section.category} delay={idx * 0.1} className="space-y-6 bg-[#F5F0E8]/50 p-8 rounded-lg border border-navy/5">
 
-            <h3 className="text-2xl font-bold text-navy border-b border-[#D4A5A5]/30 pb-4">
+              <h3 className="text-2xl font-bold text-navy border-b border-[#D4A5A5]/30 pb-4">
 
-              {section.category}
+                {section.category}
 
-            </h3>
+              </h3>
 
-            <div className="space-y-6">
+              <div className="space-y-6">
 
-              {section.items.map((item, i) => (
+                {section.items.map((item, i) => (
 
                 <motion.div key={item.name} className="flex gap-4 items-start group" whileHover={{ x: 4 }}>
 
-                  <div className="w-10 h-10 rounded-full bg-white border border-navy/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4A5A5] group-hover:text-white transition-colors shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-white border border-navy/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4A5A5] group-hover:text-white transition-colors shadow-sm">
 
-                    {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
+                      {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
 
-                    {item.type === 'food' && <SketchIcon type="plate" className="w-5 h-5" />}
+                      {item.type === 'food' && <SketchIcon type="plate" className="w-5 h-5" />}
 
-                    {item.type === 'beach' && <Sun className="w-5 h-5" />}
+                      {item.type === 'beach' && <Sun className="w-5 h-5" />}
 
-                    {item.type === 'party' && <Music className="w-5 h-5" />}
+                      {item.type === 'party' && <Music className="w-5 h-5" />}
 
-                  </div>
+                    </div>
 
-                  <div>
+                    <div>
 
-                    <h4 className="font-bold text-navy">{item.name}</h4>
+                      <h4 className="font-bold text-navy">{item.name}</h4>
 
-                    <p className="text-sm text-navy/60">{item.desc}</p>
+                      <p className="text-sm text-navy/60">{item.desc}</p>
 
-                  </div>
+                    </div>
 
                 </motion.div>
 
-              ))}
+                ))}
 
-            </div>
+              </div>
 
           </FadeInWhenVisible>
 
-        ))}
+          ))}
 
-      </div>
+        </div>
 
 
 
-      <div className="mt-12 p-6 bg-[#B8D4E8]/10 rounded-lg text-center border border-navy/5 max-w-3xl mx-auto">
+        <div className="mt-12 p-6 bg-[#B8D4E8]/10 rounded-lg text-center border border-navy/5 max-w-3xl mx-auto">
 
-        <p className="text-navy/70 italic font-hand text-lg">
+          <p className="text-navy/70 italic font-hand text-lg">
 
-          Palolem is where we got engaged. Colomb Bay is where we learned to dive. 
+            Palolem is where we got engaged. Colomb Bay is where we learned to dive. 
 
-          These places are ours—now they're yours too.
+            These places are ours—now they're yours too.
 
-        </p>
+          </p>
 
-      </div>
+        </div>
 
     </FadeInWhenVisible>
 
@@ -1923,55 +1923,55 @@ const QnA = () => {
 
     <FadeInWhenVisible className="max-w-4xl mx-auto">
 
-      <div className="text-center mb-12">
+        <div className="text-center mb-12">
 
-        <h2 className="text-5xl font-hand text-navy">FAQ</h2>
+          <h2 className="text-5xl font-hand text-navy">FAQ</h2>
 
-      </div>
+        </div>
 
 
 
-      <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
 
-        {questions.map((item, i) => (
+          {questions.map((item, i) => (
 
           <FadeInWhenVisible key={item.q} delay={i * 0.05} className="sketchy-border p-6 bg-[#F5F0E8] rotate-1 hover:rotate-0 transition-transform">
 
-             <h4 className="font-bold text-xl font-hand text-navy mb-2 flex items-start gap-2">
+               <h4 className="font-bold text-xl font-hand text-navy mb-2 flex items-start gap-2">
 
-               <span className="text-[#D4A5A5]">?</span> {item.q}
+                 <span className="text-[#D4A5A5]">?</span> {item.q}
 
-             </h4>
+               </h4>
 
-             <p className="font-hand text-xl text-navy/80 ml-5">{item.a}</p>
+               <p className="font-hand text-xl text-navy/80 ml-5">{item.a}</p>
 
           </FadeInWhenVisible>
 
-        ))}
+          ))}
 
         <FadeInWhenVisible delay={questions.length * 0.05} className="sketchy-border p-6 bg-[#F5F0E8] -rotate-1">
 
-           <h4 className="font-bold text-xl font-hand text-navy mb-2 flex items-start gap-2">
+             <h4 className="font-bold text-xl font-hand text-navy mb-2 flex items-start gap-2">
 
-               <Phone size={18} className="mt-1 text-[#D4A5A5] flex-shrink-0" />
+                 <Phone size={18} className="mt-1 text-[#D4A5A5] flex-shrink-0" />
 
-               Real Questions?
+                 Real Questions?
 
-           </h4>
+             </h4>
 
-           <p className="font-hand text-xl text-navy/80 ml-5">
+             <p className="font-hand text-xl text-navy/80 ml-5">
 
-              Contact Priya Sharma (Coordinator)<br/>
+                Contact Priya Sharma (Coordinator)<br/>
 
-              +91 98765 43210<br/>
+                +91 98765 43210<br/>
 
-              events@blumissel.com
+                events@blumissel.com
 
-           </p>
+             </p>
 
         </FadeInWhenVisible>
 
-      </div>
+        </div>
 
     </FadeInWhenVisible>
 
@@ -1985,28 +1985,7 @@ const QnA = () => {
 
 const RSVP = () => {
 
-  const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = (e) => {
-
-    e.preventDefault();
-
-    setSubmitted(true);
-
-    confetti({
-
-      particleCount: 120,
-
-      spread: 70,
-
-      origin: { y: 0.6 },
-
-      colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
-
-    });
-
-  };
-
-  
+  const GOOGLE_FORM_URL = "https://forms.gle/5xAoy5A8erKMaL9K8";
 
   return (
 
@@ -2030,137 +2009,38 @@ const RSVP = () => {
 
 
 
-        {!submitted ? (
+        <div className="text-center space-y-6">
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <p className="text-navy/70 font-hand text-lg leading-relaxed">
+            We'd love to celebrate with you! Click the button below to RSVP.
+          </p>
 
-            <div>
-
-              <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
-
-              <input type="text" className="modern-input" placeholder="Who are we celebrating with?" required />
-
-            </div>
-
-
-
-            <div className="grid grid-cols-2 gap-4">
-
-                <div>
-
-                   <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
-
-                   <input type="email" className="modern-input" placeholder="name@email.com" required />
-
-                </div>
-
-                <div>
-
-                   <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
-
-                   <input type="tel" className="modern-input" placeholder="+91..." required />
-
-                </div>
-
-            </div>
-
-
-
-            <div>
-
-                <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
-
-                <select className="modern-input bg-white">
-
-                  <option>1 Guest</option>
-
-                  <option>2 Guests</option>
-
-                  <option>3 Guests</option>
-
-                  <option>4 Guests</option>
-
-                </select>
-
-            </div>
-
-            
-
-            <div className="grid grid-cols-2 gap-4 pt-2">
-
-              <label className="cursor-pointer group">
-
-                <input type="radio" name="attend" className="hidden peer" />
-
-                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
-
-                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
-
-                  <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
-
-                </div>
-
-              </label>
-
-              <label className="cursor-pointer group">
-
-                <input type="radio" name="attend" className="hidden peer" />
-
-                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
-
-                  <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
-
-                  <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
-
-                </div>
-
-              </label>
-
-            </div>
-
-
-
-            <div>
-
-               <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
-
-               <input type="text" className="modern-input" placeholder="Allergies, vegetarian, etc." />
-
-            </div>
-
-
-
-            <div>
-
-               <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2 flex items-center gap-2">Song Request</label>
-
-               <input type="text" className="modern-input" placeholder="I promise to dance to..." />
-
-            </div>
-
-            
-
-            <button className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1">
-
-              Send RSVP
-
+          <a
+            href={GOOGLE_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block w-full"
+            onClick={() => {
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
+              });
+            }}
+          >
+            <button className="w-full bg-[#1B3A57] text-white font-bold text-lg py-5 md:py-6 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-200 hover:rotate-1 flex items-center justify-center gap-3">
+              <Heart className="w-6 h-6" />
+              <span>RSVP Now</span>
+              <ArrowDown className="w-5 h-5 rotate-[-90deg]" />
             </button>
+          </a>
 
-          </form>
+          <p className="text-navy/50 text-sm font-hand italic mt-4">
+            Opens in a new tab • All responses saved automatically
+          </p>
 
-        ) : (
-
-          <div className="text-center py-12 animate-in fade-in zoom-in duration-500">
-
-            <CheckCircle size={64} className="mx-auto text-[#D4A5A5] mb-4" />
-
-            <h3 className="text-3xl font-bold text-navy font-hand">Message Sent!</h3>
-
-            <p className="text-navy/60 mt-2">We can't wait to celebrate with you.</p>
-
-          </div>
-
-        )}
+            </div>
 
       </FadeInWhenVisible>
 
@@ -2189,7 +2069,7 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
       />
 
-    </div>
+            </div>
 
     <div className="absolute inset-0 bg-[#1B3A57]/95"></div>
 
@@ -2213,9 +2093,9 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
          </span>
 
-      </div>
+            </div>
 
-
+            
 
       <p className="text-xs uppercase tracking-widest opacity-60 mb-8">
 
@@ -2239,7 +2119,7 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
       </button>
 
-    </div>
+                </div>
 
   </footer>
 
@@ -2315,7 +2195,7 @@ const MusicPlayer = () => {
 
         <span className="text-[10px] mt-1 tracking-tight">music</span>
 
-      </button>
+            </button>
 
       <audio ref={audioRef} src="/music/goa-mix.mp3" loop preload="auto" />
 
@@ -2671,7 +2551,7 @@ const CardStack = ({ cards, isFamilyMode, fullContent }) => {
 
             {card.component}
 
-          </div>
+      </div>
 
         ))}
 
@@ -2711,7 +2591,7 @@ const CardStack = ({ cards, isFamilyMode, fullContent }) => {
 
 
 
-      <button
+      <button 
 
         onClick={() => setViewMode('scroll')}
 
@@ -3175,7 +3055,7 @@ const App = () => {
 
         <section id="hero" className="scroll-section flex items-center justify-center">
 
-          <Hero />
+        <Hero />
 
         </section>
 
@@ -3183,7 +3063,7 @@ const App = () => {
 
         <section id="our-story" className="scroll-section">
 
-          <Story />
+        <Story />
 
         </section>
 
@@ -3191,7 +3071,7 @@ const App = () => {
 
         <section id="dogs" className="scroll-section flex items-center justify-center">
 
-          <CookieAndBailey />
+        <CookieAndBailey />
 
         </section>
 
@@ -3199,10 +3079,10 @@ const App = () => {
 
         <section id="excited" className="scroll-section flex items-center justify-center">
 
-          <WhatWeAreExcitedAbout />
+        <WhatWeAreExcitedAbout />
 
         </section>
-
+        
 
 
         {isFamilyMode && (
@@ -3211,7 +3091,7 @@ const App = () => {
 
             <section id="kidena-house" className="scroll-section">
 
-              <KidenaHouse />
+            <KidenaHouse />
 
             </section>
 
@@ -3219,7 +3099,7 @@ const App = () => {
 
             <section id="family-itinerary" className="scroll-section">
 
-              <FamilyItinerary />
+            <FamilyItinerary />
 
             </section>
 
@@ -3231,7 +3111,7 @@ const App = () => {
 
         <section id="the-celebration" className="scroll-section">
 
-          <Celebration isFamilyMode={isFamilyMode} />
+        <Celebration isFamilyMode={isFamilyMode} />
 
         </section>
 
@@ -3239,7 +3119,7 @@ const App = () => {
 
         <section id="dress-code" className="scroll-section">
 
-          <DressCode />
+        <DressCode />
 
         </section>
 
@@ -3247,7 +3127,7 @@ const App = () => {
 
         <section id="explore-goa" className="scroll-section">
 
-          <ExploreGoa />
+        <ExploreGoa />
 
         </section>
 
@@ -3255,7 +3135,7 @@ const App = () => {
 
         <section id="travel" className="scroll-section">
 
-          <Travel isFamilyMode={isFamilyMode} />
+        <Travel isFamilyMode={isFamilyMode} />
 
         </section>
 
@@ -3263,7 +3143,7 @@ const App = () => {
 
         <section id="q-a" className="scroll-section">
 
-          <QnA />
+        <QnA />
 
         </section>
 
@@ -3271,7 +3151,7 @@ const App = () => {
 
         <section id="rsvp" className="scroll-section">
 
-          <RSVP />
+        <RSVP />
 
         </section>
 
@@ -3279,7 +3159,7 @@ const App = () => {
 
         <section id="footer" className="scroll-section flex items-center justify-center">
 
-          <Footer toggleFamilyMode={() => setIsFamilyMode(!isFamilyMode)} isFamilyMode={isFamilyMode} />
+        <Footer toggleFamilyMode={() => setIsFamilyMode(!isFamilyMode)} isFamilyMode={isFamilyMode} />
 
         </section>
 
