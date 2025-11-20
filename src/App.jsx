@@ -1986,6 +1986,7 @@ const QnA = () => {
 const RSVP = () => {
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -2001,9 +2002,17 @@ const RSVP = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Validate required fields
+    if (!formData.name || !formData.email || !formData.phone || !formData.attending) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
     try {
-      // Formspree expects form-encoded data, not JSON
-      const formDataToSend = new URLSearchParams();
+      // Use FormData for better compatibility with Formspree
+      const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('phone', formData.phone);
@@ -2016,13 +2025,33 @@ const RSVP = () => {
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
         },
-        body: formDataToSend.toString(),
+        body: formDataToSend,
       });
+
+      let responseData;
+      try {
+        responseData = await response.json();
+      } catch (jsonError) {
+        // If response is not JSON, check status
+        if (response.ok) {
+          setSubmitted(true);
+          setIsSubmitting(false);
+          confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
+          });
+          return;
+        }
+        throw new Error('Invalid response from server');
+      }
 
       if (response.ok) {
         setSubmitted(true);
+        setIsSubmitting(false);
         confetti({
           particleCount: 120,
           spread: 70,
@@ -2030,13 +2059,20 @@ const RSVP = () => {
           colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
         });
       } else {
-        const errorData = await response.json();
-        console.error('Formspree error:', errorData);
-        alert('Something went wrong. Please try again or contact us directly.');
+        setIsSubmitting(false);
+        console.error('Formspree error:', responseData);
+        if (responseData.error) {
+          alert('Error: ' + responseData.error);
+        } else if (responseData.errors) {
+          alert('Error: ' + JSON.stringify(responseData.errors));
+        } else {
+          alert('Something went wrong. Please try again or contact us directly.');
+        }
       }
     } catch (error) {
+      setIsSubmitting(false);
       console.error('Submission error:', error);
-      alert('Something went wrong. Please try again or contact us directly.');
+      alert('Network error. Please check your connection and try again. Error: ' + error.message);
     }
   };
 
@@ -2240,10 +2276,11 @@ const RSVP = () => {
 
             <button 
               type="submit"
-              className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1"
+              disabled={isSubmitting}
+              className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1B3A57]"
             >
 
-              Send RSVP
+              {isSubmitting ? 'Sending...' : 'Send RSVP'}
 
             </button>
 
@@ -2290,7 +2327,7 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
       />
 
-            </div>
+    </div>
 
     <div className="absolute inset-0 bg-[#1B3A57]/95"></div>
 
@@ -2314,9 +2351,9 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
          </span>
 
-            </div>
+      </div>
 
-            
+
 
       <p className="text-xs uppercase tracking-widest opacity-60 mb-8">
 
@@ -2340,7 +2377,7 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
       </button>
 
-                </div>
+    </div>
 
   </footer>
 
