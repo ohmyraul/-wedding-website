@@ -2011,8 +2011,8 @@ const RSVP = () => {
     setIsSubmitting(true);
     
     try {
-      // Use URLSearchParams for form-encoded data (Formspree prefers this)
-      const formDataToSend = new URLSearchParams();
+      // Create FormData object (native form data format)
+      const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('phone', formData.phone);
@@ -2021,45 +2021,24 @@ const RSVP = () => {
       if (formData.dietary) formDataToSend.append('dietary', formData.dietary);
       if (formData.song) formDataToSend.append('song', formData.song);
       formDataToSend.append('_subject', 'Wedding RSVP from ' + formData.name);
+      formDataToSend.append('_format', 'json'); // Request JSON response
 
       console.log('Submitting to:', FORMSPREE_ENDPOINT);
-      console.log('Form data:', formDataToSend.toString());
+      console.log('Form data entries:', Array.from(formDataToSend.entries()));
 
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: formDataToSend.toString(),
+        body: formDataToSend, // FormData automatically sets Content-Type with boundary
       });
 
-      console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log('Response status:', response.status, response.statusText);
+      console.log('Response ok:', response.ok);
 
-      let responseData;
-      const contentType = response.headers.get('content-type');
-      
-      if (contentType && contentType.includes('application/json')) {
-        responseData = await response.json();
-        console.log('Response data:', responseData);
-      } else {
-        const text = await response.text();
-        console.log('Response text:', text);
-        if (response.ok) {
-          // Success but not JSON response
-          setSubmitted(true);
-          setIsSubmitting(false);
-          confetti({
-            particleCount: 120,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
-          });
-          return;
-        }
-        responseData = { error: text || 'Unknown error' };
-      }
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
 
       if (response.ok) {
         setSubmitted(true);
@@ -2089,8 +2068,9 @@ const RSVP = () => {
     } catch (error) {
       setIsSubmitting(false);
       console.error('Submission error:', error);
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
-      console.error('Error details:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
       alert('Network error. Please check your connection and try again. Error: ' + (error.message || error.toString()));
     }
   };
@@ -2126,7 +2106,7 @@ const RSVP = () => {
 
         {!submitted ? (
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-6">
 
             <div>
 
