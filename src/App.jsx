@@ -687,13 +687,13 @@ const Hero = () => (
 
                  position={{ top: '45%', left: '30%' }}
 
-                 tooltip="Cookie - Queen of the ceremony!"
+                 tooltip="Bailey - The two-faced beauty!"
 
                  onClick={() => {}}
 
                >
 
-                 <PawPrint className="w-6 h-6 text-[#D4A5A5]" />
+                 <PawPrint className="w-6 h-6 text-[#B8D4E8]" />
 
                </InteractiveHotspot>
 
@@ -703,13 +703,13 @@ const Hero = () => (
 
                  position={{ top: '50%', right: '25%' }}
 
-                 tooltip="Bailey - The two-faced beauty!"
+                 tooltip="Cookie - Queen of the ceremony!"
 
                  onClick={() => {}}
 
                >
 
-                 <PawPrint className="w-6 h-6 text-[#B8D4E8]" />
+                 <PawPrint className="w-6 h-6 text-[#D4A5A5]" />
 
                </InteractiveHotspot>
 
@@ -795,7 +795,7 @@ const Story = () => (
 
       <div className="space-y-12 md:space-y-16 lg:space-y-20 relative pt-8 md:pt-0">
 
-        <Music className="absolute -top-4 md:top-0 left-0 w-12 h-12 md:w-16 md:h-16 text-navy/5 -rotate-12 z-0" />
+        <Music className="absolute -top-4 md:top-0 left-0 w-12 h-12 md:w-16 md:h-16 text-navy/20 -rotate-12 z-0" fill="currentColor" />
 
         <SketchIcon type="palm" className="absolute bottom-0 right-0 w-16 md:w-24 text-navy/5 rotate-12 z-0" />
 
@@ -987,11 +987,11 @@ const CookieAndBailey = () => (
 
       <div className="grid md:grid-cols-2 gap-16">
 
-        {/* Cookie */}
+        {/* Bailey */}
 
         <FadeInWhenVisible delay={0.1} className="relative group">
 
-            <div className="absolute inset-0 bg-[#D4A5A5] transform rotate-3 rounded-lg opacity-20"></div>
+            <div className="absolute inset-0 bg-[#B8D4E8] transform rotate-3 rounded-lg opacity-20"></div>
 
             <motion.div 
 
@@ -1003,13 +1003,13 @@ const CookieAndBailey = () => (
 
                 <div className="w-48 h-48 mx-auto mb-6 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
 
-                    <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
+                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
 
                 </div>
 
-                <h4 className="font-bold text-3xl text-navy font-hand">Cookie</h4>
+                <h4 className="font-bold text-3xl text-navy font-hand">Bailey</h4>
 
-                <p className="font-hand text-xl mt-2">Alysha's first love. 12 years old. Will absolutely bark at you during the ceremony. We're not sorry.</p>
+                <p className="font-hand text-xl mt-2">Our rescue. Two faced (literally). Had six puppies during COVID—we saved four. Shubs brought her to Bangalore, making her family.</p>
 
             </motion.div>
 
@@ -1017,11 +1017,11 @@ const CookieAndBailey = () => (
 
 
 
-        {/* Bailey */}
+        {/* Cookie */}
 
         <FadeInWhenVisible delay={0.15} className="relative group">
 
-            <div className="absolute inset-0 bg-[#B8D4E8] transform -rotate-3 rounded-lg opacity-20"></div>
+            <div className="absolute inset-0 bg-[#D4A5A5] transform -rotate-3 rounded-lg opacity-20"></div>
 
             <motion.div 
 
@@ -1033,13 +1033,13 @@ const CookieAndBailey = () => (
 
                 <div className="w-48 h-48 mx-auto mb-6 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
 
-                   <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
+                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
 
                 </div>
 
-                <h4 className="font-bold text-3xl text-navy font-hand">Bailey</h4>
+                <h4 className="font-bold text-3xl text-navy font-hand">Cookie</h4>
 
-                <p className="font-hand text-xl mt-2">Our rescue. Two faced (literally). Had six puppies during COVID—we saved four. Shubs brought her to Bangalore, making her family.</p>
+                <p className="font-hand text-xl mt-2">Alysha's first love. 12 years old. Will absolutely bark at you during the ceremony. We're not sorry.</p>
 
             </motion.div>
 
