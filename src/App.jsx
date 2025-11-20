@@ -2464,21 +2464,47 @@ const MusicPlayer = () => {
 
         onClick={togglePlayback}
 
-        className="fixed bottom-6 left-6 z-50 w-14 h-14 sketchy-border bg-[#D4A5A5] text-white shadow-xl flex flex-col items-center justify-center hover:scale-105 transition-transform font-hand font-semibold border-2 border-white"
+        className="fixed bottom-6 left-6 z-50 w-16 h-16 bg-white sketchy-border border-2 border-navy shadow-lg flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
 
         aria-label={playing ? 'Pause background music' : 'Play background music'}
 
       >
 
-        <Music className="w-6 h-6" />
+        <Music className={`w-6 h-6 ${playing ? 'text-[#D4A5A5]' : 'text-navy/60'} group-hover:text-[#D4A5A5] transition-colors`} />
 
-        <span className="text-[10px] mt-1 tracking-tight">music</span>
+        <span className={`text-[9px] mt-0.5 tracking-tight ${playing ? 'text-[#D4A5A5] font-bold' : 'text-navy/60'} group-hover:text-[#D4A5A5] transition-colors`}>music</span>
 
             </button>
 
       <audio ref={audioRef} src="/music/goa-mix.mp3" loop preload="auto" />
 
     </>
+
+  );
+
+};
+
+
+
+const FloatingRSVPButton = ({ onScrollToRSVP }) => {
+
+  return (
+
+    <button
+
+      onClick={() => onScrollToRSVP('rsvp')}
+
+      className="fixed bottom-6 right-6 z-50 bg-[#D4A5A5] text-white sketchy-border border-2 border-white shadow-lg px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
+
+      aria-label="Go to RSVP"
+
+    >
+
+      <Heart className="w-4 h-4 group-hover:scale-110 transition-transform" />
+
+      <span>RSVP</span>
+
+    </button>
 
   );
 
@@ -3376,6 +3402,14 @@ const App = () => {
 
 
 
+        {/* Floating Action Buttons */}
+
+        <MusicPlayer />
+
+        <FloatingRSVPButton onScrollToRSVP={scrollToSection} />
+
+
+
         <section id="hero" className="scroll-section flex items-center justify-center">
 
         <Hero />
@@ -3485,10 +3519,6 @@ const App = () => {
         <Footer toggleFamilyMode={() => setIsFamilyMode(!isFamilyMode)} isFamilyMode={isFamilyMode} />
 
         </section>
-
-
-
-        <MusicPlayer />
 
       </div>
 
