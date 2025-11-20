@@ -1034,52 +1034,6 @@ const CookieAndBailey = () => (
 
 
 
-const WhatWeAreExcitedAbout = () => (
-
-  <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-[#F5F0E8] to-white relative">
-
-    {/* Decorative elements */}
-    <div className="absolute top-10 left-10 w-20 h-20 border-2 border-[#D4A5A5]/20 rounded-full transform rotate-12"></div>
-    <div className="absolute bottom-10 right-10 w-16 h-16 border-2 border-[#B8D4E8]/20 rounded-full transform -rotate-6"></div>
-
-    <FadeInWhenVisible className="max-w-5xl mx-auto text-center relative z-10">
-
-      <h3 className="text-4xl md:text-5xl font-hand text-navy mb-4 md:mb-6">What We're Most Excited About</h3>
-      
-      <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-12 md:mb-16"></div>
-
-      <div className="grid md:grid-cols-3 gap-8 md:gap-12 font-hand">
-
-        {[
-          { icon: <Heart className="text-[#D4A5A5] w-12 h-12 md:w-16 md:h-16" />, text: 'All of You in One Place', color: '#D4A5A5' },
-          { icon: <PawPrint className="text-[#B8D4E8] w-12 h-12 md:w-16 md:h-16" />, text: 'Cookie & Bailey as Ringbearers', color: '#B8D4E8' },
-          { icon: <Music className="text-[#ffbd7b] w-12 h-12 md:w-16 md:h-16" />, text: 'The Dance Floor Opening', color: '#ffbd7b' }
-        ].map((item, idx) => (
-          <FadeInWhenVisible key={item.text} delay={0.1 * idx}>
-            <motion.div 
-              className={`p-8 md:p-10 bg-white sketchy-border shadow-lg hover:shadow-xl transition-all ${idx === 1 ? '-rotate-1' : idx === 0 ? 'rotate-1' : 'rotate-[-1deg]'}`}
-              whileHover={{ scale: 1.05, rotate: 0 }}
-            >
-              <div className="mb-6 flex justify-center">
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center" style={{ backgroundColor: `${item.color}20` }}>
-                  {item.icon}
-        </div>
-        </div>
-              <p className="font-bold text-lg md:text-xl text-navy">{item.text}</p>
-            </motion.div>
-          </FadeInWhenVisible>
-        ))}
-
-        </div>
-
-    </FadeInWhenVisible>
-
-  </section>
-
-);
-
-
-
 /* --- NEW COMPONENTS (Missing in original) --- */
 
 const KidenaHouse = () => (
