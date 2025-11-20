@@ -73,6 +73,13 @@ const styles = `
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Disable scroll-snap on mobile for better usability */
+  @media (max-width: 768px) {
+    .scroll-container {
+      scroll-snap-type: none;
+    }
+  }
+
   .scroll-section {
     scroll-snap-align: start;
     scroll-snap-stop: always;
@@ -80,6 +87,12 @@ const styles = `
     position: relative;
     display: flex;
     flex-direction: column;
+  }
+
+  /* Remove snap-stop from long content sections for smoother scrolling */
+  .scroll-section-long {
+    scroll-snap-stop: normal;
+    min-height: 60vh;
   }
 
 
@@ -633,7 +646,7 @@ const Hero = ({ onScrollToSection }) => (
 
       <motion.h1 
 
-        className="text-[6rem] md:text-[12rem] leading-[0.8] text-navy font-hand select-none relative inline-block sketchy-text" 
+        className="text-[5rem] md:text-[6rem] leading-[0.8] text-navy font-hand select-none relative inline-block sketchy-text" 
 
         style={{ textShadow: '4px 4px 0px rgba(212, 165, 165, 0.3)' }}
 
@@ -806,7 +819,7 @@ const Story = () => (
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The First Time</h3>
 
-              <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
+              <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
 
               <p>House party in Bangalore. Her place. His friend insisted he come along.</p>
 
@@ -836,7 +849,7 @@ const Story = () => (
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The Reunion</h3>
 
-              <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
+              <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
 
               <p>She starts new job, walks down office corridor, there he is.</p>
 
@@ -892,7 +905,7 @@ const Story = () => (
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">Building a Life</h3>
 
-              <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
+              <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
 
               <p>She took him to Goa. Made it a ritual. Twice a year, every single year. Palolem Beach, Colomb Bay. Their sanctuary. The place they'd go to reset and remember what mattered.</p>
 
@@ -922,7 +935,7 @@ const Story = () => (
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The Question</h3>
 
-              <div className="font-hand text-lg md:text-xl text-navy/80 space-y-2 md:space-y-3">
+              <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
 
               <p>Back at Palolem Beach. He'd made plans. Plan A: underwater proposal (ring might sink, she might panic). Plan B: Kakolim Beach at sunset (neither of them wanted to make the trek that day).</p>
 
@@ -964,7 +977,7 @@ const CookieAndBailey = () => (
 
     <FadeInWhenVisible className="max-w-5xl mx-auto text-center">
 
-      <h3 className="text-5xl md:text-6xl font-hand text-navy mb-6">The Real Bosses</h3>
+      <h3 className="text-4xl md:text-5xl font-hand text-navy mb-6">The Real Bosses</h3>
 
       <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-12 md:mb-16"></div>
       
@@ -1049,7 +1062,7 @@ const KidenaHouse = () => (
 
         {/* Header Section */}
         <div className="text-center mb-16 md:mb-20">
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-hand mb-6 text-[#F5F0E8] leading-tight">Where You'll Stay</h2>
+            <h2 className="text-4xl md:text-5xl font-hand mb-6 text-[#F5F0E8] leading-tight">Where You'll Stay</h2>
             <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80">Kidena House • Batim Village, Goa Velha</p>
     </div>
 
@@ -1152,7 +1165,7 @@ const FamilyItinerary = () => (
 
         <div className="text-center mb-16">
 
-            <h2 className="text-5xl md:text-6xl font-hand text-navy mb-4">The Family Plan</h2>
+            <h2 className="text-4xl md:text-5xl font-hand text-navy mb-4">The Family Plan</h2>
 
             <p className="text-navy/70 font-hand text-xl md:text-2xl">Your guide to four days in Goa</p>
 
@@ -1279,7 +1292,7 @@ const Celebration = ({ isFamilyMode }) => (
 
         <div className="text-center mb-12 md:mb-16">
 
-          <h2 className="text-4xl md:text-6xl font-hand text-navy inline-block border-b-4 border-[#D4A5A5] pb-3 mb-4" style={{ borderRadius: '50% 20% / 10% 40%' }}>The Big Party</h2>
+          <h2 className="text-4xl md:text-5xl font-hand text-navy inline-block border-b-4 border-[#D4A5A5] pb-3 mb-4" style={{ borderRadius: '50% 20% / 10% 40%' }}>The Big Party</h2>
           
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
 
@@ -1328,7 +1341,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                 <div className="bg-[#F5F0E8] p-4 md:p-5 rounded-sm border-2 border-navy/20 transform -rotate-1">
 
-                   <p className="font-hand text-lg md:text-xl text-navy/80">Riverside setting. Goan feast with fresh seafood. Open bar all night. Everything you need.</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">Riverside setting. Goan feast with fresh seafood. Open bar all night. Everything you need.</p>
 
                 </div>
 
@@ -1422,7 +1435,7 @@ const DressCode = () => {
 
         <div className="text-center mb-20 md:mb-24">
 
-          <h2 className="text-6xl md:text-7xl font-hand text-navy mb-6 sketchy-text">What to Wear</h2>
+          <h2 className="text-4xl md:text-5xl font-hand text-navy mb-6 sketchy-text">What to Wear</h2>
 
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-8"></div>
 
@@ -1586,7 +1599,7 @@ const ExploreGoa = () => {
 
         <div className="text-center mb-16 md:mb-20">
 
-          <h2 className="text-5xl md:text-6xl font-hand text-navy mb-6"><span className="text-[#D4A5A5]">Explore</span> Goa</h2>
+          <h2 className="text-4xl md:text-5xl font-hand text-navy mb-6"><span className="text-[#D4A5A5]">Explore</span> Goa</h2>
 
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-6"></div>
 
@@ -1870,7 +1883,7 @@ const QnA = () => {
 
         <div className="text-center mb-16 md:mb-20">
 
-          <h2 className="text-5xl md:text-6xl font-hand text-navy mb-4">FAQ</h2>
+          <h2 className="text-4xl md:text-5xl font-hand text-navy mb-4">FAQ</h2>
           
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
 
@@ -1891,7 +1904,7 @@ const QnA = () => {
 
                </h4>
 
-               <p className="font-hand text-base md:text-lg text-navy/80 ml-8 md:ml-10 leading-relaxed">{item.a}</p>
+               <p className="text-base md:text-lg text-navy/80 ml-8 md:ml-10 leading-relaxed">{item.a}</p>
 
           </FadeInWhenVisible>
 
@@ -1907,7 +1920,7 @@ const QnA = () => {
 
              </h4>
 
-             <div className="font-hand text-base md:text-lg text-navy/80 ml-8 space-y-2 leading-relaxed">
+             <div className="text-base md:text-lg text-navy/80 ml-8 space-y-2 leading-relaxed">
 
                 <p className="font-bold text-navy">Contact our coordinator Priya Sharma</p>
                 <p>+91 98765 43210</p>
@@ -2054,7 +2067,7 @@ const RSVP = () => {
 
       <div className="section-divider"></div>
 
-      <FadeInWhenVisible className="max-w-2xl mx-auto bg-white border-2 border-navy/10 sketchy-border p-10 md:p-14 shadow-xl relative">
+      <FadeInWhenVisible className="max-w-3xl mx-auto bg-white border-2 border-navy/10 sketchy-border p-10 md:p-14 shadow-xl relative">
 
         <div className="washi-tape -top-4 left-1/2 -translate-x-1/2 bg-[#B8D4E8]"></div>
 
@@ -2062,7 +2075,7 @@ const RSVP = () => {
 
         <div className="text-center mb-12 md:mb-14 mt-2">
 
-          <h2 className="text-5xl md:text-6xl text-navy mb-4 font-hand">R.S.V.P.</h2>
+          <h2 className="text-4xl md:text-5xl text-navy mb-4 font-hand">R.S.V.P.</h2>
 
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-4"></div>
 
@@ -2074,7 +2087,7 @@ const RSVP = () => {
 
         {!submitted ? (
 
-          <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-6">
+          <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-8">
 
             <div>
 
@@ -2317,11 +2330,11 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
       {/* Bottom section */}
       <FadeInWhenVisible delay={0.2}>
-        <div className="border-t-2 border-[#F5F0E8]/40 pt-10 md:pt-12 space-y-4">
-          <p className="text-sm md:text-base uppercase tracking-widest text-[#F5F0E8] font-hand font-semibold">
+        <div className="border-t-2 border-[#F5F0E8]/50 pt-10 md:pt-12 space-y-4">
+          <p className="text-base md:text-lg uppercase tracking-widest text-[#F5F0E8] font-hand font-semibold">
             Made with love, momos & feni
           </p>
-          <p className="text-xs md:text-sm text-[#F5F0E8]/90 font-medium">
+          <p className="text-sm md:text-base text-[#F5F0E8] font-medium">
             Goa 2026
           </p>
         </div>
@@ -3205,9 +3218,18 @@ const App = () => {
   // Define sections for navigation
 
   // Memoize sections array to prevent infinite re-renders
+  // Reordered: Critical info first (Celebration, Travel, RSVP), then emotional content
   const sections = useMemo(() => [
 
     { id: 'hero', name: 'Home', component: Hero },
+
+    { id: 'the-celebration', name: 'Party', component: Celebration },
+
+    { id: 'travel', name: 'Travel', component: Travel },
+
+    { id: 'rsvp', name: 'RSVP', component: RSVP },
+
+    { id: 'dress-code', name: 'Dress', component: DressCode },
 
     { id: 'our-story', name: 'Story', component: Story },
 
@@ -3221,17 +3243,9 @@ const App = () => {
 
     ] : []),
 
-    { id: 'the-celebration', name: 'Party', component: Celebration },
-
-    { id: 'dress-code', name: 'Dress', component: DressCode },
-
     { id: 'explore-goa', name: 'Goa', component: ExploreGoa },
 
-    { id: 'travel', name: 'Travel', component: Travel },
-
-    { id: 'q-a', name: 'Q&A', component: QnA },
-
-    { id: 'rsvp', name: 'RSVP', component: RSVP }
+    { id: 'q-a', name: 'Q&A', component: QnA }
 
   ], [isFamilyMode]);
 
@@ -3379,7 +3393,39 @@ const App = () => {
 
 
 
-        <section id="our-story" className="scroll-section">
+        <section id="the-celebration" className="scroll-section">
+
+        <Celebration isFamilyMode={isFamilyMode} />
+
+        </section>
+
+
+
+        <section id="travel" className="scroll-section">
+
+        <Travel isFamilyMode={isFamilyMode} />
+
+        </section>
+
+
+
+        <section id="rsvp" className="scroll-section">
+
+        <RSVP />
+
+        </section>
+
+
+
+        <section id="dress-code" className="scroll-section">
+
+        <DressCode />
+
+        </section>
+
+
+
+        <section id="our-story" className="scroll-section scroll-section-long">
 
         <Story />
 
@@ -3418,23 +3464,7 @@ const App = () => {
 
 
 
-        <section id="the-celebration" className="scroll-section">
-
-        <Celebration isFamilyMode={isFamilyMode} />
-
-        </section>
-
-
-
-        <section id="dress-code" className="scroll-section">
-
-        <DressCode />
-
-        </section>
-
-
-
-        <section id="explore-goa" className="scroll-section">
+        <section id="explore-goa" className="scroll-section scroll-section-long">
 
         <ExploreGoa />
 
@@ -3442,25 +3472,9 @@ const App = () => {
 
 
 
-        <section id="travel" className="scroll-section">
-
-        <Travel isFamilyMode={isFamilyMode} />
-
-        </section>
-
-
-
-        <section id="q-a" className="scroll-section">
+        <section id="q-a" className="scroll-section scroll-section-long">
 
         <QnA />
-
-        </section>
-
-
-
-        <section id="rsvp" className="scroll-section">
-
-        <RSVP />
 
         </section>
 
