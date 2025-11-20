@@ -3248,37 +3248,67 @@ const App = () => {
 
   useEffect(() => {
 
+    const container = containerRef.current;
+
+    if (!container) return;
+
     const handleScroll = () => {
 
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      const scrollTop = container.scrollTop;
+
+      const viewportCenter = scrollTop + container.clientHeight / 2;
 
       
 
-      // Find which section is currently in view
+      // Find which section is currently in view (check which section's center is closest to viewport center)
 
-      for (let i = sections.length - 1; i >= 0; i--) {
+      let closestSection = 0;
+
+      let closestDistance = Infinity;
+
+      
+
+      for (let i = 0; i < sections.length; i++) {
 
         const element = document.getElementById(sections[i].id);
 
-        if (element && scrollPosition >= element.offsetTop) {
+        if (element) {
 
-          setActiveSection(i);
+          // Element position relative to container (offsetTop is already relative to container)
 
-          break;
+          const elementTop = element.offsetTop;
+
+          const elementCenter = elementTop + element.offsetHeight / 2;
+
+          const distance = Math.abs(viewportCenter - elementCenter);
+
+          
+
+          if (distance < closestDistance) {
+
+            closestDistance = distance;
+
+            closestSection = i;
+
+          }
 
         }
 
       }
 
+      
+
+      setActiveSection(closestSection);
+
     };
 
 
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    container.addEventListener('scroll', handleScroll, { passive: true });
 
     handleScroll(); // Initial check
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
 
   }, [sections]);
 
@@ -3290,9 +3320,23 @@ const App = () => {
 
     const element = document.getElementById(sectionId);
 
-    if (element) {
+    const container = containerRef.current;
 
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (element && container) {
+
+      // offsetTop is already relative to the container's content area
+
+      const elementTop = element.offsetTop;
+
+      // Scroll the container to the element position
+
+      container.scrollTo({
+
+        top: elementTop,
+
+        behavior: 'smooth'
+
+      });
 
     }
 
