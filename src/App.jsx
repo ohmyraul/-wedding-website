@@ -837,7 +837,7 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.1}>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-20 md:mb-32">
 
             <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-2 order-2 md:order-1 photo-frame">
 
@@ -879,7 +879,7 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.15}>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-20 md:mb-32">
 
           <div>
 
@@ -923,7 +923,7 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.2}>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-20 md:mb-32">
 
             <ParallaxWrapper offset={30} hoverEffect className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
 
@@ -965,7 +965,7 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.25}>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
 
           <div>
 
@@ -1011,15 +1011,15 @@ const Story = () => (
 
 const CookieAndBailey = () => (
 
-  <section className="py-12 md:py-16 lg:py-20 px-4 md:px-6 relative border-y-4 border-dashed border-navy/10">
+  <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 relative bg-gradient-to-b from-white to-[#F5F0E8]/30">
 
-    <FadeInWhenVisible className="max-w-4xl mx-auto text-center">
+    <FadeInWhenVisible className="max-w-5xl mx-auto text-center">
 
-      <h3 className="text-5xl font-hand text-navy mb-12">The Real Bosses</h3>
+      <h3 className="text-5xl md:text-6xl font-hand text-navy mb-6">The Real Bosses</h3>
 
+      <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-12 md:mb-16"></div>
       
-
-      <div className="grid md:grid-cols-2 gap-16">
+      <div className="grid md:grid-cols-2 gap-12 md:gap-16">
 
         {/* Cookie */}
 
@@ -1029,21 +1029,21 @@ const CookieAndBailey = () => (
 
             <motion.div 
 
-              className="sketchy-border bg-white p-8 relative transform rotate-2 transition-transform group-hover:rotate-0"
+              className="sketchy-border bg-white p-8 md:p-10 relative transform rotate-2 transition-all group-hover:rotate-0 shadow-lg hover:shadow-xl"
 
-              whileHover={{ rotate: 0, scale: 1.02 }}
+              whileHover={{ rotate: 0, scale: 1.03 }}
 
             >
 
-                <div className="w-48 h-48 mx-auto mb-6 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
 
-                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
+                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} />
 
-                </div>
+            </div>
 
-                <h4 className="font-bold text-3xl text-navy font-hand">Cookie</h4>
+                <h4 className="font-bold text-3xl md:text-4xl text-navy font-hand mb-4">Cookie</h4>
 
-                <p className="font-hand text-xl mt-2">Alysha's first love. Been around for 12 years. Will absolutely bark at you during the ceremony. Multiple times, probably. We're not apologizing for it.</p>
+                <p className="font-hand text-lg md:text-xl mt-2 leading-relaxed text-navy/80">Alysha's first love. Been around for 12 years. Will absolutely bark at you during the ceremony. Multiple times, probably. We're not apologizing for it.</p>
 
             </motion.div>
 
@@ -1059,21 +1059,21 @@ const CookieAndBailey = () => (
 
             <motion.div 
 
-              className="sketchy-border bg-white p-8 relative transform -rotate-2 transition-transform group-hover:rotate-0"
+              className="sketchy-border bg-white p-8 md:p-10 relative transform -rotate-2 transition-all group-hover:rotate-0 shadow-lg hover:shadow-xl"
 
-              whileHover={{ rotate: 0, scale: 1.02 }}
+              whileHover={{ rotate: 0, scale: 1.03 }}
 
             >
 
-                <div className="w-48 h-48 mx-auto mb-6 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
 
-                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
+                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} />
 
                 </div>
 
-                <h4 className="font-bold text-3xl text-navy font-hand">Bailey</h4>
+                <h4 className="font-bold text-3xl md:text-4xl text-navy font-hand mb-4">Bailey</h4>
 
-                <p className="font-hand text-xl mt-2">Their rescue dog. She's two-faced, literally. Half her face is a different color. Shubs brought her to Bangalore after COVID. She's family now.</p>
+                <p className="font-hand text-lg md:text-xl mt-2 leading-relaxed text-navy/80">Their rescue dog. She's two-faced, literally. Half her face is a different color. Shubs brought her to Bangalore after COVID. She's family now.</p>
 
             </motion.div>
 
@@ -1091,26 +1091,36 @@ const CookieAndBailey = () => (
 
 const WhatWeAreExcitedAbout = () => (
 
-  <section className="py-12 md:py-16 px-4 md:px-6 bg-[#F5F0E8]">
+  <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-[#F5F0E8] to-white relative">
 
-    <FadeInWhenVisible className="max-w-4xl mx-auto text-center">
+    {/* Decorative elements */}
+    <div className="absolute top-10 left-10 w-20 h-20 border-2 border-[#D4A5A5]/20 rounded-full transform rotate-12"></div>
+    <div className="absolute bottom-10 right-10 w-16 h-16 border-2 border-[#B8D4E8]/20 rounded-full transform -rotate-6"></div>
 
-      <h3 className="text-3xl font-hand text-navy mb-8">What We're Most Excited About</h3>
+    <FadeInWhenVisible className="max-w-5xl mx-auto text-center relative z-10">
 
-      <div className="grid md:grid-cols-3 gap-8 font-hand text-xl text-navy/80">
+      <h3 className="text-4xl md:text-5xl font-hand text-navy mb-4 md:mb-6">What We're Most Excited About</h3>
+      
+      <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-12 md:mb-16"></div>
+
+      <div className="grid md:grid-cols-3 gap-8 md:gap-12 font-hand">
 
         {[
-          { icon: <Heart className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'All of You in One Place' },
-          { icon: <PawPrint className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'Cookie & Bailey as Ringbearers' },
-          { icon: <Music className="mx-auto text-[#D4A5A5] mb-3 w-10 h-10" />, text: 'The Dance Floor Opening' }
+          { icon: <Heart className="text-[#D4A5A5] w-12 h-12 md:w-16 md:h-16" />, text: 'All of You in One Place', color: '#D4A5A5' },
+          { icon: <PawPrint className="text-[#B8D4E8] w-12 h-12 md:w-16 md:h-16" />, text: 'Cookie & Bailey as Ringbearers', color: '#B8D4E8' },
+          { icon: <Music className="text-[#ffbd7b] w-12 h-12 md:w-16 md:h-16" />, text: 'The Dance Floor Opening', color: '#ffbd7b' }
         ].map((item, idx) => (
           <FadeInWhenVisible key={item.text} delay={0.1 * idx}>
             <motion.div 
-              className={`p-4 bg-white sketchy-border ${idx === 1 ? '-rotate-1' : 'rotate-1'}`}
-              whileHover={{ scale: 1.03 }}
+              className={`p-8 md:p-10 bg-white sketchy-border shadow-lg hover:shadow-xl transition-all ${idx === 1 ? '-rotate-1' : idx === 0 ? 'rotate-1' : 'rotate-[-1deg]'}`}
+              whileHover={{ scale: 1.05, rotate: 0 }}
             >
-              {item.icon}
-              <p className="font-bold">{item.text}</p>
+              <div className="mb-6 flex justify-center">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center" style={{ backgroundColor: `${item.color}20` }}>
+                  {item.icon}
+        </div>
+        </div>
+              <p className="font-bold text-lg md:text-xl text-navy">{item.text}</p>
             </motion.div>
           </FadeInWhenVisible>
         ))}
@@ -1431,13 +1441,13 @@ const Celebration = ({ isFamilyMode }) => (
 
 
 
-        <div className="relative pt-12 pl-8">
+        <div className="relative pt-8 md:pt-12 pl-8 md:pl-12">
 
-           <div className="absolute left-0 top-0 bottom-0 w-1 bg-navy" style={{ filter: 'url(#roughen)' }}></div>
+           <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-navy" style={{ filter: 'url(#roughen)' }}></div>
 
            
 
-           <div className="space-y-12">
+           <div className="space-y-10 md:space-y-14">
 
               {[
 
@@ -1457,9 +1467,9 @@ const Celebration = ({ isFamilyMode }) => (
 
               ].map((item, i) => (
 
-                  <FadeInWhenVisible key={item.event} delay={i * 0.05} className="relative pl-8 group">
+                  <FadeInWhenVisible key={item.event} delay={i * 0.05} className="relative pl-8 md:pl-10 group">
 
-                      <div className="absolute -left-[22px] top-1 w-10 h-10 bg-white border-2 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-110 transition-transform shadow-sm">
+                      <div className="absolute -left-[26px] md:-left-[30px] top-1 w-12 h-12 md:w-14 md:h-14 bg-white border-3 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-125 transition-transform shadow-lg hover:shadow-xl">
 
                          {item.type ? 
 
@@ -1471,11 +1481,11 @@ const Celebration = ({ isFamilyMode }) => (
 
                       </div>
 
-                      <h4 className="font-hand font-bold text-2xl text-navy">{item.event}</h4>
+                      <h4 className="font-hand font-bold text-2xl md:text-3xl text-navy mb-2">{item.event}</h4>
 
-                      <p className="font-hand text-[#D4A5A5] text-lg font-bold">{item.time}</p>
+                      <p className="font-hand text-[#D4A5A5] text-lg md:text-xl font-bold mb-3">{item.time}</p>
 
-                      <p className="font-hand text-navy/60 text-lg">{item.note}</p>
+                      <p className="font-hand text-navy/70 text-base md:text-lg leading-relaxed">{item.note}</p>
 
                   </FadeInWhenVisible>
 
@@ -1513,37 +1523,39 @@ const DressCode = () => {
 
       <FadeInWhenVisible className="max-w-6xl mx-auto relative z-10">
 
-        <div className="text-center mb-16">
+        <div className="text-center mb-20 md:mb-24">
 
-          <h2 className="text-6xl font-hand text-navy mb-4 sketchy-text">What to Wear</h2>
+          <h2 className="text-6xl md:text-7xl font-hand text-navy mb-6 sketchy-text">What to Wear</h2>
 
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-6"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-8"></div>
 
-          <p className="text-navy/60 font-hand text-lg max-w-2xl mx-auto">Dress code inspiration for our special day</p>
+          <p className="text-navy/60 font-hand text-lg md:text-xl max-w-2xl mx-auto">Dress code inspiration for our special day</p>
 
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 items-start">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
 
-          <FadeInWhenVisible className="space-y-6 bg-white/80 backdrop-blur-sm sketchy-border p-8 rotate-[-1deg] hover:rotate-0 transition-transform duration-300">
+          <FadeInWhenVisible className="space-y-8 bg-white/90 backdrop-blur-sm sketchy-border p-10 md:p-12 rotate-[-1deg] hover:rotate-0 transition-all duration-300 shadow-lg hover:shadow-xl">
 
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-4 mb-6">
 
-              <Music className="w-8 h-8 text-[#ffbd7b]" />
+              <div className="w-12 h-12 rounded-full bg-[#ffbd7b]/20 flex items-center justify-center">
+                <Music className="w-6 h-6 text-[#ffbd7b]" />
+              </div>
 
-              <h3 className="text-3xl font-bold text-navy font-hand">Beach Formal</h3>
+              <h3 className="text-3xl md:text-4xl font-bold text-navy font-hand">Beach Formal</h3>
 
             </div>
 
-            <div className="space-y-4 font-hand text-xl text-navy/80 leading-relaxed">
+            <div className="space-y-6 font-hand text-lg md:text-xl text-navy/80 leading-relaxed">
 
-              <p>Think flowy dresses, linen suits, comfortable shoes. We're on grass, so heels will sink. We want you to feel beautiful but also relaxed enough to actually enjoy yourself.</p>
+              <p className="text-xl md:text-2xl">Think flowy dresses, linen suits, comfortable shoes. We're on grass, so heels will sink. We want you to feel beautiful but also relaxed enough to actually enjoy yourself.</p>
 
-              <div className="flex items-start gap-2 pt-2 border-t border-navy/10">
+              <div className="flex items-start gap-3 pt-4 border-t-2 border-navy/10 bg-[#F5F0E8]/50 p-4 rounded-lg">
 
-                <Sun className="w-5 h-5 text-[#ffbd7b] mt-1 flex-shrink-0" />
+                <Sun className="w-6 h-6 text-[#ffbd7b] mt-1 flex-shrink-0" />
 
-                <p className="font-hand text-lg text-navy/60 italic"><span className="font-bold">Weather check:</span> March in Goa is warm. Not unbearably hot, but definitely t-shirt weather. Pack light.</p>
+                <p className="font-hand text-base md:text-lg text-navy/70"><span className="font-bold text-navy">Weather check:</span> March in Goa is warm. Not unbearably hot, but definitely t-shirt weather. Pack light.</p>
 
               </div>
 
@@ -1551,23 +1563,23 @@ const DressCode = () => {
 
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.1} className="bg-gradient-to-br from-[#F5F0E8] via-white to-[#F5F0E8]/50 sketchy-border p-10 rotate-1 hover:rotate-0 transition-transform duration-300 shadow-lg">
+          <FadeInWhenVisible delay={0.1} className="bg-gradient-to-br from-[#F5F0E8] via-white to-[#F5F0E8]/50 sketchy-border p-10 md:p-12 rotate-1 hover:rotate-0 transition-all duration-300 shadow-lg hover:shadow-xl">
 
-            <div className="text-center mb-8">
+            <div className="text-center mb-10">
 
-              <h3 className="text-3xl font-hand mb-2 text-navy font-bold">Our Color Palette</h3>
+              <h3 className="text-3xl md:text-4xl font-hand mb-3 text-navy font-bold">Our Color Palette</h3>
 
-              <p className="text-navy/60 font-hand text-sm">Feel free to incorporate these colors if you want</p>
+              <p className="text-navy/60 font-hand text-base md:text-lg">Feel free to incorporate these colors if you want</p>
 
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-8">
 
               {colors.map((color, idx) => (
 
                 <FadeInWhenVisible key={color.name} delay={idx * 0.08} className="group">
 
-                  <motion.div className="flex items-center gap-6 p-4 bg-white/60 sketchy-border border-2 border-transparent hover:border-navy/20 transition-all duration-300 hover:shadow-md" whileHover={{ scale: 1.01 }}>
+                  <motion.div className="flex items-center gap-6 p-5 md:p-6 bg-white/70 sketchy-border border-2 border-transparent hover:border-navy/30 transition-all duration-300 hover:shadow-lg" whileHover={{ scale: 1.02, x: 4 }}>
 
                     <motion.div 
 
@@ -1601,9 +1613,9 @@ const DressCode = () => {
 
             </div>
 
-            <div className="mt-8 pt-6 border-t border-navy/10 text-center">
+            <div className="mt-10 pt-8 border-t-2 border-navy/10 text-center bg-white/40 p-4 rounded-lg">
 
-              <p className="text-xs text-navy/50 font-hand italic">These are suggestions, not requirements. Wear what makes you happy.</p>
+              <p className="text-sm md:text-base text-navy/60 font-hand italic">These are suggestions, not requirements. Wear what makes you happy.</p>
 
             </div>
 
@@ -1671,15 +1683,17 @@ const ExploreGoa = () => {
 
   return (
 
-  <section id="explore-goa" className="py-12 md:py-16 lg:py-20 px-4 md:px-6 bg-white border-t border-navy/10">
+  <section id="explore-goa" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-white to-[#F5F0E8]/30 border-t border-navy/10">
 
-    <FadeInWhenVisible className="max-w-5xl mx-auto">
+    <FadeInWhenVisible className="max-w-6xl mx-auto">
 
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 md:mb-20">
 
-          <h2 className="text-5xl font-hand text-navy mb-4"><span className="text-[#D4A5A5]">Explore</span> Goa</h2>
+          <h2 className="text-5xl md:text-6xl font-hand text-navy mb-6"><span className="text-[#D4A5A5]">Explore</span> Goa</h2>
 
-          <p className="text-navy/60 max-w-2xl mx-auto">
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-6"></div>
+
+          <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto">
 
             Our favorite spots. The places we go back to, year after year.
 
@@ -1689,25 +1703,25 @@ const ExploreGoa = () => {
 
 
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
 
           {recommendations.map((section, idx) => (
 
-          <FadeInWhenVisible key={section.category} delay={idx * 0.1} className="space-y-6 bg-[#F5F0E8]/50 p-8 rounded-lg border border-navy/5">
+          <FadeInWhenVisible key={section.category} delay={idx * 0.1} className="space-y-8 bg-white/80 backdrop-blur-sm sketchy-border p-8 md:p-10 shadow-lg hover:shadow-xl transition-all">
 
-              <h3 className="text-2xl font-bold text-navy border-b border-[#D4A5A5]/30 pb-4">
+              <h3 className="text-2xl md:text-3xl font-bold text-navy border-b-2 border-[#D4A5A5]/40 pb-4 mb-6">
 
                 {section.category}
 
               </h3>
 
-              <div className="space-y-6">
+              <div className="space-y-5 md:space-y-6">
 
                 {section.items.map((item, i) => (
 
-                <motion.div key={item.name} className="flex gap-4 items-start group" whileHover={{ x: 4 }}>
+                <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#F5F0E8]/50 transition-colors" whileHover={{ x: 6 }}>
 
-                    <div className="w-10 h-10 rounded-full bg-white border border-navy/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4A5A5] group-hover:text-white transition-colors shadow-sm">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white border-2 border-navy/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4A5A5] group-hover:text-white group-hover:border-[#D4A5A5] transition-all shadow-md group-hover:shadow-lg">
 
                       {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
 
@@ -1719,11 +1733,11 @@ const ExploreGoa = () => {
 
                     </div>
 
-                    <div>
+                    <div className="flex-1">
 
-                      <h4 className="font-bold text-navy">{item.name}</h4>
+                      <h4 className="font-bold text-lg md:text-xl text-navy mb-1">{item.name}</h4>
 
-                      <p className="text-sm text-navy/60">{item.desc}</p>
+                      <p className="text-sm md:text-base text-navy/70 leading-relaxed">{item.desc}</p>
 
                     </div>
 
@@ -1741,9 +1755,9 @@ const ExploreGoa = () => {
 
 
 
-        <div className="mt-12 p-6 bg-[#B8D4E8]/10 rounded-lg text-center border border-navy/5 max-w-3xl mx-auto">
+        <div className="mt-16 md:mt-20 p-8 md:p-10 bg-gradient-to-br from-[#B8D4E8]/20 to-[#D4A5A5]/10 sketchy-border text-center border-2 border-navy/10 max-w-3xl mx-auto shadow-lg">
 
-          <p className="text-navy/70 italic font-hand text-lg">
+          <p className="text-navy/80 italic font-hand text-lg md:text-xl leading-relaxed">
 
             Palolem is where we got engaged. Colomb Bay is where we learned to dive together. 
 
@@ -1953,59 +1967,60 @@ const QnA = () => {
 
   return (
 
-  <section id="q-a" className="py-12 md:py-16 lg:py-20 px-4 md:px-6 bg-white">
+  <section id="q-a" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-white to-[#F5F0E8]/20">
 
-    <FadeInWhenVisible className="max-w-4xl mx-auto">
+    <FadeInWhenVisible className="max-w-5xl mx-auto">
 
-        <div className="text-center mb-12">
+        <div className="text-center mb-16 md:mb-20">
 
-          <h2 className="text-5xl font-hand text-navy">FAQ</h2>
+          <h2 className="text-5xl md:text-6xl font-hand text-navy mb-4">FAQ</h2>
+          
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
 
         </div>
 
 
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
 
           {questions.map((item, i) => (
 
-          <FadeInWhenVisible key={item.q} delay={i * 0.05} className="sketchy-border p-6 bg-[#F5F0E8] rotate-1 hover:rotate-0 transition-transform">
+          <FadeInWhenVisible key={item.q} delay={i * 0.05} className="sketchy-border p-6 md:p-8 bg-white shadow-md hover:shadow-xl rotate-1 hover:rotate-0 transition-all duration-300">
 
-               <h4 className="font-bold text-xl font-hand text-navy mb-2 flex items-start gap-2">
+               <h4 className="font-bold text-xl md:text-2xl font-hand text-navy mb-3 flex items-start gap-3">
 
-                 <span className="text-[#D4A5A5]">?</span> {item.q}
+                 <span className="text-[#D4A5A5] text-2xl md:text-3xl leading-none">?</span> 
+                 <span>{item.q}</span>
 
                </h4>
 
-               <p className="font-hand text-xl text-navy/80 ml-5">{item.a}</p>
+               <p className="font-hand text-base md:text-lg text-navy/80 ml-8 md:ml-10 leading-relaxed">{item.a}</p>
 
           </FadeInWhenVisible>
 
           ))}
 
-        <FadeInWhenVisible delay={questions.length * 0.05} className="sketchy-border p-6 bg-[#F5F0E8] -rotate-1">
+        <FadeInWhenVisible delay={questions.length * 0.05} className="sketchy-border p-8 md:p-10 bg-gradient-to-br from-[#D4A5A5]/10 to-[#B8D4E8]/10 border-2 border-[#D4A5A5]/30 -rotate-1 hover:rotate-0 transition-all shadow-lg md:col-span-2">
 
-             <h4 className="font-bold text-xl font-hand text-navy mb-2 flex items-start gap-2">
+             <h4 className="font-bold text-xl md:text-2xl font-hand text-navy mb-4 flex items-center gap-3">
 
-                 <Phone size={18} className="mt-1 text-[#D4A5A5] flex-shrink-0" />
+                 <Phone size={24} className="text-[#D4A5A5] flex-shrink-0" />
 
                  Real Questions?
 
              </h4>
 
-             <p className="font-hand text-xl text-navy/80 ml-5">
+             <div className="font-hand text-base md:text-lg text-navy/80 ml-8 space-y-2 leading-relaxed">
 
-                Contact our coordinator Priya Sharma<br/>
+                <p className="font-bold text-navy">Contact our coordinator Priya Sharma</p>
+                <p>+91 98765 43210</p>
+                <p>events@blumissel.com</p>
 
-                +91 98765 43210<br/>
-
-                events@blumissel.com
-
-             </p>
+          </div>
 
         </FadeInWhenVisible>
 
-        </div>
+      </div>
 
     </FadeInWhenVisible>
 
@@ -2138,21 +2153,23 @@ const RSVP = () => {
 
   return (
 
-    <section id="rsvp" className="py-12 md:py-16 lg:py-20 px-4 md:px-6 bg-[#F5F0E8] relative">
+    <section id="rsvp" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-[#F5F0E8] to-white relative">
 
       <div className="section-divider"></div>
 
-      <FadeInWhenVisible className="max-w-xl mx-auto bg-white border border-navy/10 sketchy-border p-8 md:p-12 shadow-sm relative">
+      <FadeInWhenVisible className="max-w-2xl mx-auto bg-white border-2 border-navy/10 sketchy-border p-10 md:p-14 shadow-xl relative">
 
         <div className="washi-tape -top-4 left-1/2 -translate-x-1/2 bg-[#B8D4E8]"></div>
 
 
 
-        <div className="text-center mb-10 mt-2">
+        <div className="text-center mb-12 md:mb-14 mt-2">
 
-          <h2 className="text-5xl text-navy mb-2 font-hand">R.S.V.P.</h2>
+          <h2 className="text-5xl md:text-6xl text-navy mb-4 font-hand">R.S.V.P.</h2>
+          
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-4"></div>
 
-          <p className="text-navy/50 text-sm uppercase tracking-widest">Please respond by January 20, 2026</p>
+          <p className="text-navy/60 text-sm md:text-base uppercase tracking-widest font-hand">Please respond by January 20, 2026</p>
 
         </div>
 
@@ -2365,54 +2382,53 @@ const RSVP = () => {
 
 const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
-  <footer className="relative text-blue-100/60 text-center px-4 md:px-6 overflow-hidden" style={{ minHeight: '300px' }}>
+  <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 overflow-hidden py-16 md:py-24 lg:py-32">
 
-    {/* Kidena House Background Image */}
-    <div className="absolute inset-0 opacity-20">
-
-      <img 
-
-        src="/images/kidena-house.jpg" 
-
-        alt="Kidena House" 
-
-        className="w-full h-full object-cover sepia-[.5]"
-
-      />
-
+    {/* Decorative background elements */}
+    <div className="absolute inset-0 opacity-10">
+      <div className="absolute top-10 left-10 w-32 h-32 border-2 border-[#D4A5A5] rounded-full transform rotate-12"></div>
+      <div className="absolute bottom-20 right-20 w-24 h-24 border-2 border-[#B8D4E8] rounded-full transform -rotate-6"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-[#D4A5A5]/30 rounded-full"></div>
     </div>
 
-    <div className="absolute inset-0 bg-[#1B3A57]/95"></div>
+    <div className="absolute inset-0 bg-gradient-to-b from-[#1B3A57] via-[#1B3A57] to-[#0f2538]"></div>
 
-    <div className="relative z-10 py-8 md:py-12 lg:py-16">
+    <div className="relative z-10 max-w-4xl mx-auto">
 
-      <p className="max-w-2xl mx-auto font-light leading-relaxed mb-10 italic text-lg">
+      {/* Main message */}
+      <FadeInWhenVisible>
+        <div className="mb-12 md:mb-16">
+          <p className="text-xl md:text-2xl font-hand leading-relaxed mb-6 text-[#F5F0E8] max-w-3xl mx-auto">
+            Seven years of finding each other twice and choosing each other every day since.
+          </p>
+          <p className="text-2xl md:text-3xl font-hand font-bold text-[#D4A5A5]">
+            Now they're saying it out loud: forever.
+          </p>
+        </div>
+      </FadeInWhenVisible>
 
-        Seven years of finding each other twice and choosing each other every day since. Now, they're saying it out loud: forever.
+      {/* Cookie & Bailey section */}
+      <FadeInWhenVisible delay={0.1}>
+        <div className="flex flex-col items-center gap-6 mb-12 md:mb-16">
+          <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-4 sketchy-border border-2 border-[#D4A5A5]/30 rounded-lg hover:border-[#D4A5A5] transition-all group">
+            <PawPrint size={24} className="text-[#D4A5A5] group-hover:scale-110 transition-transform" /> 
+            <span className="text-lg md:text-xl font-hand font-bold text-[#F5F0E8]">Cookie & Bailey</span>
+            <PawPrint size={24} className="text-[#B8D4E8] group-hover:scale-110 transition-transform" />
+          </div>
+        </div>
+      </FadeInWhenVisible>
 
-      </p>
-
-      
-
-      <div className="flex justify-center gap-8 mb-8">
-
-         <span className="hover:text-[#D4A5A5] transition-colors cursor-pointer flex items-center gap-2">
-
-            <PawPrint size={20} /> 
-
-            <span className="text-sm font-hand">Cookie & Bailey</span>
-
-         </span>
-
-      </div>
-
-
-
-      <p className="text-xs uppercase tracking-widest opacity-60 mb-8">
-
-        Made with love, momos & feni • Goa 2026
-
-      </p>
+      {/* Bottom section */}
+      <FadeInWhenVisible delay={0.2}>
+        <div className="border-t border-[#F5F0E8]/20 pt-8 md:pt-12">
+          <p className="text-sm md:text-base uppercase tracking-widest opacity-70 mb-4 font-hand">
+            Made with love, momos & feni
+          </p>
+          <p className="text-xs md:text-sm opacity-60">
+            Goa 2026
+          </p>
+        </div>
+      </FadeInWhenVisible>
 
 
 
