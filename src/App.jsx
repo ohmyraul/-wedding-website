@@ -3436,6 +3436,10 @@ const App = () => {
 
       <style>{styles}</style>
 
+      {/* Floating Action Buttons - Outside scroll container for proper fixed positioning */}
+      <MusicPlayer />
+      <FloatingRSVPButton onScrollToRSVP={scrollToSection} />
+
       <div ref={containerRef} className="scroll-container relative">
 
         <Nav isFamilyMode={isFamilyMode} />
@@ -3457,14 +3461,6 @@ const App = () => {
         <FloatingPalmTree />
 
         <FloatingMusicNotes />
-
-
-
-        {/* Floating Action Buttons */}
-
-        <MusicPlayer />
-
-        <FloatingRSVPButton onScrollToRSVP={scrollToSection} />
 
 
 
