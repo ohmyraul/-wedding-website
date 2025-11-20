@@ -821,11 +821,11 @@ const Story = () => (
 
 
 
-      <div className="mb-8 md:mb-16"></div>
+      <div className="mb-12 md:mb-20"></div>
 
       
 
-      <div className="space-y-12 md:space-y-16 lg:space-y-20 relative pt-8 md:pt-0">
+      <div className="space-y-16 md:space-y-24 lg:space-y-28 relative pt-8 md:pt-0">
 
         <Music className="absolute -top-4 md:top-0 left-0 w-12 h-12 md:w-16 md:h-16 text-navy/20 -rotate-12 z-0" fill="currentColor" />
 
@@ -1011,7 +1011,7 @@ const Story = () => (
 
 const CookieAndBailey = () => (
 
-  <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 relative bg-gradient-to-b from-white to-[#F5F0E8]/30">
+  <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 relative bg-white">
 
     <FadeInWhenVisible className="max-w-5xl mx-auto text-center">
 
@@ -1024,8 +1024,6 @@ const CookieAndBailey = () => (
         {/* Cookie */}
 
         <FadeInWhenVisible delay={0.1} className="relative group">
-
-            <div className="absolute inset-0 bg-[#D4A5A5] transform -rotate-3 rounded-lg opacity-20"></div>
 
             <motion.div 
 
@@ -1054,8 +1052,6 @@ const CookieAndBailey = () => (
         {/* Bailey */}
 
         <FadeInWhenVisible delay={0.15} className="relative group">
-
-            <div className="absolute inset-0 bg-[#B8D4E8] transform rotate-3 rounded-lg opacity-20"></div>
 
             <motion.div 
 
@@ -1139,7 +1135,7 @@ const WhatWeAreExcitedAbout = () => (
 
 const KidenaHouse = () => (
 
-  <section id="kidena-house" className="py-16 md:py-24 lg:py-32 px-4 md:px-6 bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden">
+  <section id="kidena-house" className="py-20 md:py-24 lg:py-28 px-4 md:px-6 bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden">
 
     {/* Subtle background decoration */}
     <div className="absolute inset-0 opacity-5 pointer-events-none">
@@ -1370,7 +1366,7 @@ const FamilyItinerary = () => (
 
 const Celebration = ({ isFamilyMode }) => (
 
-  <section id="the-celebration" className="py-12 md:py-16 lg:py-20 px-4 md:px-6 relative">
+  <section id="the-celebration" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 relative">
 
     <div className="watercolor-bg" style={{ transform: 'scaleY(-1)' }}></div>
 
@@ -1378,9 +1374,11 @@ const Celebration = ({ isFamilyMode }) => (
 
       <StickyHeader>
 
-        <div className="text-center">
+        <div className="text-center mb-12 md:mb-16">
 
-          <h2 className="text-4xl md:text-6xl font-hand text-navy inline-block border-b-4 border-[#D4A5A5] pb-2" style={{ borderRadius: '50% 20% / 10% 40%' }}>The Big Party</h2>
+          <h2 className="text-4xl md:text-6xl font-hand text-navy inline-block border-b-4 border-[#D4A5A5] pb-3 mb-4" style={{ borderRadius: '50% 20% / 10% 40%' }}>The Big Party</h2>
+          
+          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
 
       </div>
 
@@ -1388,15 +1386,11 @@ const Celebration = ({ isFamilyMode }) => (
 
 
 
-      <div className="mb-8 md:mb-12 lg:mb-16"></div>
+      <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-start">
 
+        <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-lg">
 
-
-      <div className="grid lg:grid-cols-2 gap-12 items-start">
-
-        <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-2 bg-white rotate-1">
-
-             <div className="bg-gray-100 h-80 w-full overflow-hidden border-b-2 border-navy relative">
+             <div className="bg-gray-100 h-80 md:h-96 w-full overflow-hidden border-b-2 border-navy relative">
 
                 <img 
 
@@ -1411,27 +1405,27 @@ const Celebration = ({ isFamilyMode }) => (
 
              </div>
 
-             <div className="p-6">
+             <div className="p-6 md:p-8 space-y-6">
 
-                <h3 className="text-3xl font-hand font-bold text-navy mb-4">Friday, March 20, 2026</h3>
+                <h3 className="text-3xl md:text-4xl font-hand font-bold text-navy">Friday, March 20, 2026</h3>
 
-                <div className="flex items-start gap-4 mb-4">
+                <div className="flex items-start gap-4">
 
-                   <SketchIcon type="palm" className="w-8 h-8 text-[#D4A5A5]" />
+                   <SketchIcon type="palm" className="w-8 h-8 md:w-10 md:h-10 text-[#D4A5A5] flex-shrink-0 mt-1" />
 
-                   <div className="font-hand text-xl leading-tight">
+                   <div className="font-hand text-xl md:text-2xl leading-tight">
 
-                     <p className="font-bold">Blu Missel by the River</p>
+                     <p className="font-bold text-navy">Blu Missel by the River</p>
 
-                     <p>Betul, Goa 403713</p>
+                     <p className="text-navy/70">Betul, Goa 403713</p>
 
                    </div>
 
                 </div>
 
-                <div className="bg-[#F5F0E8] p-3 rounded-sm border-2 border-navy/20 transform -rotate-1">
+                <div className="bg-[#F5F0E8] p-4 md:p-5 rounded-sm border-2 border-navy/20 transform -rotate-1">
 
-                   <p className="font-hand text-lg">Riverside setting. Goan feast with fresh seafood. Open bar all night. Everything you need.</p>
+                   <p className="font-hand text-lg md:text-xl text-navy/80">Riverside setting. Goan feast with fresh seafood. Open bar all night. Everything you need.</p>
 
                 </div>
 
@@ -1441,13 +1435,13 @@ const Celebration = ({ isFamilyMode }) => (
 
 
 
-        <div className="relative pt-8 md:pt-12 pl-8 md:pl-12">
+        <div className="relative pt-4 md:pt-8 pl-8 md:pl-12">
 
            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-navy" style={{ filter: 'url(#roughen)' }}></div>
 
            
 
-           <div className="space-y-10 md:space-y-14">
+           <div className="space-y-8 md:space-y-12">
 
               {[
 
@@ -1515,7 +1509,7 @@ const DressCode = () => {
 
   return (
 
-    <section className="py-12 md:py-16 lg:py-20 px-4 md:px-6 bg-gradient-to-b from-white to-[#F5F0E8]/30 relative">
+    <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-white to-[#F5F0E8]/30 relative">
 
       {/* Decorative elements */}
       <Sun className="absolute top-10 right-10 w-16 h-16 text-[#ffbd7b]/20 rotate-12 animate-float" />
@@ -1779,7 +1773,7 @@ const ExploreGoa = () => {
 
 const Travel = ({ isFamilyMode }) => (
 
-  <section id="travel" className="py-12 md:py-16 lg:py-20 px-4 md:px-6 bg-[#1B3A57] text-[#F5F0E8]">
+  <section id="travel" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-[#1B3A57] text-[#F5F0E8]">
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
