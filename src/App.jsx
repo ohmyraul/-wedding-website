@@ -2504,6 +2504,7 @@ const MusicPlayer = () => {
         onClick={togglePlayback}
 
         className="fixed bottom-6 left-6 z-[100] w-16 h-16 md:w-20 md:h-20 bg-white sketchy-border border-[3px] border-navy shadow-2xl flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
+        style={{ position: 'fixed' }}
 
         aria-label={playing ? 'Pause background music' : 'Play background music'}
 
@@ -2534,6 +2535,7 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
       onClick={() => onScrollToRSVP('rsvp')}
 
       className="fixed bottom-6 right-6 z-[100] bg-[#D4A5A5] text-white sketchy-border border-[3px] border-white shadow-2xl px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
+      style={{ position: 'fixed' }}
 
       aria-label="Go to RSVP"
 
