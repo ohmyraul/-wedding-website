@@ -2372,26 +2372,26 @@ const RSVP = () => {
 
 const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
-  <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 overflow-hidden py-16 md:py-24 lg:py-32">
+  <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 overflow-hidden py-20 md:py-28 lg:py-32">
 
     {/* Decorative background elements */}
-    <div className="absolute inset-0 opacity-10">
+    <div className="absolute inset-0 opacity-5">
       <div className="absolute top-10 left-10 w-32 h-32 border-2 border-[#D4A5A5] rounded-full transform rotate-12"></div>
       <div className="absolute bottom-20 right-20 w-24 h-24 border-2 border-[#B8D4E8] rounded-full transform -rotate-6"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-[#D4A5A5]/30 rounded-full"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-[#D4A5A5]/20 rounded-full"></div>
     </div>
 
     <div className="absolute inset-0 bg-gradient-to-b from-[#1B3A57] via-[#1B3A57] to-[#0f2538]"></div>
 
-    <div className="relative z-10 max-w-4xl mx-auto">
+    <div className="relative z-10 max-w-4xl mx-auto space-y-12 md:space-y-16">
 
       {/* Main message */}
       <FadeInWhenVisible>
-        <div className="mb-12 md:mb-16">
-          <p className="text-xl md:text-2xl font-hand leading-relaxed mb-6 text-[#F5F0E8] max-w-3xl mx-auto">
+        <div className="space-y-6 md:space-y-8">
+          <p className="text-xl md:text-2xl lg:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto">
             Seven years of finding each other twice and choosing each other every day since.
           </p>
-          <p className="text-2xl md:text-3xl font-hand font-bold text-[#D4A5A5]">
+          <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D4A5A5]">
             Now they're saying it out loud: forever.
           </p>
         </div>
@@ -2399,42 +2399,43 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
       {/* Cookie & Bailey section */}
       <FadeInWhenVisible delay={0.1}>
-        <div className="flex flex-col items-center gap-6 mb-12 md:mb-16">
-          <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-4 sketchy-border border-2 border-[#D4A5A5]/30 rounded-lg hover:border-[#D4A5A5] transition-all group">
-            <PawPrint size={24} className="text-[#D4A5A5] group-hover:scale-110 transition-transform" /> 
-            <span className="text-lg md:text-xl font-hand font-bold text-[#F5F0E8]">Cookie & Bailey</span>
-            <PawPrint size={24} className="text-[#B8D4E8] group-hover:scale-110 transition-transform" />
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-4 bg-white/15 backdrop-blur-md px-8 py-5 sketchy-border border-[3px] border-[#D4A5A5]/50 rounded-lg hover:border-[#D4A5A5] transition-all group shadow-lg">
+            <PawPrint size={28} className="text-[#D4A5A5] group-hover:scale-110 transition-transform" /> 
+            <span className="text-xl md:text-2xl font-hand font-bold text-[#F5F0E8]">Cookie & Bailey</span>
+            <PawPrint size={28} className="text-[#B8D4E8] group-hover:scale-110 transition-transform" />
           </div>
         </div>
       </FadeInWhenVisible>
 
       {/* Bottom section */}
       <FadeInWhenVisible delay={0.2}>
-        <div className="border-t border-[#F5F0E8]/20 pt-8 md:pt-12">
-          <p className="text-sm md:text-base uppercase tracking-widest opacity-70 mb-4 font-hand">
+        <div className="border-t-2 border-[#F5F0E8]/30 pt-10 md:pt-12 space-y-4">
+          <p className="text-sm md:text-base uppercase tracking-widest text-[#F5F0E8]/80 font-hand">
             Made with love, momos & feni
           </p>
-          <p className="text-xs md:text-sm opacity-60">
+          <p className="text-xs md:text-sm text-[#F5F0E8]/70">
             Goa 2026
           </p>
         </div>
       </FadeInWhenVisible>
 
+      {/* Family Login Button */}
+      <FadeInWhenVisible delay={0.3}>
+        <button 
 
+          onClick={toggleFamilyMode}
 
-      <button 
+          className="mt-8 opacity-60 hover:opacity-100 transition-opacity text-xs md:text-sm border-2 border-[#F5F0E8]/40 rounded-full px-4 py-2 flex items-center gap-2 mx-auto bg-[#F5F0E8]/10 backdrop-blur-sm hover:bg-[#F5F0E8]/20 font-hand"
 
-        onClick={toggleFamilyMode}
+        >
 
-        className="opacity-20 hover:opacity-100 transition-opacity text-xs border border-white/20 rounded px-2 py-1 flex items-center gap-1 mx-auto bg-white/10 backdrop-blur-sm"
+          {isFamilyMode ? <Unlock size={14}/> : <Lock size={14}/>}
 
-      >
+          <span className="text-[#F5F0E8]">{isFamilyMode ? 'Switch to Guest View' : 'Family Login'}</span>
 
-        {isFamilyMode ? <Unlock size={10}/> : <Lock size={10}/>}
-
-        {isFamilyMode ? 'Switch to Guest View' : 'Family Login'}
-
-      </button>
+        </button>
+      </FadeInWhenVisible>
 
     </div>
 
@@ -2502,7 +2503,7 @@ const MusicPlayer = () => {
 
         onClick={togglePlayback}
 
-        className="fixed bottom-6 left-6 z-50 w-16 h-16 bg-white sketchy-border border-2 border-navy shadow-lg flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
+        className="fixed bottom-6 left-6 z-[100] w-16 h-16 md:w-18 md:h-18 bg-white sketchy-border border-[3px] border-navy shadow-2xl flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
 
         aria-label={playing ? 'Pause background music' : 'Play background music'}
 
@@ -2528,11 +2529,11 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
   return (
 
-    <button
+      <button
 
       onClick={() => onScrollToRSVP('rsvp')}
 
-      className="fixed bottom-6 right-6 z-50 bg-[#D4A5A5] text-white sketchy-border border-2 border-white shadow-lg px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
+      className="fixed bottom-6 right-6 z-[100] bg-[#D4A5A5] text-white sketchy-border border-[3px] border-white shadow-2xl px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
 
       aria-label="Go to RSVP"
 
@@ -3120,14 +3121,28 @@ const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isTapped, setIsTapped] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
+  // On mobile, show tooltip immediately on tap and keep it visible
+  const handleTouchStart = () => {
+    setIsTapped(true);
+    setShowTooltip(true);
+  };
 
+  const handleTouchEnd = () => {
+    // Keep tooltip visible for a moment on mobile so users can read it
+    setTimeout(() => {
+      setIsTapped(false);
+      setShowTooltip(false);
+    }, 2000);
+    if (onClick) onClick();
+  };
 
   return (
 
     <motion.button
 
-      className="absolute z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#D4A5A5]/90 backdrop-blur-sm border-2 border-white shadow-lg flex items-center justify-center text-white text-base md:text-2xl touch-manipulation cursor-pointer active:scale-95"
+      className="absolute z-20 w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#D4A5A5] backdrop-blur-sm border-[3px] border-white shadow-xl flex items-center justify-center text-white text-base md:text-2xl touch-manipulation cursor-pointer active:scale-95"
 
       style={position}
 
@@ -3139,12 +3154,9 @@ const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
 
       onHoverEnd={() => setIsHovered(false)}
 
-      onTouchStart={() => setIsTapped(true)}
+      onTouchStart={handleTouchStart}
 
-      onTouchEnd={() => {
-        setIsTapped(false);
-        if (onClick) onClick();
-      }}
+      onTouchEnd={handleTouchEnd}
 
       onClick={(e) => {
         e.preventDefault();
@@ -3158,7 +3170,8 @@ const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
 
       {children}
 
-      {(isHovered || isTapped) && (
+      {/* Show tooltip on hover (desktop) or tap (mobile) */}
+      {(isHovered || showTooltip) && (
 
         <motion.div
 
@@ -3168,11 +3181,11 @@ const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
 
           exit={{ opacity: 0, y: 10, scale: 0.8 }}
 
-          className="absolute -top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-xl sketchy-border whitespace-nowrap z-50"
+          className="absolute -top-16 md:-top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-xl sketchy-border whitespace-nowrap z-[60] border-2 border-navy"
 
         >
 
-          <p className="font-hand text-sm md:text-base text-navy">{tooltip}</p>
+          <p className="font-hand text-xs md:text-sm text-navy font-bold">{tooltip}</p>
 
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"></div>
 
