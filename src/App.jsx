@@ -2503,7 +2503,7 @@ const MusicPlayer = () => {
 
         onClick={togglePlayback}
 
-        className="fixed bottom-6 left-6 z-[100] w-16 h-16 md:w-18 md:h-18 bg-white sketchy-border border-[3px] border-navy shadow-2xl flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
+        className="fixed bottom-6 left-6 z-[100] w-16 h-16 md:w-20 md:h-20 bg-white sketchy-border border-[3px] border-navy shadow-2xl flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
 
         aria-label={playing ? 'Pause background music' : 'Play background music'}
 
