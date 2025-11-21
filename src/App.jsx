@@ -809,7 +809,7 @@ const Story = () => (
 
             </div>
 
-            <p className="text-center font-hand text-navy/50 mt-2">Alysha (The Host)</p>
+            <p className="text-center font-hand text-navy/50 mt-2">Hello, goodbye, sea you in three years</p>
 
             </ParallaxWrapper>
 
@@ -871,7 +871,7 @@ const Story = () => (
 
             </div>
 
-             <p className="text-center font-hand text-navy/50 mt-2">Shubs (The Coworker)</p>
+             <p className="text-center font-hand text-navy/50 mt-2">From slack DMs to slacking off together</p>
 
             </ParallaxWrapper>
 
@@ -895,7 +895,7 @@ const Story = () => (
 
             </div>
 
-            <p className="text-center font-hand text-navy/50 mt-2">Chaos & Love</p>
+            <p className="text-center font-hand text-navy/50 mt-2">Goa, dogs & growing Together</p>
 
             </ParallaxWrapper>
 
@@ -937,11 +937,15 @@ const Story = () => (
 
               <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
 
-              <p>Back at Palolem Beach. He'd made plans. Plan A: underwater proposal (ring might sink, she might panic). Plan B: Kakolim Beach at sunset (neither of them wanted to make the trek that day).</p>
+              <p>Back at Palolem Beach. He'd made plans. Plan A: underwater proposal (ring might sink, she might panic). Plan B: Kakolem Beach at sunset (neither wanted the trek that day).</p>
 
-              <p>So he went with Plan C. Keep it simple. Wing it. They were walking on Palolem. He stopped. She turned around.</p>
+              <p>Plan C won. Keep it simple. Wing it.</p>
 
-              <p>He was on his knees. Ring in hand. She said yes before he even finished asking. Immediate. No hesitation.</p>
+              <p>They were walking between Palolem and Colomb. The midpoint where the two beaches meet. They swam in Palolem, lived in Colomb. This stretch was theirs.</p>
+
+              <p>He stopped. She turned around.</p>
+
+              <p>He was on his knees. Ring in hand. She said yes before he finished asking.</p>
 
             </div>
 
@@ -954,6 +958,8 @@ const Story = () => (
                 <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%' }} />
 
              </div>
+
+             <p className="text-center font-hand text-navy/50 mt-2">Ring. Sand. Forever.</p>
 
             </ParallaxWrapper>
 
@@ -1549,17 +1555,19 @@ const ExploreGoa = () => {
 
     {
 
-      category: "In Panjim",
+      category: "North Goa",
 
       items: [
 
-        { name: "Joseph's Bar", type: "drink", desc: "Old Goa charm, cold beer, locals only vibe" },
+        { name: "Joseph's Bar", type: "drink", location: "Fontainhas, Panjim", desc: "Old Goa charm in a bar that's been pouring since the '70s. Gundu the barman knows everyone. Try the Tambde Rosa — feni, kokum, rose water in a clay pot. Ten people inside, ten more spilling onto the street. Old jazz, cold beer, real Goan tavern culture." },
 
-        { name: "Miguel's", type: "drink", desc: "Good wine, quiet conversations, perfect ambiance" },
+        { name: "Miguel's", type: "drink", location: "Fontainhas, Panjim", desc: "Art deco cocktail bar in a heritage building. Burma teak, marble inlay, handcrafted lamps. Serious cocktails — classic 1920s recipes with Goan ingredients. Barrel-aged feni creations. Small plates that respect 450 years of Konkan-Portuguese fusion. This is where you have the conversation that matters." },
 
-        { name: "Bombil", type: "food", desc: "Fresh seafood, authentic Goan classics" },
+        { name: "Bombil", type: "food", location: "Campal, Panjim", desc: "Packed for lunch for a reason. Goan fish thali the way it's supposed to be — fish curry, clam stir fry, dried bombil, big Goan rice. Add your fish of choice. The bill is half what you'd pay at the fancy place next door, twice the food. No AC, lots of fans, loud and busy and exactly right. Yellow walls, vintage music, food that tastes like someone's grandmother made it." },
 
-        { name: "Kokum Curry", type: "food", desc: "Home-style cooking that actually tastes like home" }
+        { name: "Kokum Curry", type: "food", location: "Candolim (also in Panjim)", desc: "Authentic Saraswat Brahmin cuisine. The kind of Goan Hindu food that tourists never see. Six types of kokum curries. Fresh coconut, coconut oil, tamarind, no vinegar. Traditional techniques, heritage recipes. Fish thali that's different from everything else you'll eat in Goa. This is home cooking elevated, preserved, celebrated." },
+
+        { name: "Bar Outrigger", type: "drink", location: "Dona Paula", desc: "Rum bar hidden in a fishing village. They send you a treasure map to find it. Over 100 rums, tiki cocktails, a little cove where waves hit rocks. Come at sunset. Order something rum-forward. Stay until they sing 'My Heart Will Go On' at closing." }
 
       ]
 
@@ -1567,21 +1575,19 @@ const ExploreGoa = () => {
 
     {
 
-      category: "South Goa Adventures",
+      category: "South Goa",
 
       items: [
 
-        { name: "Kakolim Beach Trek", type: "beach", desc: "Hidden cove at the end. Worth the walk." },
+        { name: "Tejas Bar", type: "food", location: "Talpona Beach", desc: "Hands down the BEST kalwa sukka in Goa. Fresh oysters in coconut masala, bold and messy and exactly right. This is beach shack cooking at its finest. Eat with your hands. Order cold beer. Trust us on this." },
 
-        { name: "Colomb Bay", type: "beach", desc: "Our sanctuary. Quiet, beautiful, untouched." },
+        { name: "Kala Bahia", type: "party", location: "Colomb Bay", desc: "European-run spot where the music is good and the drinks are strong. Dance until sunrise catches you mid-laugh. Nobody judges. The night extends itself here." },
 
-        { name: "Palolem Beach", type: "beach", desc: "Perfect for swimming. Best at sunrise." },
+        { name: "Kakolem Beach", type: "beach", location: "Tiger Beach", desc: "Hidden cove at the end of a 15-minute trek down rocky stairs through private property (₹50 entry). Horseshoe bay, golden sand, aquamarine water, freshwater waterfall hitting the beach. Worth every step down. Goa's last secret. Come early, bring water, leave before sunset." },
 
-        { name: "Tejas Bar", type: "food", desc: "Hands down the BEST kalwa sukka in Goa. Trust us on this." },
+        { name: "Colomb Bay", type: "beach", location: "Between Palolem and Patnem", desc: "Our sanctuary. Small horseshoe bay between Palolem and Patnem where fishing families still haul nets in the morning. Clean sand, calm water, a few good shacks. Quiet, beautiful, untouched. The Goa you imagine when you close your eyes." },
 
-        { name: "Kala Bahia", type: "party", desc: "Dance until the sun comes up." },
-
-        { name: "Bar Outrigger", type: "drink", desc: "Beautiful spot by the beach with a little cove. Perfect for sunset drinks." }
+        { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "The famous crescent bay with palm trees and perfect swimming water. Go at sunrise before the crowds — just you and that golden light that makes everything look like a memory you haven't made yet." }
 
       ]
 
@@ -1646,7 +1652,7 @@ const ExploreGoa = () => {
                     <div className="flex-1">
 
                       <h4 className="font-bold text-lg md:text-xl text-navy mb-1">{item.name}</h4>
-
+                      {item.location && <p className="text-xs md:text-sm text-navy/50 mb-2 italic">{item.location}</p>}
                       <p className="text-sm md:text-base text-navy/70 leading-relaxed">{item.desc}</p>
 
                     </div>
