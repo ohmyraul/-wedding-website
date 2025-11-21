@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Shubs & Alysha Wedding//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:shubs-alysha-wedding-20260320@shubs.wedding
+DTSTAMP:20241121T000000Z
+DTSTART;TZID=Asia/Kolkata:20260320T193000
+DTEND;TZID=Asia/Kolkata:20260320T233000
+SUMMARY:Shubs & Alysha Wedding Celebration
+LOCATION:Blu Missel by the River, Betul, Goa 403713, India
+DESCRIPTION:Join us in Goa for the full celebration weekend. All details at https://wedding-website-6ov3dt7w1-shubs-projects-0798d61b.vercel.app
+END:VEVENT
+END:VCALENDAR
+

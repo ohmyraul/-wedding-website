@@ -1,9 +1,58 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
-import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, MapPin, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
+import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin } from 'lucide-react';
+import { motion, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import confetti from 'canvas-confetti';
+
+let confettiInstance = null;
+
+const fireConfetti = async (options = {}) => {
+
+  if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'test') {
+    return;
+  }
+
+  if (typeof window !== 'undefined') {
+
+    const mediaQuery = typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)')
+      : null;
+
+    if (mediaQuery?.matches) {
+
+      return;
+
+    }
+
+    if (typeof HTMLCanvasElement === 'undefined' || typeof HTMLCanvasElement.prototype?.getContext !== 'function') {
+
+      return;
+
+    }
+
+  }
+
+  if (!confettiInstance) {
+
+    try {
+
+      const importedModule = await import('canvas-confetti');
+
+      confettiInstance = importedModule.default ?? importedModule;
+
+    } catch (error) {
+
+      console.error('Failed to load confetti module', error);
+
+      return;
+
+    }
+
+  }
+
+  confettiInstance?.(options);
+
+};
 
 
 
@@ -11,37 +60,7 @@ import confetti from 'canvas-confetti';
 
 const styles = `
 
-  /* 
-   * FONT OPTIONS - Currently using Option A
-   * 
-   * To switch: Comment out current @import, uncomment your choice, 
-   * and update font-family declarations below (lines 72, 86, 95)
-   * 
-   * OPTION A: Elevated Sketchy (CURRENT - Best for Mario Miranda vibe)
-   * - Headings: Crimson Pro (warm serif with character, matches coral/beige)
-   * - Body: Inter (ultra-readable, designed for screens)
-   * - Accents: Kalam (refined handwritten, maintains sketchy feel)
-   * 
-   * OPTION B: Modern Romantic (Claude's suggestion - Lora + DM Sans)
-   * - Headings: Lora (elegant serif, wedding industry favorite)
-   * - Body: DM Sans (geometric, modern, 2025 trending)
-   * - Accents: Kalam (handwritten for playful moments)
-   * 
-   * OPTION C: Warm & Playful (More handwritten feel)
-   * - Headings: Kalam (refined handwritten, still playful)
-   * - Body: Inter (clean, readable)
-   * - Accents: Caveat (elegant script for special moments)
-   */
-  
-  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Kalam:wght@300;400;700&display=swap');
-  
-  /* Option B (uncomment to use):
-  @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Kalam:wght@300;400;700&display=swap');
-  */
-  
-  /* Option C (uncomment to use):
-  @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400;600;700&display=swap');
-  */
+  /* Fonts are now loaded via <link> tags in index.html for faster rendering */
 
 
 
@@ -66,7 +85,7 @@ const styles = `
   }
 
   .scroll-container {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
     scroll-behavior: smooth;
     overflow-y: scroll;
     height: 100vh;
@@ -151,8 +170,6 @@ const styles = `
 
     position: relative;
 
-    background: white;
-
     isolation: isolate;
 
     box-shadow: 2px 2px 0px rgba(27, 58, 87, 0.1);
@@ -184,9 +201,7 @@ const styles = `
 
 
   .sketchy-text {
-
-    filter: drop-shadow(2px 2px 0px rgba(212, 165, 165, 0.4));
-
+    text-shadow: 2px 2px 0px rgba(212, 165, 165, 0.4);
   }
 
 
@@ -240,6 +255,26 @@ const styles = `
     font-size: 1.2rem;
 
     transition: all 0.2s;
+
+  }
+
+
+
+  @media (prefers-reduced-motion: reduce) {
+
+    html,
+    .scroll-container {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
 
   }
 
@@ -347,9 +382,15 @@ const styles = `
 
 `;
 
+const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs%20%26%20Alysha%20Wedding%20Celebration&dates=20260320T140000Z/20260320T180000Z&details=Celebrate%20with%20us%20in%20Goa.%20RSVP%20and%20travel%20info%20on%20our%20site.&location=Blu%20Missel%20by%20the%20River%2C%20Betul%2C%20Goa%20403713%2C%20India';
+const ICS_CALENDAR_PATH = '/calendar/shubs-alysha-wedding.ics';
+const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River,+Betul,+Goa+403713,+India';
+const VENUE_APPLE_MAPS_URL = 'http://maps.apple.com/?address=Betul,Goa,India&q=Blu+Missel+by+the+River';
+const NEARBY_STAYS_URL = 'https://www.google.com/maps/search/Hotels+near+Betul+Goa';
 
 
-const FadeInWhenVisible = ({ children, delay = 0, className = '' }) => {
+
+const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
 
   const controls = useAnimation();
 
@@ -399,11 +440,13 @@ const FadeInWhenVisible = ({ children, delay = 0, className = '' }) => {
 
   );
 
-};
+});
+
+FadeInWhenVisible.displayName = 'FadeInWhenVisible';
 
 
 
-const ParallaxWrapper = ({ children, offset = 50, className = '', hoverEffect = false }) => {
+const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffect = false }) => {
 
   const ref = useRef(null);
 
@@ -440,7 +483,9 @@ const ParallaxWrapper = ({ children, offset = 50, className = '', hoverEffect = 
 
   );
 
-};
+});
+
+ParallaxWrapper.displayName = 'ParallaxWrapper';
 
 
 
@@ -580,7 +625,7 @@ const Nav = ({ isFamilyMode }) => {
 
         
 
-        <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-navy">
+        <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-navy" aria-label="Toggle navigation menu" aria-expanded={isOpen}>
 
           {isOpen ? <X /> : <Menu />}
 
@@ -618,7 +663,7 @@ const Nav = ({ isFamilyMode }) => {
 
 const Hero = ({ onScrollToSection }) => (
 
-  <section className="min-h-screen flex flex-col items-center justify-center px-4 pt-20 md:pt-24 pb-8 md:pb-12 relative">
+  <section className="min-h-screen flex flex-col items-center justify-center px-4 pt-20 md:pt-24 pb-8 md:pb-12 relative" aria-label="Hero section">
 
     <div className="watercolor-bg"></div>
 
@@ -715,12 +760,16 @@ const Hero = ({ onScrollToSection }) => (
                  alt="Shubs and Alysha" 
 
                  className="w-full h-full object-cover"
+                 width={1024}
+                 height={890}
 
                  initial={{ scale: 1.2 }}
 
                  animate={{ scale: 1 }}
 
                  transition={{ duration: 1.2, ease: 'easeOut' }}
+
+                 loading="eager"
 
                />
 
@@ -749,7 +798,7 @@ const Hero = ({ onScrollToSection }) => (
 
     >
 
-      <ArrowDown size={32} />
+      <ArrowDown size={32} aria-hidden="true" />
 
     </motion.div>
 
@@ -805,7 +854,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%' }} />
+               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%' }} loading="lazy" width={696} height={1024} />
 
             </div>
 
@@ -867,7 +916,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%' }} />
+               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%' }} loading="lazy" width={666} height={1024} />
 
             </div>
 
@@ -891,7 +940,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%' }} />
+               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%' }} loading="lazy" width={765} height={1024} />
 
             </div>
 
@@ -955,7 +1004,7 @@ const Story = () => (
 
              <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%' }} />
+                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%' }} loading="lazy" width={696} height={1024} />
 
              </div>
 
@@ -963,7 +1012,7 @@ const Story = () => (
 
             </ParallaxWrapper>
 
-        </div>
+      </div>
 
         </FadeInWhenVisible>
 
@@ -1003,7 +1052,7 @@ const CookieAndBailey = () => (
 
                 <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
 
-                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} />
+                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} loading="lazy" width={687} height={1024} />
 
                 </div>
 
@@ -1031,7 +1080,7 @@ const CookieAndBailey = () => (
 
                 <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
 
-                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} />
+                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} loading="lazy" width={696} height={1024} />
 
                 </div>
 
@@ -1043,6 +1092,42 @@ const CookieAndBailey = () => (
 
         </FadeInWhenVisible>
 
+      </div>
+
+      <div className="mt-12 grid gap-4 md:grid-cols-2">
+        <a 
+          href={VENUE_GOOGLE_MAPS_URL} 
+          target="_blank" 
+          rel="noreferrer" 
+          className="sketchy-border border-2 border-[#D4A5A5]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          aria-label="Open venue in Google Maps"
+        >
+          <MapPin size={20} />
+          Google Maps Venue Pin
+        </a>
+        <a 
+          href={VENUE_APPLE_MAPS_URL} 
+          target="_blank" 
+          rel="noreferrer" 
+          className="sketchy-border border-2 border-[#B8D4E8]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          aria-label="Open venue in Apple Maps"
+        >
+          <MapPin size={20} />
+          Apple Maps Venue Pin
+        </a>
+      </div>
+
+      <div className="mt-4">
+        <a 
+          href={NEARBY_STAYS_URL} 
+          target="_blank" 
+          rel="noreferrer" 
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#D4A5A5] text-white font-hand text-base uppercase tracking-wide hover:scale-105 transition-transform"
+          aria-label="Open nearby stay suggestions"
+        >
+          <Home size={18} />
+          Find Nearby Stays
+        </a>
       </div>
 
     </FadeInWhenVisible>
@@ -1080,6 +1165,9 @@ const KidenaHouse = () => (
                         src="/images/kidena-house.jpg" 
                         alt="Kidena House" 
                         className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover" 
+                        loading="lazy"
+                        width={1024}
+                        height={765}
                     />
                 </div>
             </ParallaxWrapper>
@@ -1098,7 +1186,7 @@ const KidenaHouse = () => (
                         <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">6 bedrooms, 9 bathrooms. Private pool and a private lake on the property. Three acres of space to spread out and breathe.</p>
                     </div>
                 </div>
-            </div>
+        </div>
 
             <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#B8D4E8] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
@@ -1122,7 +1210,7 @@ const KidenaHouse = () => (
                         <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">There's an on-site spa if you need to decompress before all the wedding chaos starts.</p>
                     </div>
                 </div>
-            </div>
+        </div>
 
             <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#B8D4E8] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
@@ -1136,7 +1224,7 @@ const KidenaHouse = () => (
                 </div>
         </div>
 
-        </div>
+      </div>
 
         {/* Dates Section - Centered */}
         <div className="max-w-2xl mx-auto">
@@ -1147,7 +1235,7 @@ const KidenaHouse = () => (
                 </div>
                 <p className="font-hand text-xl md:text-2xl text-navy/80 leading-relaxed">This is home base for the family. Where we'll all be together in the days leading up to the wedding. The calm before the beautiful storm.</p>
             </div>
-        </div>
+    </div>
 
     </FadeInWhenVisible>
 
@@ -1165,7 +1253,7 @@ const FamilyItinerary = () => (
 
         <SketchIcon type="palm" className="absolute top-20 right-20 w-96 h-96 text-navy rotate-12" />
 
-                    </div>
+    </div>
 
      <FadeInWhenVisible className="max-w-5xl mx-auto relative z-10">
 
@@ -1175,7 +1263,7 @@ const FamilyItinerary = () => (
 
             <p className="text-navy/70 font-hand text-xl md:text-2xl">Your guide to four days in Goa</p>
 
-                    </div>
+        </div>
 
         
 
@@ -1243,7 +1331,7 @@ const FamilyItinerary = () => (
 
                                     <item.icon className="w-8 h-8" style={{ color: item.color }} />
 
-        </div>
+                    </div>
 
                                 <div className="flex-1 md:min-w-[140px]">
 
@@ -1255,9 +1343,9 @@ const FamilyItinerary = () => (
 
                                     )}
 
-                                </div>
+                    </div>
 
-                            </div>
+                </div>
 
                             {/* Content column */}
                             <div className="flex-1">
@@ -1266,9 +1354,9 @@ const FamilyItinerary = () => (
 
                                 <p className="font-hand text-lg md:text-xl text-navy/80 leading-relaxed">{item.desc}</p>
 
-                            </div>
+    </div>
 
-                        </div>
+        </div>
 
                 </div>
 
@@ -1320,7 +1408,11 @@ const Celebration = ({ isFamilyMode }) => (
 
                   alt="Blu Missel by the River" 
 
+                  loading="lazy" 
+
                   className="absolute inset-0 w-full h-full object-cover"
+                  width={1024}
+                  height={683}
 
                 />
 
@@ -1411,6 +1503,48 @@ const Celebration = ({ isFamilyMode }) => (
 
         </div>
 
+      </div>
+
+      <div className="mt-12 grid gap-4 md:grid-cols-2">
+        <a
+          href={GOOGLE_CALENDAR_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="sketchy-border border-2 border-[#D4A5A5]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          aria-label="Add wedding to Google Calendar"
+        >
+          <Calendar size={20} />
+          Add to Google Calendar
+        </a>
+        <a
+          href={ICS_CALENDAR_PATH}
+          download
+          className="sketchy-border border-2 border-[#B8D4E8]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          aria-label="Download ICS calendar file"
+        >
+          <Calendar size={20} />
+          Download .ics File
+        </a>
+        <a
+          href={VENUE_GOOGLE_MAPS_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="sketchy-border border-2 border-[#D4A5A5]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          aria-label="Open venue in Google Maps"
+        >
+          <MapPin size={20} />
+          Google Maps Venue Pin
+        </a>
+        <a
+          href={VENUE_APPLE_MAPS_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="sketchy-border border-2 border-[#B8D4E8]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          aria-label="Open venue in Apple Maps"
+        >
+          <MapPin size={20} />
+          Apple Maps Venue Pin
+        </a>
       </div>
 
     </FadeInWhenVisible>
@@ -2004,13 +2138,6 @@ const RSVP = () => {
       formDataToSend.append('_subject', 'Wedding RSVP from ' + trimmedName);
       formDataToSend.append('_format', 'json'); // Request JSON response
 
-      // Debug: Log all form data
-      console.log('Submitting to:', FORMSPREE_ENDPOINT);
-      console.log('Form state:', formData);
-      console.log('Trimmed email:', trimmedEmail);
-      console.log('Form data entries:', Array.from(formDataToSend.entries()));
-      console.log('Email value being sent:', formDataToSend.get('email'));
-
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -2019,16 +2146,12 @@ const RSVP = () => {
         body: formDataToSend, // FormData automatically sets Content-Type with boundary
       });
 
-      console.log('Response status:', response.status, response.statusText);
-      console.log('Response ok:', response.ok);
-
       const responseData = await response.json();
-      console.log('Response data:', responseData);
 
       if (response.ok) {
         setSubmitted(true);
         setIsSubmitting(false);
-        confetti({
+        fireConfetti({
           particleCount: 120,
           spread: 70,
           origin: { y: 0.6 },
@@ -2036,8 +2159,6 @@ const RSVP = () => {
         });
       } else {
         setIsSubmitting(false);
-        console.error('Formspree error response:', response.status, responseData);
-        console.error('Full error details:', JSON.stringify(responseData, null, 2));
         
         if (responseData.error) {
           alert('Error: ' + responseData.error);
@@ -2053,10 +2174,7 @@ const RSVP = () => {
     } catch (error) {
       setIsSubmitting(false);
       console.error('Submission error:', error);
-      console.error('Error name:', error.name);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-      alert('Network error. Please check your connection and try again. Error: ' + (error.message || error.toString()));
+      alert('Network error. Please check your connection and try again.');
     }
   };
 
@@ -2097,9 +2215,10 @@ const RSVP = () => {
 
             <div>
 
-              <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
+              <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
 
               <input 
+                id="rsvp-name"
                 type="text" 
                 name="name"
                 value={formData.name}
@@ -2117,9 +2236,10 @@ const RSVP = () => {
 
                 <div>
 
-                   <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
+                   <label htmlFor="rsvp-email" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
 
                    <input 
+                     id="rsvp-email"
                      type="email" 
                      name="email"
                      value={formData.email}
@@ -2133,9 +2253,10 @@ const RSVP = () => {
 
                 <div>
 
-                   <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
+                   <label htmlFor="rsvp-phone" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
 
                    <input 
+                     id="rsvp-phone"
                      type="tel" 
                      name="phone"
                      value={formData.phone}
@@ -2153,9 +2274,10 @@ const RSVP = () => {
 
             <div>
 
-                <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
+                <label htmlFor="rsvp-guests" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
 
                 <select 
+                  id="rsvp-guests"
                   name="guests"
                   value={formData.guests}
                   onChange={handleChange}
@@ -2228,9 +2350,10 @@ const RSVP = () => {
 
             <div>
 
-               <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
+               <label htmlFor="rsvp-dietary" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
 
                <input 
+                 id="rsvp-dietary"
                  type="text" 
                  name="dietary"
                  value={formData.dietary}
@@ -2245,9 +2368,10 @@ const RSVP = () => {
 
             <div>
 
-               <label className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2 flex items-center gap-2">Song Request</label>
+               <label htmlFor="rsvp-song" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2 flex items-center gap-2">Song Request</label>
 
                <input 
+                 id="rsvp-song"
                  type="text" 
                  name="song"
                  value={formData.song}
@@ -2266,7 +2390,7 @@ const RSVP = () => {
               className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1B3A57]"
             >
 
-              {isSubmitting ? 'Sending...' : 'Send RSVP'}
+              {isSubmitting ? 'Sending...' : 'Submit RSVP'}
 
             </button>
 
@@ -2354,6 +2478,8 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 
           className="mt-8 opacity-60 hover:opacity-100 transition-opacity text-xs md:text-sm border-2 border-[#F5F0E8]/40 rounded-full px-4 py-2 flex items-center gap-2 mx-auto bg-[#F5F0E8]/10 backdrop-blur-sm hover:bg-[#F5F0E8]/20 font-hand"
 
+          aria-label={isFamilyMode ? 'Switch to guest view' : 'Switch to family view'}
+
         >
 
           {isFamilyMode ? <Unlock size={14}/> : <Lock size={14}/>}
@@ -2374,7 +2500,7 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
 const MusicPlayer = () => {
 
   const [playing, setPlaying] = useState(false);
-
+      
   const audioRef = useRef(null);
 
 
@@ -2440,9 +2566,9 @@ const MusicPlayer = () => {
 
         <span className={`text-[9px] mt-0.5 tracking-tight ${playing ? 'text-[#D4A5A5] font-bold' : 'text-navy/60'} group-hover:text-[#D4A5A5] transition-colors`}>music</span>
 
-            </button>
+      </button>
 
-      <audio ref={audioRef} src="/music/goa-mix.mp3" loop preload="auto" />
+      <audio ref={audioRef} src="/music/goa-mix.mp3" loop preload="none" />
 
     </>
 
@@ -2479,469 +2605,6 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
 
 
-/* --- CARD STACK SYSTEM --- */
-
-
-
-const Card = ({ children, scrollable = false, className = '' }) => {
-
-  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
-
-  const cardRef = useRef(null);
-
-
-
-  useEffect(() => {
-
-    if (!scrollable || !cardRef.current) return;
-
-
-
-    const checkScroll = () => {
-
-      const el = cardRef.current;
-
-      if (el) {
-
-        const hasScroll = el.scrollHeight > el.clientHeight;
-
-        const isScrolled = el.scrollTop > 10;
-
-        setShowScrollIndicator(hasScroll && !isScrolled);
-
-      }
-
-    };
-
-
-
-    checkScroll();
-
-    const el = cardRef.current;
-
-    if (el) {
-
-      el.addEventListener('scroll', checkScroll);
-
-      return () => el.removeEventListener('scroll', checkScroll);
-
-    }
-
-  }, [scrollable]);
-
-
-
-  return (
-
-    <motion.div
-
-      ref={cardRef}
-
-      className={`h-screen w-screen ${scrollable ? 'overflow-y-auto overflow-x-hidden' : 'overflow-hidden'} ${className}`}
-
-      initial={{ opacity: 0 }}
-
-      animate={{ opacity: 1 }}
-
-      exit={{ opacity: 0 }}
-
-      transition={{ duration: 0.3 }}
-
-    >
-
-      <div className={scrollable ? 'min-h-screen py-6 md:py-12 px-4 md:px-6' : 'h-full flex items-center justify-center px-4 md:px-6'}>
-
-        {children}
-
-      </div>
-
-
-
-      {showScrollIndicator && scrollable && (
-
-        <motion.div
-
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40"
-
-          animate={{ y: [0, -10, 0] }}
-
-          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-
-        >
-
-          <ArrowDown className="text-navy/30" size={32} />
-
-        </motion.div>
-
-      )}
-
-    </motion.div>
-
-  );
-
-};
-
-
-
-const ProgressIndicator = ({ cards, currentIndex, onCardClick }) => {
-
-  return (
-
-    <div className="fixed top-4 left-4 right-4 z-50 flex gap-2 max-w-6xl mx-auto">
-
-      {cards.map((_, i) => (
-
-        <motion.button
-
-          key={i}
-
-          onClick={() => onCardClick(i)}
-
-          className="h-1 flex-1 rounded-full bg-white/30 backdrop-blur-sm cursor-pointer relative overflow-hidden"
-
-          whileHover={{ scale: 1.05 }}
-
-          whileTap={{ scale: 0.95 }}
-
-        >
-
-          <motion.div
-
-            className="h-full bg-[#D4A5A5] rounded-full"
-
-            initial={{ width: '0%' }}
-
-            animate={{
-
-              width: i < currentIndex ? '100%' : i === currentIndex ? '50%' : '0%'
-
-            }}
-
-            transition={{ duration: 0.3 }}
-
-          />
-
-        </motion.button>
-
-      ))}
-
-    </div>
-
-  );
-
-};
-
-
-
-const CardStack = ({ cards, isFamilyMode, fullContent }) => {
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const [viewMode, setViewMode] = useState('cards'); // 'cards' or 'scroll'
-
-  const touchStartX = useRef(0);
-
-  const touchStartY = useRef(0);
-
-  const isScrolling = useRef(false);
-
-
-
-  const goToCard = (index) => {
-
-    if (index >= 0 && index < cards.length) {
-
-      setCurrentIndex(index);
-
-    }
-
-  };
-
-
-
-  const nextCard = () => {
-
-    if (currentIndex < cards.length - 1) {
-
-      setCurrentIndex(currentIndex + 1);
-
-    }
-
-  };
-
-
-
-  const prevCard = () => {
-
-    if (currentIndex > 0) {
-
-      setCurrentIndex(currentIndex - 1);
-
-    }
-
-  };
-
-
-
-  // Keyboard navigation
-
-  useEffect(() => {
-
-    if (viewMode !== 'cards') return;
-
-
-
-    const handleKeyPress = (e) => {
-
-      if (e.key === 'ArrowLeft') {
-
-        prevCard();
-
-      } else if (e.key === 'ArrowRight') {
-
-        nextCard();
-
-      }
-
-    };
-
-
-
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => window.removeEventListener('keydown', handleKeyPress);
-
-  }, [currentIndex, viewMode]);
-
-
-
-  // Swipe gestures
-
-  const handleTouchStart = (e) => {
-
-    touchStartX.current = e.touches[0].clientX;
-
-    touchStartY.current = e.touches[0].clientY;
-
-    isScrolling.current = false;
-
-  };
-
-
-
-  const handleTouchMove = (e) => {
-
-    const deltaX = Math.abs(e.touches[0].clientX - touchStartX.current);
-
-    const deltaY = Math.abs(e.touches[0].clientY - touchStartY.current);
-
-
-
-    // If vertical scroll is more than horizontal, it's a scroll, not a swipe
-
-    if (deltaY > deltaX) {
-
-      isScrolling.current = true;
-
-    }
-
-  };
-
-
-
-  const handleTouchEnd = (e) => {
-
-    if (isScrolling.current || viewMode !== 'cards') return;
-
-
-
-    const touchEndX = e.changedTouches[0].clientX;
-
-    const touchEndY = e.changedTouches[0].clientY;
-
-    const deltaX = touchStartX.current - touchEndX;
-
-    const deltaY = Math.abs(touchStartY.current - touchEndY);
-
-
-
-    // Only trigger swipe if horizontal movement is greater than vertical
-
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
-
-      if (deltaX > 0) {
-
-        nextCard();
-
-      } else {
-
-        prevCard();
-
-      }
-
-    }
-
-  };
-
-
-
-  // Filter cards based on family mode
-
-  const visibleCards = cards.filter(card => {
-
-    if (card.familyOnly && !isFamilyMode) return false;
-
-    if (card.guestOnly && isFamilyMode) return false;
-
-    return true;
-
-  });
-
-
-
-  if (viewMode === 'scroll') {
-
-    return (
-
-      <div className="min-h-screen relative">
-
-        <button
-
-          onClick={() => setViewMode('cards')}
-
-          className="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-navy text-sm font-hand border-2 border-navy shadow-lg hover:scale-105 transition-transform"
-
-        >
-
-          Card View
-
-        </button>
-
-        {fullContent || visibleCards.map((card, i) => (
-
-          <div key={i}>
-
-            {card.component}
-
-      </div>
-
-        ))}
-
-      </div>
-
-    );
-
-  }
-
-
-
-  return (
-
-    <div
-
-      className="h-screen w-screen overflow-hidden relative bg-[#F5F0E8]"
-
-      onTouchStart={handleTouchStart}
-
-      onTouchMove={handleTouchMove}
-
-      onTouchEnd={handleTouchEnd}
-
-    >
-
-      <ProgressIndicator
-
-        cards={visibleCards}
-
-        currentIndex={currentIndex}
-
-        onCardClick={goToCard}
-
-      />
-
-
-
-      <button 
-
-        onClick={() => setViewMode('scroll')}
-
-        className="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 sketchy-border text-navy text-xs font-hand border border-navy/20 shadow-md hover:scale-105 transition-transform opacity-70 hover:opacity-100"
-
-      >
-
-        View All
-
-      </button>
-
-
-
-      <AnimatePresence mode="wait" initial={false}>
-
-        <motion.div
-
-          key={currentIndex}
-
-          initial={{ x: 100, opacity: 0 }}
-
-          animate={{ x: 0, opacity: 1 }}
-
-          exit={{ x: -100, opacity: 0 }}
-
-          transition={{ type: 'tween', duration: 0.4, ease: 'easeInOut' }}
-
-          className="absolute inset-0"
-
-        >
-
-          {visibleCards[currentIndex]?.component}
-
-        </motion.div>
-
-      </AnimatePresence>
-
-
-
-      {/* Navigation Arrows */}
-
-      <button
-
-        onClick={prevCard}
-
-        disabled={currentIndex === 0}
-
-        className="fixed left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border-2 border-navy shadow-lg disabled:opacity-30 disabled:cursor-not-allowed hover:scale-110 transition-transform flex items-center justify-center text-navy font-bold"
-
-        aria-label="Previous card"
-
-      >
-
-        ←
-
-      </button>
-
-
-
-      <button
-
-        onClick={nextCard}
-
-        disabled={currentIndex === visibleCards.length - 1}
-
-        className="fixed right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border-2 border-navy shadow-lg disabled:opacity-30 disabled:cursor-not-allowed hover:scale-110 transition-transform flex items-center justify-center text-navy font-bold"
-
-        aria-label="Next card"
-
-      >
-
-        →
-
-      </button>
-
-    </div>
-
-  );
-
-};
 
 
 
@@ -3043,89 +2706,6 @@ const FloatingMusicNotes = () => {
 
 
 
-/* --- INTERACTIVE HOTSPOTS --- */
-
-const InteractiveHotspot = ({ position, tooltip, onClick, children }) => {
-
-  const [isHovered, setIsHovered] = useState(false);
-  const [isTapped, setIsTapped] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  // On mobile, show tooltip immediately on tap and keep it visible
-  const handleTouchStart = () => {
-    setIsTapped(true);
-    setShowTooltip(true);
-  };
-
-  const handleTouchEnd = () => {
-    // Keep tooltip visible for a moment on mobile so users can read it
-    setTimeout(() => {
-      setIsTapped(false);
-      setShowTooltip(false);
-    }, 2000);
-    if (onClick) onClick();
-  };
-
-  return (
-
-    <motion.button
-
-      className="absolute z-20 w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#D4A5A5] backdrop-blur-sm border-[3px] border-white shadow-xl flex items-center justify-center text-white text-base md:text-2xl touch-manipulation cursor-pointer active:scale-95"
-
-      style={position}
-
-      whileHover={{ scale: 1.3, rotate: 5 }}
-
-      whileTap={{ scale: 0.9 }}
-
-      onHoverStart={() => setIsHovered(true)}
-
-      onHoverEnd={() => setIsHovered(false)}
-
-      onTouchStart={handleTouchStart}
-
-      onTouchEnd={handleTouchEnd}
-
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (onClick) onClick();
-      }}
-
-      aria-label={tooltip}
-
-    >
-
-      {children}
-
-      {/* Show tooltip on hover (desktop) or tap (mobile) */}
-      {(isHovered || showTooltip) && (
-
-        <motion.div
-
-          initial={{ opacity: 0, y: 10, scale: 0.8 }}
-
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-
-          exit={{ opacity: 0, y: 10, scale: 0.8 }}
-
-          className="absolute -top-16 md:-top-12 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-xl sketchy-border whitespace-nowrap z-[60] border-2 border-navy"
-
-        >
-
-          <p className="font-hand text-xs md:text-sm text-navy font-bold">{tooltip}</p>
-
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"></div>
-
-        </motion.div>
-
-      )}
-
-    </motion.button>
-
-  );
-
-};
 
 
 
