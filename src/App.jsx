@@ -1140,9 +1140,9 @@ const Story = () => (
 
             <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-2 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '700px' }}>
 
-               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
+               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
 
             </div>
 
@@ -1202,9 +1202,9 @@ const Story = () => (
 
             <ParallaxWrapper offset={-20} hoverEffect className="sketchy-border p-3 bg-white -rotate-2 photo-frame">
 
-            <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '700px' }}>
 
-               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} />
+               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} />
 
             </div>
 
@@ -1226,9 +1226,9 @@ const Story = () => (
 
             <ParallaxWrapper offset={30} hoverEffect className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '700px' }}>
 
-               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={765} height={1024} />
+               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ objectPosition: 'center bottom' }} loading="lazy" width={765} height={1024} />
 
             </div>
 
@@ -1290,9 +1290,9 @@ const Story = () => (
 
             <ParallaxWrapper offset={-25} hoverEffect className="sketchy-border p-4 bg-white -rotate-1">
 
-             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
+             <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '700px' }}>
 
-                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
+                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
 
              </div>
 
