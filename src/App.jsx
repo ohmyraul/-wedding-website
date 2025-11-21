@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
-import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin } from 'lucide-react';
-import { motion, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
+import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 let confettiInstance = null;
@@ -380,15 +380,266 @@ const styles = `
 
   }
 
+  /* --- Game Styles --- */
+  
+  @keyframes gamePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .game-obstacle-catch {
+    animation: gamePulse 0.3s ease-out;
+  }
+
+  /* --- Mario Miranda Style Components --- */
+  
+  .page-shell {
+    min-height: 100vh;
+    background-color: #f7efe3;
+    background-image:
+      radial-gradient(circle at 2px 2px, rgba(0,0,0,0.12) 1px, transparent 0),
+      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0);
+    background-size: 12px 12px, 18px 18px;
+  }
+
+  .section-panel {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 3.5rem 1.75rem;
+    border-radius: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    background: var(--panel-bg, #fdf6ec);
+    position: relative;
+  }
+
+  .section-panel::before {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    border-radius: 18px;
+    border: 1px dashed rgba(0, 0, 0, 0.08);
+    pointer-events: none;
+  }
+
+  .section-panel--sunset { --panel-bg: #ffe6d3; }
+  .section-panel--ocean { --panel-bg: #e3f3f3; }
+
+  .signboard {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.8rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #f9b27e, #f58b7a);
+    border-radius: 999px;
+    position: relative;
+    box-shadow: 0 6px 0 #c5664e;
+    max-width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .signboard {
+      padding: 0.75rem 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+  }
+
+  .signboard::before,
+  .signboard::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #fdf6ec;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .signboard::before { left: -18px; }
+  .signboard::after { right: -18px; }
+
+  @media (max-width: 768px) {
+    .signboard::before,
+    .signboard::after {
+      display: none;
+    }
+  }
+
+  .signboard__text {
+    font-family: 'Kalam', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+
+  @media (min-width: 768px) {
+    .signboard__text {
+      font-size: 1.25rem;
+    }
+  }
+
+  .signboard--dark .signboard__text {
+    color: #F5F0E8;
+  }
+
+  .signboard--dark::before,
+  .signboard--dark::after {
+    background: #1B3A57;
+  }
+
+  .postcard {
+    background: #fffdf6;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,0.18);
+    padding: 1.75rem 1.5rem;
+    position: relative;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+    background-image: linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 12px 100%;
+  }
+
+  /* Decorative stamp removed to keep the postcard minimal */
+
+  .section-divider {
+    position: relative;
+    height: 1px;
+    margin: 3rem 0;
+  }
+
+  .section-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    transform: translateY(-50%);
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+  }
+
+  .string-lights {
+    transform-origin: 0 0;
+    animation: sway 6s ease-in-out infinite;
+  }
+
+  .goa-mini-map {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 3 / 4;
+    margin: 0 auto;
+    border-radius: 18px;
+    border: 2px solid rgba(0,0,0,0.2);
+    background: linear-gradient(to bottom, #f9f0e0 55%, #cfe9f5 55%);
+    overflow: hidden;
+  }
+
+  .goa-mini-map::before {
+    content: '';
+    position: absolute;
+    left: 40%;
+    top: 30%;
+    width: 120%;
+    height: 200%;
+    background: radial-gradient(circle at 0 50%, #f9f0e0 40%, transparent 41%);
+    opacity: 0.9;
+  }
+
+  .goa-mini-map__pin {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    border: 2px solid #1b3a57;
+    background: #f58b7a;
+    box-shadow: 0 0 0 3px rgba(245,139,122,0.35);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .goa-mini-map__pin.is-active {
+    transform: scale(1.25);
+    z-index: 10;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .string-lights {
+      animation: none;
+    }
+  }
+
 `;
 
-const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs%20%26%20Alysha%20Wedding%20Celebration&dates=20260320T140000Z/20260320T180000Z&details=Celebrate%20with%20us%20in%20Goa.%20RSVP%20and%20travel%20info%20on%20our%20site.&location=Blu%20Missel%20by%20the%20River%2C%20Betul%2C%20Goa%20403713%2C%20India';
-const ICS_CALENDAR_PATH = '/calendar/shubs-alysha-wedding.ics';
-const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River,+Betul,+Goa+403713,+India';
-const VENUE_APPLE_MAPS_URL = 'http://maps.apple.com/?address=Betul,Goa,India&q=Blu+Missel+by+the+River';
-const NEARBY_STAYS_URL = 'https://www.google.com/maps/search/Hotels+near+Betul+Goa';
+const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs%20%26%20Alysha%20Wedding%20Celebration&dates=20260320T140000Z/20260320T180000Z&details=Celebrate%20with%20us%20in%20Goa.%20RSVP%20and%20travel%20info%20on%20our%20site.&location=Blu%20Missel%20by%20the%20River%2C%20Fondvem%2C%20Ribandar%2C%20Goa%2C%20India';
+const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River,+Fondvem,+Ribandar,+Goa,+India';
+const VENUE_APPLE_MAPS_URL = 'http://maps.apple.com/?address=Fondvem,Ribandar,Goa,India&q=Blu+Missel+by+the+River';
+const SECTION_PADDING = 'px-4 md:px-8 lg:px-16 xl:px-24';
 
+/* --- Mario Miranda Style Components --- */
 
+const SectionPanel = ({ id, label, variant = 'light', children, className = '' }) => {
+  return (
+    <section
+      id={id}
+      data-label={label}
+      className={`section-panel section-panel--${variant} ${className}`}
+    >
+      {children}
+    </section>
+  );
+};
+
+const SignboardHeading = ({ children, variant = 'light' }) => {
+  return (
+    <div className={`signboard ${variant === 'dark' ? 'signboard--dark' : ''}`}>
+      <h2 className="signboard__text">{children}</h2>
+    </div>
+  );
+};
+
+const Postcard = ({ children, className = '' }) => {
+  return <div className={`postcard ${className}`}>{children}</div>;
+};
+
+const SectionDivider = () => {
+  return <div className="section-divider" />;
+};
+
+const GoaMiniMap = ({ activeId, onSelect, points = [] }) => {
+  const defaultPoints = [
+    { id: 'agonda', label: 'Agonda', x: 32, y: 48 },
+    { id: 'palolem', label: 'Palolem', x: 36, y: 58 },
+    { id: 'ribandar', label: 'Ribandar', x: 48, y: 42 },
+    { id: 'panjim', label: 'Panjim', x: 25, y: 35 },
+    { id: 'dona-paula', label: 'Dona Paula', x: 28, y: 38 },
+  ];
+
+  const mapPoints = points.length > 0 ? points : defaultPoints;
+
+  return (
+    <div className="goa-mini-map">
+      {mapPoints.map(p => (
+        <button
+          key={p.id}
+          className={`goa-mini-map__pin ${p.id === activeId ? 'is-active' : ''}`}
+          style={{ left: `${p.x}%`, top: `${p.y}%` }}
+          onClick={() => onSelect?.(p.id)}
+          aria-label={p.label}
+          title={p.label}
+        />
+      ))}
+    </div>
+  );
+};
 
 const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
 
@@ -663,7 +914,7 @@ const Nav = ({ isFamilyMode }) => {
 
 const Hero = ({ onScrollToSection }) => (
 
-  <section className="min-h-screen flex flex-col items-center justify-center px-4 pt-20 md:pt-24 pb-8 md:pb-12 relative" aria-label="Hero section">
+  <section className={`min-h-screen flex flex-col items-center justify-center ${SECTION_PADDING} pt-20 md:pt-24 pb-8 md:pb-12 relative`} aria-label="Hero section">
 
     <div className="watercolor-bg"></div>
 
@@ -709,7 +960,7 @@ const Hero = ({ onScrollToSection }) => (
 
       
 
-      <div className="flex flex-col items-center gap-4 mt-6 mb-12 rotate-[-1deg]">
+      <div className="flex flex-col items-center gap-4 mt-6 mb-10 rotate-[-1deg]">
 
         <h2 className="text-3xl md:text-5xl font-hand text-navy relative">
 
@@ -733,6 +984,27 @@ const Hero = ({ onScrollToSection }) => (
 
         </div>
 
+      </div>
+
+      <div className="max-w-3xl mx-auto mb-12">
+        <div className="sketchy-border border-2 border-[#D4A5A5]/30 bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-5 text-navy/80 font-hand shadow-md">
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-sm md:text-base">
+            <div className="flex items-center gap-2">
+              <Calendar size={16} className="text-[#D4A5A5] flex-shrink-0" />
+              <span className="font-bold text-navy">Friday, March 20, 2026</span>
+            </div>
+            <span className="hidden md:block text-[#D4A5A5]">·</span>
+            <div className="flex items-center gap-2">
+              <Clock size={16} className="text-[#D4A5A5] flex-shrink-0" />
+              <span className="font-semibold text-navy">3:30 PM onwards</span>
+            </div>
+            <span className="hidden md:block text-[#D4A5A5]">·</span>
+            <div className="flex items-center gap-2">
+              <MapPin size={16} className="text-[#D4A5A5] flex-shrink-0" />
+              <span className="font-semibold text-navy">Blu Missel by the River, Fondvem, Ribandar</span>
+            </div>
+          </div>
+        </div>
       </div>
 
 
@@ -810,7 +1082,7 @@ const Hero = ({ onScrollToSection }) => (
 
 const Story = () => (
 
-  <section id="our-story" className="pt-8 md:pt-12 lg:pt-16 pb-12 md:pb-16 lg:pb-20 px-4 md:px-6 relative">
+  <section id="our-story" className={`pt-8 md:pt-12 lg:pt-16 pb-12 md:pb-16 lg:pb-20 ${SECTION_PADDING} relative`}>
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
@@ -1026,13 +1298,477 @@ const Story = () => (
 
 
 
+const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
+  const LANES = 4;
+  const isOpen = externalIsOpen || false;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [speed, setSpeed] = useState(500);
+  const [cookieLane, setCookieLane] = useState(1);
+  const [obstacles, setObstacles] = useState([]);
+  const [showPun, setShowPun] = useState(null);
+  const [groundOffset, setGroundOffset] = useState(0);
+  const gameIntervalRef = useRef(null);
+  const groundIntervalRef = useRef(null);
+  const obstacleIdRef = useRef(0);
+  const cookieImageRef = useRef(null);
+
+  // Reset game state when closed
+  useEffect(() => {
+    if (!isOpen) {
+      setIsPlaying(false);
+      setIsGameOver(false);
+      setIsPaused(false);
+      if (gameIntervalRef.current) {
+        clearInterval(gameIntervalRef.current);
+        gameIntervalRef.current = null;
+      }
+      if (groundIntervalRef.current) {
+        clearInterval(groundIntervalRef.current);
+        groundIntervalRef.current = null;
+      }
+    }
+  }, [isOpen]);
+
+  const dogPuns = [
+    "Woof! That's a-paw-solutely delicious!",
+    "Bark! I'm having a fowl-tastic time!",
+    "Ruff! This is un-fur-gettable!",
+    "Woof woof! I'm on a roll!",
+    "Bark! That's paw-some!",
+    "Ruff! I'm the top dog now!",
+    "Woof! This is going to be a tail to remember!",
+    "Bark! I'm having a howling good time!",
+    "Ruff! That's dog-gone good!",
+    "Woof! I'm fetching greatness!",
+    "Bark! This is fur-real fun!",
+    "Ruff! I'm pawsitively winning!",
+    "Woof! That's a dog-gone good catch!",
+    "Bark! I'm the alpha of this game!",
+    "Ruff! This is un-fur-gettable fun!"
+  ];
+
+  const obstacleTypes = [
+    { emoji: '🍗', name: 'Chicken', type: 'catch' },
+    { emoji: '🐟', name: 'Fish', type: 'catch' },
+    { emoji: '🍤', name: 'Prawns', type: 'catch' },
+    { emoji: '🥥', name: 'Coconut', type: 'catch' },
+    { emoji: '👶', name: 'Goan Kid', type: 'avoid' },
+    { emoji: '🏍️', name: 'Scooter', type: 'avoid' },
+  ];
+
+  const moveCookie = (direction) => {
+    if (!isPlaying || isGameOver || isPaused) return;
+    setCookieLane(prev => {
+      const newLane = direction === 'up' 
+        ? Math.max(0, prev - 1)
+        : Math.min(LANES - 1, prev + 1);
+      return newLane;
+    });
+  };
+
+  const startGame = () => {
+    if (gameIntervalRef.current) {
+      clearInterval(gameIntervalRef.current);
+      gameIntervalRef.current = null;
+    }
+    if (groundIntervalRef.current) {
+      clearInterval(groundIntervalRef.current);
+      groundIntervalRef.current = null;
+    }
+    setScore(0);
+    setLevel(1);
+    setSpeed(500);
+    setCookieLane(1);
+    setObstacles([]);
+    setIsGameOver(false);
+    setIsPlaying(true);
+    setIsPaused(false);
+    setShowPun(null);
+    setGroundOffset(0);
+    obstacleIdRef.current = 0;
+  };
+
+  // Ground animation
+  useEffect(() => {
+    if (!isPlaying || isGameOver || isPaused) {
+      if (groundIntervalRef.current) {
+        clearInterval(groundIntervalRef.current);
+        groundIntervalRef.current = null;
+      }
+      return;
+    }
+
+    const groundSpeed = Math.max(2, 8 - level);
+    groundIntervalRef.current = setInterval(() => {
+      setGroundOffset(prev => (prev + groundSpeed) % 40);
+    }, 16); // ~60fps
+
+    return () => {
+      if (groundIntervalRef.current) {
+        clearInterval(groundIntervalRef.current);
+        groundIntervalRef.current = null;
+      }
+    };
+  }, [isPlaying, isGameOver, isPaused, level]);
+
+  // Game loop
+  useEffect(() => {
+    if (!isPlaying || isGameOver || isPaused) {
+      if (gameIntervalRef.current) {
+        clearInterval(gameIntervalRef.current);
+        gameIntervalRef.current = null;
+      }
+      return;
+    }
+
+    if (gameIntervalRef.current) {
+      clearInterval(gameIntervalRef.current);
+    }
+
+    gameIntervalRef.current = setInterval(() => {
+      setObstacles(prev => {
+        const moveSpeed = Math.max(0.5, 2 - (level * 0.1));
+        const moved = prev.map(obs => ({
+          ...obs,
+          position: obs.position - moveSpeed
+        }));
+
+        const toRemove = new Set();
+        moved.forEach(obs => {
+          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5) {
+            if (obs.type === 'avoid') {
+              setIsGameOver(true);
+              setIsPlaying(false);
+              setHighScore(prev => Math.max(prev, score));
+            } else if (obs.type === 'catch') {
+              toRemove.add(obs.id);
+              setScore(s => {
+                const newScore = s + 1;
+                setLevel(prevLevel => {
+                  const newLevel = Math.floor(newScore / 5) + 1;
+                  if (newLevel > prevLevel) {
+                    setSpeed(prevSpeed => Math.max(200, prevSpeed - 40));
+                    return newLevel;
+                  }
+                  return prevLevel;
+                });
+                return newScore;
+              });
+              const randomPun = dogPuns[Math.floor(Math.random() * dogPuns.length)];
+              setShowPun(randomPun);
+              setTimeout(() => setShowPun(null), 1200);
+            }
+          }
+        });
+
+        const filtered = moved.filter(obs => obs.position > -2 && !toRemove.has(obs.id));
+
+        if (Math.random() < 0.7) {
+          const randomType = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+          filtered.push({
+            id: obstacleIdRef.current++,
+            lane: Math.floor(Math.random() * LANES),
+            position: 10,
+            type: randomType.type,
+            emoji: randomType.emoji,
+            name: randomType.name
+          });
+        }
+
+        return filtered;
+      });
+    }, speed);
+
+    return () => {
+      if (gameIntervalRef.current) {
+        clearInterval(gameIntervalRef.current);
+        gameIntervalRef.current = null;
+      }
+    };
+  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, level, score]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
+        event.preventDefault();
+        if (isGameOver) {
+          startGame();
+        } else {
+          moveCookie('up');
+        }
+      } else if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
+        event.preventDefault();
+        moveCookie('down');
+      } else if (event.key === ' ' || event.key === 'Enter') {
+        event.preventDefault();
+        if (isGameOver || (!isPlaying && !isGameOver)) {
+          startGame();
+        } else if (isPlaying) {
+          setIsPaused(prev => !prev);
+        }
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        if (isPaused) {
+          setIsPaused(false);
+        } else if (isPlaying) {
+          setIsPaused(true);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, isPlaying, isGameOver, isPaused]);
+
+  const closeGame = () => {
+    setIsPlaying(false);
+    setIsGameOver(false);
+    setIsPaused(false);
+    if (gameIntervalRef.current) {
+      clearInterval(gameIntervalRef.current);
+      gameIntervalRef.current = null;
+    }
+    if (groundIntervalRef.current) {
+      clearInterval(groundIntervalRef.current);
+      groundIntervalRef.current = null;
+    }
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4">
+          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden" style={{ height: '90vh', maxHeight: '700px' }}>
+            <button
+              onClick={closeGame}
+              className="absolute top-4 right-4 z-30 w-8 h-8 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+              aria-label="Close game"
+            >
+              <X size={18} />
+            </button>
+
+            {/* Score Display - Always visible */}
+            <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start">
+              <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
+                <div className="text-2xl font-bold text-navy font-mono tabular-nums">{score.toString().padStart(4, '0')}</div>
+                <div className="text-xs text-navy/60 font-hand">Level {level}</div>
+              </div>
+              {highScore > 0 && (
+                <div className="bg-white/95 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md text-right">
+                  <div className="text-xs text-navy/50 font-hand">HI</div>
+                  <div className="text-lg font-bold text-navy/70 font-mono tabular-nums">{highScore.toString().padStart(4, '0')}</div>
+                </div>
+              )}
+            </div>
+
+            {/* Start Screen */}
+            {!isPlaying && !isGameOver && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#F5F0E8] to-white z-10 p-8">
+                <div className="mb-8">
+                  <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white border-4 border-white shadow-2xl p-1 flex items-center justify-center overflow-hidden" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(212, 165, 165, 0.3)' }}>
+                    <img
+                      ref={cookieImageRef}
+                      src="/images/cookie.png"
+                      alt="Cookie"
+                      className="w-full h-full object-cover rounded-full"
+                      onError={(e) => {
+                        e.target.src = '/images/cookie.jpg';
+                        e.target.style.objectPosition = 'center 20%';
+                      }}
+                    />
+                  </div>
+                </div>
+                <h4 className="text-4xl font-hand text-navy mb-3 font-bold">Cookie's Goan Chase</h4>
+                <p className="text-sm text-navy/70 mb-2 text-center max-w-md">
+                  Use ↑↓ to move between lanes
+                </p>
+                <p className="text-xs text-navy/60 mb-8 text-center">
+                  Catch food 🍗🐟🍤🥥 • Avoid kids 👶 and scooters 🏍️
+                </p>
+                <button
+                  onClick={startGame}
+                  className="px-8 py-3 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105"
+                >
+                  Press ↑ or Space to Start
+                </button>
+              </div>
+            )}
+
+            {/* Game Over Screen */}
+            {isGameOver && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-20 p-8">
+                <div className="text-center">
+                  <h4 className="text-5xl font-bold text-navy mb-4 font-hand">Game Over</h4>
+                  <div className="text-6xl font-mono font-bold text-[#D4A5A5] mb-2 tabular-nums">{score.toString().padStart(4, '0')}</div>
+                  <p className="text-sm text-navy/60 mb-2">Level {level}</p>
+                  {score >= highScore && score > 0 && (
+                    <p className="text-xs text-[#D4A5A5] font-bold mb-6">NEW HIGH SCORE!</p>
+                  )}
+                  <button
+                    onClick={startGame}
+                    className="px-8 py-3 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105"
+                  >
+                    Play Again
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Pause Screen */}
+            {isPaused && isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-20">
+                <div className="bg-white rounded-xl px-8 py-6 shadow-2xl text-center">
+                  <h4 className="text-3xl font-bold text-navy mb-4 font-hand">Paused</h4>
+                  <p className="text-sm text-navy/60 mb-4">Press Space or Esc to resume</p>
+                  <button
+                    onClick={() => setIsPaused(false)}
+                    className="px-6 py-2 bg-[#1B3A57] text-white font-bold rounded-lg hover:bg-[#2c5378] transition-all"
+                  >
+                    Resume
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Game Area */}
+            {isPlaying && (
+              <div className="relative w-full h-full bg-gradient-to-b from-[#B8D4E8]/40 via-[#F5F0E8] to-[#F5F0E8] overflow-hidden">
+                {/* Animated Ground */}
+                <div 
+                  className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#8B7355] to-[#A68B6B] border-t-4 border-[#6B5A45]"
+                  style={{
+                    backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.1) 40px)`,
+                    backgroundPosition: `${groundOffset}px 0`
+                  }}
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                </div>
+
+                {/* Game lanes */}
+                {Array.from({ length: LANES }).map((_, laneIndex) => (
+                  <div
+                    key={laneIndex}
+                    className="absolute left-0 right-0"
+                    style={{
+                      top: `${(laneIndex + 1) * (100 / (LANES + 1))}%`,
+                      height: `${100 / (LANES + 1)}%`,
+                      borderBottom: laneIndex < LANES - 1 ? '1px dashed rgba(27, 58, 87, 0.1)' : 'none'
+                    }}
+                  >
+                    {/* Cookie sticker */}
+                    {cookieLane === laneIndex && (
+                      <motion.div
+                        className="absolute left-8 z-10"
+                        style={{ top: '50%', transform: 'translateY(-50%)' }}
+                        animate={{ y: [0, -3, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.5, ease: 'easeInOut' }}
+                      >
+                        <div className="w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden" style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.2), 0 0 0 3px rgba(212, 165, 165, 0.4)' }}>
+                          <img
+                            src="/images/cookie.png"
+                            alt="Cookie"
+                            className="w-full h-full object-cover rounded-full"
+                            onError={(e) => {
+                              e.target.src = '/images/cookie.jpg';
+                              e.target.style.objectPosition = 'center 20%';
+                            }}
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* Obstacles */}
+                    {obstacles
+                      .filter(obs => obs.lane === laneIndex)
+                      .map(obs => (
+                        <motion.div
+                          key={obs.id}
+                          className="absolute z-5"
+                          style={{
+                            left: `${obs.position * 10}%`,
+                            top: '50%',
+                            transform: 'translateY(-50%)'
+                          }}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ 
+                            opacity: 1, 
+                            scale: 1,
+                            rotate: obs.type === 'catch' ? [0, 5, -5, 0] : 0
+                          }}
+                          transition={{ 
+                            rotate: { repeat: Infinity, duration: 0.5 },
+                            opacity: { duration: 0.2 }
+                          }}
+                        >
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center text-4xl shadow-xl border-3 ${
+                            obs.type === 'avoid' 
+                              ? 'bg-red-100 border-red-500' 
+                              : 'bg-green-100 border-green-500'
+                          }`} style={{ borderWidth: '3px' }}>
+                            {obs.emoji}
+                          </div>
+                        </motion.div>
+                      ))}
+                  </div>
+                ))}
+
+                {/* Pun popup */}
+                <AnimatePresence>
+                  {showPun && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 30, scale: 0.7 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -30, scale: 0.7 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                      className="absolute top-1/3 left-1/2 -translate-x-1/2 z-30 bg-[#D4A5A5] text-white px-5 py-3 rounded-full shadow-2xl border-3 border-white font-hand text-base font-bold whitespace-nowrap pointer-events-none"
+                      style={{ borderWidth: '3px' }}
+                    >
+                      {showPun}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {/* Mobile controls */}
+            {isPlaying && (
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 md:hidden z-20">
+                <button
+                  onClick={() => moveCookie('up')}
+                  className="w-14 h-14 rounded-full bg-white/95 backdrop-blur-sm shadow-xl hover:scale-110 active:scale-95 transition-transform border-2 border-navy/20 flex items-center justify-center text-2xl font-bold text-navy"
+                  aria-label="Move up"
+                >
+                  ↑
+                </button>
+                <button
+                  onClick={() => moveCookie('down')}
+                  className="w-14 h-14 rounded-full bg-white/95 backdrop-blur-sm shadow-xl hover:scale-110 active:scale-95 transition-transform border-2 border-navy/20 flex items-center justify-center text-2xl font-bold text-navy"
+                  aria-label="Move down"
+                >
+                  ↓
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+  );
+};
+
 const CookieAndBailey = () => (
 
-  <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 relative bg-white">
+  <section className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} relative bg-white`}>
 
     <FadeInWhenVisible className="max-w-5xl mx-auto text-center">
 
-      <h3 className="text-4xl md:text-5xl font-hand text-navy mb-6">The Real Bosses</h3>
+      <SignboardHeading>The Real Bosses</SignboardHeading>
 
       <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-12 md:mb-16"></div>
       
@@ -1094,41 +1830,6 @@ const CookieAndBailey = () => (
 
       </div>
 
-      <div className="mt-12 grid gap-4 md:grid-cols-2">
-        <a 
-          href={VENUE_GOOGLE_MAPS_URL} 
-          target="_blank" 
-          rel="noreferrer" 
-          className="sketchy-border border-2 border-[#D4A5A5]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
-          aria-label="Open venue in Google Maps"
-        >
-          <MapPin size={20} />
-          Google Maps Venue Pin
-        </a>
-        <a 
-          href={VENUE_APPLE_MAPS_URL} 
-          target="_blank" 
-          rel="noreferrer" 
-          className="sketchy-border border-2 border-[#B8D4E8]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
-          aria-label="Open venue in Apple Maps"
-        >
-          <MapPin size={20} />
-          Apple Maps Venue Pin
-        </a>
-      </div>
-
-      <div className="mt-4">
-        <a 
-          href={NEARBY_STAYS_URL} 
-          target="_blank" 
-          rel="noreferrer" 
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#D4A5A5] text-white font-hand text-base uppercase tracking-wide hover:scale-105 transition-transform"
-          aria-label="Open nearby stay suggestions"
-        >
-          <Home size={18} />
-          Find Nearby Stays
-        </a>
-      </div>
 
     </FadeInWhenVisible>
 
@@ -1142,7 +1843,7 @@ const CookieAndBailey = () => (
 
 const KidenaHouse = () => (
 
-  <section id="kidena-house" className="py-20 md:py-24 lg:py-28 px-4 md:px-6 bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden">
+  <section id="kidena-house" className={`py-20 md:py-24 lg:py-28 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden`}>
 
     {/* Subtle background decoration */}
     <div className="absolute inset-0 opacity-5 pointer-events-none">
@@ -1153,8 +1854,8 @@ const KidenaHouse = () => (
 
         {/* Header Section */}
         <div className="text-center mb-16 md:mb-20">
-            <h2 className="text-4xl md:text-5xl font-hand mb-6 text-[#F5F0E8] leading-tight">Where You'll Stay</h2>
-            <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80">Kidena House • Batim Village, Goa Velha</p>
+            <SignboardHeading variant="dark">Where You'll Stay</SignboardHeading>
+            <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">Kidena House • Batim Village, Goa Velha</p>
     </div>
 
         {/* Hero Image - Full Width */}
@@ -1247,7 +1948,7 @@ const KidenaHouse = () => (
 
 const FamilyItinerary = () => (
 
-  <section id="family-itinerary" className="py-12 md:py-16 lg:py-20 px-4 md:px-6 bg-gradient-to-b from-[#F5F0E8] to-white relative">
+  <section id="family-itinerary" className={`py-12 md:py-16 lg:py-20 ${SECTION_PADDING} bg-gradient-to-b from-[#F5F0E8] to-white relative`}>
 
     <div className="absolute inset-0 opacity-5 pointer-events-none">
 
@@ -1259,9 +1960,9 @@ const FamilyItinerary = () => (
 
         <div className="text-center mb-16">
 
-            <h2 className="text-4xl md:text-5xl font-hand text-navy mb-4">The Family Plan</h2>
+            <SignboardHeading>The Family Plan</SignboardHeading>
 
-            <p className="text-navy/70 font-hand text-xl md:text-2xl">Your guide to four days in Goa</p>
+            <p className="text-navy/70 font-hand text-xl md:text-2xl mt-4">Your guide to four days in Goa</p>
 
         </div>
 
@@ -1376,9 +2077,11 @@ const FamilyItinerary = () => (
 
 const Celebration = ({ isFamilyMode }) => (
 
-  <section id="the-celebration" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 relative">
+  <section id="the-celebration" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} relative`}>
 
     <div className="watercolor-bg" style={{ transform: 'scaleY(-1)' }}></div>
+
+    <SectionDivider />
 
     <FadeInWhenVisible className="max-w-6xl mx-auto">
 
@@ -1386,9 +2089,7 @@ const Celebration = ({ isFamilyMode }) => (
 
         <div className="text-center mb-12 md:mb-16">
 
-          <h2 className="text-4xl md:text-5xl font-hand text-navy inline-block border-b-4 border-[#D4A5A5] pb-3 mb-4" style={{ borderRadius: '50% 20% / 10% 40%' }}>The Big Party</h2>
-          
-          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
+          <SignboardHeading>The Big Party</SignboardHeading>
 
       </div>
 
@@ -1431,7 +2132,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                      <p className="font-bold text-navy">Blu Missel by the River</p>
 
-                     <p className="text-navy/70">Betul, Goa 403713</p>
+                     <p className="text-navy/70">Fondvem, Ribandar, Goa</p>
 
                    </div>
 
@@ -1505,45 +2206,36 @@ const Celebration = ({ isFamilyMode }) => (
 
       </div>
 
-      <div className="mt-12 grid gap-4 md:grid-cols-2">
+      <div className="mt-12 flex flex-wrap gap-3">
         <a
           href={GOOGLE_CALENDAR_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border-2 border-[#D4A5A5]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          className="sketchy-border border border-[#D4A5A5]/40 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Add wedding to Google Calendar"
         >
-          <Calendar size={20} />
+          <Calendar size={18} />
           Add to Google Calendar
-        </a>
-        <a
-          href={ICS_CALENDAR_PATH}
-          download
-          className="sketchy-border border-2 border-[#B8D4E8]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
-          aria-label="Download ICS calendar file"
-        >
-          <Calendar size={20} />
-          Download .ics File
         </a>
         <a
           href={VENUE_GOOGLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border-2 border-[#D4A5A5]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          className="sketchy-border border border-[#D4A5A5]/30 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Open venue in Google Maps"
         >
-          <MapPin size={20} />
-          Google Maps Venue Pin
+          <MapPin size={18} />
+          Google Maps Pin
         </a>
         <a
           href={VENUE_APPLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border-2 border-[#B8D4E8]/40 bg-white text-navy px-6 py-4 font-hand text-lg flex items-center justify-center gap-3 hover:-translate-y-1 transition-all"
+          className="sketchy-border border border-[#B8D4E8]/40 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Open venue in Apple Maps"
         >
-          <MapPin size={20} />
-          Apple Maps Venue Pin
+          <MapPin size={18} />
+          Apple Maps Pin
         </a>
       </div>
 
@@ -1565,17 +2257,19 @@ const DressCode = () => {
 
   return (
 
-    <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-white to-[#F5F0E8]/30 relative">
+    <section className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 relative`}>
 
       {/* Decorative elements */}
       <Sun className="absolute top-10 right-10 w-16 h-16 text-[#ffbd7b]/20 rotate-12 animate-float" />
       <Heart className="absolute bottom-10 left-10 w-12 h-12 text-[#B8D4E8]/20 -rotate-6 animate-float" />
 
+      <SectionDivider />
+
       <FadeInWhenVisible className="max-w-6xl mx-auto relative z-10">
 
         <div className="text-center mb-20 md:mb-24">
 
-          <h2 className="text-4xl md:text-5xl font-hand text-navy mb-6 sketchy-text">What to Wear</h2>
+          <SignboardHeading>What to Wear</SignboardHeading>
 
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-8"></div>
 
@@ -1693,15 +2387,15 @@ const ExploreGoa = () => {
 
       items: [
 
-        { name: "Joseph's Bar", type: "drink", location: "Fontainhas, Panjim", desc: "Old Goa charm in a bar that's been pouring since the '70s. Gundu the barman knows everyone. Try the Tambde Rosa — feni, kokum, rose water in a clay pot. Ten people inside, ten more spilling onto the street. Old jazz, cold beer, real Goan tavern culture." },
+        { name: "Joseph's Bar", type: "drink", location: "Fontainhas, Panjim", desc: "Tiny tavern run by Gundu, pouring Tambde Rosa (feni + kokum) in clay cups with old jazz crackling in the background. Ten seats, tons of stories.", mapUrl: "https://maps.app.goo.gl/4QUDG3gTQzyw3MPL6" },
 
-        { name: "Miguel's", type: "drink", location: "Fontainhas, Panjim", desc: "Art deco cocktail bar in a heritage building. Burma teak, marble inlay, handcrafted lamps. Serious cocktails — classic 1920s recipes with Goan ingredients. Barrel-aged feni creations. Small plates that respect 450 years of Konkan-Portuguese fusion. This is where you have the conversation that matters." },
+        { name: "Miguel's", type: "drink", location: "Fontainhas, Panjim", desc: "Art deco cocktail room inside a heritage home. Feni old-fashioneds, Burma teak, and small plates that taste like Goa + Lisbon had a chat.", mapUrl: "https://maps.app.goo.gl/8rU2f6Vg1JqZFShcA" },
 
-        { name: "Bombil", type: "food", location: "Campal, Panjim", desc: "Packed for lunch for a reason. Goan fish thali the way it's supposed to be — fish curry, clam stir fry, dried bombil, big Goan rice. Add your fish of choice. The bill is half what you'd pay at the fancy place next door, twice the food. No AC, lots of fans, loud and busy and exactly right. Yellow walls, vintage music, food that tastes like someone's grandmother made it." },
+        { name: "Bombil", type: "food", location: "Campal, Panjim", desc: "Lunch-only thali joint with clam stir fry, dried bombil, giant rice mounds, ceiling fans and grandma-level cooking. Loud, sweaty, perfect.", mapUrl: "https://maps.app.goo.gl/woeqeypdMobEHExQ7" },
 
-        { name: "Kokum Curry", type: "food", location: "Candolim (also in Panjim)", desc: "Authentic Saraswat Brahmin cuisine. The kind of Goan Hindu food that tourists never see. Six types of kokum curries. Fresh coconut, coconut oil, tamarind, no vinegar. Traditional techniques, heritage recipes. Fish thali that's different from everything else you'll eat in Goa. This is home cooking elevated, preserved, celebrated." },
+        { name: "Kokum Curry", type: "food", location: "Candolim (also in Panjim)", desc: "Saraswat Brahmin home food: coconut-rich curries, six versions of kokum, zero vinegar. A rare peek into Goan Hindu kitchens.", mapUrl: "https://maps.app.goo.gl/iNEK8NQGHXGa9XT48" },
 
-        { name: "Bar Outrigger", type: "drink", location: "Dona Paula", desc: "Rum bar hidden in a fishing village. They send you a treasure map to find it. Over 100 rums, tiki cocktails, a little cove where waves hit rocks. Come at sunset. Order something rum-forward. Stay until they sing 'My Heart Will Go On' at closing." }
+        { name: "Bar Outrigger", type: "drink", location: "Dona Paula", desc: "Rum den hidden in a fishing village. You literally get a treasure map, then 100+ rums, tiki glassware, and waves smacking the rocks.", mapUrl: "https://maps.app.goo.gl/Ui7Q6Ds1WzgrH71d7" }
 
       ]
 
@@ -1713,15 +2407,17 @@ const ExploreGoa = () => {
 
       items: [
 
-        { name: "Tejas Bar", type: "food", location: "Talpona Beach", desc: "Hands down the BEST kalwa sukka in Goa. Fresh oysters in coconut masala, bold and messy and exactly right. This is beach shack cooking at its finest. Eat with your hands. Order cold beer. Trust us on this." },
+        { name: "Tejas Bar", type: "food", location: "Talpona Beach", desc: "Beach shack legends for kalwa sukka (oysters in coconut masala). Eat with your hands, chase with cold beer, lick the spice off.", mapUrl: "https://maps.app.goo.gl/Km7FEL987PiJXUMa6" },
 
-        { name: "Kala Bahia", type: "party", location: "Colomb Bay", desc: "European-run spot where the music is good and the drinks are strong. Dance until sunrise catches you mid-laugh. Nobody judges. The night extends itself here." },
+        { name: "Kala Bahia", type: "party", location: "Colomb Bay", desc: "Euro-Goan house party on a cliff. DJs, espresso martinis, surprise sunrise views. Nobody judges your dance face.", mapUrl: "https://maps.app.goo.gl/HiKQ1DyQM28Y9tZc8" },
 
-        { name: "Kakolem Beach", type: "beach", location: "Tiger Beach", desc: "Hidden cove at the end of a 15-minute trek down rocky stairs through private property (₹50 entry). Horseshoe bay, golden sand, aquamarine water, freshwater waterfall hitting the beach. Worth every step down. Goa's last secret. Come early, bring water, leave before sunset." },
+        { name: "Kakolem Beach", type: "beach", location: "Tiger Beach", desc: "15-minute scramble down a private staircase to a hidden horseshoe bay with a freshwater fall. Bring water, leave nothing.", mapUrl: "https://maps.app.goo.gl/mSfg3UnLz28dPdVV9" },
 
-        { name: "Colomb Bay", type: "beach", location: "Between Palolem and Patnem", desc: "Our sanctuary. Small horseshoe bay between Palolem and Patnem where fishing families still haul nets in the morning. Clean sand, calm water, a few good shacks. Quiet, beautiful, untouched. The Goa you imagine when you close your eyes." },
+        { name: "Colomb Bay", type: "beach", location: "Between Palolem and Patnem", desc: "Our calm bay for morning swims. Fishing families haul nets while you sip chai. Quiet, blue, very ours.", mapUrl: "https://maps.app.goo.gl/wsWU8AZBdsc4YZhr7" },
 
-        { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "The famous crescent bay with palm trees and perfect swimming water. Go at sunrise before the crowds — just you and that golden light that makes everything look like a memory you haven't made yet." }
+        { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "The postcard crescent. Hit sunrise before the boat guys wake up—mirror water, palms silhouetted, just you.", mapUrl: "https://maps.app.goo.gl/oTJGboCKsGPkTmCs5" },
+
+        { name: "Le Petit Patnem", type: "party", location: "Patnem Beach", desc: "Daytime grilled fish + rosé, nighttime house/techno and barefoot dancing. Turns into a secret party pad after sunset.", mapUrl: "https://maps.app.goo.gl/cmcbjYpNst3scLet8" }
 
       ]
 
@@ -1733,13 +2429,15 @@ const ExploreGoa = () => {
 
   return (
 
-  <section id="explore-goa" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-white to-[#F5F0E8]/30 border-t border-navy/10">
+  <section id="explore-goa" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 border-t border-navy/10`}>
+
+    <SectionDivider />
 
     <FadeInWhenVisible className="max-w-6xl mx-auto">
 
         <div className="text-center mb-16 md:mb-20">
 
-          <h2 className="text-4xl md:text-5xl font-hand text-navy mb-6"><span className="text-[#D4A5A5]">Explore</span> Goa</h2>
+          <SignboardHeading>Explore Goa</SignboardHeading>
 
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-6"></div>
 
@@ -1750,8 +2448,6 @@ const ExploreGoa = () => {
           </p>
 
         </div>
-
-
 
         <div className="grid md:grid-cols-2 gap-8 md:gap-12">
 
@@ -1785,7 +2481,21 @@ const ExploreGoa = () => {
 
                     <div className="flex-1">
 
-                      <h4 className="font-bold text-lg md:text-xl text-navy mb-1">{item.name}</h4>
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h4 className="font-bold text-lg md:text-xl text-navy">{item.name}</h4>
+                        {item.mapUrl && (
+                          <a
+                            href={item.mapUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
+                            aria-label={`Open ${item.name} in Google Maps`}
+                            title="Open in Google Maps"
+                          >
+                            <MapPin size={18} />
+                          </a>
+                        )}
+                      </div>
                       {item.location && <p className="text-xs md:text-sm text-navy/50 mb-2 italic">{item.location}</p>}
                       <p className="text-sm md:text-base text-navy/70 leading-relaxed">{item.desc}</p>
 
@@ -1829,15 +2539,17 @@ const ExploreGoa = () => {
 
 const Travel = ({ isFamilyMode }) => (
 
-  <section id="travel" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-[#1B3A57] text-[#F5F0E8]">
+  <section id="travel" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8]`}>
+
+    <SectionDivider />
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
       <div className="text-center mb-16">
 
-        <h2 className="text-5xl text-[#D4A5A5] mb-6 font-hand">Travel & Stay</h2>
+        <SignboardHeading variant="dark">Travel & Stay</SignboardHeading>
 
-        <p className="text-lg opacity-80 font-hand max-w-lg mx-auto">Pack your sunscreen and sunglasses. We're taking care of the vibes.</p>
+        <p className="text-lg opacity-80 font-hand max-w-lg mx-auto mt-4">Pack your sunscreen and sunglasses. We're taking care of the vibes.</p>
 
       </div>
 
@@ -1871,20 +2583,36 @@ const Travel = ({ isFamilyMode }) => (
 
              <div className="space-y-4 font-hand text-lg">
 
-                 <div className="flex justify-between border-b border-dashed border-navy/20 pb-2">
-
-                    <span className="opacity-60">DESTINATION</span>
-
-                    <span className="font-bold">Dabolim (GOI)</span>
-
+                 <div className="border-b border-dashed border-navy/20 pb-3 mb-3">
+                    <div className="flex justify-between pb-2">
+                       <span className="opacity-60">DESTINATION</span>
+                    </div>
+                    <div className="space-y-2">
+                       <div className="flex justify-between">
+                          <span className="font-bold">Dabolim (GOI)</span>
+                          <span className="text-sm opacity-70">28.1 km</span>
+                       </div>
+                       <div className="flex justify-between">
+                          <span className="font-bold">Mopa (GOX)</span>
+                          <span className="text-sm opacity-70">34 km</span>
+                       </div>
+                    </div>
                  </div>
 
-                 <div className="flex justify-between border-b border-dashed border-navy/20 pb-2">
-
-                    <span className="opacity-60">TRANSFER</span>
-
-                    <span className="font-bold">45 Min Drive</span>
-
+                 <div className="border-b border-dashed border-navy/20 pb-3 mb-3">
+                    <div className="flex justify-between pb-2">
+                       <span className="opacity-60">TRANSFER</span>
+                    </div>
+                    <div className="space-y-2">
+                       <div className="flex justify-between">
+                          <span className="font-bold">Dabolim</span>
+                          <span className="text-sm opacity-70">35–50 min</span>
+                       </div>
+                       <div className="flex justify-between">
+                          <span className="font-bold">Mopa</span>
+                          <span className="text-sm opacity-70">45 min–1 hr 15 min</span>
+                       </div>
+                    </div>
                  </div>
 
                  
@@ -1947,29 +2675,43 @@ const Travel = ({ isFamilyMode }) => (
 
             <ul className="font-hand text-lg space-y-4">
 
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-2">
+               <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
 
                  <span className="text-[#D4A5A5] mt-1">★</span>
 
                  <div>
 
-                    <p className="font-bold">Alila Diwa Goa</p>
+                    <p className="font-bold">Blu Missel By The River</p>
 
-                    <p className="text-sm opacity-70">Closest to the venue (20 minutes). Luxury resort option.</p>
+                    <p className="text-sm opacity-70">The venue itself! 4.3 km from downtown Panaji. King rooms with garden view. Free breakfast for Genius members.</p>
 
                  </div>
 
                </li>
 
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-2">
+               <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
+
+                 <span className="text-[#D4A5A5] mt-1">★</span>
+
+                 <div>
+
+                    <p className="font-bold">O Pescador an Indy Resort</p>
+
+                    <p className="text-sm opacity-70">Beachfront in Panaji, 5.9 km from downtown. Suite rooms with balcony. Happy hours with 1+1 offers on drinks.</p>
+
+                 </div>
+
+               </li>
+
+               <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
 
                  <span className="text-navy mt-1">★</span>
 
                  <div>
 
-                    <p className="font-bold">Airbnb / Villas</p>
+                    <p className="font-bold">Superb Penthouse Style Studio</p>
 
-                    <p className="text-sm opacity-70">Look in Cavelossim or Betul areas. Great for groups.</p>
+                    <p className="text-sm opacity-70">Private pool on terrace in Nerul, North Goa. Modern loft-style with industrial design. Perfect for a unique stay.</p>
 
                  </div>
 
@@ -2017,15 +2759,15 @@ const QnA = () => {
 
   return (
 
-  <section id="q-a" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-white to-[#F5F0E8]/20">
+  <section id="q-a" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/20`}>
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
         <div className="text-center mb-16 md:mb-20">
 
-          <h2 className="text-4xl md:text-5xl font-hand text-navy mb-4">FAQ</h2>
+          <SignboardHeading>FAQ</SignboardHeading>
           
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mt-4"></div>
 
         </div>
 
@@ -2187,213 +2929,147 @@ const RSVP = () => {
 
   return (
 
-    <section id="rsvp" className="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-gradient-to-b from-[#F5F0E8] to-white relative">
+  <section id="rsvp" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-gradient-to-b from-[#F5F0E8] to-white relative`}>
 
-      <div className="section-divider"></div>
+      <SectionDivider />
 
-      <FadeInWhenVisible className="max-w-3xl mx-auto bg-white border-2 border-navy/10 sketchy-border p-10 md:p-14 shadow-xl relative">
+      <FadeInWhenVisible className="max-w-3xl mx-auto relative">
 
-        <div className="washi-tape -top-4 left-1/2 -translate-x-1/2 bg-[#B8D4E8]"></div>
-
-
-
-        <div className="text-center mb-12 md:mb-14 mt-2">
-
+        <Postcard>
+          <div className="text-center mb-8">
           <h2 className="text-4xl md:text-5xl text-navy mb-4 font-hand">R.S.V.P.</h2>
-
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-4"></div>
-
           <p className="text-navy/60 text-sm md:text-base uppercase tracking-widest font-hand">Please respond by January 20, 2026</p>
-
         </div>
 
-
-
         {!submitted ? (
-
-          <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-8">
-
-            <div>
-
-              <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
-
-              <input 
-                id="rsvp-name"
-                type="text" 
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="modern-input" 
-                placeholder="Who are we celebrating with?" 
-                required 
-              />
-
-            </div>
-
-
-
-            <div className="grid grid-cols-2 gap-4">
-
-                <div>
-
-                   <label htmlFor="rsvp-email" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
-
-                   <input 
-                     id="rsvp-email"
-                     type="email" 
-                     name="email"
-                     value={formData.email}
-                     onChange={handleChange}
-                     className="modern-input" 
-                     placeholder="name@email.com" 
-                     required 
-                   />
-
-                </div>
-
-                <div>
-
-                   <label htmlFor="rsvp-phone" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
-
-                   <input 
-                     id="rsvp-phone"
-                     type="tel" 
-                     name="phone"
-                     value={formData.phone}
-                     onChange={handleChange}
-                     className="modern-input" 
-                     placeholder="+91..." 
-                     required 
-                   />
-
-                </div>
-
-            </div>
-
-
-
-            <div>
-
-                <label htmlFor="rsvp-guests" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
-
-                <select 
-                  id="rsvp-guests"
-                  name="guests"
-                  value={formData.guests}
-                  onChange={handleChange}
-                  className="modern-input bg-white"
-                >
-
-                  <option value="1">1 Guest</option>
-
-                  <option value="2">2 Guests</option>
-
-                  <option value="3">3 Guests</option>
-
-                  <option value="4">4 Guests</option>
-
-                </select>
-
-            </div>
-
-            
-
-            <div className="grid grid-cols-2 gap-4 pt-2">
-
-              <label className="cursor-pointer group">
-
+                        <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
                 <input 
-                  type="radio" 
-                  name="attending" 
-                  value="Count Me In"
-                  checked={formData.attending === 'Count Me In'}
+                  id="rsvp-name"
+                  type="text" 
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
-                  className="hidden peer" 
-                  required
+                  className="modern-input" 
+                  placeholder="Who are we celebrating with?" 
+                  required 
                 />
+              </div>
 
-                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
-
-                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
-
-                  <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
-
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="rsvp-email" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
+                  <input 
+                    id="rsvp-email"
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="modern-input" 
+                    placeholder="name@email.com" 
+                    required 
+                  />
                 </div>
+                <div>
+                  <label htmlFor="rsvp-phone" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
+                  <input 
+                    id="rsvp-phone"
+                    type="tel" 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="modern-input" 
+                    placeholder="+91..." 
+                    required 
+                  />
+                </div>
+              </div>
 
-              </label>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="rsvp-guests" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
+                  <select 
+                    id="rsvp-guests"
+                    name="guests"
+                    value={formData.guests}
+                    onChange={handleChange}
+                    className="modern-input bg-white"
+                  >
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="rsvp-dietary" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
+                  <input 
+                    id="rsvp-dietary"
+                    type="text" 
+                    name="dietary"
+                    value={formData.dietary}
+                    onChange={handleChange}
+                    className="modern-input" 
+                    placeholder="Allergies, vegetarian preferences, etc." 
+                  />
+                </div>
+              </div>
 
-              <label className="cursor-pointer group">
-
+              <div>
+                <label htmlFor="rsvp-song" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2 flex items-center gap-2">Song Request</label>
                 <input 
-                  type="radio" 
-                  name="attending" 
-                  value="Cannot Attend"
-                  checked={formData.attending === 'Cannot Attend'}
+                  id="rsvp-song"
+                  type="text" 
+                  name="song"
+                  value={formData.song}
                   onChange={handleChange}
-                  className="hidden peer" 
-                  required
+                  className="modern-input" 
+                  placeholder="What will guarantee you on the dance floor?" 
                 />
+              </div>
 
-                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
+              <div className="grid md:grid-cols-2 gap-4 pt-2">
+                <label className="cursor-pointer group">
+                  <input 
+                    type="radio" 
+                    name="attending" 
+                    value="Count Me In"
+                    checked={formData.attending === 'Count Me In'}
+                    onChange={handleChange}
+                    className="hidden peer" 
+                    required
+                  />
+                  <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
+                    <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
+                    <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
+                  </div>
+                </label>
+                <label className="cursor-pointer group">
+                  <input 
+                    type="radio" 
+                    name="attending" 
+                    value="Cannot Attend"
+                    checked={formData.attending === 'Cannot Attend'}
+                    onChange={handleChange}
+                    className="hidden peer" 
+                    required
+                  />
+                  <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
+                    <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
+                    <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
+                  </div>
+                </label>
+              </div>
 
-                  <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
-
-                  <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
-
-                </div>
-
-              </label>
-
-            </div>
-
-
-
-            <div>
-
-               <label htmlFor="rsvp-dietary" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
-
-               <input 
-                 id="rsvp-dietary"
-                 type="text" 
-                 name="dietary"
-                 value={formData.dietary}
-                 onChange={handleChange}
-                 className="modern-input" 
-                 placeholder="Allergies, vegetarian preferences, etc." 
-               />
-
-            </div>
-
-
-
-            <div>
-
-               <label htmlFor="rsvp-song" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2 flex items-center gap-2">Song Request</label>
-
-               <input 
-                 id="rsvp-song"
-                 type="text" 
-                 name="song"
-                 value={formData.song}
-                 onChange={handleChange}
-                 className="modern-input" 
-                 placeholder="What will guarantee you on the dance floor?" 
-               />
-
-            </div>
-
-            
-
-            <button 
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-6 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1B3A57]"
-            >
-
-              {isSubmitting ? 'Sending...' : 'Submit RSVP'}
-
-            </button>
-
+              <button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1B3A57]"
+              >
+                {isSubmitting ? 'Sending...' : 'Submit RSVP'}
+              </button>
           </form>
 
         ) : (
@@ -2409,7 +3085,7 @@ const RSVP = () => {
           </div>
 
         )}
-
+        </Postcard>
       </FadeInWhenVisible>
 
     </section>
@@ -2420,7 +3096,7 @@ const RSVP = () => {
 
 
 
-const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
+const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
 
   <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 overflow-hidden py-20 md:py-28 lg:py-32">
 
@@ -2450,11 +3126,15 @@ const Footer = ({ toggleFamilyMode, isFamilyMode }) => (
       {/* Cookie & Bailey section */}
       <FadeInWhenVisible delay={0.1}>
         <div className="flex flex-col items-center">
-          <div className="flex items-center gap-4 bg-white/25 backdrop-blur-md px-8 py-5 sketchy-border border-[3px] border-[#D4A5A5] rounded-lg hover:border-[#D4A5A5] hover:bg-white/35 transition-all group shadow-xl">
+          <button
+            onClick={onOpenGame}
+            className="flex items-center gap-4 bg-white/25 backdrop-blur-md px-8 py-5 sketchy-border border-[3px] border-[#D4A5A5] rounded-lg hover:border-[#D4A5A5] hover:bg-white/35 transition-all group shadow-xl cursor-pointer active:scale-95"
+            aria-label="Cookie & Bailey"
+          >
             <PawPrint size={28} className="text-[#D4A5A5] group-hover:scale-110 transition-transform fill-current" /> 
             <span className="text-xl md:text-2xl font-hand font-bold text-navy">Cookie & Bailey</span>
             <PawPrint size={28} className="text-[#B8D4E8] group-hover:scale-110 transition-transform fill-current" />
-          </div>
+          </button>
         </div>
       </FadeInWhenVisible>
 
@@ -2715,7 +3395,7 @@ const StickyHeader = ({ children, className = '' }) => {
 
   return (
 
-    <div className={`sticky top-16 md:top-20 z-10 bg-[#F5F0E8]/95 backdrop-blur-md py-3 md:py-4 mb-6 md:mb-8 border-b-2 border-[#D4A5A5]/20 ${className}`}>
+    <div className={`md:sticky md:top-20 z-10 bg-[#F5F0E8]/95 backdrop-blur-md py-3 md:py-4 mb-6 md:mb-8 border-b-2 border-[#D4A5A5]/20 ${className}`}>
 
       {children}
 
@@ -2733,9 +3413,13 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
   return (
 
-    <div className="fixed right-6 md:right-8 top-1/2 -translate-y-1/2 z-50 space-y-3 hidden md:flex flex-col">
+    <div className="fixed right-4 xl:right-10 top-1/2 -translate-y-1/2 z-40 space-y-3 hidden xl:flex flex-col">
 
-      {sections.map((section, i) => (
+      {sections.map((section, i) => {
+
+        const isActive = activeSection === i;
+
+        return (
 
         <motion.button
 
@@ -2743,17 +3427,17 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
           onClick={() => onSectionClick(section.id)}
 
-          className={`w-3 h-3 rounded-full border-2 transition-all relative group ${
+            className={`w-2.5 h-2.5 rounded-full border transition-all relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D4A5A5]/60 ${
 
-            activeSection === i 
+              isActive
 
-              ? 'border-[#D4A5A5] bg-[#D4A5A5] scale-150' 
+                ? 'border-[#D4A5A5] bg-[#D4A5A5]'
 
-              : 'border-navy/30 bg-transparent hover:border-[#D4A5A5]'
+                : 'border-navy/20 bg-white/80 hover:border-[#D4A5A5]/60 hover:bg-[#D4A5A5]/20'
 
           }`}
 
-          whileHover={{ scale: 1.3 }}
+            whileHover={{ scale: 1.2 }}
 
           whileTap={{ scale: 0.9 }}
 
@@ -2761,27 +3445,29 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
         >
 
-          {activeSection === i && (
+            <span
 
-            <motion.div
+              className={`absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full bg-navy text-white text-xs px-2 py-1 rounded font-hand whitespace-nowrap pointer-events-none transition-all duration-200 ${
 
-              className="absolute -right-8 top-1/2 -translate-y-1/2 bg-navy text-white text-xs px-2 py-1 rounded font-hand whitespace-nowrap"
+                isActive
 
-              initial={{ opacity: 0, x: -10 }}
+                  ? 'opacity-100'
 
-              animate={{ opacity: 1, x: 0 }}
+                  : 'opacity-0 group-hover:opacity-100'
+
+              }`}
 
             >
 
               {section.name || section.id}
 
-            </motion.div>
-
-          )}
+            </span>
 
         </motion.button>
 
-      ))}
+        );
+
+      })}
 
     </div>
 
@@ -2796,6 +3482,8 @@ const App = () => {
   const [isFamilyMode, setIsFamilyMode] = useState(false);
 
   const [activeSection, setActiveSection] = useState(0);
+
+  const [isGameOpen, setIsGameOpen] = useState(false);
 
   const containerRef = useRef(null);
 
@@ -2947,7 +3635,7 @@ const App = () => {
       <MusicPlayer />
       <FloatingRSVPButton onScrollToRSVP={scrollToSection} />
 
-      <div ref={containerRef} className="scroll-container relative">
+      <div ref={containerRef} className="scroll-container page-shell relative">
 
         <Nav isFamilyMode={isFamilyMode} />
 
@@ -3068,7 +3756,13 @@ const App = () => {
 
         <section id="footer" className="scroll-section flex items-center justify-center">
 
-        <Footer toggleFamilyMode={() => setIsFamilyMode(!isFamilyMode)} isFamilyMode={isFamilyMode} />
+        <Footer 
+          toggleFamilyMode={() => setIsFamilyMode(!isFamilyMode)} 
+          isFamilyMode={isFamilyMode}
+          onOpenGame={() => setIsGameOpen(true)}
+        />
+
+        <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
 
         </section>
 
