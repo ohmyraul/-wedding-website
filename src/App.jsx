@@ -940,6 +940,13 @@ const Hero = ({ onScrollToSection }) => (
 
       
 
+      <div className="mb-8 md:mb-12">
+        <p className="text-xl md:text-2xl lg:text-3xl font-hand text-navy/80 leading-relaxed text-center max-w-3xl mx-auto">
+          After seven years of choosing each other,<br />
+          we're making it forever.
+        </p>
+      </div>
+
       <motion.h1 
 
         className="text-[5rem] md:text-[6rem] leading-[0.8] text-navy font-hand select-none relative inline-block sketchy-text" 
@@ -974,6 +981,10 @@ const Hero = ({ onScrollToSection }) => (
 
         </h2>
 
+        <p className="text-lg md:text-xl font-hand text-navy/80 text-center max-w-2xl mx-auto">
+          invite you to witness our wedding
+        </p>
+
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-navy/80 font-hand text-xl uppercase tracking-widest mt-2">
 
           <span>March 20, 2026</span>
@@ -983,6 +994,10 @@ const Hero = ({ onScrollToSection }) => (
           <span>Goa, India</span>
 
         </div>
+
+        <p className="text-base md:text-lg font-hand text-navy/70 text-center mt-4 italic">
+          Your presence would mean the world to us.
+        </p>
 
       </div>
 
@@ -2093,7 +2108,7 @@ const Celebration = ({ isFamilyMode }) => (
 
         <div className="text-center mb-12 md:mb-16">
 
-          <SignboardHeading>The Big Party</SignboardHeading>
+          <SignboardHeading>The Celebration</SignboardHeading>
 
       </div>
 
@@ -2145,7 +2160,8 @@ const Celebration = ({ isFamilyMode }) => (
 
                 <div className="bg-[#F5F0E8] p-4 md:p-5 rounded-sm border-2 border-navy/20 transform -rotate-1">
 
-                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">Riverside setting. Goan feast with fresh seafood. Open bar all night. Everything you need.</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">Join us as we say our vows by the river, surrounded by the people we love most.</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: Goan food, dancing until our feet hurt, and a night we'll never forget—made better because you're there.</p>
 
                 </div>
 
@@ -2165,7 +2181,7 @@ const Celebration = ({ isFamilyMode }) => (
 
               {[
 
-                  { time: '3:30 PM', event: 'Wedding Ceremony', note: 'Riverside vows. Cookie & Bailey bringing the rings (or trying to).', icon: Heart },
+                  { time: '3:30 PM', event: 'Wedding Ceremony', note: 'This is the moment. Riverside vows with Cookie & Bailey as our ringbearers (wish us luck). We\'re so glad you\'re here to witness it.', icon: Heart },
 
                   { time: '4:30 PM', event: 'Hi-Tea & Photos', note: "Golden hour light. We'll be posing for photos. You grab snacks and mingle.", icon: SketchIcon, type: 'wine' },
 
@@ -2278,7 +2294,7 @@ const DressCode = () => {
 
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-8"></div>
 
-          <p className="text-navy/60 font-hand text-lg md:text-xl max-w-2xl mx-auto">Dress code inspiration for our special day</p>
+          <p className="text-navy/70 font-hand text-lg md:text-xl max-w-2xl mx-auto">Dress for celebration, comfort, and Goa's warm embrace.</p>
 
         </div>
 
@@ -2298,7 +2314,7 @@ const DressCode = () => {
 
             <div className="space-y-6 font-hand text-lg md:text-xl text-navy/80 leading-relaxed">
 
-              <p className="text-xl md:text-2xl">Think flowy dresses, linen suits, comfortable shoes. We're on grass, so heels will sink. We want you to feel beautiful but also relaxed enough to actually enjoy yourself.</p>
+              <p className="text-xl md:text-2xl">Beach Formal: Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand—dress beautifully, but practically. We want you present, comfortable, and ready to celebrate with us.</p>
 
               <div className="flex items-start gap-3 pt-4 border-t-2 border-navy/10 bg-[#F5F0E8]/50 p-4 rounded-lg">
 
@@ -2752,9 +2768,9 @@ const QnA = () => {
 
     { q: "What about plus ones?", a: "If your invitation says 'and guest', absolutely bring them. If it doesn't, we're keeping numbers intimate. Nothing personal." },
 
-    { q: "Open bar?", a: "Of course. We're not monsters." },
+    { q: "Open bar?", a: "Yes. We want you celebrating with us all night." },
 
-    { q: "What about gifts?", a: "Honestly? Your presence means more than presents. But if you really want to give something, a contribution toward our honeymoon fund would be amazing." },
+    { q: "What about gifts?", a: "Your presence is the greatest gift. Truly. If you'd like to give something, a contribution toward our honeymoon would help us keep exploring the world together—but only if you want to." },
 
     { q: "Dietary restrictions?", a: "We'll have both vegetarian and non-vegetarian options. Let us know your specific restrictions or allergies in the RSVP form below." }
 
@@ -2944,7 +2960,8 @@ const RSVP = () => {
           <div className="text-center mb-8">
           <h2 className="text-4xl md:text-5xl text-navy mb-4 font-hand">R.S.V.P.</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-4"></div>
-          <p className="text-navy/60 text-sm md:text-base uppercase tracking-widest font-hand">Please respond by January 20, 2026</p>
+          <p className="text-navy/70 text-base md:text-lg font-hand mb-2">Your presence would be our greatest gift.</p>
+          <p className="text-navy/60 text-sm md:text-base font-hand">Please let us know if you can celebrate with us by January 20, 2026</p>
         </div>
 
         {!submitted ? (
@@ -3120,10 +3137,19 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
       <FadeInWhenVisible>
         <div className="space-y-6 md:space-y-8">
           <p className="text-xl md:text-2xl lg:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto">
-            Seven years of finding each other twice and choosing each other every day since.
+            Seven years ago, we found each other again.
           </p>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D4A5A5]">
-            Now they're saying it out loud: forever.
+          <p className="text-xl md:text-2xl lg:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto">
+            Every day since, we've chosen each other.
+          </p>
+          <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D4A5A5] mt-4">
+            Now we're choosing forever—<br />and we want you there when we say it out loud.
+          </p>
+          <p className="text-xl md:text-2xl font-hand text-[#F5F0E8] mt-6">
+            Shubs & Alysha
+          </p>
+          <p className="text-lg md:text-xl font-hand text-[#F5F0E8]/80 mt-2">
+            March 20, 2026
           </p>
         </div>
       </FadeInWhenVisible>
