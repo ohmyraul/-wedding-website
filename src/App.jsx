@@ -1142,7 +1142,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%', objectPosition: 'center' }} loading="lazy" width={696} height={1024} />
+               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
 
             </div>
 
@@ -1204,7 +1204,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%', objectPosition: 'center' }} loading="lazy" width={666} height={1024} />
+               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} />
 
             </div>
 
@@ -1228,7 +1228,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%', objectPosition: 'center' }} loading="lazy" width={765} height={1024} />
+               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={765} height={1024} />
 
             </div>
 
@@ -1292,7 +1292,7 @@ const Story = () => (
 
              <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%', objectPosition: 'center' }} loading="lazy" width={696} height={1024} />
+                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
 
              </div>
 
@@ -2161,7 +2161,7 @@ const Celebration = ({ isFamilyMode }) => (
                 <div className="bg-[#F5F0E8] p-4 md:p-5 rounded-sm border-2 border-navy/20 transform -rotate-1">
 
                    <p className="text-base md:text-lg text-navy/80 leading-relaxed">Join us as we say our vows by the river, surrounded by the people we love most.</p>
-                   <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: Goan food, dancing until our feet hurt, and a night we'll never forget—made better because you're there.</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: Goan food, dancing until our feet hurt, and a night we'll never forget - made better because you're there.</p>
 
                 </div>
 
@@ -2314,7 +2314,7 @@ const DressCode = () => {
 
             <div className="space-y-6 font-hand text-lg md:text-xl text-navy/80 leading-relaxed">
 
-              <p className="text-xl md:text-2xl">Beach Formal: Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand—dress beautifully, but practically. We want you present, comfortable, and ready to celebrate with us.</p>
+              <p className="text-xl md:text-2xl">Beach Formal: Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand - dress beautifully, but practically. We want you present, comfortable, and ready to celebrate with us.</p>
 
               <div className="flex items-start gap-3 pt-4 border-t-2 border-navy/10 bg-[#F5F0E8]/50 p-4 rounded-lg">
 
@@ -2436,7 +2436,7 @@ const ExploreGoa = () => {
 
         { name: "Colomb Bay", type: "beach", location: "Between Palolem and Patnem", desc: "Our calm bay for morning swims. Fishing families haul nets while you sip chai. Quiet, blue, very ours.", mapUrl: "https://maps.app.goo.gl/wsWU8AZBdsc4YZhr7" },
 
-        { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "The postcard crescent. Hit sunrise before the boat guys wake up—mirror water, palms silhouetted, just you.", mapUrl: "https://maps.app.goo.gl/oTJGboCKsGPkTmCs5" },
+        { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "The postcard crescent. Hit sunrise before the boat guys wake up - mirror water, palms silhouetted, just you.", mapUrl: "https://maps.app.goo.gl/oTJGboCKsGPkTmCs5" },
 
         { name: "Le Petit Patnem", type: "party", location: "Patnem Beach", desc: "Daytime grilled fish + rosé, nighttime house/techno and barefoot dancing. Turns into a secret party pad after sunset.", mapUrl: "https://maps.app.goo.gl/cmcbjYpNst3scLet8" }
 
@@ -2672,7 +2672,7 @@ const Travel = ({ isFamilyMode }) => (
 
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#B8D4E8]/50 transform -rotate-2"></div>
 
-          <h3 className="text-3xl font-bold mb-6 font-hand text-center">Where to Sleep</h3>
+          <h3 className="text-3xl font-bold mb-6 font-hand text-center">Our Recommendations</h3>
 
           
 
@@ -2698,41 +2698,23 @@ const Travel = ({ isFamilyMode }) => (
 
                <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
 
-                 <span className="text-[#D4A5A5] mt-1">★</span>
-
                  <div>
 
                     <p className="font-bold">Blu Missel By The River</p>
 
-                    <p className="text-sm opacity-70">The venue itself! 4.3 km from downtown Panaji. King rooms with garden view. Free breakfast for Genius members.</p>
+                    <p className="text-sm opacity-70">Stay where we tie the knot. Just 4.3 km from downtown Panaji, with king rooms overlooking the garden. Wake up on your wedding day steps away from where it all happens.</p>
 
                  </div>
 
                </li>
 
                <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
-
-                 <span className="text-[#D4A5A5] mt-1">★</span>
 
                  <div>
 
                     <p className="font-bold">O Pescador an Indy Resort</p>
 
-                    <p className="text-sm opacity-70">Beachfront in Panaji, 5.9 km from downtown. Suite rooms with balcony. Happy hours with 1+1 offers on drinks.</p>
-
-                 </div>
-
-               </li>
-
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
-
-                 <span className="text-navy mt-1">★</span>
-
-                 <div>
-
-                    <p className="font-bold">Superb Penthouse Style Studio</p>
-
-                    <p className="text-sm opacity-70">Private pool on terrace in Nerul, North Goa. Modern loft-style with industrial design. Perfect for a unique stay.</p>
+                    <p className="text-sm opacity-70">Beachfront charm in Panaji, 5.9 km from downtown. Suite rooms with balconies where you can watch the sunset. Their happy hours are legendary - perfect for pre-wedding drinks.</p>
 
                  </div>
 
@@ -2770,7 +2752,7 @@ const QnA = () => {
 
     { q: "Open bar?", a: "Yes. We want you celebrating with us all night." },
 
-    { q: "What about gifts?", a: "Your presence is the greatest gift. Truly. If you'd like to give something, a contribution toward our honeymoon would help us keep exploring the world together—but only if you want to." },
+    { q: "What about gifts?", a: "Your presence is the greatest gift. Truly. If you'd like to give something, a contribution toward our honeymoon would help us keep exploring the world together - but only if you want to." },
 
     { q: "Dietary restrictions?", a: "We'll have both vegetarian and non-vegetarian options. Let us know your specific restrictions or allergies in the RSVP form below." }
 
@@ -3143,7 +3125,7 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
             Every day since, we've chosen each other.
           </p>
           <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D4A5A5] mt-4">
-            Now we're choosing forever—<br />and we want you there when we say it out loud.
+            Now we're choosing forever -<br />and we want you there when we say it out loud.
           </p>
           <p className="text-xl md:text-2xl font-hand text-[#F5F0E8] mt-6">
             Shubs & Alysha
