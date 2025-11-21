@@ -1292,7 +1292,7 @@ const Story = () => (
 
              <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
+                <img src="/images/proposal.png" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%', objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
 
              </div>
 
