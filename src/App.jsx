@@ -1032,6 +1032,7 @@ const Hero = ({ onScrollToSection }) => (
                  alt="Shubs and Alysha" 
 
                  className="w-full h-full object-cover"
+                 style={{ objectPosition: 'center' }}
                  width={1024}
                  height={890}
 
@@ -1126,7 +1127,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%' }} loading="lazy" width={696} height={1024} />
+               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ maxHeight: '100%', objectPosition: 'center' }} loading="lazy" width={696} height={1024} />
 
             </div>
 
@@ -1188,7 +1189,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%' }} loading="lazy" width={666} height={1024} />
+               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ maxHeight: '100%', objectPosition: 'center' }} loading="lazy" width={666} height={1024} />
 
             </div>
 
@@ -1212,7 +1213,7 @@ const Story = () => (
 
             <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%' }} loading="lazy" width={765} height={1024} />
+               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ maxHeight: '100%', objectPosition: 'center' }} loading="lazy" width={765} height={1024} />
 
             </div>
 
@@ -1276,7 +1277,7 @@ const Story = () => (
 
              <div className="overflow-hidden relative" style={{ minHeight: '300px', maxHeight: '500px' }}>
 
-                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%' }} loading="lazy" width={696} height={1024} />
+                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ maxHeight: '100%', objectPosition: 'center' }} loading="lazy" width={696} height={1024} />
 
              </div>
 
@@ -1579,9 +1580,10 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                       src="/images/cookie.png"
                       alt="Cookie"
                       className="w-full h-full object-cover rounded-full"
+                      style={{ objectPosition: 'center' }}
                       onError={(e) => {
                         e.target.src = '/images/cookie.jpg';
-                        e.target.style.objectPosition = 'center 20%';
+                        e.target.style.objectPosition = 'center';
                       }}
                     />
                   </div>
@@ -1676,9 +1678,10 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                             src="/images/cookie.png"
                             alt="Cookie"
                             className="w-full h-full object-cover rounded-full"
+                            style={{ objectPosition: 'center' }}
                             onError={(e) => {
                               e.target.src = '/images/cookie.jpg';
-                              e.target.style.objectPosition = 'center 20%';
+                              e.target.style.objectPosition = 'center';
                             }}
                           />
                         </div>
@@ -1788,7 +1791,7 @@ const CookieAndBailey = () => (
 
                 <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
 
-                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} loading="lazy" width={687} height={1024} />
+                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} whileHover={{ scale: 1.08 }} loading="lazy" width={687} height={1024} />
 
                 </div>
 
@@ -1816,7 +1819,7 @@ const CookieAndBailey = () => (
 
                 <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
 
-                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" whileHover={{ scale: 1.08 }} loading="lazy" width={696} height={1024} />
+                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} whileHover={{ scale: 1.08 }} loading="lazy" width={696} height={1024} />
 
                 </div>
 
@@ -1866,6 +1869,7 @@ const KidenaHouse = () => (
                         src="/images/kidena-house.jpg" 
                         alt="Kidena House" 
                         className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover" 
+                        style={{ objectPosition: 'center' }}
                         loading="lazy"
                         width={1024}
                         height={765}
@@ -2112,6 +2116,7 @@ const Celebration = ({ isFamilyMode }) => (
                   loading="lazy" 
 
                   className="absolute inset-0 w-full h-full object-cover"
+                  style={{ objectPosition: 'center' }}
                   width={1024}
                   height={683}
 
