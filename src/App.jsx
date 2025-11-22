@@ -2477,7 +2477,7 @@ const KidenaHouseCarousel = memo(() => {
   }, [images.length, isPaused]);
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto">
+    <div className="relative w-full max-w-7xl mx-auto">
       {/* Carousel Container */}
       <div 
         className="relative w-full overflow-hidden rounded-lg"
@@ -2490,7 +2490,7 @@ const KidenaHouseCarousel = memo(() => {
         >
           {images.map((image, index) => (
             <div key={index} className="min-w-full flex-shrink-0 w-full">
-              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-lg">
+              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-2 md:p-4 bg-white rotate-1 shadow-2xl">
                 <div className="bg-gray-100 w-full overflow-hidden border-b-2 border-[#1B3A57]">
                   <img 
                     src={image.src} 
@@ -2523,19 +2523,19 @@ const KidenaHouseCarousel = memo(() => {
         {/* Navigation Arrows - Only one set */}
         <button
           onClick={prevImage}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-2.5 shadow-lg border-2 border-[#1B3A57] transition-all hover:scale-110"
+          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#1B3A57] transition-all hover:scale-110"
           aria-label="Previous image"
           type="button"
         >
-          <ChevronLeft size={24} className="text-[#1B3A57]" />
+          <ChevronLeft size={28} className="md:w-8 md:h-8 text-[#1B3A57]" />
         </button>
         <button
           onClick={nextImage}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-2.5 shadow-lg border-2 border-[#1B3A57] transition-all hover:scale-110"
+          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#1B3A57] transition-all hover:scale-110"
           aria-label="Next image"
           type="button"
         >
-          <ChevronRight size={24} className="text-[#1B3A57]" />
+          <ChevronRight size={28} className="md:w-8 md:h-8 text-[#1B3A57]" />
         </button>
 
         {/* Dots Indicator - Only one set */}
@@ -2597,7 +2597,7 @@ const KidenaHouse = () => (
     </div>
 
         {/* Photo Carousel - All 4 Images */}
-        <div className="mb-12 md:mb-12">
+        <div className="mb-8 md:mb-10 -mx-4 md:-mx-8 lg:-mx-12">
             <FadeInWhenVisible>
                 <KidenaHouseCarousel />
             </FadeInWhenVisible>
