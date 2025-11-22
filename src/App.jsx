@@ -1324,7 +1324,7 @@ const Story = () => (
 
           <div>
 
-              <span className="inline-block bg-[#B8D4E8] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">June 2018</span>
+              <span className="inline-block bg-[#B8D4E8] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">July 2018</span>
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The Reunion</h3>
 
@@ -1336,7 +1336,7 @@ const Story = () => (
 
               <p>Then someone threw him a half-hearted birthday party. She showed up and realized something had shifted. She cared way more than friends should care about someone's birthday.</p>
 
-              <p>Two weeks later, he kissed her. They were official by the end of June.</p>
+              <p>Two weeks later, he kissed her. They were official by the end of July.</p>
 
             </div>
 
@@ -1374,13 +1374,13 @@ const Story = () => (
 
             </div>
 
-            <p className="text-center font-hand text-navy/50 mt-2">Goa, dogs & growing Together</p>
+            <p className="text-center font-hand text-navy/50 mt-2">Goa, dogs & growing together</p>
 
             </ParallaxWrapper>
 
           <div className="order-1 md:order-2">
 
-              <span className="inline-block bg-[#D4A5A5] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-1deg] shadow-sm">2018-2021</span>
+              <span className="inline-block bg-[#D4A5A5] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-1deg] shadow-sm">2018-2025</span>
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">Building a Life</h3>
 
@@ -1390,7 +1390,7 @@ const Story = () => (
 
               <p>He didn't trust the ocean at first. She taught him to dive, to let go underwater. He taught her how to stay calm when life felt chaotic.</p>
 
-              <p>Then COVID hit. Bailey had puppies during lockdown. Six of them. They kept four, lost two. The hardest, most beautiful things they'd ever done together. When it was time, Shubs brought Bailey to Bangalore. Cookie and Bailey became family.</p>
+              <p>Then COVID hit. Bailey had puppies during lockdown. Six of them. They kept four, lost two. First of the toughest things in life they had to do together. When it was time, Shubs brought Bailey to Bangalore. Cookie and Bailey became family.</p>
 
             </div>
 
@@ -2549,7 +2549,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                 <div className="bg-[#F5F0E8] p-4 md:p-5 rounded-sm border-2 border-navy/20 transform -rotate-1">
 
-                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">Bless us as we commit to our forever surrounded by the people we love most.</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">Good food, dancing, chaos</p>
                    <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: Good food & lots of dancing, marking a night we won't forget – made better by you.</p>
 
                 </div>
@@ -2570,19 +2570,19 @@ const Celebration = ({ isFamilyMode }) => (
 
               {[
 
-                  { time: '3:30 PM', event: 'Wedding Ceremony', note: 'Join us as we take our vows committing to our forever, with God at the centre, and our family by our side.', icon: Heart },
+                  { time: '4:30 PM', event: 'The Vows', note: 'Join us as we take our vows committing to our forever, with God at the centre, and our family by our side.', icon: Heart },
 
-                  { time: '4:30 PM', event: 'Hi-Tea & Photos', note: "Get your refreshments, click us some FOMO pictures at the stand. We're about chasing the sunset and will be right back!", icon: SketchIcon, type: 'wine' },
+                  { time: '4:30 PM', event: 'Ceremony', note: 'Bless us as we commit to our forever surrounded by the people we love most.', icon: Heart },
 
-                  { time: '6:00 PM', event: 'Cocktails', note: "The bar opens, we'll be with you soon. Drink responsibly okay?", icon: SketchIcon, type: 'wine' },
+                  { time: '4:30 PM', event: 'Hi-Tea & Photos', note: "Grab refreshments, snap some Polaroids at the stand and stick them in our album. Meanwhile, we'll be off with the photo crew chasing golden hour – back soon!", icon: SketchIcon, type: 'wine' },
 
-                  { time: '6:45 PM', event: 'Reception', note: 'Bless us as we commit to our forever surrounded by the people we love most.', icon: Anchor },
+                  { time: '6:00 PM', event: 'Cocktails', note: "The bar opens, we'll be with you soon. Pace yourselves.", icon: SketchIcon, type: 'wine' },
 
-                  { time: '7:15 PM', event: 'Dance Floor', note: "Prepare to bust a move with the couple. That's where we intend to be most of the night!", icon: Music },
+                  { time: '7:15 PM', event: 'Dance Floor', note: "Come dance with us. That's where we'll be most of the night.", icon: Music },
 
-                  { time: '9:00 PM', event: 'Dinner', note: 'Dinner opens, we\'ll keep it open post 10 PM.', icon: SketchIcon, type: 'plate' },
+                  { time: '8:00 PM', event: 'Dinner', note: 'Dinner opens, we\'ll keep it open post 10 PM.', icon: SketchIcon, type: 'plate' },
 
-                  { time: '10:00 PM', event: 'Last Call', note: "The music ends, but does the party really?", icon: Sun }
+                  { time: '10:30 PM', event: 'Last Call', note: "The music ends, but does the party really?", icon: Sun }
 
               ].map((item, i) => (
 
@@ -3552,22 +3552,24 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
 
       {/* Main message */}
       <FadeInWhenVisible>
-        <div className="space-y-4 md:space-y-6 lg:space-y-8">
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto px-2">
+        <div className="space-y-5 md:space-y-6 lg:space-y-8 max-w-3xl mx-auto px-4">
+          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] text-center">
             Seven years ago, we found each other again.
           </p>
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto px-2">
+          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] text-center">
             Every day since, we've chosen each other.
           </p>
-          <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-hand font-bold text-[#D4A5A5] mt-4 px-2">
+          <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-hand font-bold text-[#D4A5A5] mt-6 md:mt-8 text-center leading-tight">
             Now we're choosing forever -<br className="hidden md:block" /> and we want you there when we say it out loud.
           </p>
-          <p className="text-lg md:text-xl lg:text-2xl font-hand text-[#F5F0E8] mt-4 md:mt-6">
-            Shubs & Alysha
-          </p>
-          <p className="text-base md:text-lg lg:text-xl font-hand text-[#F5F0E8]/80 mt-2">
-            March 20, 2026
-          </p>
+          <div className="pt-6 md:pt-8 space-y-2">
+            <p className="text-lg md:text-xl lg:text-2xl font-hand text-[#F5F0E8] text-center">
+              Shubs & Alysha
+            </p>
+            <p className="text-base md:text-lg lg:text-xl font-hand text-[#F5F0E8]/80 text-center">
+              March 20, 2026
+            </p>
+          </div>
         </div>
       </FadeInWhenVisible>
 
