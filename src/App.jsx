@@ -2477,7 +2477,7 @@ const KidenaHouseCarousel = memo(() => {
   }, [images.length, isPaused]);
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto">
+    <div className="relative w-full max-w-5xl md:max-w-6xl mx-auto">
       {/* Carousel Container */}
       <div 
         className="relative w-full overflow-hidden rounded-lg"
@@ -2490,7 +2490,7 @@ const KidenaHouseCarousel = memo(() => {
         >
           {images.map((image, index) => (
             <div key={index} className="min-w-full flex-shrink-0 w-full">
-              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-2 md:p-4 bg-white rotate-1 shadow-2xl">
+              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
                 <div className="bg-gray-100 w-full overflow-hidden border-b-2 border-[#1B3A57]">
                   <img 
                     src={image.src} 
@@ -2597,7 +2597,7 @@ const KidenaHouse = () => (
                 </div>
 
         {/* Photo Carousel - All 4 Images */}
-        <div className="mb-8 md:mb-10 -mx-4 md:-mx-8 lg:-mx-12">
+        <div className="mb-8 md:mb-10">
             <FadeInWhenVisible>
                 <KidenaHouseCarousel />
             </FadeInWhenVisible>
@@ -2789,11 +2789,6 @@ const FamilyItinerary = () => (
 
                                 {/* Bold one-liner summary */}
                                 <p className="font-hand font-bold text-lg md:text-xl text-navy mb-3 leading-tight">{item.summary}</p>
-
-                                {/* Optional Reading tag */}
-                                <div className="mb-3">
-                                    <span className="inline-block text-xs font-hand text-navy/50 italic border border-navy/20 px-2 py-1 rounded-sm bg-navy/5">Optional Reading</span>
-                                </div>
 
                                 <p className="font-hand text-base md:text-lg text-navy/70 leading-relaxed">{item.desc}</p>
 
@@ -3198,12 +3193,7 @@ const ExploreGoa = () => {
 
           <SignboardHeading>Explore Goa</SignboardHeading>
 
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-4"></div>
-
-          {/* Optional label */}
-          <div className="mb-4">
-            <span className="inline-block text-sm font-hand text-navy/60 italic border border-navy/20 px-3 py-1.5 rounded-sm bg-[#B8D4E8]/20">Optional ideas if you're staying extra days</span>
-          </div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-6"></div>
 
           <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto">
 
@@ -3413,13 +3403,13 @@ const Travel = ({ isFamilyMode }) => (
 
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#B8D4E8]/50 transform -rotate-2"></div>
 
-          <h3 className="text-3xl font-bold mb-8 md:mb-10 font-hand text-center">Our Recommendations</h3>
+          <h3 className="text-3xl font-bold mb-6 md:mb-8 font-hand text-center">Our Recommendations</h3>
 
           
 
           {isFamilyMode ? (
 
-            <div className="font-hand text-xl space-y-6 text-center">
+            <div className="font-hand text-xl space-y-4 md:space-y-5 text-center">
 
                <div className="border-2 border-navy p-4 rounded-sm bg-white transform rotate-1">
 
