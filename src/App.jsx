@@ -1550,9 +1550,18 @@ const Story = () => (
 
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative" style={{ paddingBottom: '75%' }}>
-
-               <img src="/images/goa-scooter.jpg" className="absolute inset-0 w-full h-full object-cover" alt="Goa Life" style={{ objectPosition: 'center center' }} loading="lazy" width={765} height={1024} fetchPriority="low" decoding="async" />
+            <div className="overflow-hidden relative w-full aspect-[3/4] md:aspect-[4/3]">
+               <img 
+                 src="/images/goa-scooter.jpg" 
+                 className="absolute inset-0 w-full h-full object-cover" 
+                 alt="Goa Life" 
+                 style={{ objectPosition: 'center top' }}
+                 loading="lazy" 
+                 width={765} 
+                 height={1024} 
+                 fetchPriority="low" 
+                 decoding="async" 
+               />
 
             </div>
 
