@@ -2492,7 +2492,7 @@ const KidenaHouseCarousel = memo(() => {
         {/* Navigation Arrows - Only one set */}
         <button
           onClick={prevImage}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110 pointer-events-auto"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-2.5 shadow-lg border-2 border-[#1B3A57] transition-all hover:scale-110"
           aria-label="Previous image"
           type="button"
         >
@@ -2500,7 +2500,7 @@ const KidenaHouseCarousel = memo(() => {
         </button>
         <button
           onClick={nextImage}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110 pointer-events-auto"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-2.5 shadow-lg border-2 border-[#1B3A57] transition-all hover:scale-110"
           aria-label="Next image"
           type="button"
         >
@@ -2508,12 +2508,12 @@ const KidenaHouseCarousel = memo(() => {
         </button>
 
         {/* Dots Indicator - Only one set */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2 pointer-events-none">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
           {images.map((_, index) => (
             <button
               key={index}
               onClick={() => goToImage(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all pointer-events-auto ${
+              className={`w-2.5 h-2.5 rounded-full transition-all ${
                 index === currentIndex
                   ? 'bg-white w-8'
                   : 'bg-white/50 hover:bg-white/75'
@@ -2537,7 +2537,7 @@ KidenaHouseCarousel.displayName = 'KidenaHouseCarousel';
 
 const KidenaHouse = () => (
 
-  <section id="kidena-house" className={`py-20 md:py-24 lg:py-28 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden`}>
+  <section id="kidena-house" className={`py-16 md:py-16 lg:py-20 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden`}>
 
     {/* Subtle background decoration */}
     <div className="absolute inset-0 opacity-5 pointer-events-none">
@@ -2547,13 +2547,13 @@ const KidenaHouse = () => (
     <FadeInWhenVisible className="max-w-7xl mx-auto relative z-10">
 
         {/* Header Section */}
-        <div className="text-center mb-16 md:mb-20">
+        <div className="text-center mb-12 md:mb-12">
             <SignboardHeading variant="dark">Where You'll Stay</SignboardHeading>
             <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">Kidena House • Batim Village, Goa Velha</p>
     </div>
 
         {/* Photo Carousel - All 4 Images */}
-        <div className="mb-16 md:mb-20">
+        <div className="mb-12 md:mb-12">
             <FadeInWhenVisible>
                 <KidenaHouseCarousel />
             </FadeInWhenVisible>
