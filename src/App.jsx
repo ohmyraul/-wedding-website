@@ -2428,13 +2428,13 @@ const CookieAndBailey = () => (
 const KidenaHouseCarousel = memo(() => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const images = [
+  const images = useMemo(() => [
     { src: '/images/kidena-house.jpg', alt: 'Kidena House - Main View' },
     { src: '/images/kidena-house2.jpg', alt: 'Kidena House - View 2' },
     { src: '/images/kidena-house3.jpg', alt: 'Kidena House - View 3' },
     { src: '/images/kidena-house4.jpg', alt: 'Kidena House - View 4' },
     { src: '/images/kidena-house5.jpg', alt: 'Kidena House - View 5' },
-  ];
+  ], []);
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
