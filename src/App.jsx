@@ -1392,8 +1392,6 @@ const Story = () => (
 
       <div className="space-y-16 md:space-y-24 lg:space-y-28 relative pt-8 md:pt-0">
 
-        <Music className="absolute -top-4 md:top-0 left-0 w-12 h-12 md:w-16 md:h-16 text-navy/20 -rotate-12 z-0" fill="currentColor" />
-
         <SketchIcon type="palm" className="absolute bottom-0 right-0 w-16 md:w-24 text-navy/5 rotate-12 z-0" />
 
 
