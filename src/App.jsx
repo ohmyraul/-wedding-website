@@ -2489,34 +2489,37 @@ const KidenaHouseCarousel = memo(() => {
           ))}
         </div>
 
-        {/* Navigation Arrows */}
+        {/* Navigation Arrows - Only one set */}
         <button
           onClick={prevImage}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110 pointer-events-auto"
           aria-label="Previous image"
+          type="button"
         >
           <ChevronLeft size={24} className="text-[#1B3A57]" />
         </button>
         <button
           onClick={nextImage}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110 pointer-events-auto"
           aria-label="Next image"
+          type="button"
         >
           <ChevronRight size={24} className="text-[#1B3A57]" />
         </button>
 
-        {/* Dots Indicator */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+        {/* Dots Indicator - Only one set */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2 pointer-events-none">
           {images.map((_, index) => (
             <button
               key={index}
               onClick={() => goToImage(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${
+              className={`w-2.5 h-2.5 rounded-full transition-all pointer-events-auto ${
                 index === currentIndex
                   ? 'bg-white w-8'
                   : 'bg-white/50 hover:bg-white/75'
               }`}
               aria-label={`Go to image ${index + 1}`}
+              type="button"
             />
           ))}
         </div>
