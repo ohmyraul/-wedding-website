@@ -1305,18 +1305,6 @@ const Hero = ({ onScrollToSection }) => (
 
   <section className={`min-h-screen flex flex-col ${SECTION_PADDING} pt-16 md:pt-24 pb-4 md:pb-12 relative`} aria-label="Hero section">
 
-    {/* Background image */}
-    <div className="absolute inset-0 z-0">
-      <img 
-        src="/images/bg.jpg" 
-        alt="" 
-        className="w-full h-full object-cover opacity-30"
-        style={{ objectPosition: 'center' }}
-        loading="eager"
-        aria-hidden="true"
-      />
-    </div>
-    
     <div className="watercolor-bg"></div>
 
     {/* Doodles - Hidden on mobile to reduce clutter */}
@@ -2883,6 +2871,17 @@ const Celebration = ({ isFamilyMode }) => (
                      <p className="font-bold text-navy">Blu Missel by the River</p>
 
                      <p className="text-navy/70">Fondvem, Ribandar, Goa</p>
+
+                     <a
+                       href={VENUE_GOOGLE_MAPS_URL}
+                       target="_blank"
+                       rel="noreferrer"
+                       className="inline-flex items-center gap-2 mt-2 text-sm md:text-base text-[#D4A5A5] hover:text-navy transition-colors"
+                       aria-label="Open Blu Missel location in Google Maps"
+                     >
+                       <MapPin size={16} />
+                       <span>View on Map</span>
+                     </a>
 
                    </div>
 
