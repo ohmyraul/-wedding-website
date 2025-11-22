@@ -2999,7 +2999,7 @@ const DressCode = () => {
 
   return (
 
-    <section className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 relative`}>
+    <section className={`py-12 md:py-14 lg:py-16 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 relative`}>
 
       {/* Decorative elements */}
       <Sun className="absolute top-10 right-10 w-16 h-16 text-[#ffbd7b]/20 rotate-12 animate-float" />
@@ -3009,147 +3009,93 @@ const DressCode = () => {
 
       <FadeInWhenVisible className="max-w-6xl mx-auto relative z-10">
 
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-8 md:mb-10">
 
           <SignboardHeading>What to Wear</SignboardHeading>
 
-          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-8"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-4"></div>
 
-          <p className="text-navy/70 font-hand text-lg md:text-xl max-w-2xl mx-auto">Dress for celebration, comfort, and Goa's warm embrace.</p>
+          <p className="text-navy/70 font-hand text-base md:text-lg max-w-2xl mx-auto">Dress for celebration, comfort, and Goa's warm embrace.</p>
 
         </div>
 
-        {/* Bride & Groom in Colors - Visual Reference */}
-        <FadeInWhenVisible className="mb-12 md:mb-16 max-w-3xl mx-auto">
-          <ParallaxWrapper offset={20} hoverEffect>
-            <div className="sketchy-border bg-white p-3 shadow-xl">
-              <img 
-                src="/images/warddrobe.jpg" 
-                alt="Bride and Groom in wedding colors" 
-                className="w-full h-auto object-cover rounded-sm" 
-                loading="lazy"
-                width={1024}
-                height={768}
-              />
-            </div>
-          </ParallaxWrapper>
-          <p className="text-center mt-4 text-navy/60 font-hand text-sm md:text-base italic">Here's us in our color palette!</p>
-        </FadeInWhenVisible>
-
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
-
-          <FadeInWhenVisible className="space-y-8 bg-white/90 backdrop-blur-sm sketchy-border p-10 md:p-12 rotate-[-1deg] hover:rotate-0 transition-all duration-300 shadow-lg hover:shadow-xl">
-
-            <div className="flex items-center gap-4 mb-6">
-
-              <div className="w-12 h-12 rounded-full bg-[#ffbd7b]/20 flex items-center justify-center">
-                <Music className="w-6 h-6 text-[#ffbd7b]" />
+        {/* Compact Layout: Image + Content Side by Side */}
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-10">
+          
+          {/* Wardrobe Image - Takes 1 column */}
+          <FadeInWhenVisible className="md:col-span-1">
+            <ParallaxWrapper offset={15} hoverEffect>
+              <div className="sketchy-border bg-white p-2 shadow-lg h-full">
+                <img 
+                  src="/images/warddrobe.jpg" 
+                  alt="Bride and Groom in wedding colors" 
+                  className="w-full h-full object-cover rounded-sm" 
+                  style={{ aspectRatio: '3/4', objectPosition: 'center' }}
+                  loading="lazy"
+                  width={400}
+                  height={533}
+                />
               </div>
-
-              <h3 className="text-3xl md:text-4xl font-bold text-navy font-hand">Beach Formal</h3>
-
-            </div>
-
-            <div className="space-y-6 font-hand text-lg md:text-xl text-navy/80 leading-relaxed">
-
-              <p className="text-xl md:text-2xl">Beach Formal: Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand - dress beautifully, but practically. We want you present, comfortable, and ready to celebrate with us.</p>
-
-              <div className="flex items-start gap-3 pt-4 border-t-2 border-navy/10 bg-[#F5F0E8]/50 p-4 rounded-lg">
-
-                <Sun className="w-6 h-6 text-[#ffbd7b] mt-1 flex-shrink-0" />
-
-                <p className="font-hand text-base md:text-lg text-navy/70"><span className="font-bold text-navy">Weather check:</span> March in Goa is warm. Not unbearably hot, but definitely t-shirt weather. Pack light.</p>
-
-              </div>
-
-            </div>
-
+            </ParallaxWrapper>
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.1} className="bg-gradient-to-br from-[#F5F0E8] via-white to-[#F5F0E8]/50 sketchy-border p-10 md:p-12 rotate-1 hover:rotate-0 transition-all duration-300 shadow-lg hover:shadow-xl">
+          {/* Beach Formal + Colors - Takes 2 columns */}
+          <div className="md:col-span-2 space-y-6">
+            
+            {/* Beach Formal - Compact */}
+            <FadeInWhenVisible className="bg-white/90 backdrop-blur-sm sketchy-border p-6 md:p-8 rotate-[-1deg] hover:rotate-0 transition-all duration-300 shadow-lg">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-[#ffbd7b]/20 flex items-center justify-center flex-shrink-0">
+                  <Music className="w-5 h-5 text-[#ffbd7b]" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-navy font-hand">Beach Formal</h3>
+              </div>
+              <p className="font-hand text-base md:text-lg text-navy/80 leading-relaxed mb-3">Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand - dress beautifully, but practically.</p>
+              <div className="flex items-start gap-2 pt-3 border-t border-navy/10">
+                <Sun className="w-5 h-5 text-[#ffbd7b] mt-0.5 flex-shrink-0" />
+                <p className="font-hand text-sm text-navy/70"><span className="font-bold text-navy">Weather:</span> March in Goa is warm. Pack light.</p>
+              </div>
+            </FadeInWhenVisible>
 
-            <div className="text-center mb-10">
-
-              <h3 className="text-3xl md:text-4xl font-hand mb-3 text-navy font-bold">Our Color Palette</h3>
-
-              <p className="text-navy/60 font-hand text-base md:text-lg">Feel free to incorporate these colors if you want</p>
-
-            </div>
-
-            <div className="space-y-8">
-
-              {colors.map((color, idx) => (
-
-                <FadeInWhenVisible key={color.name} delay={idx * 0.08} className="group">
-
+            {/* Color Palette - Compact Horizontal */}
+            <FadeInWhenVisible delay={0.1} className="bg-gradient-to-br from-[#F5F0E8] via-white to-[#F5F0E8]/50 sketchy-border p-6 md:p-8 rotate-1 hover:rotate-0 transition-all duration-300 shadow-lg">
+              <h3 className="text-xl md:text-2xl font-hand mb-4 text-navy font-bold text-center">Our Color Palette</h3>
+              <div className="grid grid-cols-3 gap-4">
+                {colors.map((color, idx) => (
                   <motion.div 
-                    className="flex items-center gap-6 p-5 md:p-6 bg-white/70 sketchy-border border-2 border-transparent hover:border-navy/30 transition-all duration-300 hover:shadow-lg cursor-pointer" 
-                    whileHover={{ scale: 1.02, x: 4 }}
-                    whileTap={{ scale: 0.98 }}
+                    key={color.name}
+                    className="text-center cursor-pointer group"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => copyColorCode(color.hex, color.name)}
                   >
-
                     <motion.div 
-
-                      className="w-20 h-20 rounded-full shadow-lg border-3 border-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300 relative" 
-
+                      className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg border-3 border-white mx-auto mb-2 relative" 
                       style={{ 
-
                         backgroundColor: color.bg,
-
                         borderWidth: '3px',
-
-                        boxShadow: `0 4px 12px ${color.bg}40, inset 0 2px 4px rgba(255,255,255,0.3)`
-
+                        boxShadow: `0 4px 12px ${color.bg}40`
                       }}
-
                     >
                       {copiedColor === color.name && (
                         <motion.div
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0, opacity: 0 }}
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
                           className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full"
                         >
-                          <CheckCircle size={24} className="text-white drop-shadow-lg" />
+                          <CheckCircle size={20} className="text-white" />
                         </motion.div>
                       )}
                     </motion.div>
-
-                    <div className="flex-1 relative">
-                      <h4 className="font-bold text-lg font-hand text-navy mb-1">{color.name}</h4>
-                      <div className="flex items-center gap-2">
-                        <p className="font-mono text-sm text-navy/60 tracking-wider font-semibold">{color.hex.toUpperCase()}</p>
-                        {copiedColor === color.name ? (
-                          <motion.span
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -10 }}
-                            className="text-xs text-[#D4A5A5] font-hand font-semibold"
-                          >
-                            Copied!
-                          </motion.span>
-                        ) : (
-                          <span className="text-xs text-navy/40 font-hand">Click to copy</span>
-                        )}
-                      </div>
-                    </div>
-
+                    <h4 className="font-bold text-sm font-hand text-navy mb-1">{color.name}</h4>
+                    <p className="font-mono text-xs text-navy/60">{color.hex.toUpperCase()}</p>
                   </motion.div>
+                ))}
+              </div>
+              <p className="text-xs text-navy/50 font-hand italic text-center mt-4">Click colors to copy • Wear what makes you happy</p>
+            </FadeInWhenVisible>
 
-                </FadeInWhenVisible>
-
-              ))}
-
-            </div>
-
-            <div className="mt-10 pt-8 border-t-2 border-navy/10 text-center bg-white/40 p-4 rounded-lg">
-
-              <p className="text-sm md:text-base text-navy/60 font-hand italic">These are suggestions, not requirements. Wear what makes you happy.</p>
-
-            </div>
-
-          </FadeInWhenVisible>
+          </div>
 
         </div>
 
