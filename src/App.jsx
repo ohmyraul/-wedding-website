@@ -1,7 +1,11 @@
-import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo, lazy, Suspense, useCallback } from 'react';
 
-import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
+import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+// Optimized Framer Motion imports - only import what we need
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import { useScroll, useTransform, useSpring } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 let confettiInstance = null;
@@ -212,7 +216,7 @@ const styles = `
 
                 radial-gradient(circle at 70% 70%, #B8D4E8 0%, transparent 50%);
 
-    filter: blur(60px) opacity(0.4);
+    filter: blur(40px) opacity(0.4);
 
     position: absolute;
 
@@ -231,6 +235,10 @@ const styles = `
     z-index: -1;
 
     pointer-events: none;
+
+    will-change: transform;
+
+    transform: translateZ(0);
 
   }
 
@@ -326,7 +334,10 @@ const styles = `
 
   }
 
-  .animate-float { animation: float 4s ease-in-out infinite; }
+  .animate-float { 
+    animation: float 4s ease-in-out infinite;
+    will-change: transform;
+  }
 
   
 
@@ -504,11 +515,13 @@ const styles = `
   .countdown-box {
     position: relative;
     background: rgba(245, 240, 232, 0.1);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
     border: 3px solid rgba(245, 240, 232, 0.4);
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     padding: 1.5rem 2rem;
     box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.2);
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   .countdown-box::before {
@@ -909,7 +922,7 @@ const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
 
       animate={controls}
 
-      transition={{ duration: 0.9, ease: 'easeOut', delay }}
+      transition={{ duration: 0.6, ease: 'easeOut', delay }}
 
     >
 
@@ -941,7 +954,20 @@ const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffe
 
   const y = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
 
-  const smoothY = useSpring(y, { stiffness: 120, damping: 20, mass: 0.2 });
+  // Optimized spring config for better performance
+  const smoothY = useSpring(y, { stiffness: 100, damping: 25, mass: 0.3 });
+  
+  // Add will-change for GPU acceleration
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.style.willChange = 'transform';
+      return () => {
+        if (ref.current) {
+          ref.current.style.willChange = 'auto';
+        }
+      };
+    }
+  }, []);
 
 
 
@@ -953,7 +979,7 @@ const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffe
       className={className}
       whileHover={hoverEffect ? { scale: 1.02, rotate: 0 } : undefined}
       whileTap={hoverEffect ? { scale: 0.98 } : undefined}
-      transition={hoverEffect ? { type: 'spring', stiffness: 220, damping: 18 } : undefined}
+      transition={hoverEffect ? { type: 'spring', stiffness: 200, damping: 20, mass: 0.5 } : undefined}
     >
 
       {children}
@@ -1044,19 +1070,22 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
   
 
+  // Chronological navigation order
   let links = [
-
-    { name: 'Story', href: '#our-story' },
 
     { name: 'Party', href: '#the-celebration' },
 
-    { name: 'Goa Tips', href: '#explore-goa' },
-
     { name: 'Travel', href: '#travel' },
 
-    { name: 'Q&A', href: '#q-a' },
+    { name: 'RSVP', href: '#rsvp' },
 
-    { name: 'RSVP', href: '#rsvp' }
+    { name: 'Dress', href: '#dress-code' },
+
+    { name: 'Story', href: '#our-story' },
+
+    { name: 'Goa', href: '#explore-goa' },
+
+    { name: 'Q&A', href: '#q-a' }
 
   ];
 
@@ -1064,8 +1093,8 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
   if (isFamilyMode) {
 
-    links.splice(1, 0, { name: 'Kidena House', href: '#kidena-house' });
-
+    // Add Kidena House after Story, Family Plan after Travel
+    links.splice(5, 0, { name: 'Kidena House', href: '#kidena-house' });
     links.splice(2, 0, { name: 'Family Plan', href: '#family-itinerary' });
 
   }
@@ -1264,7 +1293,7 @@ const CountdownTimer = () => {
         <p className="text-sm md:text-base font-hand text-[#F5F0E8] font-semibold">
           March 20, 2026
         </p>
-      </div>
+        </div>
       <div className="flex items-center justify-center gap-2 md:gap-3">
         {units.map((unit, index) => (
           <motion.div
@@ -1298,7 +1327,7 @@ const CountdownTimer = () => {
   );
 };
 
-const Hero = ({ onScrollToSection }) => (
+const Hero = memo(({ onScrollToSection }) => (
 
   <section className={`min-h-screen flex flex-col ${SECTION_PADDING} pt-16 md:pt-24 pb-4 md:pb-12 relative`} aria-label="Hero section">
 
@@ -1325,17 +1354,17 @@ const Hero = ({ onScrollToSection }) => (
               initial={{ scale: 1.05 }}
               whileHover={{ scale: 1.02 }}
             >
-              <motion.img 
-                src="/images/hero.jpg" 
-                alt="Shubs and Alysha" 
-                className="w-full h-full object-cover"
+               <motion.img 
+                 src="/images/hero.jpg" 
+                 alt="Shubs and Alysha" 
+                 className="w-full h-full object-cover"
                 style={{ objectPosition: 'center' }}
                 width={1024}
                 height={890}
-                initial={{ scale: 1.2 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 1.2, ease: 'easeOut' }}
-                loading="eager"
+                 initial={{ scale: 1.2 }}
+                 animate={{ scale: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                 loading="eager"
               />
             </motion.div>
           </div>
@@ -1356,7 +1385,7 @@ const Hero = ({ onScrollToSection }) => (
           style={{ textShadow: '4px 4px 0px rgba(212, 165, 165, 0.3)' }}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 120, damping: 14 }}
+          transition={{ type: 'spring', stiffness: 100, damping: 20, mass: 0.5 }}
         >
           S<span className="text-[#D4A5A5]">&</span>A
         </motion.h1>
@@ -1377,7 +1406,7 @@ const Hero = ({ onScrollToSection }) => (
           <p className="text-xs md:text-sm lg:text-base font-hand text-navy/70 mt-2 md:mt-3 italic px-2">
             Your presence would mean the world to us.
           </p>
-        </div>
+         </div>
 
         {/* Event Details - Compact on mobile */}
         <div className="max-w-2xl mx-auto mt-4 md:mt-6 lg:mt-8">
@@ -1415,11 +1444,11 @@ const Hero = ({ onScrollToSection }) => (
 
   </section>
 
-);
+));
 
+Hero.displayName = 'Hero';
 
-
-const Story = () => (
+const Story = memo(() => (
 
   <section id="our-story" className={`pt-8 md:pt-12 lg:pt-16 pb-12 md:pb-16 lg:pb-20 ${SECTION_PADDING} relative`}>
 
@@ -1631,718 +1660,14 @@ const Story = () => (
 
   </section>
 
-);
+));
 
+Story.displayName = 'Story';
 
+// Lazy load CookieChaseGame - only loads when game is opened
+const CookieChaseGame = lazy(() => import('./components/CookieChaseGame'));
 
-const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
-  const LANES = 4;
-  const isOpen = externalIsOpen || false;
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(() => {
-    try {
-      return parseInt(localStorage.getItem('cookieGameHighScore') || '0', 10);
-    } catch {
-      return 0;
-    }
-  });
-  const [level, setLevel] = useState(1);
-  const [speed, setSpeed] = useState(500);
-  const [cookieLane, setCookieLane] = useState(1);
-  const [obstacles, setObstacles] = useState([]);
-  const [showDialogue, setShowDialogue] = useState(null);
-  const [groundOffset, setGroundOffset] = useState(0);
-  const [isInvincible, setIsInvincible] = useState(false);
-  const [invincibleUntil, setInvincibleUntil] = useState(0);
-  const [buttonPressed, setButtonPressed] = useState(null);
-  const gameIntervalRef = useRef(null);
-  const groundIntervalRef = useRef(null);
-  const obstacleIdRef = useRef(0);
-  const cookieImageRef = useRef(null);
-  const touchStartY = useRef(0);
-  const touchEndY = useRef(0);
-
-  // Level names
-  const levelNames = {
-    1: 'Beach Training',
-    2: 'Market Madness',
-    3: 'Wedding Day Chaos',
-    4: 'Rehearsal Dinner Rush',
-  };
-
-  // Dialogue system
-  const dialogues = {
-    gameStart: [
-      "Oh look, the humans are back. WHERE'S MY FOOD?",
-      "Another guest? sigh Fine, let's do this.",
-      "Susegaad? Not when I'm HUNGRY.",
-      "I've been doing this for 12 years. You're new here.",
-      "They see me rolling, they better be feeding.",
-    ],
-    collectingFood: [
-      "FINALLY! Was that so hard?",
-      "Now we're talking, human.",
-      "This is why I tolerate you people.",
-      "ONE fish? That's it? Cheap.",
-      "About damn time.",
-      "Nom nom... okay, MORE.",
-    ],
-    hittingKids: [
-      "MOVE IT, tiny human!",
-      "Kids these days have NO respect.",
-      "Watch where you're going!",
-      "This is MY beach!",
-      "Seriously?? I'm WORKING here!",
-    ],
-    hittingScooters: [
-      "DUDE. Where's my treat, not your scooter!",
-      "That's not edible, genius.",
-      "Wrong lane, buddy!",
-      "Vroom vroom yourself outta here.",
-      "Tourists. eye roll",
-    ],
-    losingLife: [
-      "ARE YOU KIDDING ME RIGHT NOW?",
-      "I'm too old for this nonsense.",
-      "12 years of service and THIS is how you repay me?",
-      "Unacceptable. Do better.",
-      "You're lucky you're getting married.",
-    ],
-    gameOver: [
-      "Well THAT was embarrassing for you.",
-      "I've seen better from the cat. THE CAT.",
-      "And they wonder why I bark at ceremonies...",
-      "Maybe stick to planning weddings, yeah?",
-      "I'm going back to my nap.",
-    ],
-    highScore: [
-      "Not bad, human. Not bad.",
-      "FINALLY someone who gets it.",
-      "This calls for extra treats later.",
-      "You may pet me. Once.",
-      "Okay fine, you can stay.",
-    ],
-    midGame: [
-      "Faster! The fish curry won't catch itself!",
-      "Palolem Beach energy, let's GO!",
-      "Channel your inner Goan!",
-      "Susegaad is NOT an option right now!",
-      "Focus! There's prawn balchão at stake!",
-    ],
-    weddingSpecific: [
-      "Just practicing for the ceremony. I WILL bark.",
-      "Hope the guests are ready for THIS energy.",
-      "Bailey's better at this, don't tell Shubs.",
-      "March 20th better have THIS much food.",
-      "If there's no fish at the wedding, we're done.",
-    ],
-    easterEgg: [
-      "Okay fine, I won't bark at the ceremony. JK I ABSOLUTELY WILL.",
-    ],
-  };
-
-  // Better food items with points
-  const foodItems = [
-    { emoji: '🐟', name: 'Fish Curry', type: 'catch', points: 3, dialogue: "THE GOOD STUFF!" },
-    { emoji: '🍤', name: 'Prawn Balchão', type: 'catch', points: 2, dialogue: "Spicy! I LIKE it!" },
-    { emoji: '🐟', name: 'Kingfish', type: 'catch', points: 5, dialogue: "JACKPOT!" },
-    { emoji: '🍰', name: 'Bebinca', type: 'catch', points: 1, dialogue: "Don't tell Alysha..." },
-    { emoji: '🍷', name: 'Feni', type: 'powerup', points: 0, dialogue: "Woah, easy there!", effect: 'invincible' },
-    { emoji: '🍗', name: 'Chicken Xacuti', type: 'catch', points: 2, dialogue: "About time!" },
-    { emoji: '🥥', name: 'Coconut', type: 'catch', points: 1, dialogue: "Refreshing!" },
-  ];
-
-  // Better obstacles
-  const obstacleItems = [
-    { emoji: '👶', name: 'Goan Kid', type: 'avoid', dialogue: "MOVE IT, tiny human!" },
-    { emoji: '🏍️', name: 'Scooter', type: 'avoid', dialogue: "Wrong lane, buddy!" },
-    { emoji: '📸', name: 'Tourist with Selfie Stick', type: 'avoid', dialogue: "NOT NOW, KAREN!" },
-    { emoji: '🛒', name: 'Beach Vendor', type: 'avoid', dialogue: "Selling what? Where's MY cut?" },
-    { emoji: '🦀', name: 'Crab', type: 'avoid', dialogue: "Nope nope nope!" },
-    { emoji: '🐕', name: 'Other Dog', type: 'avoid', dialogue: "This is MY territory!" },
-  ];
-
-  // Get random dialogue
-  const getDialogue = (category) => {
-    const arr = dialogues[category] || [];
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
-
-  // Haptic feedback
-  const triggerHaptic = () => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate(10);
-    }
-  };
-
-  // Save high score
-  const saveHighScore = (newScore) => {
-    try {
-      localStorage.setItem('cookieGameHighScore', newScore.toString());
-      setHighScore(newScore);
-    } catch (e) {
-      console.error('Failed to save high score:', e);
-    }
-  };
-
-  // Share score
-  const shareScore = async () => {
-    const text = `I scored ${score} points in Cookie's Goan Chase! 🐕 Can you beat my score?`;
-    if (navigator.share) {
-      try {
-        await navigator.share({ text, url: window.location.href });
-      } catch (e) {
-        // User cancelled or error
-      }
-    } else {
-      // Fallback: copy to clipboard
-      try {
-        await navigator.clipboard.writeText(text + ' ' + window.location.href);
-        alert('Score copied to clipboard!');
-      } catch (e) {
-        console.error('Failed to share:', e);
-      }
-    }
-  };
-
-  // Reset game state when closed
-  useEffect(() => {
-    if (!isOpen) {
-      setIsPlaying(false);
-      setIsGameOver(false);
-      setIsPaused(false);
-      if (gameIntervalRef.current) {
-        clearInterval(gameIntervalRef.current);
-        gameIntervalRef.current = null;
-      }
-      if (groundIntervalRef.current) {
-        clearInterval(groundIntervalRef.current);
-        groundIntervalRef.current = null;
-      }
-    }
-  }, [isOpen]);
-
-  const moveCookie = (direction) => {
-    if (!isPlaying || isGameOver || isPaused) return;
-    triggerHaptic();
-    setCookieLane(prev => {
-      const newLane = direction === 'up' 
-        ? Math.max(0, prev - 1)
-        : Math.min(LANES - 1, prev + 1);
-      return newLane;
-    });
-  };
-
-  const startGame = () => {
-    if (gameIntervalRef.current) {
-      clearInterval(gameIntervalRef.current);
-      gameIntervalRef.current = null;
-    }
-    if (groundIntervalRef.current) {
-      clearInterval(groundIntervalRef.current);
-      groundIntervalRef.current = null;
-    }
-    setScore(0);
-    setLevel(1);
-    setSpeed(500);
-    setCookieLane(1);
-    setObstacles([]);
-    setIsGameOver(false);
-    setIsPlaying(true);
-    setIsPaused(false);
-    setShowDialogue(null);
-    setGroundOffset(0);
-    setIsInvincible(false);
-    setInvincibleUntil(0);
-    obstacleIdRef.current = 0;
-    
-    // Show start dialogue
-    const startDialogue = getDialogue('gameStart');
-    setShowDialogue(startDialogue);
-    setTimeout(() => setShowDialogue(null), 2000);
-  };
-
-  // Ground animation
-  useEffect(() => {
-    if (!isPlaying || isGameOver || isPaused) {
-      if (groundIntervalRef.current) {
-        clearInterval(groundIntervalRef.current);
-        groundIntervalRef.current = null;
-      }
-      return;
-    }
-
-    const groundSpeed = Math.max(2, 8 - level);
-    groundIntervalRef.current = setInterval(() => {
-      setGroundOffset(prev => (prev + groundSpeed) % 40);
-    }, 16); // ~60fps
-
-    return () => {
-      if (groundIntervalRef.current) {
-        clearInterval(groundIntervalRef.current);
-        groundIntervalRef.current = null;
-      }
-    };
-  }, [isPlaying, isGameOver, isPaused, level]);
-
-  // Invincibility timer
-  useEffect(() => {
-    if (isInvincible && invincibleUntil > Date.now()) {
-      const timer = setTimeout(() => {
-        if (Date.now() >= invincibleUntil) {
-          setIsInvincible(false);
-        }
-      }, invincibleUntil - Date.now());
-      return () => clearTimeout(timer);
-    }
-  }, [isInvincible, invincibleUntil]);
-
-  // Game loop
-  useEffect(() => {
-    if (!isPlaying || isGameOver || isPaused) {
-      if (gameIntervalRef.current) {
-        clearInterval(gameIntervalRef.current);
-        gameIntervalRef.current = null;
-      }
-      return;
-    }
-
-    if (gameIntervalRef.current) {
-      clearInterval(gameIntervalRef.current);
-    }
-
-    gameIntervalRef.current = setInterval(() => {
-      setObstacles(prev => {
-        const moveSpeed = Math.max(0.5, 2 - (level * 0.1));
-        const moved = prev.map(obs => ({
-          ...obs,
-          position: obs.position - moveSpeed
-        }));
-
-        const toRemove = new Set();
-        moved.forEach(obs => {
-          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5) {
-            if (obs.type === 'avoid' && !isInvincible) {
-              setIsGameOver(true);
-              setIsPlaying(false);
-              const finalScore = score;
-              if (finalScore > highScore) {
-                saveHighScore(finalScore);
-              }
-              const gameOverDialogue = getDialogue('gameOver');
-              setShowDialogue(gameOverDialogue);
-            } else if (obs.type === 'catch' || obs.type === 'powerup') {
-              toRemove.add(obs.id);
-              const points = obs.points || 1;
-              setScore(s => {
-                const newScore = s + points;
-                
-                // Easter egg at 100 points
-                if (newScore === 100) {
-                  const easterEgg = getDialogue('easterEgg');
-                  setShowDialogue(easterEgg);
-                  setTimeout(() => setShowDialogue(null), 3000);
-                }
-                
-                setLevel(prevLevel => {
-                  const newLevel = Math.floor(newScore / 10) + 1;
-                  if (newLevel > prevLevel) {
-                    setSpeed(prevSpeed => Math.max(200, prevSpeed - 30));
-                    const levelUpDialogue = `Level ${newLevel}: ${levelNames[newLevel] || 'Goan Master'}`;
-                    setShowDialogue(levelUpDialogue);
-                    setTimeout(() => setShowDialogue(null), 2000);
-                    return newLevel;
-                  }
-                  return prevLevel;
-                });
-                return newScore;
-              });
-              
-              // Handle power-ups
-              if (obs.effect === 'invincible') {
-                setIsInvincible(true);
-                setInvincibleUntil(Date.now() + 5000); // 5 seconds
-              }
-              
-              const dialogue = obs.dialogue || getDialogue('collectingFood');
-              setShowDialogue(dialogue);
-              setTimeout(() => setShowDialogue(null), 1500);
-            }
-          }
-        });
-
-        const filtered = moved.filter(obs => obs.position > -2 && !toRemove.has(obs.id));
-
-        // Spawn rate based on level
-        const spawnRate = Math.min(0.75, 0.5 + (level * 0.05));
-        if (Math.random() < spawnRate) {
-          const allItems = [...foodItems, ...obstacleItems];
-          const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
-          filtered.push({
-            id: obstacleIdRef.current++,
-            lane: Math.floor(Math.random() * LANES),
-            position: 10,
-            type: randomItem.type,
-            emoji: randomItem.emoji,
-            name: randomItem.name,
-            points: randomItem.points || (randomItem.type === 'catch' ? 1 : 0),
-            dialogue: randomItem.dialogue,
-            effect: randomItem.effect,
-          });
-        }
-
-        return filtered;
-      });
-    }, speed);
-
-    return () => {
-      if (gameIntervalRef.current) {
-        clearInterval(gameIntervalRef.current);
-        gameIntervalRef.current = null;
-      }
-    };
-  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, level, score, highScore, isInvincible]);
-
-  // Keyboard controls
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (event) => {
-      if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
-        event.preventDefault();
-        if (isGameOver) {
-          startGame();
-        } else {
-          moveCookie('up');
-        }
-      } else if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
-        event.preventDefault();
-        moveCookie('down');
-      } else if (event.key === ' ' || event.key === 'Enter') {
-        event.preventDefault();
-        if (isGameOver || (!isPlaying && !isGameOver)) {
-          startGame();
-        } else if (isPlaying) {
-          setIsPaused(prev => !prev);
-        }
-      } else if (event.key === 'Escape') {
-        event.preventDefault();
-        if (isPaused) {
-          setIsPaused(false);
-        } else if (isPlaying) {
-          setIsPaused(true);
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isPlaying, isGameOver, isPaused]);
-
-  // Swipe gestures
-  const handleTouchStart = (e) => {
-    touchStartY.current = e.touches[0].clientY;
-  };
-
-  const handleTouchMove = (e) => {
-    touchEndY.current = e.touches[0].clientY;
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStartY.current || !touchEndY.current) return;
-    const diff = touchStartY.current - touchEndY.current;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        moveCookie('up');
-      } else {
-        moveCookie('down');
-      }
-    }
-    touchStartY.current = 0;
-    touchEndY.current = 0;
-  };
-
-  const handleButtonPress = (direction) => {
-    setButtonPressed(direction);
-    triggerHaptic();
-    moveCookie(direction);
-    setTimeout(() => setButtonPressed(null), 150);
-  };
-
-  const closeGame = () => {
-    setIsPlaying(false);
-    setIsGameOver(false);
-    setIsPaused(false);
-    if (gameIntervalRef.current) {
-      clearInterval(gameIntervalRef.current);
-      gameIntervalRef.current = null;
-    }
-    if (groundIntervalRef.current) {
-      clearInterval(groundIntervalRef.current);
-      groundIntervalRef.current = null;
-    }
-    if (onClose) {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div 
-      className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div className="relative w-full max-w-2xl game-sketchy-border overflow-hidden" style={{ height: '85vh', maxHeight: '600px', minHeight: '500px' }}>
-        <div className="game-texture-overlay"></div>
-        
-        <button
-          onClick={closeGame}
-          className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
-          aria-label="Close game"
-        >
-          <X size={20} />
-        </button>
-
-        {/* Score Display */}
-        <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start">
-          <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md sketchy-border">
-            <div className="text-2xl font-bold text-navy font-mono tabular-nums">{score.toString().padStart(4, '0')}</div>
-            <div className="text-xs text-navy/60 font-hand">{levelNames[level] || `Level ${level}`}</div>
-          </div>
-          {highScore > 0 && (
-            <div className="bg-white/95 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md text-right sketchy-border">
-              <div className="text-xs text-navy/50 font-hand">HI</div>
-              <div className="text-lg font-bold text-navy/70 font-mono tabular-nums">{highScore.toString().padStart(4, '0')}</div>
-            </div>
-          )}
-        </div>
-
-        {/* Cookie Dialogue Bubble */}
-        <AnimatePresence>
-          {showDialogue && (
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.8 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="absolute top-16 md:top-20 left-1/2 -translate-x-1/2 z-40 cookie-dialogue max-w-[90%] md:max-w-none"
-            >
-              {showDialogue}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Invincibility indicator */}
-        {isInvincible && (
-          <motion.div
-            animate={{ opacity: [1, 0.5, 1] }}
-            transition={{ repeat: Infinity, duration: 0.5 }}
-            className="absolute top-16 left-1/2 -translate-x-1/2 z-30 bg-[#D4A5A5] text-white px-3 py-1 rounded-full text-xs font-hand font-bold sketchy-border"
-          >
-            INVINCIBLE!
-          </motion.div>
-        )}
-
-        {/* Start Screen */}
-        {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#F5F0E8] to-white z-10 p-8">
-            <div className="mb-8">
-              <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white border-4 border-white shadow-2xl p-1 flex items-center justify-center overflow-hidden sketchy-border">
-                <img
-                  ref={cookieImageRef}
-                  src="/images/cookie.png"
-                  alt="Cookie"
-                  className="w-full h-full object-cover rounded-full"
-                  style={{ objectPosition: 'center' }}
-                  onError={(e) => {
-                    e.target.src = '/images/cookie.jpg';
-                    e.target.style.objectPosition = 'center';
-                  }}
-                />
-              </div>
-            </div>
-            <h4 className="text-4xl font-hand text-navy mb-3 font-bold">Cookie's Goan Chase</h4>
-            <p className="text-sm text-navy/70 mb-2 text-center max-w-md font-hand">
-              Catch Goan food • Avoid obstacles • Survive the chaos!
-            </p>
-            <p className="text-xs text-navy/60 mb-8 text-center font-hand">
-              Use ↑↓ or W/S keys • Swipe on mobile
-            </p>
-            <button
-              onClick={startGame}
-              className="px-8 py-3 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105 sketchy-border font-hand"
-            >
-              Press ↑ or Space to Start
-            </button>
-          </div>
-        )}
-
-        {/* Game Over Screen */}
-        {isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-20 p-8">
-            <div className="text-center">
-              <h4 className="text-5xl font-bold text-navy mb-4 font-hand">Game Over</h4>
-              <div className="text-6xl font-mono font-bold text-[#D4A5A5] mb-2 tabular-nums">{score.toString().padStart(4, '0')}</div>
-              <p className="text-sm text-navy/60 mb-2 font-hand">{levelNames[level] || `Level ${level}`}</p>
-              {score >= highScore && score > 0 && (
-                <p className="text-xs text-[#D4A5A5] font-bold mb-4 font-hand">NEW HIGH SCORE!</p>
-              )}
-              <div className="flex gap-3 justify-center">
-                <button
-                  onClick={startGame}
-                  className="px-6 py-2 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105 sketchy-border font-hand"
-                >
-                  Play Again
-                </button>
-                {score > 0 && (
-                  <button
-                    onClick={shareScore}
-                    className="px-6 py-2 bg-[#D4A5A5] text-white font-bold rounded-lg shadow-lg hover:bg-[#c49595] transition-all transform hover:scale-105 sketchy-border font-hand"
-                  >
-                    Share Score
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Pause Screen */}
-        {isPaused && isPlaying && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-20">
-            <div className="bg-white rounded-xl px-8 py-6 shadow-2xl text-center sketchy-border">
-              <h4 className="text-3xl font-bold text-navy mb-4 font-hand">Paused</h4>
-              <p className="text-sm text-navy/60 mb-4 font-hand">Press Space or Esc to resume</p>
-              <button
-                onClick={() => setIsPaused(false)}
-                className="px-6 py-2 bg-[#1B3A57] text-white font-bold rounded-lg hover:bg-[#2c5378] transition-all sketchy-border font-hand"
-              >
-                Resume
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Game Area */}
-        {isPlaying && (
-          <div className="relative w-full h-full game-beach-bg overflow-hidden">
-            {/* Palm trees in background */}
-            <div className="absolute top-10 left-10 palm-tree opacity-30"></div>
-            <div className="absolute top-20 right-20 palm-tree opacity-20" style={{ transform: 'scaleX(-1)' }}></div>
-            
-            {/* Animated Ground */}
-            <div 
-              className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#8B7355] to-[#A68B6B] border-t-4 border-[#6B5A45]"
-              style={{
-                backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.1) 40px)`,
-                backgroundPosition: `${groundOffset}px 0`
-              }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-            </div>
-
-            {/* Game lanes */}
-            {Array.from({ length: LANES }).map((_, laneIndex) => (
-              <div
-                key={laneIndex}
-                className="absolute left-0 right-0"
-                style={{
-                  top: `${(laneIndex + 1) * (100 / (LANES + 1))}%`,
-                  height: `${100 / (LANES + 1)}%`,
-                  borderBottom: laneIndex < LANES - 1 ? '1px dashed rgba(27, 58, 87, 0.1)' : 'none'
-                }}
-              >
-                {/* Cookie sticker */}
-                {cookieLane === laneIndex && (
-                  <motion.div
-                    className="absolute left-8 z-10"
-                    style={{ top: '50%', transform: 'translateY(-50%)' }}
-                    animate={{ 
-                      y: [0, -3, 0],
-                      scale: isInvincible ? [1, 1.1, 1] : 1
-                    }}
-                    transition={{ 
-                      y: { repeat: Infinity, duration: 0.5, ease: 'easeInOut' },
-                      scale: { repeat: Infinity, duration: 0.3 }
-                    }}
-                  >
-                    <div className={`w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden sketchy-border ${isInvincible ? 'ring-4 ring-[#D4A5A5]' : ''}`}>
-                      <img
-                        src="/images/cookie.png"
-                        alt="Cookie"
-                        className="w-full h-full object-cover rounded-full"
-                        style={{ objectPosition: 'center' }}
-                        onError={(e) => {
-                          e.target.src = '/images/cookie.jpg';
-                          e.target.style.objectPosition = 'center';
-                        }}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Obstacles */}
-                {obstacles
-                  .filter(obs => obs.lane === laneIndex)
-                  .map(obs => (
-                    <motion.div
-                      key={obs.id}
-                      className="absolute z-5"
-                      style={{
-                        left: `${obs.position * 10}%`,
-                        top: '50%',
-                        transform: 'translateY(-50%)'
-                      }}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ 
-                        opacity: 1, 
-                        scale: 1,
-                        rotate: obs.type === 'catch' || obs.type === 'powerup' ? [0, 5, -5, 0] : 0
-                      }}
-                      transition={{ 
-                        rotate: { repeat: Infinity, duration: 0.5 },
-                        opacity: { duration: 0.2 }
-                      }}
-                    >
-                      <div className="w-16 h-16 rounded-full flex items-center justify-center text-4xl shadow-xl">
-                        {obs.emoji}
-                      </div>
-                    </motion.div>
-                  ))}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Mobile controls - Paw print buttons */}
-        {isPlaying && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 md:hidden z-20">
-            <button
-              onClick={() => handleButtonPress('up')}
-              className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
-              aria-label="Move up"
-            >
-              <PawPrint size={32} className="text-[#D4A5A5]" />
-            </button>
-            <button
-              onClick={() => handleButtonPress('down')}
-              className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
-              aria-label="Move down"
-            >
-              <PawPrint size={32} className="text-[#B8D4E8]" />
-            </button>
-          </div>
-        )}
-          </div>
-        </div>
-  );
-};
-
-const CookieAndBailey = () => (
+const CookieAndBailey = memo(() => (
 
   <section className={`py-12 md:py-16 lg:py-20 ${SECTION_PADDING} relative bg-white`}>
 
@@ -2368,7 +1693,7 @@ const CookieAndBailey = () => (
 
                 <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
 
-                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} whileHover={{ scale: 1.08 }} loading="lazy" width={687} height={1024} />
+                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} whileHover={{ scale: 1.05 }} loading="lazy" width={687} height={1024} />
 
                 </div>
 
@@ -2396,7 +1721,7 @@ const CookieAndBailey = () => (
 
                 <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
 
-                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} whileHover={{ scale: 1.08 }} loading="lazy" width={696} height={1024} />
+                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} whileHover={{ scale: 1.05 }} loading="lazy" width={696} height={1024} />
 
                 </div>
 
@@ -2415,13 +1740,13 @@ const CookieAndBailey = () => (
 
   </section>
 
-);
+));
 
-
+CookieAndBailey.displayName = 'CookieAndBailey';
 
 /* --- NEW COMPONENTS (Missing in original) --- */
 
-const KidenaHouse = () => (
+const KidenaHouse = memo(() => (
 
   <section id="kidena-house" className={`py-20 md:py-24 lg:py-28 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden`}>
 
@@ -2438,21 +1763,11 @@ const KidenaHouse = () => (
             <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">Kidena House • Batim Village, Goa Velha</p>
     </div>
 
-        {/* Hero Image - Full Width */}
+        {/* Photo Carousel - All 4 Images */}
         <div className="mb-16 md:mb-20">
-            <ParallaxWrapper offset={30} hoverEffect>
-                <div className="sketchy-border bg-white p-2 shadow-2xl max-w-4xl mx-auto">
-                    <img 
-                        src="/images/kidena-house.jpg" 
-                        alt="Kidena House" 
-                        className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover" 
-                        style={{ objectPosition: 'center' }}
-                        loading="lazy"
-                        width={1024}
-                        height={765}
-                    />
-                </div>
-            </ParallaxWrapper>
+            <FadeInWhenVisible>
+                <KidenaHouseCarousel />
+            </FadeInWhenVisible>
         </div>
 
         {/* Features Grid - 2x2 Layout */}
@@ -2523,11 +1838,119 @@ const KidenaHouse = () => (
 
   </section>
 
-);
+));
 
+KidenaHouse.displayName = 'KidenaHouse';
 
+// Kidena House Image Carousel Component
+const KidenaHouseCarousel = memo(() => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const images = [
+    { src: '/images/kidena-house.jpg', alt: 'Kidena House - Main View' },
+    { src: '/images/kidena-house2.jpg', alt: 'Kidena House - View 2' },
+    { src: '/images/kidena-house3.jpg', alt: 'Kidena House - View 3' },
+    { src: '/images/kidena-house4.jpg', alt: 'Kidena House - View 4' },
+  ];
 
-const FamilyItinerary = () => (
+  const nextImage = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const goToImage = (index) => {
+    setCurrentIndex(index);
+  };
+
+  // Auto-advance carousel every 5 seconds (pauses on hover)
+  useEffect(() => {
+    if (isPaused) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [images.length, isPaused]);
+
+  return (
+    <div className="relative w-full max-w-4xl mx-auto">
+      {/* Carousel Container */}
+      <div 
+        className="relative w-full overflow-hidden rounded-lg"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <div 
+          className="flex w-full transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {images.map((image, index) => (
+            <div key={index} className="min-w-full flex-shrink-0 w-full">
+              <ParallaxWrapper offset={30} hoverEffect>
+                <div className="sketchy-border bg-white p-2 shadow-2xl">
+                  <img 
+                    src={image.src} 
+                    alt={image.alt} 
+                    className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover" 
+                    style={{ objectPosition: 'center' }}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    width={1024}
+                    height={765}
+                  />
+                </div>
+              </ParallaxWrapper>
+            </div>
+          ))}
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevImage}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110"
+          aria-label="Previous image"
+        >
+          <ChevronLeft size={24} className="text-[#1B3A57]" />
+        </button>
+        <button
+          onClick={nextImage}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110"
+          aria-label="Next image"
+        >
+          <ChevronRight size={24} className="text-[#1B3A57]" />
+        </button>
+
+        {/* Dots Indicator */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToImage(index)}
+              className={`w-2.5 h-2.5 rounded-full transition-all ${
+                index === currentIndex
+                  ? 'bg-white w-8'
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+              aria-label={`Go to image ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Image Counter */}
+      <div className="text-center mt-4 text-[#F5F0E8] font-hand text-lg md:text-xl">
+        {currentIndex + 1} / {images.length}
+      </div>
+    </div>
+  );
+});
+
+KidenaHouseCarousel.displayName = 'KidenaHouseCarousel';
+
+const FamilyItinerary = memo(() => (
 
   <section id="family-itinerary" className={`py-12 md:py-16 lg:py-20 ${SECTION_PADDING} bg-gradient-to-b from-[#F5F0E8] to-white relative`}>
 
@@ -2652,11 +2075,11 @@ const FamilyItinerary = () => (
 
   </section>
 
-);
+));
 
+FamilyItinerary.displayName = 'FamilyItinerary';
 
-
-const Celebration = ({ isFamilyMode }) => (
+const Celebration = memo(({ isFamilyMode }) => (
 
   <section id="the-celebration" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} relative`}>
 
@@ -2826,11 +2249,11 @@ const Celebration = ({ isFamilyMode }) => (
 
   </section>
 
-);
+));
 
+Celebration.displayName = 'Celebration';
 
-
-const DressCode = () => {
+const DressCode = memo(() => {
   const [copiedColor, setCopiedColor] = useState(null);
 
   const colors = [
@@ -2968,7 +2391,7 @@ const DressCode = () => {
                     <div className="flex-1 relative">
                       <h4 className="font-bold text-lg font-hand text-navy mb-1">{color.name}</h4>
                       <div className="flex items-center gap-2">
-                        <p className="font-mono text-sm text-navy/60 tracking-wider font-semibold">{color.hex.toUpperCase()}</p>
+                      <p className="font-mono text-sm text-navy/60 tracking-wider font-semibold">{color.hex.toUpperCase()}</p>
                         {copiedColor === color.name ? (
                           <motion.span
                             initial={{ opacity: 0, x: -10 }}
@@ -3008,169 +2431,13 @@ const DressCode = () => {
 
   );
 
-};
+});
 
+ExploreGoa.displayName = 'ExploreGoa';
 
 
-const ExploreGoa = () => {
 
-  const recommendations = [
-
-    {
-
-      category: "North Goa",
-
-      items: [
-
-        { name: "Joseph's Bar", type: "drink", location: "Fontainhas, Panjim", desc: "Tiny tavern run by Gundu, pouring Tambde Rosa (feni + kokum) in clay cups with old jazz crackling in the background. Ten seats, tons of stories.", mapUrl: "https://maps.app.goo.gl/4QUDG3gTQzyw3MPL6" },
-
-        { name: "Miguel's", type: "drink", location: "Fontainhas, Panjim", desc: "Art deco cocktail room inside a heritage home. Feni old-fashioneds, Burma teak, and small plates that taste like Goa + Lisbon had a chat.", mapUrl: "https://maps.app.goo.gl/8rU2f6Vg1JqZFShcA" },
-
-        { name: "Bombil", type: "food", location: "Campal, Panjim", desc: "Lunch-only thali joint with clam stir fry, dried bombil, giant rice mounds, ceiling fans and grandma-level cooking. Loud, sweaty, perfect.", mapUrl: "https://maps.app.goo.gl/woeqeypdMobEHExQ7" },
-
-        { name: "Kokum Curry", type: "food", location: "Candolim (also in Panjim)", desc: "Saraswat Brahmin home food: coconut-rich curries, six versions of kokum, zero vinegar. A rare peek into Goan Hindu kitchens.", mapUrl: "https://maps.app.goo.gl/iNEK8NQGHXGa9XT48" },
-
-        { name: "Bar Outrigger", type: "drink", location: "Dona Paula", desc: "Rum den hidden in a fishing village. You literally get a treasure map, then 100+ rums, tiki glassware, and waves smacking the rocks.", mapUrl: "https://maps.app.goo.gl/Ui7Q6Ds1WzgrH71d7" }
-
-      ]
-
-    },
-
-    {
-
-      category: "South Goa",
-
-      items: [
-
-        { name: "Tejas Bar", type: "food", location: "Talpona Beach", desc: "Beach shack legends for kalwa sukka (oysters in coconut masala). Eat with your hands, chase with cold beer, lick the spice off.", mapUrl: "https://maps.app.goo.gl/Km7FEL987PiJXUMa6" },
-
-        { name: "Kala Bahia", type: "party", location: "Colomb Bay", desc: "Euro-Goan house party on a cliff. DJs, espresso martinis, surprise sunrise views. Nobody judges your dance face.", mapUrl: "https://maps.app.goo.gl/HiKQ1DyQM28Y9tZc8" },
-
-        { name: "Kakolem Beach", type: "beach", location: "Tiger Beach", desc: "15-minute scramble down a private staircase to a hidden horseshoe bay with a freshwater fall. Bring water, leave nothing.", mapUrl: "https://maps.app.goo.gl/mSfg3UnLz28dPdVV9" },
-
-        { name: "Colomb Bay", type: "beach", location: "Between Palolem and Patnem", desc: "Our calm bay for morning swims. Fishing families haul nets while you sip chai. Quiet, blue, very ours.", mapUrl: "https://maps.app.goo.gl/wsWU8AZBdsc4YZhr7" },
-
-        { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "The postcard crescent. Hit sunrise before the boat guys wake up - mirror water, palms silhouetted, just you.", mapUrl: "https://maps.app.goo.gl/oTJGboCKsGPkTmCs5" },
-
-        { name: "Le Petit Patnem", type: "party", location: "Patnem Beach", desc: "Daytime grilled fish + rosé, nighttime house/techno and barefoot dancing. Turns into a secret party pad after sunset.", mapUrl: "https://maps.app.goo.gl/cmcbjYpNst3scLet8" }
-
-      ]
-
-    }
-
-  ];
-
-
-
-  return (
-
-  <section id="explore-goa" className={`pt-8 md:pt-12 lg:pt-16 pb-16 md:pb-20 lg:pb-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 border-t border-navy/10`}>
-
-    <SectionDivider />
-
-    <FadeInWhenVisible className="max-w-6xl mx-auto">
-
-        <div className="text-center mb-12 md:mb-16">
-
-          <SignboardHeading>Explore Goa</SignboardHeading>
-
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-6"></div>
-
-          <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto">
-
-            Come for us, but make it more wholesome. We have some ideas for your time around…
-
-          </p>
-
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-
-          {recommendations.map((section, idx) => (
-
-          <FadeInWhenVisible key={section.category} delay={idx * 0.1} className="space-y-8 bg-white/80 backdrop-blur-sm sketchy-border p-8 md:p-10 shadow-lg hover:shadow-xl transition-all">
-
-              <h3 className="text-2xl md:text-3xl font-bold text-navy border-b-2 border-[#D4A5A5]/40 pb-4 mb-6">
-
-                {section.category}
-
-              </h3>
-
-              <div className="space-y-5 md:space-y-6">
-
-                {section.items.map((item, i) => (
-
-                <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#F5F0E8]/50 transition-colors" whileHover={{ x: 6 }}>
-
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white border-2 border-navy/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4A5A5] group-hover:text-white group-hover:border-[#D4A5A5] transition-all shadow-md group-hover:shadow-lg">
-
-                      {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
-
-                      {item.type === 'food' && <SketchIcon type="plate" className="w-5 h-5" />}
-
-                      {item.type === 'beach' && <Sun className="w-5 h-5" />}
-
-                      {item.type === 'party' && <Music className="w-5 h-5" />}
-
-                    </div>
-
-                    <div className="flex-1">
-
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h4 className="font-bold text-lg md:text-xl text-navy">{item.name}</h4>
-                        {item.mapUrl && (
-                          <a
-                            href={item.mapUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
-                            aria-label={`Open ${item.name} in Google Maps`}
-                            title="Open in Google Maps"
-                          >
-                            <MapPin size={18} />
-                          </a>
-                        )}
-                      </div>
-                      {item.location && <p className="text-xs md:text-sm text-navy/50 mb-2 italic">{item.location}</p>}
-                      <p className="text-sm md:text-base text-navy/70 leading-relaxed">{item.desc}</p>
-
-                    </div>
-
-                </motion.div>
-
-                ))}
-
-              </div>
-
-          </FadeInWhenVisible>
-
-          ))}
-
-        </div>
-
-
-
-        <div className="mt-16 md:mt-20 p-8 md:p-10 bg-gradient-to-br from-[#B8D4E8]/20 to-[#D4A5A5]/10 sketchy-border text-center border-2 border-navy/10 max-w-3xl mx-auto shadow-lg">
-
-          <p className="text-navy/80 italic font-hand text-lg md:text-xl leading-relaxed">
-
-            Columb Bay is where we learned to slow live together. Palolem is where we spent most of our times in the water. He proposed to me in Columb Bay, they're special to us. Hope you make it there too.
-
-          </p>
-
-        </div>
-
-    </FadeInWhenVisible>
-
-    </section>
-
-  );
-
-};
-
-
-
-const Travel = ({ isFamilyMode }) => (
+const Travel = memo(({ isFamilyMode }) => (
 
   <section id="travel" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8]`}>
 
@@ -3218,11 +2485,11 @@ const Travel = ({ isFamilyMode }) => (
 
                  <div className="border-b border-dashed border-navy/20 pb-3 mb-3">
                     <div className="flex justify-between pb-2">
-                       <span className="opacity-60">DESTINATION</span>
+                    <span className="opacity-60">DESTINATION</span>
                     </div>
                     <div className="space-y-2">
                        <div className="flex justify-between">
-                          <span className="font-bold">Dabolim (GOI)</span>
+                    <span className="font-bold">Dabolim (GOI)</span>
                           <span className="text-sm opacity-70">28.1 km</span>
                        </div>
                        <div className="flex justify-between">
@@ -3234,7 +2501,7 @@ const Travel = ({ isFamilyMode }) => (
 
                  <div className="border-b border-dashed border-navy/20 pb-3 mb-3">
                     <div className="flex justify-between pb-2">
-                       <span className="opacity-60">TRANSFER</span>
+                    <span className="opacity-60">TRANSFER</span>
                     </div>
                     <div className="space-y-2">
                        <div className="flex justify-between">
@@ -3289,21 +2556,22 @@ const Travel = ({ isFamilyMode }) => (
           
 
           {isFamilyMode ? (
-
-            <div className="font-hand text-xl space-y-6 text-center">
-
+            <>
+              <div className="font-hand text-xl space-y-6 text-center mb-12">
                <div className="border-2 border-navy p-4 rounded-sm bg-white transform rotate-1">
-
                    <p className="text-2xl font-bold text-[#D4A5A5]">Kidena House</p>
-
                    <p className="text-base mt-2">You're with us for the full four days. Rooms are already assigned. Fridge will be stocked. Pool will be ready.</p>
+                </div>
+                <p className="text-sm opacity-60">Check-in starts at 12:00 PM on March 18.</p>
+              </div>
 
+              {/* Kidena House Photo Carousel */}
+              <div className="mb-12">
+                <FadeInWhenVisible>
+                  <KidenaHouseCarousel />
+                </FadeInWhenVisible>
                </div>
-
-               <p className="text-sm opacity-60">Check-in starts at 12:00 PM on March 18.</p>
-
-            </div>
-
+            </>
           ) : (
 
             <ul className="font-hand text-lg space-y-5">
@@ -3324,7 +2592,7 @@ const Travel = ({ isFamilyMode }) => (
                       >
                         <MapPin size={18} />
                       </a>
-                    </div>
+            </div>
 
                     <p className="text-sm opacity-70">15 minutes from the venue. Boutique 5-star perched on a hill in Panaji. River Mandovi views, rooftop pool, spa to recover from dancing. Walk to casinos if you're up early.</p>
 
@@ -3398,11 +2666,11 @@ const Travel = ({ isFamilyMode }) => (
 
   </section>
 
-);
+));
 
+Travel.displayName = 'Travel';
 
-
-const QnA = () => {
+const QnA = memo(() => {
 
   const questions = [
 
@@ -3483,11 +2751,11 @@ const QnA = () => {
 
   );
 
-};
+});
 
+RSVP.displayName = 'RSVP';
 
-
-const RSVP = () => {
+const RSVP = memo(() => {
 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -3608,64 +2876,64 @@ const RSVP = () => {
 
         {!submitted ? (
                         <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-6">
-              <div>
+            <div>
                 <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
-                <input 
+              <input 
                   id="rsvp-name"
-                  type="text" 
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="modern-input" 
-                  placeholder="Who are we celebrating with?" 
-                  required 
-                />
-              </div>
+                type="text" 
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="modern-input" 
+                placeholder="Who are we celebrating with?" 
+                required 
+              />
+            </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="rsvp-email" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
-                  <input 
+                   <input 
                     id="rsvp-email"
-                    type="email" 
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="modern-input" 
-                    placeholder="name@email.com" 
-                    required 
-                  />
+                     type="email" 
+                     name="email"
+                     value={formData.email}
+                     onChange={handleChange}
+                     className="modern-input" 
+                     placeholder="name@email.com" 
+                     required 
+                   />
                 </div>
                 <div>
                   <label htmlFor="rsvp-phone" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
-                  <input 
+                   <input 
                     id="rsvp-phone"
-                    type="tel" 
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="modern-input" 
-                    placeholder="+91..." 
-                    required 
-                  />
+                     type="tel" 
+                     name="phone"
+                     value={formData.phone}
+                     onChange={handleChange}
+                     className="modern-input" 
+                     placeholder="+91..." 
+                     required 
+                   />
                 </div>
-              </div>
+            </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <div>
+            <div>
                   <label htmlFor="rsvp-guests" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
-                  <select 
+                <select 
                     id="rsvp-guests"
-                    name="guests"
-                    value={formData.guests}
-                    onChange={handleChange}
-                    className="modern-input bg-white"
-                  >
-                    <option value="1">1 Guest</option>
-                    <option value="2">2 Guests</option>
-                    <option value="3">3 Guests</option>
-                    <option value="4">4 Guests</option>
-                  </select>
+                  name="guests"
+                  value={formData.guests}
+                  onChange={handleChange}
+                  className="modern-input bg-white"
+                >
+                  <option value="1">1 Guest</option>
+                  <option value="2">2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4">4 Guests</option>
+                </select>
                 </div>
                 <div>
                   <label htmlFor="rsvp-dietary" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
@@ -3692,48 +2960,48 @@ const RSVP = () => {
                   className="modern-input" 
                   placeholder="What will guarantee you on the dance floor?" 
                 />
-              </div>
+            </div>
 
               <div className="grid md:grid-cols-2 gap-4 pt-2">
-                <label className="cursor-pointer group">
-                  <input 
-                    type="radio" 
-                    name="attending" 
-                    value="Count Me In"
-                    checked={formData.attending === 'Count Me In'}
-                    onChange={handleChange}
-                    className="hidden peer" 
-                    required
-                  />
-                  <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
-                    <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
-                    <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
-                  </div>
-                </label>
-                <label className="cursor-pointer group">
-                  <input 
-                    type="radio" 
-                    name="attending" 
-                    value="Cannot Attend"
-                    checked={formData.attending === 'Cannot Attend'}
-                    onChange={handleChange}
-                    className="hidden peer" 
-                    required
-                  />
-                  <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
-                    <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
-                    <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
-                  </div>
-                </label>
-              </div>
+              <label className="cursor-pointer group">
+                <input 
+                  type="radio" 
+                  name="attending" 
+                  value="Count Me In"
+                  checked={formData.attending === 'Count Me In'}
+                  onChange={handleChange}
+                  className="hidden peer" 
+                  required
+                />
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
+                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
+                  <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
+                </div>
+              </label>
+              <label className="cursor-pointer group">
+                <input 
+                  type="radio" 
+                  name="attending" 
+                  value="Cannot Attend"
+                  checked={formData.attending === 'Cannot Attend'}
+                  onChange={handleChange}
+                  className="hidden peer" 
+                  required
+                />
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
+                  <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
+                  <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
+                </div>
+              </label>
+            </div>
 
-              <button 
-                type="submit"
-                disabled={isSubmitting}
+            <button 
+              type="submit"
+              disabled={isSubmitting}
                 className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1B3A57]"
-              >
+            >
                 {isSubmitting ? 'Sending...' : 'Submit RSVP'}
-              </button>
+            </button>
           </form>
 
         ) : (
@@ -3756,11 +3024,11 @@ const RSVP = () => {
 
   );
 
-};
+});
 
+RSVP.displayName = 'RSVP';
 
-
-const Footer = ({ isFamilyMode, onOpenGame }) => (
+const Footer = memo(({ isFamilyMode, onOpenGame }) => (
 
   <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 lg:px-8 overflow-hidden py-16 md:py-24 lg:py-32">
 
@@ -3834,11 +3102,11 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
 
   </footer>
 
-);
+));
 
+Footer.displayName = 'Footer';
 
-
-const MusicPlayer = () => {
+const MusicPlayer = memo(() => {
 
   const [playing, setPlaying] = useState(false);
       
@@ -3915,11 +3183,13 @@ const MusicPlayer = () => {
 
   );
 
-};
+});
+
+MusicPlayer.displayName = 'MusicPlayer';
 
 
 
-const FloatingRSVPButton = ({ onScrollToRSVP }) => {
+const FloatingRSVPButton = memo(({ onScrollToRSVP }) => {
 
   return (
 
@@ -3942,7 +3212,9 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
   );
 
-};
+});
+
+FloatingRSVPButton.displayName = 'FloatingRSVPButton';
 
 const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
   const [password, setPassword] = useState('');
@@ -4021,6 +3293,8 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
     </AnimatePresence>
   );
 };
+
+PasswordModal.displayName = 'PasswordModal';
 
 
 
@@ -4177,7 +3451,7 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
           }`}
 
-            whileHover={{ scale: 1.2 }}
+            whileHover={{ scale: 1.1 }}
 
           whileTap={{ scale: 0.9 }}
 
@@ -4247,6 +3521,7 @@ const App = () => {
 
   // Memoize sections array to prevent infinite re-renders
   // Reordered: Critical info first (Celebration, Travel, RSVP), then emotional content
+  // Chronological navigation order
   const sections = useMemo(() => [
 
     { id: 'hero', name: 'Home', component: Hero },
@@ -4261,19 +3536,19 @@ const App = () => {
 
     { id: 'our-story', name: 'Story', component: Story },
 
+    { id: 'explore-goa', name: 'Goa', component: ExploreGoa },
+
     { id: 'dogs', name: 'Dogs', component: CookieAndBailey },
+
+    { id: 'q-a', name: 'Q&A', component: QnA },
 
     ...(isFamilyMode ? [
 
-      { id: 'kidena-house', name: 'Kidena', component: KidenaHouse },
+      { id: 'kidena-house', name: 'Kidena House', component: KidenaHouse },
 
       { id: 'family-itinerary', name: 'Itinerary', component: FamilyItinerary }
 
-    ] : []),
-
-    { id: 'explore-goa', name: 'Goa', component: ExploreGoa },
-
-    { id: 'q-a', name: 'Q&A', component: QnA }
+    ] : [])
 
   ], [isFamilyMode]);
 
@@ -4469,33 +3744,14 @@ const App = () => {
         </section>
 
 
-        
-        <section id="dogs" className="scroll-section flex items-center justify-center">
-
-        <CookieAndBailey />
-
-        </section>
-
 
         {isFamilyMode && (
 
-          <>
+          <section id="kidena-house" className="scroll-section">
 
-            <section id="kidena-house" className="scroll-section">
+          <KidenaHouse />
 
-            <KidenaHouse />
-
-            </section>
-
-
-
-            <section id="family-itinerary" className="scroll-section">
-
-            <FamilyItinerary />
-
-            </section>
-
-          </>
+          </section>
 
         )}
 
@@ -4504,6 +3760,13 @@ const App = () => {
         <section id="explore-goa" className="scroll-section scroll-section-long">
 
         <ExploreGoa />
+
+        </section>
+
+        
+        <section id="dogs" className="scroll-section flex items-center justify-center">
+
+        <CookieAndBailey />
 
         </section>
 
@@ -4517,6 +3780,22 @@ const App = () => {
 
 
 
+        {isFamilyMode && (
+
+          <>
+
+            <section id="family-itinerary" className="scroll-section">
+
+            <FamilyItinerary />
+
+            </section>
+
+          </>
+
+        )}
+
+
+
         <section id="footer" className="scroll-section flex items-center justify-center">
 
         <Footer 
@@ -4524,7 +3803,9 @@ const App = () => {
           onOpenGame={() => setIsGameOpen(true)}
         />
 
-        <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
+        <Suspense fallback={<div className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8]"><div className="text-navy font-hand">Loading game...</div></div>}>
+          <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
+        </Suspense>
 
         </section>
 
