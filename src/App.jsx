@@ -2698,9 +2698,9 @@ const Travel = ({ isFamilyMode }) => (
 
                  <div>
 
-                    <p className="font-bold">Blu Missel By The River</p>
+                    <p className="font-bold">The Crown Goa</p>
 
-                    <p className="text-sm opacity-70">Stay where we tie the knot. Just 4.3 km from downtown Panaji, with king rooms overlooking the garden. Wake up on your wedding day steps away from where it all happens.</p>
+                    <p className="text-sm opacity-70">15 minutes from the venue. Boutique 5-star perched on a hill in Panaji. River Mandovi views, rooftop pool, spa to recover from dancing. Walk to casinos if you're up early.</p>
 
                  </div>
 
@@ -2710,9 +2710,21 @@ const Travel = ({ isFamilyMode }) => (
 
                  <div>
 
-                    <p className="font-bold">O Pescador an Indy Resort</p>
+                    <p className="font-bold">DoubleTree by Hilton Goa – Panaji</p>
 
-                    <p className="text-sm opacity-70">Beachfront charm in Panaji, 5.9 km from downtown. Suite rooms with balconies where you can watch the sunset. Their happy hours are legendary - perfect for pre-wedding drinks.</p>
+                    <p className="text-sm opacity-70">20 minutes from the venue. Riverside resort with infinity pool melting into Mandovi River. Perfect if you're extending your stay to explore Old Goa churches. Free warm cookies at check-in (yes, really).</p>
+
+                 </div>
+
+               </li>
+
+               <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
+
+                 <div>
+
+                    <p className="font-bold">The Fern Kadamba Hotel</p>
+
+                    <p className="text-sm opacity-70">10 minutes from the venue. Heritage hotel near Old Goa, best value for families. Lush greenery, pool, spa. Staff will remember your kids' names by day two.</p>
 
                  </div>
 
