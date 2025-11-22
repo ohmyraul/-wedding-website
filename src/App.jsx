@@ -1318,14 +1318,7 @@ const Hero = ({ onScrollToSection }) => (
             invite you to witness our wedding
           </p>
 
-          {/* Date and Location - More compact on mobile */}
-          <div className="flex flex-col md:flex-row items-center gap-1.5 md:gap-3 text-navy/80 font-hand text-base md:text-lg lg:text-xl uppercase tracking-wide md:tracking-wider mt-1">
-            <span>March 20, 2026</span>
-            <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-[#D4A5A5]"></span>
-            <span className="text-sm md:text-base lg:text-lg">Goa, India</span>
-          </div>
-
-          <p className="text-xs md:text-sm lg:text-base font-hand text-navy/70 mt-1 md:mt-2 italic px-2">
+          <p className="text-xs md:text-sm lg:text-base font-hand text-navy/70 mt-2 md:mt-3 italic px-2">
             Your presence would mean the world to us.
           </p>
         </div>
@@ -1346,7 +1339,7 @@ const Hero = ({ onScrollToSection }) => (
               <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
               <div className="flex items-center gap-1 md:gap-1.5 text-center">
                 <MapPin size={12} className="md:w-[14px] md:h-[14px] text-[#D4A5A5] flex-shrink-0" />
-                <span className="font-medium text-navy">Blu Missel by the River, Fondvem, Ribandar</span>
+                <span className="font-medium text-navy">Blu Missel, Ribandar</span>
               </div>
             </div>
           </div>
