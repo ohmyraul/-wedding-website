@@ -1267,7 +1267,7 @@ const CountdownTimer = () => {
         <p className="text-sm md:text-base font-hand text-[#F5F0E8] font-semibold">
           March 20, 2026
         </p>
-      </div>
+        </div>
       <div className="flex items-center justify-center gap-2 md:gap-3">
         {units.map((unit, index) => (
           <motion.div
@@ -1328,17 +1328,17 @@ const Hero = ({ onScrollToSection }) => (
               initial={{ scale: 1.05 }}
               whileHover={{ scale: 1.02 }}
             >
-              <motion.img 
-                src="/images/hero.jpg" 
-                alt="Shubs and Alysha" 
-                className="w-full h-full object-cover"
+               <motion.img 
+                 src="/images/hero.jpg" 
+                 alt="Shubs and Alysha" 
+                 className="w-full h-full object-cover"
                 style={{ objectPosition: 'center' }}
                 width={1024}
                 height={890}
-                initial={{ scale: 1.2 }}
-                animate={{ scale: 1 }}
+                 initial={{ scale: 1.2 }}
+                 animate={{ scale: 1 }}
                 transition={{ duration: 1.2, ease: 'easeOut' }}
-                loading="eager"
+                 loading="eager"
               />
             </motion.div>
           </div>
@@ -1380,7 +1380,7 @@ const Hero = ({ onScrollToSection }) => (
           <p className="text-xs md:text-sm lg:text-base font-hand text-navy/70 mt-2 md:mt-3 italic px-2">
             Your presence would mean the world to us.
           </p>
-        </div>
+         </div>
 
         {/* Event Details - Compact on mobile */}
         <div className="max-w-2xl mx-auto mt-4 md:mt-6 lg:mt-8">
@@ -2497,7 +2497,7 @@ const KidenaHouseCarousel = memo(() => {
                     alt={image.alt} 
                     className="w-full h-auto object-contain" 
                     loading={index === 0 ? "eager" : "lazy"}
-                    width={1024}
+                        width={1024}
                     height={768}
                     decoding="async"
                     onError={(e) => {
@@ -2513,9 +2513,9 @@ const KidenaHouseCarousel = memo(() => {
                         console.log(`✓ Successfully loaded: ${image.src}`);
                       }
                     }}
-                  />
+                    />
                 </div>
-              </ParallaxWrapper>
+            </ParallaxWrapper>
             </div>
           ))}
         </div>
@@ -2553,13 +2553,13 @@ const KidenaHouseCarousel = memo(() => {
               type="button"
             />
           ))}
-        </div>
+                        </div>
       </div>
 
       {/* Image Counter */}
       <div className="text-center mt-4 text-[#F5F0E8] font-hand text-lg md:text-xl">
         {currentIndex + 1} / {images.length}
-      </div>
+                        </div>
     </div>
   );
 });
@@ -2573,7 +2573,7 @@ const KidenaHouse = () => (
     {/* Subtle background decoration */}
     <div className="absolute inset-0 opacity-5 pointer-events-none">
         <SketchIcon type="palm" className="absolute top-20 right-20 w-96 h-96 text-white" />
-    </div>
+                        </div>
 
     <FadeInWhenVisible className="max-w-7xl mx-auto relative z-10">
 
@@ -2594,7 +2594,7 @@ const KidenaHouse = () => (
                 <MapPin size={20} className="inline align-middle" />
               </a>
             </p>
-    </div>
+                </div>
 
         {/* Photo Carousel - All 4 Images */}
         <div className="mb-8 md:mb-10 -mx-4 md:-mx-8 lg:-mx-12">
@@ -2705,6 +2705,7 @@ const FamilyItinerary = () => (
                     day: "Thursday, March 19", 
                     time: "All Day",
                     title: "Arrival & Pool Party", 
+                    summary: "Land, dump bags, straight into the pool.",
                     desc: "You're finally here. We'll have cars waiting at the airport to bring you straight to Kidena House. Take your time unpacking and settling into your rooms. We'll order the best Goan food we can find for dinner. Then: pool party. Later that evening, some of us are heading to Panjim for a pub crawl. Joseph's Bar, Miguel's, all our favorite haunts from the past seven years. Come along if you want, or stay back at the house and relax by the pool. Whatever feels right.",
                     icon: Home,
                     color: "#D4A5A5"
@@ -2714,6 +2715,7 @@ const FamilyItinerary = () => (
                     day: "Friday, March 20", 
                     time: "Morning",
                     title: "Rehearsal Day", 
+                    summary: "Breakfast together, then rehearsal for ceremony crew.",
                     desc: "We'll all have breakfast together at the house. Slow morning, good coffee, no rush. Then those of us actually in the ceremony will head to Blu Missel for rehearsal. Kids can absolutely stay back at Kidena and enjoy the pool. No need to drag them to a boring rehearsal.",
                     icon: Sun,
                     color: "#B8D4E8"
@@ -2723,6 +2725,7 @@ const FamilyItinerary = () => (
                     day: "Friday, March 20", 
                     time: "Afternoon",
                     title: "The Wedding", 
+                    summary: "Cars leave at 2:30 PM sharp. Be ready on time.",
                     desc: "This is it. The day we've been planning for months. Cars leave Kidena House at 2:30 PM sharp. We're still figuring out the mix of rental cars and cabs, but we'll have it sorted. Just please be ready on time. (Yes, we're talking to specific family members who are always fashionably late.)",
                     icon: Heart,
                     color: "#D4A5A5"
@@ -2732,6 +2735,7 @@ const FamilyItinerary = () => (
                     day: "Saturday, March 21", 
                     time: "All Day",
                     title: "Recovery & Chill", 
+                    summary: "No agenda. Pool, naps, sunset drinks at Bar Outrigger.",
                     desc: "Sleep as late as you need to. No agenda today. No schedule. Pool, spa, naps, whatever your body is asking for after last night. Later in the evening, let's all meet up at Bar Outrigger. It's this gorgeous spot right by the beach with a little cove. Perfect for sunset. We'll have drinks, decompress together, soak in the fact that we actually pulled this off.",
                     icon: Anchor,
                     color: "#B8D4E8"
@@ -2741,6 +2745,7 @@ const FamilyItinerary = () => (
                     day: "Sunday, March 22", 
                     time: "All Day",
                     title: "Rest & Goodbyes", 
+                    summary: "Leave whenever your flight is. We'll be around all day.",
                     desc: "People can leave whenever their flights are. Take your time checking out. We'll be around all day to say proper goodbyes and squeeze in a few more hours together. Thank you for being here for all of this. For showing up, for celebrating with us, for making this week exactly what we hoped it would be. It means absolutely everything.",
                     icon: Coffee,
                     color: "#D4A5A5"
@@ -2780,9 +2785,17 @@ const FamilyItinerary = () => (
                             {/* Content column */}
                             <div className="flex-1">
 
-                                <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: item.color }}>{item.title}</h3>
+                                <h3 className="font-hand font-bold text-2xl md:text-3xl mb-2" style={{ color: item.color }}>{item.title}</h3>
 
-                                <p className="font-hand text-lg md:text-xl text-navy/80 leading-relaxed">{item.desc}</p>
+                                {/* Bold one-liner summary */}
+                                <p className="font-hand font-bold text-lg md:text-xl text-navy mb-3 leading-tight">{item.summary}</p>
+
+                                {/* Optional Reading tag */}
+                                <div className="mb-3">
+                                    <span className="inline-block text-xs font-hand text-navy/50 italic border border-navy/20 px-2 py-1 rounded-sm bg-navy/5">Optional Reading</span>
+                                </div>
+
+                                <p className="font-hand text-base md:text-lg text-navy/70 leading-relaxed">{item.desc}</p>
 
     </div>
 
@@ -3061,7 +3074,7 @@ const DressCode = () => {
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-[#ffbd7b]/20 flex items-center justify-center flex-shrink-0">
                   <Music className="w-5 h-5 text-[#ffbd7b]" />
-                </div>
+              </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-navy font-hand">Beach Formal</h3>
               </div>
               <p className="font-hand text-base md:text-lg text-navy/80 leading-relaxed mb-2.5">Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand - dress beautifully, but practically.</p>
@@ -3109,7 +3122,7 @@ const DressCode = () => {
               <p className="text-xs text-navy/50 font-hand italic text-center mt-3">Click colors to copy • Wear what makes you happy</p>
             </FadeInWhenVisible>
 
-          </div>
+            </div>
 
         </div>
 
@@ -3185,7 +3198,12 @@ const ExploreGoa = () => {
 
           <SignboardHeading>Explore Goa</SignboardHeading>
 
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-6"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-4"></div>
+
+          {/* Optional label */}
+          <div className="mb-4">
+            <span className="inline-block text-sm font-hand text-navy/60 italic border border-navy/20 px-3 py-1.5 rounded-sm bg-[#B8D4E8]/20">Optional ideas if you're staying extra days</span>
+          </div>
 
           <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto">
 
@@ -3247,17 +3265,17 @@ const ExploreGoa = () => {
 
                     </div>
 
-                </motion.div>
+                  </motion.div>
 
                 ))}
 
               </div>
 
-          </FadeInWhenVisible>
+                </FadeInWhenVisible>
 
-          ))}
+              ))}
 
-        </div>
+            </div>
 
 
 
@@ -3271,7 +3289,7 @@ const ExploreGoa = () => {
 
         </div>
 
-    </FadeInWhenVisible>
+      </FadeInWhenVisible>
 
     </section>
 
@@ -3329,32 +3347,32 @@ const Travel = ({ isFamilyMode }) => (
 
                  <div className="border-b border-dashed border-navy/20 pb-3 mb-3">
                     <div className="flex justify-between pb-2">
-                       <span className="opacity-60">DESTINATION</span>
+                    <span className="opacity-60">DESTINATION</span>
                     </div>
                     <div className="space-y-2">
                        <div className="flex justify-between">
-                          <span className="font-bold">Dabolim (GOI)</span>
-                          <span className="text-sm opacity-70">28.1 km</span>
+                    <span className="font-bold text-lg">Dabolim (GOI)</span>
+                          <span className="text-sm opacity-70 font-semibold">28.1 km</span>
                        </div>
                        <div className="flex justify-between">
-                          <span className="font-bold">Mopa (GOX)</span>
-                          <span className="text-sm opacity-70">34 km</span>
+                          <span className="font-bold text-lg">Mopa (GOX)</span>
+                          <span className="text-sm opacity-70 font-semibold">34 km</span>
                        </div>
                     </div>
                  </div>
 
                  <div className="border-b border-dashed border-navy/20 pb-3 mb-3">
                     <div className="flex justify-between pb-2">
-                       <span className="opacity-60">TRANSFER</span>
+                    <span className="opacity-60">TRANSFER</span>
                     </div>
                     <div className="space-y-2">
                        <div className="flex justify-between">
-                          <span className="font-bold">Dabolim</span>
-                          <span className="text-sm opacity-70">35–50 min</span>
+                          <span className="font-bold text-lg">Dabolim</span>
+                          <span className="text-sm opacity-90 font-semibold">35–50 min</span>
                        </div>
                        <div className="flex justify-between">
-                          <span className="font-bold">Mopa</span>
-                          <span className="text-sm opacity-70">45 min–1 hr 15 min</span>
+                          <span className="font-bold text-lg">Mopa</span>
+                          <span className="text-sm opacity-90 font-semibold">45 min–1 hr 15 min</span>
                        </div>
                     </div>
                  </div>
@@ -3409,11 +3427,11 @@ const Travel = ({ isFamilyMode }) => (
 
                    <p className="text-base mt-2">You're with us for the full four days. Rooms are already assigned. Fridge will be stocked. Pool will be ready.</p>
 
+                </div>
+
+                <p className="text-sm opacity-60">Check-in starts at 12:00 PM on March 18.</p>
+
                </div>
-
-               <p className="text-sm opacity-60">Check-in starts at 12:00 PM on March 18.</p>
-
-            </div>
 
           ) : (
 
@@ -3435,9 +3453,9 @@ const Travel = ({ isFamilyMode }) => (
                       >
                         <MapPin size={18} />
                       </a>
-                    </div>
+            </div>
 
-                    <p className="text-sm opacity-70">15 minutes from the venue. Boutique 5-star perched on a hill in Panaji. River Mandovi views, rooftop pool, spa to recover from dancing. Walk to casinos if you're up early.</p>
+                    <p className="text-sm opacity-70"><span className="font-bold text-base opacity-90">15 minutes from the venue.</span> Boutique 5-star perched on a hill in Panaji. River Mandovi views, rooftop pool, spa to recover from dancing. Walk to casinos if you're up early.</p>
 
                  </div>
 
@@ -3461,7 +3479,7 @@ const Travel = ({ isFamilyMode }) => (
                       </a>
                     </div>
 
-                    <p className="text-sm opacity-70">20 minutes from the venue. Riverside resort with infinity pool melting into Mandovi River. Perfect if you're extending your stay to explore Old Goa churches. Free warm cookies at check-in (yes, really).</p>
+                    <p className="text-sm opacity-70"><span className="font-bold text-base opacity-90">20 minutes from the venue.</span> Riverside resort with infinity pool melting into Mandovi River. Perfect if you're extending your stay to explore Old Goa churches. Free warm cookies at check-in (yes, really).</p>
 
                  </div>
 
@@ -3485,7 +3503,7 @@ const Travel = ({ isFamilyMode }) => (
                       </a>
                     </div>
 
-                    <p className="text-sm opacity-70">10 minutes from the venue. Heritage hotel near Old Goa, best value for families. Lush greenery, pool, spa. Staff will remember your kids' names by day two.</p>
+                    <p className="text-sm opacity-70"><span className="font-bold text-base opacity-90">10 minutes from the venue.</span> Heritage hotel near Old Goa, best value for families. Lush greenery, pool, spa. Staff will remember your kids' names by day two.</p>
 
                  </div>
 
@@ -3719,64 +3737,64 @@ const RSVP = () => {
 
         {!submitted ? (
                         <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-6">
-              <div>
+            <div>
                 <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
-                <input 
+              <input 
                   id="rsvp-name"
-                  type="text" 
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="modern-input" 
-                  placeholder="Who are we celebrating with?" 
-                  required 
-                />
-              </div>
+                type="text" 
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="modern-input" 
+                placeholder="Who are we celebrating with?" 
+                required 
+              />
+            </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="rsvp-email" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
-                  <input 
+                   <input 
                     id="rsvp-email"
-                    type="email" 
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="modern-input" 
-                    placeholder="name@email.com" 
-                    required 
-                  />
+                     type="email" 
+                     name="email"
+                     value={formData.email}
+                     onChange={handleChange}
+                     className="modern-input" 
+                     placeholder="name@email.com" 
+                     required 
+                   />
                 </div>
                 <div>
                   <label htmlFor="rsvp-phone" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
-                  <input 
+                   <input 
                     id="rsvp-phone"
-                    type="tel" 
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="modern-input" 
-                    placeholder="+91..." 
-                    required 
-                  />
+                     type="tel" 
+                     name="phone"
+                     value={formData.phone}
+                     onChange={handleChange}
+                     className="modern-input" 
+                     placeholder="+91..." 
+                     required 
+                   />
                 </div>
-              </div>
+            </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <div>
+            <div>
                   <label htmlFor="rsvp-guests" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
-                  <select 
+                <select 
                     id="rsvp-guests"
-                    name="guests"
-                    value={formData.guests}
-                    onChange={handleChange}
-                    className="modern-input bg-white"
-                  >
-                    <option value="1">1 Guest</option>
-                    <option value="2">2 Guests</option>
-                    <option value="3">3 Guests</option>
-                    <option value="4">4 Guests</option>
-                  </select>
+                  name="guests"
+                  value={formData.guests}
+                  onChange={handleChange}
+                  className="modern-input bg-white"
+                >
+                  <option value="1">1 Guest</option>
+                  <option value="2">2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4">4 Guests</option>
+                </select>
                 </div>
                 <div>
                   <label htmlFor="rsvp-dietary" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
@@ -3803,48 +3821,48 @@ const RSVP = () => {
                   className="modern-input" 
                   placeholder="What will guarantee you on the dance floor?" 
                 />
-              </div>
+            </div>
 
               <div className="grid md:grid-cols-2 gap-4 pt-2">
-                <label className="cursor-pointer group">
-                  <input 
-                    type="radio" 
-                    name="attending" 
-                    value="Count Me In"
-                    checked={formData.attending === 'Count Me In'}
-                    onChange={handleChange}
-                    className="hidden peer" 
-                    required
-                  />
-                  <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
-                    <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
-                    <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
-                  </div>
-                </label>
-                <label className="cursor-pointer group">
-                  <input 
-                    type="radio" 
-                    name="attending" 
-                    value="Cannot Attend"
-                    checked={formData.attending === 'Cannot Attend'}
-                    onChange={handleChange}
-                    className="hidden peer" 
-                    required
-                  />
-                  <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
-                    <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
-                    <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
-                  </div>
-                </label>
-              </div>
+              <label className="cursor-pointer group">
+                <input 
+                  type="radio" 
+                  name="attending" 
+                  value="Count Me In"
+                  checked={formData.attending === 'Count Me In'}
+                  onChange={handleChange}
+                  className="hidden peer" 
+                  required
+                />
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
+                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
+                  <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
+                </div>
+              </label>
+              <label className="cursor-pointer group">
+                <input 
+                  type="radio" 
+                  name="attending" 
+                  value="Cannot Attend"
+                  checked={formData.attending === 'Cannot Attend'}
+                  onChange={handleChange}
+                  className="hidden peer" 
+                  required
+                />
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
+                  <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
+                  <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
+                </div>
+              </label>
+            </div>
 
-              <button 
-                type="submit"
-                disabled={isSubmitting}
+            <button 
+              type="submit"
+              disabled={isSubmitting}
                 className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1B3A57]"
-              >
+            >
                 {isSubmitting ? 'Sending...' : 'Submit RSVP'}
-              </button>
+            </button>
           </form>
 
         ) : (
@@ -4565,7 +4583,7 @@ const App = () => {
 
             <KidenaHouse />
 
-            </section>
+        </section>
 
 
 
@@ -4573,7 +4591,7 @@ const App = () => {
 
             <FamilyItinerary />
 
-            </section>
+        </section>
 
           </>
 
@@ -4595,7 +4613,7 @@ const App = () => {
 
         </section>
 
-
+        
 
         <section id="our-story" className="scroll-section scroll-section-long">
 
@@ -4604,7 +4622,7 @@ const App = () => {
         </section>
 
 
-        
+
         <section id="dogs" className="scroll-section flex items-center justify-center">
 
         <CookieAndBailey />
@@ -4619,7 +4637,7 @@ const App = () => {
 
         <ExploreGoa />
 
-        </section>
+            </section>
 
 
 
@@ -4638,7 +4656,7 @@ const App = () => {
           onOpenGame={() => setIsGameOpen(true)}
         />
 
-        <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
+          <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
 
         </section>
 
