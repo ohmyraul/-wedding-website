@@ -1324,20 +1324,20 @@ const Hero = ({ onScrollToSection }) => (
 
         {/* Event Details - Compact on mobile */}
         <div className="max-w-2xl mx-auto mt-4 md:mt-6 lg:mt-8">
-          <div className="sketchy-border border-2 border-[#D4A5A5]/30 bg-white/80 backdrop-blur-sm rounded-lg md:rounded-xl px-3 py-2.5 md:px-5 md:py-4 text-navy/80 font-hand shadow-md">
-            <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-2 md:gap-2.5 text-[10px] md:text-xs lg:text-sm">
-              <div className="flex items-center gap-1 md:gap-1.5">
-                <Calendar size={12} className="md:w-[14px] md:h-[14px] text-[#D4A5A5] flex-shrink-0" />
+          <div className="sketchy-border border-2 border-[#D4A5A5]/30 bg-white/80 backdrop-blur-sm rounded-lg md:rounded-xl px-4 py-3 md:px-5 md:py-4 text-navy/80 font-hand shadow-md">
+            <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-2.5 md:gap-2.5 text-xs md:text-sm lg:text-base">
+              <div className="flex items-center gap-1.5 md:gap-1.5">
+                <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D4A5A5] flex-shrink-0" />
                 <span className="font-semibold text-navy">Friday, March 20, 2026</span>
               </div>
               <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
-              <div className="flex items-center gap-1 md:gap-1.5">
-                <Clock size={12} className="md:w-[14px] md:h-[14px] text-[#D4A5A5] flex-shrink-0" />
+              <div className="flex items-center gap-1.5 md:gap-1.5">
+                <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#D4A5A5] flex-shrink-0" />
                 <span className="font-medium text-navy">3:30 PM onwards</span>
               </div>
               <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
-              <div className="flex items-center gap-1 md:gap-1.5 text-center">
-                <MapPin size={12} className="md:w-[14px] md:h-[14px] text-[#D4A5A5] flex-shrink-0" />
+              <div className="flex items-center gap-1.5 md:gap-1.5 text-center">
+                <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#D4A5A5] flex-shrink-0" />
                 <span className="font-medium text-navy">Blu Missel, Ribandar</span>
               </div>
             </div>
@@ -3333,7 +3333,7 @@ const Travel = ({ isFamilyMode }) => (
 
                <li className="text-center pt-2">
 
-                  <span className="bg-white px-3 py-1 border border-navy rounded-full text-sm"><span className="font-bold">Important:</span> Book early. March is peak wedding season in Goa.</span>
+                  <span className="bg-white px-3 py-1 border border-navy rounded-full text-sm"><span className="font-bold">Important:</span> Book early. March is peak wedding season<br className="md:hidden" /> in Goa.</span>
 
                </li>
 
@@ -3730,10 +3730,7 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
       <FadeInWhenVisible>
         <div className="space-y-5 md:space-y-6 lg:space-y-8 max-w-3xl mx-auto px-4">
           <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] text-center">
-            Seven years ago, we found each other again.
-          </p>
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] text-center">
-            Every day since, we've chosen each other.
+            Seven years ago, we found each other again.<br /> Every day since, we've chosen each other.
           </p>
           <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-hand font-bold text-[#D4A5A5] mt-6 md:mt-8 text-center leading-tight">
             Now we're choosing forever -<br className="hidden md:block" /> and we want you there when we say it out loud.
