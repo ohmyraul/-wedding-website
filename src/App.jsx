@@ -2295,7 +2295,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
 const CookieAndBailey = () => (
 
-  <section className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} relative bg-white`}>
+  <section className={`py-12 md:py-16 lg:py-20 ${SECTION_PADDING} relative bg-white`}>
 
     <FadeInWhenVisible className="max-w-5xl mx-auto text-center">
 
@@ -3015,7 +3015,7 @@ const ExploreGoa = () => {
 
   return (
 
-  <section id="explore-goa" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 border-t border-navy/10`}>
+  <section id="explore-goa" className={`pt-8 md:pt-12 lg:pt-16 pb-16 md:pb-20 lg:pb-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 border-t border-navy/10`}>
 
     <SectionDivider />
 
@@ -3333,7 +3333,7 @@ const Travel = ({ isFamilyMode }) => (
 
                <li className="text-center pt-2">
 
-                  <span className="bg-white px-3 py-1 border border-navy rounded-full text-sm"><span className="font-bold">Important:</span> Book early. March is peak wedding season<br className="md:hidden" /> in Goa.</span>
+                  <span className="bg-white px-3 py-1 border border-navy rounded-full text-sm"><span className="font-bold">Important:</span> Book early. March is peak wedding<br className="md:hidden" /> season in Goa.</span>
 
                </li>
 
