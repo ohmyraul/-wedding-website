@@ -1353,72 +1353,41 @@ const Hero = ({ onScrollToSection }) => (
           <span className="md:hidden"> </span>we're making it forever.
         </p>
 
-        {/* S&A Logo with Coastal Line-Art Monogram */}
+        {/* S&A Logo with Subtle Line-Art */}
         <motion.div
-          className="relative inline-block px-8 md:px-12 py-6 md:py-8"
+          className="relative inline-block"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 120, damping: 14 }}
         >
-          {/* Soft oval/arch background shape (vintage hotel sign style) */}
+          {/* Very faint oval outline */}
           <svg 
-            className="absolute inset-0 w-full h-full"
-            viewBox="0 0 400 200"
-            preserveAspectRatio="xMidYMid meet"
-            style={{ opacity: 0.08 }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[140%] pointer-events-none"
+            viewBox="0 0 200 120"
+            preserveAspectRatio="xMidYMid"
+            style={{ opacity: 0.05 }}
           >
-            <ellipse cx="200" cy="100" rx="190" ry="95" fill="none" stroke="#1B3A57" strokeWidth="1.5" />
+            <ellipse cx="100" cy="60" rx="90" ry="55" fill="none" stroke="#1B3A57" strokeWidth="1" />
           </svg>
 
-          {/* Coastal Line-Art Decorations - Very faint */}
-          <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.12 }}>
-            {/* Left side: Palm fronds and church silhouette */}
-            <svg className="absolute -left-4 md:-left-8 top-1/2 -translate-y-1/2 w-24 md:w-32 h-24 md:h-32" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-              {/* Palm fronds */}
-              <path d="M20,80 Q15,60 20,40 Q25,20 30,30 Q25,25 20,35 Q15,45 20,60" 
-                    stroke="#1B3A57" strokeWidth="0.6" fill="none" />
-              <path d="M25,75 Q20,55 25,35 Q30,15 35,25 Q30,20 25,30 Q20,40 25,55" 
-                    stroke="#1B3A57" strokeWidth="0.6" fill="none" />
-              {/* Church silhouette */}
-              <path d="M10,90 L10,50 L20,50 L20,40 L30,40 L30,30 L40,30 L40,20 L50,20 L50,30 L60,30 L60,40 L70,40 L70,50 L80,50 L80,90 Z" 
-                    stroke="#1B3A57" strokeWidth="0.8" fill="none" />
-              <path d="M45,20 L45,10 L50,10 L50,5 L55,5 L55,10 L50,10 L50,20" 
-                    stroke="#1B3A57" strokeWidth="0.8" fill="none" />
+          {/* Subtle wispy curved lines - very faint */}
+          <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.06 }}>
+            {/* Left side - subtle arcs */}
+            <svg className="absolute -left-8 md:-left-12 top-1/2 -translate-y-1/2 w-16 md:w-20 h-32 md:h-40" viewBox="0 0 50 100" preserveAspectRatio="xMidYMid">
+              <path d="M10,80 Q5,60 10,40 Q15,20 20,30" stroke="#1B3A57" strokeWidth="0.5" fill="none" />
+              <path d="M15,75 Q10,55 15,35 Q20,15 25,25" stroke="#1B3A57" strokeWidth="0.5" fill="none" />
             </svg>
-
-            {/* Right side: Palm fronds and waves */}
-            <svg className="absolute -right-4 md:-right-8 top-1/2 -translate-y-1/2 w-24 md:w-32 h-24 md:h-32" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-              {/* Palm fronds */}
-              <path d="M80,80 Q85,60 80,40 Q75,20 70,30 Q75,25 80,35 Q85,45 80,60" 
-                    stroke="#1B3A57" strokeWidth="0.6" fill="none" />
-              <path d="M75,75 Q80,55 75,35 Q70,15 65,25 Q70,20 75,30 Q80,40 75,55" 
-                    stroke="#1B3A57" strokeWidth="0.6" fill="none" />
-              {/* Small waves (teal accent) */}
-              <path d="M20,85 Q30,80 40,85 T60,85" 
-                    stroke="#6BA8B5" strokeWidth="0.8" fill="none" />
-              <path d="M25,90 Q35,85 45,90 T65,90" 
-                    stroke="#6BA8B5" strokeWidth="0.8" fill="none" />
-            </svg>
-
-            {/* Top: Shoreline and small waves */}
-            <svg className="absolute left-1/2 -translate-x-1/2 -top-6 md:-top-10 w-40 md:w-56 h-12 md:h-16" viewBox="0 0 200 50" preserveAspectRatio="xMidYMid">
-              <path d="M0,40 Q50,35 100,40 T200,40" 
-                    stroke="#1B3A57" strokeWidth="0.8" fill="none" />
-              <path d="M10,45 Q30,42 50,45 T90,45 T130,45" 
-                    stroke="#6BA8B5" strokeWidth="0.6" fill="none" />
-            </svg>
-
-            {/* Bottom: Shoreline */}
-            <svg className="absolute left-1/2 -translate-x-1/2 -bottom-6 md:-bottom-10 w-40 md:w-56 h-12 md:h-16" viewBox="0 0 200 50" preserveAspectRatio="xMidYMid">
-              <path d="M0,10 Q50,15 100,10 T200,10" 
-                    stroke="#1B3A57" strokeWidth="0.8" fill="none" />
+            {/* Right side - subtle arcs */}
+            <svg className="absolute -right-8 md:-right-12 top-1/2 -translate-y-1/2 w-16 md:w-20 h-32 md:h-40" viewBox="0 0 50 100" preserveAspectRatio="xMidYMid">
+              <path d="M40,80 Q45,60 40,40 Q35,20 30,30" stroke="#1B3A57" strokeWidth="0.5" fill="none" />
+              <path d="M35,75 Q40,55 35,35 Q30,15 25,25" stroke="#1B3A57" strokeWidth="0.5" fill="none" />
             </svg>
           </div>
 
           {/* S&A Monogram */}
           <motion.h1 
             className="text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text" 
-            style={{ textShadow: '2px 2px 0px rgba(212, 165, 165, 0.15)' }}
+            style={{ textShadow: '2px 2px 0px rgba(212, 165, 165, 0.2)' }}
           >
             S<span className="text-[#D4A5A5]">&</span>A
           </motion.h1>
