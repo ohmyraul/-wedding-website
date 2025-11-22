@@ -2474,15 +2474,17 @@ const KidenaHouseCarousel = memo(() => {
             <div key={index} className="min-w-full flex-shrink-0 w-full">
               <ParallaxWrapper offset={30} hoverEffect>
                 <div className="sketchy-border bg-white p-2 shadow-2xl">
-                  <img 
-                    src={image.src} 
-                    alt={image.alt} 
-                    className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover" 
-                    style={{ objectPosition: 'center' }}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    width={1024}
-                    height={765}
-                  />
+                  <div className="relative w-full aspect-[4/3] overflow-hidden">
+                    <img 
+                      src={image.src} 
+                      alt={image.alt} 
+                      className="w-full h-full object-cover" 
+                      style={{ objectPosition: 'center center' }}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      width={1024}
+                      height={768}
+                    />
+                  </div>
                 </div>
               </ParallaxWrapper>
             </div>
@@ -2549,7 +2551,20 @@ const KidenaHouse = () => (
         {/* Header Section */}
         <div className="text-center mb-12 md:mb-12">
             <SignboardHeading variant="dark">Where You'll Stay</SignboardHeading>
-            <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">Kidena House • Batim Village, Goa Velha</p>
+            <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">
+              Kidena House • Gancim, Maina, Goa Velha
+              {' '}
+              <a 
+                href="https://maps.app.goo.gl/hZuyKOIhNYSXhZtwo" 
+                target="_blank" 
+                rel="noreferrer"
+                className="inline-block ml-2 text-[#B8D4E8] hover:text-white transition-colors"
+                aria-label="View Kidena House on Google Maps"
+                title="View on Google Maps"
+              >
+                <MapPin size={20} className="inline align-middle" />
+              </a>
+            </p>
     </div>
 
         {/* Photo Carousel - All 4 Images */}
