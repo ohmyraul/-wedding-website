@@ -1030,7 +1030,7 @@ const ApprovedStamp = () => (
 
 
 
-const Nav = ({ isFamilyMode }) => {
+const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -1119,6 +1119,31 @@ const Nav = ({ isFamilyMode }) => {
             </a>
 
           ))}
+
+          {/* Family Mode Button */}
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              if (isFamilyMode) {
+                onFamilyModeToggle();
+              } else {
+                onRequestFamilyAccess();
+              }
+            }}
+            className="mt-2 text-xl font-hand text-navy/80 hover:text-[#D4A5A5] text-center border-t border-gray-100 pt-4 flex items-center justify-center gap-2"
+          >
+            {isFamilyMode ? (
+              <>
+                <Unlock size={18} />
+                <span>Switch to Guest View</span>
+              </>
+            ) : (
+              <>
+                <Lock size={18} />
+                <span>Family Mode</span>
+              </>
+            )}
+          </button>
 
         </div>
 
@@ -3971,28 +3996,6 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
   );
 };
 
-const FloatingFamilyModeButton = ({ isFamilyMode, onToggle, onRequestAccess }) => {
-  return (
-    <button
-      onClick={isFamilyMode ? onToggle : onRequestAccess}
-      className={`fixed ${isFamilyMode ? 'bottom-6 left-6' : 'top-20 left-6'} z-[100] ${isFamilyMode ? 'bg-[#D4A5A5]' : 'bg-navy'} text-white sketchy-border border-[3px] border-white shadow-2xl px-4 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group`}
-      style={{ position: 'fixed', color: '#F5F0E8' }}
-      aria-label={isFamilyMode ? 'Switch to guest view' : 'Access family mode'}
-    >
-      {isFamilyMode ? (
-        <>
-          <Unlock className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
-          <span className="font-bold">Family</span>
-        </>
-      ) : (
-        <>
-          <Lock className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
-          <span className="font-bold">Family</span>
-        </>
-      )}
-    </button>
-  );
-};
 
 
 
@@ -4359,11 +4362,6 @@ const App = () => {
       {/* Floating Action Buttons - Outside scroll container for proper fixed positioning */}
       <MusicPlayer />
       <FloatingRSVPButton onScrollToRSVP={scrollToSection} />
-      <FloatingFamilyModeButton 
-        isFamilyMode={isFamilyMode}
-        onToggle={handleFamilyModeToggle}
-        onRequestAccess={handleFamilyModeToggle}
-      />
       <PasswordModal
         isOpen={showPasswordModal}
         onClose={() => setShowPasswordModal(false)}
@@ -4372,7 +4370,11 @@ const App = () => {
 
       <div ref={containerRef} className="scroll-container page-shell relative">
 
-        <Nav isFamilyMode={isFamilyMode} />
+        <Nav 
+          isFamilyMode={isFamilyMode}
+          onFamilyModeToggle={handleFamilyModeToggle}
+          onRequestFamilyAccess={handleFamilyModeToggle}
+        />
 
         <DotNav 
 
