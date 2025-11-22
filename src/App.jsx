@@ -1108,7 +1108,7 @@ const Story = () => (
 
           <h2 className="text-4xl md:text-6xl font-hand text-navy inline-block sketchy-text mb-2">
 
-          How This Happened
+          Our Story
 
         </h2>
 
@@ -1248,7 +1248,7 @@ const Story = () => (
 
               <p>He didn't trust the ocean at first. She taught him to dive, to let go underwater. He taught her how to stay calm when life felt chaotic.</p>
 
-              <p>Then COVID hit. Bailey had puppies during lockdown. Six of them. They kept four, lost two. The hardest, most beautiful thing they'd ever done together. When it was time, Shubs brought Bailey to Bangalore. Cookie and Bailey became family.</p>
+              <p>Then COVID hit. Bailey had puppies during lockdown. Six of them. They kept four, lost two. The hardest, most beautiful things they'd ever done together. When it was time, Shubs brought Bailey to Bangalore. Cookie and Bailey became family.</p>
 
             </div>
 
@@ -1786,7 +1786,7 @@ const CookieAndBailey = () => (
 
     <FadeInWhenVisible className="max-w-5xl mx-auto text-center">
 
-      <SignboardHeading>The Real Bosses</SignboardHeading>
+      <SignboardHeading>Our Babies</SignboardHeading>
 
       <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-12 md:mb-16"></div>
       
@@ -2160,8 +2160,8 @@ const Celebration = ({ isFamilyMode }) => (
 
                 <div className="bg-[#F5F0E8] p-4 md:p-5 rounded-sm border-2 border-navy/20 transform -rotate-1">
 
-                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">Join us as we say our vows by the river, surrounded by the people we love most.</p>
-                   <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: Goan food, dancing until our feet hurt, and a night we'll never forget - made better because you're there.</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">Bless us as we commit to our forever surrounded by the people we love most.</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: Good food & lots of dancing, marking a night we won't forget – made better by you.</p>
 
                 </div>
 
@@ -2181,19 +2181,19 @@ const Celebration = ({ isFamilyMode }) => (
 
               {[
 
-                  { time: '3:30 PM', event: 'Wedding Ceremony', note: 'This is the moment. Riverside vows with Cookie & Bailey as our ringbearers (wish us luck). We\'re so glad you\'re here to witness it.', icon: Heart },
+                  { time: '3:30 PM', event: 'Wedding Ceremony', note: 'Join us as we take our vows committing to our forever, with God at the centre, and our family by our side.', icon: Heart },
 
-                  { time: '4:30 PM', event: 'Hi-Tea & Photos', note: "Golden hour light. We'll be posing for photos. You grab snacks and mingle.", icon: SketchIcon, type: 'wine' },
+                  { time: '4:30 PM', event: 'Hi-Tea & Photos', note: "Get your refreshments, click us some FOMO pictures at the stand. We're about chasing the sunset and will be right back!", icon: SketchIcon, type: 'wine' },
 
-                  { time: '6:00 PM', event: 'Cocktails', note: 'Bar officially opens. Signature drinks on the deck.', icon: SketchIcon, type: 'wine' },
+                  { time: '6:00 PM', event: 'Cocktails', note: "The bar opens, we'll be with you soon. Drink responsibly okay?", icon: SketchIcon, type: 'wine' },
 
-                  { time: '6:45 PM', event: 'Reception', note: 'Grand entrance, toasts from people we love, cake cutting.', icon: Anchor },
+                  { time: '6:45 PM', event: 'Reception', note: 'Bless us as we commit to our forever surrounded by the people we love most.', icon: Anchor },
 
-                  { time: '7:15 PM', event: 'Dance Floor', note: 'DJ takes over. Time to move.', icon: Music },
+                  { time: '7:15 PM', event: 'Dance Floor', note: "Prepare to bust a move with the couple. That's where we intend to be most of the night!", icon: Music },
 
-                  { time: '9:00 PM', event: 'Dinner', note: 'Full Goan feast. Buffet style. Come hungry.', icon: SketchIcon, type: 'plate' },
+                  { time: '9:00 PM', event: 'Dinner', note: 'Dinner opens, we\'ll keep it open post 10 PM.', icon: SketchIcon, type: 'plate' },
 
-                  { time: '10:00 PM', event: 'Last Call', note: "Music officially ends. But honestly, the party probably continues somewhere.", icon: Sun }
+                  { time: '10:00 PM', event: 'Last Call', note: "The music ends, but does the party really?", icon: Sun }
 
               ].map((item, i) => (
 
@@ -2464,7 +2464,7 @@ const ExploreGoa = () => {
 
           <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto">
 
-            Our favorite spots. The places we go back to, year after year.
+            Come for us, but make it more wholesome. We have some ideas for your time around…
 
           </p>
 
@@ -2540,9 +2540,7 @@ const ExploreGoa = () => {
 
           <p className="text-navy/80 italic font-hand text-lg md:text-xl leading-relaxed">
 
-            Palolem is where we got engaged. Colomb Bay is where we learned to dive together. 
-
-            These places belong to us. Now they're yours too.
+            Columb Bay is where we learned to slow live together. Palolem is where we spent most of our times in the water. He proposed to me in Columb Bay, they're special to us. Hope you make it there too.
 
           </p>
 
