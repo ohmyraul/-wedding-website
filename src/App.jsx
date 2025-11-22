@@ -1550,12 +1550,11 @@ const Story = () => (
 
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative w-full aspect-[3/4] md:aspect-[4/3]">
+            <div className="overflow-hidden w-full">
                <img 
                  src="/images/goa-scooter.jpg" 
-                 className="absolute inset-0 w-full h-full object-cover" 
+                 className="w-full h-auto object-contain" 
                  alt="Goa Life" 
-                 style={{ objectPosition: 'center top' }}
                  loading="lazy" 
                  width={765} 
                  height={1024} 
@@ -2483,12 +2482,11 @@ const KidenaHouseCarousel = memo(() => {
           {images.map((image, index) => (
             <div key={index} className="min-w-full flex-shrink-0 w-full">
               <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-lg">
-                <div className="bg-gray-100 h-80 md:h-96 w-full overflow-hidden border-b-2 border-[#1B3A57] relative">
+                <div className="bg-gray-100 w-full overflow-hidden border-b-2 border-[#1B3A57]">
                   <img 
                     src={image.src} 
                     alt={image.alt} 
-                    className="absolute inset-0 w-full h-full object-cover" 
-                    style={{ objectPosition: 'center center' }}
+                    className="w-full h-auto object-contain" 
                     loading={index === 0 ? "eager" : "lazy"}
                     width={1024}
                     height={768}
