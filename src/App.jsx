@@ -3709,7 +3709,7 @@ const RSVP = () => {
 
 
 
-const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
+const Footer = ({ isFamilyMode, onOpenGame }) => (
 
   <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 lg:px-8 overflow-hidden py-16 md:py-24 lg:py-32">
 
@@ -3778,24 +3778,6 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
         </div>
       </FadeInWhenVisible>
 
-      {/* Family Login Button */}
-      <FadeInWhenVisible delay={0.3}>
-        <button 
-
-          onClick={toggleFamilyMode}
-
-          className="mt-8 opacity-60 hover:opacity-100 transition-opacity text-xs md:text-sm border-2 border-[#F5F0E8]/40 rounded-full px-4 py-2 flex items-center gap-2 mx-auto bg-[#F5F0E8]/10 backdrop-blur-sm hover:bg-[#F5F0E8]/20 font-hand"
-
-          aria-label={isFamilyMode ? 'Switch to guest view' : 'Switch to family view'}
-
-        >
-
-          {isFamilyMode ? <Unlock size={14}/> : <Lock size={14}/>}
-
-          <span className="text-[#F5F0E8]">{isFamilyMode ? 'Switch to Guest View' : 'Family Login'}</span>
-
-        </button>
-      </FadeInWhenVisible>
 
     </div>
 
@@ -3909,6 +3891,107 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
   );
 
+};
+
+const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password === 'march20') {
+      setError('');
+      onConfirm();
+      setPassword('');
+      onClose();
+    } else {
+      setError('Incorrect password. Please try again.');
+      setPassword('');
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white sketchy-border p-8 md:p-10 max-w-md w-full shadow-2xl"
+        >
+          <h3 className="text-2xl md:text-3xl font-hand font-bold text-navy mb-4 text-center">
+            Family Mode
+          </h3>
+          <p className="text-navy/70 text-center mb-6 font-hand">
+            Enter the password to access family-only content
+          </p>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError('');
+              }}
+              className="modern-input w-full mb-4 text-center font-hand"
+              placeholder="Enter password"
+              autoFocus
+            />
+            {error && (
+              <p className="text-red-600 text-sm mb-4 text-center font-hand">{error}</p>
+            )}
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 bg-gray-200 text-navy font-hand font-bold py-3 px-4 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex-1 bg-navy text-white font-hand font-bold py-3 px-4 rounded-lg hover:bg-[#2c5378] transition-colors"
+              >
+                Enter
+              </button>
+            </div>
+          </form>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+const FloatingFamilyModeButton = ({ isFamilyMode, onToggle, onRequestAccess }) => {
+  return (
+    <button
+      onClick={isFamilyMode ? onToggle : onRequestAccess}
+      className={`fixed ${isFamilyMode ? 'bottom-6 left-6' : 'top-20 left-6'} z-[100] ${isFamilyMode ? 'bg-[#D4A5A5]' : 'bg-navy'} text-white sketchy-border border-[3px] border-white shadow-2xl px-4 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group`}
+      style={{ position: 'fixed', color: '#F5F0E8' }}
+      aria-label={isFamilyMode ? 'Switch to guest view' : 'Access family mode'}
+    >
+      {isFamilyMode ? (
+        <>
+          <Unlock className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
+          <span className="font-bold">Family</span>
+        </>
+      ) : (
+        <>
+          <Lock className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
+          <span className="font-bold">Family</span>
+        </>
+      )}
+    </button>
+  );
 };
 
 
@@ -4113,7 +4196,21 @@ const App = () => {
 
   const [isGameOpen, setIsGameOpen] = useState(false);
 
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+
   const containerRef = useRef(null);
+
+  const handleFamilyModeToggle = () => {
+    if (isFamilyMode) {
+      setIsFamilyMode(false);
+    } else {
+      setShowPasswordModal(true);
+    }
+  };
+
+  const handlePasswordConfirm = () => {
+    setIsFamilyMode(true);
+  };
 
 
 
@@ -4262,6 +4359,16 @@ const App = () => {
       {/* Floating Action Buttons - Outside scroll container for proper fixed positioning */}
       <MusicPlayer />
       <FloatingRSVPButton onScrollToRSVP={scrollToSection} />
+      <FloatingFamilyModeButton 
+        isFamilyMode={isFamilyMode}
+        onToggle={handleFamilyModeToggle}
+        onRequestAccess={handleFamilyModeToggle}
+      />
+      <PasswordModal
+        isOpen={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        onConfirm={handlePasswordConfirm}
+      />
 
       <div ref={containerRef} className="scroll-container page-shell relative">
 
@@ -4385,7 +4492,6 @@ const App = () => {
         <section id="footer" className="scroll-section flex items-center justify-center">
 
         <Footer 
-          toggleFamilyMode={() => setIsFamilyMode(!isFamilyMode)} 
           isFamilyMode={isFamilyMode}
           onOpenGame={() => setIsGameOpen(true)}
         />
