@@ -1559,7 +1559,16 @@ const Story = () => (
                  width={765} 
                  height={1024} 
                  fetchPriority="low" 
-                 decoding="async" 
+                 decoding="async"
+                 onError={(e) => {
+                   console.error('Failed to load goa-scooter.jpg, attempting cache bust...');
+                   const img = e.target;
+                   const originalSrc = img.src;
+                   img.src = originalSrc.split('?')[0] + '?v=' + Date.now();
+                 }}
+                 onLoad={() => {
+                   console.log('✓ Successfully loaded goa-scooter.jpg');
+                 }}
                />
 
             </div>
