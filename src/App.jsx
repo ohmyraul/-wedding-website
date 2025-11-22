@@ -1550,9 +1550,9 @@ const Story = () => (
 
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '600px' }}>
+            <div className="overflow-hidden relative" style={{ paddingBottom: '75%' }}>
 
-               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ objectPosition: 'center bottom' }} loading="lazy" width={765} height={1024} fetchPriority="low" decoding="async" />
+               <img src="/images/goa-scooter.jpg" className="absolute inset-0 w-full h-full object-cover" alt="Goa Life" style={{ objectPosition: 'center center' }} loading="lazy" width={765} height={1024} fetchPriority="low" decoding="async" />
 
             </div>
 
@@ -2474,7 +2474,60 @@ const KidenaHouseCarousel = memo(() => {
           {images.map((image, index) => (
             <div key={index} className="min-w-full flex-shrink-0 w-full">
               <ParallaxWrapper offset={30} hoverEffect>
-                <div className="sketchy-border bg-white p-2 shadow-2xl">
+                <div className="sketchy-border bg-white p-2 shadow-2xl relative">
+                  {/* Mario Miranda Style Tape Decorations */}
+                  {/* Top Left Tape */}
+                  <div 
+                    className="absolute -top-2 -left-2 z-20"
+                    style={{
+                      width: '80px',
+                      height: '30px',
+                      backgroundColor: '#ffbd7b',
+                      opacity: 0.85,
+                      transform: 'rotate(-12deg)',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      clipPath: 'polygon(0 0, 100% 0, 95% 100%, 5% 100%)',
+                    }}
+                  />
+                  {/* Top Right Tape */}
+                  <div 
+                    className="absolute -top-2 -right-2 z-20"
+                    style={{
+                      width: '80px',
+                      height: '30px',
+                      backgroundColor: '#B8D4E8',
+                      opacity: 0.85,
+                      transform: 'rotate(12deg)',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      clipPath: 'polygon(5% 0, 100% 0, 95% 100%, 0 100%)',
+                    }}
+                  />
+                  {/* Bottom Left Tape */}
+                  <div 
+                    className="absolute -bottom-2 -left-2 z-20"
+                    style={{
+                      width: '80px',
+                      height: '30px',
+                      backgroundColor: '#D4A5A5',
+                      opacity: 0.85,
+                      transform: 'rotate(12deg)',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      clipPath: 'polygon(0 0, 95% 0, 100% 100%, 5% 100%)',
+                    }}
+                  />
+                  {/* Bottom Right Tape */}
+                  <div 
+                    className="absolute -bottom-2 -right-2 z-20"
+                    style={{
+                      width: '80px',
+                      height: '30px',
+                      backgroundColor: '#ffbd7b',
+                      opacity: 0.85,
+                      transform: 'rotate(-12deg)',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      clipPath: 'polygon(5% 0, 100% 0, 95% 100%, 0 100%)',
+                    }}
+                  />
                   <div className="relative w-full" style={{ paddingBottom: '75%' }}>
                     <img 
                       src={image.src} 
