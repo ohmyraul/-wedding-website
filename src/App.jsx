@@ -2473,86 +2473,31 @@ const KidenaHouseCarousel = memo(() => {
         >
           {images.map((image, index) => (
             <div key={index} className="min-w-full flex-shrink-0 w-full">
-              <ParallaxWrapper offset={30} hoverEffect>
-                <div className="sketchy-border bg-white p-2 shadow-2xl relative">
-                  {/* Mario Miranda Style Tape Decorations */}
-                  {/* Top Left Tape */}
-                  <div 
-                    className="absolute -top-2 -left-2 z-20"
-                    style={{
-                      width: '80px',
-                      height: '30px',
-                      backgroundColor: '#ffbd7b',
-                      opacity: 0.85,
-                      transform: 'rotate(-12deg)',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                      clipPath: 'polygon(0 0, 100% 0, 95% 100%, 5% 100%)',
+              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-lg">
+                <div className="bg-gray-100 h-80 md:h-96 w-full overflow-hidden border-b-2 border-[#1B3A57] relative">
+                  <img 
+                    src={image.src} 
+                    alt={image.alt} 
+                    className="absolute inset-0 w-full h-full object-cover" 
+                    style={{ objectPosition: 'center center' }}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    width={1024}
+                    height={768}
+                    decoding="async"
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${image.src}`);
+                      console.error('Attempting to reload with cache bust...');
+                      const img = e.target;
+                      const originalSrc = img.src;
+                      // Try reloading with cache bust parameter
+                      img.src = originalSrc.split('?')[0] + '?v=' + Date.now();
+                    }}
+                    onLoad={() => {
+                      if (image.src.includes('kidena-house5')) {
+                        console.log(`✓ Successfully loaded: ${image.src}`);
+                      }
                     }}
                   />
-                  {/* Top Right Tape */}
-                  <div 
-                    className="absolute -top-2 -right-2 z-20"
-                    style={{
-                      width: '80px',
-                      height: '30px',
-                      backgroundColor: '#B8D4E8',
-                      opacity: 0.85,
-                      transform: 'rotate(12deg)',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                      clipPath: 'polygon(5% 0, 100% 0, 95% 100%, 0 100%)',
-                    }}
-                  />
-                  {/* Bottom Left Tape */}
-                  <div 
-                    className="absolute -bottom-2 -left-2 z-20"
-                    style={{
-                      width: '80px',
-                      height: '30px',
-                      backgroundColor: '#D4A5A5',
-                      opacity: 0.85,
-                      transform: 'rotate(12deg)',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                      clipPath: 'polygon(0 0, 95% 0, 100% 100%, 5% 100%)',
-                    }}
-                  />
-                  {/* Bottom Right Tape */}
-                  <div 
-                    className="absolute -bottom-2 -right-2 z-20"
-                    style={{
-                      width: '80px',
-                      height: '30px',
-                      backgroundColor: '#ffbd7b',
-                      opacity: 0.85,
-                      transform: 'rotate(-12deg)',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                      clipPath: 'polygon(5% 0, 100% 0, 95% 100%, 0 100%)',
-                    }}
-                  />
-                  <div className="relative w-full" style={{ paddingBottom: '75%' }}>
-                    <img 
-                      src={image.src} 
-                      alt={image.alt} 
-                      className="absolute inset-0 w-full h-full object-cover" 
-                      style={{ objectPosition: 'center center' }}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      width={1024}
-                      height={768}
-                      decoding="async"
-                      onError={(e) => {
-                        console.error(`Failed to load image: ${image.src}`);
-                        console.error('Attempting to reload with cache bust...');
-                        const img = e.target;
-                        const originalSrc = img.src;
-                        // Try reloading with cache bust parameter
-                        img.src = originalSrc.split('?')[0] + '?v=' + Date.now();
-                      }}
-                      onLoad={() => {
-                        if (image.src.includes('kidena-house5')) {
-                          console.log(`✓ Successfully loaded: ${image.src}`);
-                        }
-                      }}
-                    />
-                  </div>
                 </div>
               </ParallaxWrapper>
             </div>
