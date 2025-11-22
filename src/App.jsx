@@ -350,6 +350,148 @@ const styles = `
 
   }
 
+  /* --- Cookie Game Styles --- */
+  .game-sketchy-border {
+    border: 4px solid #1B3A57;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    position: relative;
+    background: #F5F0E8;
+  }
+
+  .game-sketchy-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid rgba(212, 165, 165, 0.3);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    pointer-events: none;
+  }
+
+  .game-texture-overlay {
+    background-image: 
+      radial-gradient(circle at 2px 2px, rgba(0,0,0,0.08) 1px, transparent 0),
+      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+    background-size: 8px 8px, 12px 12px;
+    opacity: 0.3;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .game-beach-bg {
+    background: 
+      linear-gradient(to bottom, #87CEEB 0%, #87CEEB 40%, #F5F0E8 40%, #F5F0E8 100%),
+      radial-gradient(ellipse at bottom, rgba(255,255,255,0.3) 0%, transparent 70%);
+    position: relative;
+  }
+
+  .game-beach-bg::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    background: 
+      repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.1) 20px, rgba(255,255,255,0.1) 21px),
+      linear-gradient(to top, #8B7355 0%, #A68B6B 100%);
+  }
+
+  .palm-tree {
+    position: absolute;
+    width: 40px;
+    height: 80px;
+    background: #2d5016;
+    clip-path: polygon(30% 0%, 70% 0%, 65% 100%, 35% 100%);
+  }
+
+  .palm-tree::before {
+    content: '🌴';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 30px;
+  }
+
+  .cookie-dialogue {
+    position: relative;
+    background: white;
+    border: 3px solid #1B3A57;
+    border-radius: 20px 20px 20px 5px;
+    padding: 12px 16px;
+    font-family: 'Kalam', cursive;
+    font-size: 14px;
+    color: #1B3A57;
+    box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.3);
+    max-width: 250px;
+    line-height: 1.4;
+  }
+
+  .cookie-dialogue::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid white;
+  }
+
+  .cookie-dialogue::after {
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    left: 19px;
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #1B3A57;
+  }
+
+  .paw-button {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: white;
+    border: 4px solid #1B3A57;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(212, 165, 165, 0.3);
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .paw-button:active {
+    transform: scale(0.9);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .paw-button::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border: 2px solid rgba(212, 165, 165, 0.2);
+    border-radius: 50%;
+  }
+
+  @keyframes buttonPress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.85); }
+    100% { transform: scale(1); }
+  }
+
+  .paw-button.pressed {
+    animation: buttonPress 0.15s ease-out;
+  }
+
   .animate-fade-in {
 
     animation: fadeInUp 0.6s ease-out forwards;
@@ -1321,17 +1463,171 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
+  const [highScore, setHighScore] = useState(() => {
+    try {
+      return parseInt(localStorage.getItem('cookieGameHighScore') || '0', 10);
+    } catch {
+      return 0;
+    }
+  });
   const [level, setLevel] = useState(1);
   const [speed, setSpeed] = useState(500);
   const [cookieLane, setCookieLane] = useState(1);
   const [obstacles, setObstacles] = useState([]);
-  const [showPun, setShowPun] = useState(null);
+  const [showDialogue, setShowDialogue] = useState(null);
   const [groundOffset, setGroundOffset] = useState(0);
+  const [isInvincible, setIsInvincible] = useState(false);
+  const [invincibleUntil, setInvincibleUntil] = useState(0);
+  const [buttonPressed, setButtonPressed] = useState(null);
   const gameIntervalRef = useRef(null);
   const groundIntervalRef = useRef(null);
   const obstacleIdRef = useRef(0);
   const cookieImageRef = useRef(null);
+  const touchStartY = useRef(0);
+  const touchEndY = useRef(0);
+
+  // Level names
+  const levelNames = {
+    1: 'Beach Training',
+    2: 'Market Madness',
+    3: 'Wedding Day Chaos',
+    4: 'Rehearsal Dinner Rush',
+  };
+
+  // Dialogue system
+  const dialogues = {
+    gameStart: [
+      "Oh look, the humans are back. WHERE'S MY FOOD?",
+      "Another guest? sigh Fine, let's do this.",
+      "Susegaad? Not when I'm HUNGRY.",
+      "I've been doing this for 12 years. You're new here.",
+      "They see me rolling, they better be feeding.",
+    ],
+    collectingFood: [
+      "FINALLY! Was that so hard?",
+      "Now we're talking, human.",
+      "This is why I tolerate you people.",
+      "ONE fish? That's it? Cheap.",
+      "About damn time.",
+      "Nom nom... okay, MORE.",
+    ],
+    hittingKids: [
+      "MOVE IT, tiny human!",
+      "Kids these days have NO respect.",
+      "Watch where you're going!",
+      "This is MY beach!",
+      "Seriously?? I'm WORKING here!",
+    ],
+    hittingScooters: [
+      "DUDE. Where's my treat, not your scooter!",
+      "That's not edible, genius.",
+      "Wrong lane, buddy!",
+      "Vroom vroom yourself outta here.",
+      "Tourists. eye roll",
+    ],
+    losingLife: [
+      "ARE YOU KIDDING ME RIGHT NOW?",
+      "I'm too old for this nonsense.",
+      "12 years of service and THIS is how you repay me?",
+      "Unacceptable. Do better.",
+      "You're lucky you're getting married.",
+    ],
+    gameOver: [
+      "Well THAT was embarrassing for you.",
+      "I've seen better from the cat. THE CAT.",
+      "And they wonder why I bark at ceremonies...",
+      "Maybe stick to planning weddings, yeah?",
+      "I'm going back to my nap.",
+    ],
+    highScore: [
+      "Not bad, human. Not bad.",
+      "FINALLY someone who gets it.",
+      "This calls for extra treats later.",
+      "You may pet me. Once.",
+      "Okay fine, you can stay.",
+    ],
+    midGame: [
+      "Faster! The fish curry won't catch itself!",
+      "Palolem Beach energy, let's GO!",
+      "Channel your inner Goan!",
+      "Susegaad is NOT an option right now!",
+      "Focus! There's prawn balchão at stake!",
+    ],
+    weddingSpecific: [
+      "Just practicing for the ceremony. I WILL bark.",
+      "Hope the guests are ready for THIS energy.",
+      "Bailey's better at this, don't tell Shubs.",
+      "March 20th better have THIS much food.",
+      "If there's no fish at the wedding, we're done.",
+    ],
+    easterEgg: [
+      "Okay fine, I won't bark at the ceremony. JK I ABSOLUTELY WILL.",
+    ],
+  };
+
+  // Better food items with points
+  const foodItems = [
+    { emoji: '🐟', name: 'Fish Curry', type: 'catch', points: 3, dialogue: "THE GOOD STUFF!" },
+    { emoji: '🍤', name: 'Prawn Balchão', type: 'catch', points: 2, dialogue: "Spicy! I LIKE it!" },
+    { emoji: '🐟', name: 'Kingfish', type: 'catch', points: 5, dialogue: "JACKPOT!" },
+    { emoji: '🍰', name: 'Bebinca', type: 'catch', points: 1, dialogue: "Don't tell Alysha..." },
+    { emoji: '🍷', name: 'Feni', type: 'powerup', points: 0, dialogue: "Woah, easy there!", effect: 'invincible' },
+    { emoji: '🍗', name: 'Chicken Xacuti', type: 'catch', points: 2, dialogue: "About time!" },
+    { emoji: '🥥', name: 'Coconut', type: 'catch', points: 1, dialogue: "Refreshing!" },
+  ];
+
+  // Better obstacles
+  const obstacleItems = [
+    { emoji: '👶', name: 'Goan Kid', type: 'avoid', dialogue: "MOVE IT, tiny human!" },
+    { emoji: '🏍️', name: 'Scooter', type: 'avoid', dialogue: "Wrong lane, buddy!" },
+    { emoji: '📸', name: 'Tourist with Selfie Stick', type: 'avoid', dialogue: "NOT NOW, KAREN!" },
+    { emoji: '🛒', name: 'Beach Vendor', type: 'avoid', dialogue: "Selling what? Where's MY cut?" },
+    { emoji: '🦀', name: 'Crab', type: 'avoid', dialogue: "Nope nope nope!" },
+    { emoji: '🐕', name: 'Other Dog', type: 'avoid', dialogue: "This is MY territory!" },
+  ];
+
+  // Get random dialogue
+  const getDialogue = (category) => {
+    const arr = dialogues[category] || [];
+    return arr[Math.floor(Math.random() * arr.length)];
+  };
+
+  // Haptic feedback
+  const triggerHaptic = () => {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(10);
+    }
+  };
+
+  // Save high score
+  const saveHighScore = (newScore) => {
+    try {
+      localStorage.setItem('cookieGameHighScore', newScore.toString());
+      setHighScore(newScore);
+    } catch (e) {
+      console.error('Failed to save high score:', e);
+    }
+  };
+
+  // Share score
+  const shareScore = async () => {
+    const text = `I scored ${score} points in Cookie's Goan Chase! 🐕 Can you beat my score?`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ text, url: window.location.href });
+      } catch (e) {
+        // User cancelled or error
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(text + ' ' + window.location.href);
+        alert('Score copied to clipboard!');
+      } catch (e) {
+        console.error('Failed to share:', e);
+      }
+    }
+  };
 
   // Reset game state when closed
   useEffect(() => {
@@ -1350,35 +1646,9 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const dogPuns = [
-    "Woof! That's a-paw-solutely delicious!",
-    "Bark! I'm having a fowl-tastic time!",
-    "Ruff! This is un-fur-gettable!",
-    "Woof woof! I'm on a roll!",
-    "Bark! That's paw-some!",
-    "Ruff! I'm the top dog now!",
-    "Woof! This is going to be a tail to remember!",
-    "Bark! I'm having a howling good time!",
-    "Ruff! That's dog-gone good!",
-    "Woof! I'm fetching greatness!",
-    "Bark! This is fur-real fun!",
-    "Ruff! I'm pawsitively winning!",
-    "Woof! That's a dog-gone good catch!",
-    "Bark! I'm the alpha of this game!",
-    "Ruff! This is un-fur-gettable fun!"
-  ];
-
-  const obstacleTypes = [
-    { emoji: '🍗', name: 'Chicken', type: 'catch' },
-    { emoji: '🐟', name: 'Fish', type: 'catch' },
-    { emoji: '🍤', name: 'Prawns', type: 'catch' },
-    { emoji: '🥥', name: 'Coconut', type: 'catch' },
-    { emoji: '👶', name: 'Goan Kid', type: 'avoid' },
-    { emoji: '🏍️', name: 'Scooter', type: 'avoid' },
-  ];
-
   const moveCookie = (direction) => {
     if (!isPlaying || isGameOver || isPaused) return;
+    triggerHaptic();
     setCookieLane(prev => {
       const newLane = direction === 'up' 
         ? Math.max(0, prev - 1)
@@ -1404,9 +1674,16 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     setIsGameOver(false);
     setIsPlaying(true);
     setIsPaused(false);
-    setShowPun(null);
+    setShowDialogue(null);
     setGroundOffset(0);
+    setIsInvincible(false);
+    setInvincibleUntil(0);
     obstacleIdRef.current = 0;
+    
+    // Show start dialogue
+    const startDialogue = getDialogue('gameStart');
+    setShowDialogue(startDialogue);
+    setTimeout(() => setShowDialogue(null), 2000);
   };
 
   // Ground animation
@@ -1431,6 +1708,18 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
       }
     };
   }, [isPlaying, isGameOver, isPaused, level]);
+
+  // Invincibility timer
+  useEffect(() => {
+    if (isInvincible && invincibleUntil > Date.now()) {
+      const timer = setTimeout(() => {
+        if (Date.now() >= invincibleUntil) {
+          setIsInvincible(false);
+        }
+      }, invincibleUntil - Date.now());
+      return () => clearTimeout(timer);
+    }
+  }, [isInvincible, invincibleUntil]);
 
   // Game loop
   useEffect(() => {
@@ -1457,42 +1746,72 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         const toRemove = new Set();
         moved.forEach(obs => {
           if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5) {
-            if (obs.type === 'avoid') {
+            if (obs.type === 'avoid' && !isInvincible) {
               setIsGameOver(true);
               setIsPlaying(false);
-              setHighScore(prev => Math.max(prev, score));
-            } else if (obs.type === 'catch') {
+              const finalScore = score;
+              if (finalScore > highScore) {
+                saveHighScore(finalScore);
+              }
+              const gameOverDialogue = getDialogue('gameOver');
+              setShowDialogue(gameOverDialogue);
+            } else if (obs.type === 'catch' || obs.type === 'powerup') {
               toRemove.add(obs.id);
+              const points = obs.points || 1;
               setScore(s => {
-                const newScore = s + 1;
+                const newScore = s + points;
+                
+                // Easter egg at 100 points
+                if (newScore === 100) {
+                  const easterEgg = getDialogue('easterEgg');
+                  setShowDialogue(easterEgg);
+                  setTimeout(() => setShowDialogue(null), 3000);
+                }
+                
                 setLevel(prevLevel => {
-                  const newLevel = Math.floor(newScore / 5) + 1;
+                  const newLevel = Math.floor(newScore / 10) + 1;
                   if (newLevel > prevLevel) {
-                    setSpeed(prevSpeed => Math.max(200, prevSpeed - 40));
+                    setSpeed(prevSpeed => Math.max(200, prevSpeed - 30));
+                    const levelUpDialogue = `Level ${newLevel}: ${levelNames[newLevel] || 'Goan Master'}`;
+                    setShowDialogue(levelUpDialogue);
+                    setTimeout(() => setShowDialogue(null), 2000);
                     return newLevel;
                   }
                   return prevLevel;
                 });
                 return newScore;
               });
-              const randomPun = dogPuns[Math.floor(Math.random() * dogPuns.length)];
-              setShowPun(randomPun);
-              setTimeout(() => setShowPun(null), 1200);
+              
+              // Handle power-ups
+              if (obs.effect === 'invincible') {
+                setIsInvincible(true);
+                setInvincibleUntil(Date.now() + 5000); // 5 seconds
+              }
+              
+              const dialogue = obs.dialogue || getDialogue('collectingFood');
+              setShowDialogue(dialogue);
+              setTimeout(() => setShowDialogue(null), 1500);
             }
           }
         });
 
         const filtered = moved.filter(obs => obs.position > -2 && !toRemove.has(obs.id));
 
-        if (Math.random() < 0.7) {
-          const randomType = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+        // Spawn rate based on level
+        const spawnRate = Math.min(0.75, 0.5 + (level * 0.05));
+        if (Math.random() < spawnRate) {
+          const allItems = [...foodItems, ...obstacleItems];
+          const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
           filtered.push({
             id: obstacleIdRef.current++,
             lane: Math.floor(Math.random() * LANES),
             position: 10,
-            type: randomType.type,
-            emoji: randomType.emoji,
-            name: randomType.name
+            type: randomItem.type,
+            emoji: randomItem.emoji,
+            name: randomItem.name,
+            points: randomItem.points || (randomItem.type === 'catch' ? 1 : 0),
+            dialogue: randomItem.dialogue,
+            effect: randomItem.effect,
           });
         }
 
@@ -1506,8 +1825,9 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         gameIntervalRef.current = null;
       }
     };
-  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, level, score]);
+  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, level, score, highScore, isInvincible]);
 
+  // Keyboard controls
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (event) => {
@@ -1541,6 +1861,36 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, isPlaying, isGameOver, isPaused]);
 
+  // Swipe gestures
+  const handleTouchStart = (e) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartY.current || !touchEndY.current) return;
+    const diff = touchStartY.current - touchEndY.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        moveCookie('up');
+      } else {
+        moveCookie('down');
+      }
+    }
+    touchStartY.current = 0;
+    touchEndY.current = 0;
+  };
+
+  const handleButtonPress = (direction) => {
+    setButtonPressed(direction);
+    triggerHaptic();
+    moveCookie(direction);
+    setTimeout(() => setButtonPressed(null), 150);
+  };
+
   const closeGame = () => {
     setIsPlaying(false);
     setIsGameOver(false);
@@ -1561,220 +1911,259 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-        <div className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4">
-          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden" style={{ height: '90vh', maxHeight: '700px' }}>
-            <button
-              onClick={closeGame}
-              className="absolute top-4 right-4 z-30 w-8 h-8 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-              aria-label="Close game"
-            >
-              <X size={18} />
-            </button>
+    <div 
+      className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <div className="relative w-full max-w-2xl game-sketchy-border overflow-hidden" style={{ height: '90vh', maxHeight: '700px' }}>
+        <div className="game-texture-overlay"></div>
+        
+        <button
+          onClick={closeGame}
+          className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
+          aria-label="Close game"
+        >
+          <X size={20} />
+        </button>
 
-            {/* Score Display - Always visible */}
-            <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start">
-              <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
-                <div className="text-2xl font-bold text-navy font-mono tabular-nums">{score.toString().padStart(4, '0')}</div>
-                <div className="text-xs text-navy/60 font-hand">Level {level}</div>
-              </div>
-              {highScore > 0 && (
-                <div className="bg-white/95 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md text-right">
-                  <div className="text-xs text-navy/50 font-hand">HI</div>
-                  <div className="text-lg font-bold text-navy/70 font-mono tabular-nums">{highScore.toString().padStart(4, '0')}</div>
-                </div>
-              )}
+        {/* Score Display */}
+        <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start">
+          <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md sketchy-border">
+            <div className="text-2xl font-bold text-navy font-mono tabular-nums">{score.toString().padStart(4, '0')}</div>
+            <div className="text-xs text-navy/60 font-hand">{levelNames[level] || `Level ${level}`}</div>
+          </div>
+          {highScore > 0 && (
+            <div className="bg-white/95 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md text-right sketchy-border">
+              <div className="text-xs text-navy/50 font-hand">HI</div>
+              <div className="text-lg font-bold text-navy/70 font-mono tabular-nums">{highScore.toString().padStart(4, '0')}</div>
             </div>
+          )}
+        </div>
 
-            {/* Start Screen */}
-            {!isPlaying && !isGameOver && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#F5F0E8] to-white z-10 p-8">
-                <div className="mb-8">
-                  <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white border-4 border-white shadow-2xl p-1 flex items-center justify-center overflow-hidden" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(212, 165, 165, 0.3)' }}>
-                    <img
-                      ref={cookieImageRef}
-                      src="/images/cookie.png"
-                      alt="Cookie"
-                      className="w-full h-full object-cover rounded-full"
-                      style={{ objectPosition: 'center' }}
-                      onError={(e) => {
-                        e.target.src = '/images/cookie.jpg';
-                        e.target.style.objectPosition = 'center';
-                      }}
-                    />
-                  </div>
-                </div>
-                <h4 className="text-4xl font-hand text-navy mb-3 font-bold">Cookie's Goan Chase</h4>
-                <p className="text-sm text-navy/70 mb-2 text-center max-w-md">
-                  Use ↑↓ to move between lanes
-                </p>
-                <p className="text-xs text-navy/60 mb-8 text-center">
-                  Catch food 🍗🐟🍤🥥 • Avoid kids 👶 and scooters 🏍️
-                </p>
+        {/* Cookie Dialogue Bubble */}
+        <AnimatePresence>
+          {showDialogue && (
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="absolute top-20 left-1/2 -translate-x-1/2 z-40 cookie-dialogue"
+            >
+              {showDialogue}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Invincibility indicator */}
+        {isInvincible && (
+          <motion.div
+            animate={{ opacity: [1, 0.5, 1] }}
+            transition={{ repeat: Infinity, duration: 0.5 }}
+            className="absolute top-16 left-1/2 -translate-x-1/2 z-30 bg-[#D4A5A5] text-white px-3 py-1 rounded-full text-xs font-hand font-bold sketchy-border"
+          >
+            INVINCIBLE!
+          </motion.div>
+        )}
+
+        {/* Start Screen */}
+        {!isPlaying && !isGameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#F5F0E8] to-white z-10 p-8">
+            <div className="mb-8">
+              <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white border-4 border-white shadow-2xl p-1 flex items-center justify-center overflow-hidden sketchy-border">
+                <img
+                  ref={cookieImageRef}
+                  src="/images/cookie.png"
+                  alt="Cookie"
+                  className="w-full h-full object-cover rounded-full"
+                  style={{ objectPosition: 'center' }}
+                  onError={(e) => {
+                    e.target.src = '/images/cookie.jpg';
+                    e.target.style.objectPosition = 'center';
+                  }}
+                />
+              </div>
+            </div>
+            <h4 className="text-4xl font-hand text-navy mb-3 font-bold">Cookie's Goan Chase</h4>
+            <p className="text-sm text-navy/70 mb-2 text-center max-w-md font-hand">
+              Catch Goan food • Avoid obstacles • Survive the chaos!
+            </p>
+            <p className="text-xs text-navy/60 mb-8 text-center font-hand">
+              Use ↑↓ or W/S keys • Swipe on mobile
+            </p>
+            <button
+              onClick={startGame}
+              className="px-8 py-3 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105 sketchy-border font-hand"
+            >
+              Press ↑ or Space to Start
+            </button>
+          </div>
+        )}
+
+        {/* Game Over Screen */}
+        {isGameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-20 p-8">
+            <div className="text-center">
+              <h4 className="text-5xl font-bold text-navy mb-4 font-hand">Game Over</h4>
+              <div className="text-6xl font-mono font-bold text-[#D4A5A5] mb-2 tabular-nums">{score.toString().padStart(4, '0')}</div>
+              <p className="text-sm text-navy/60 mb-2 font-hand">{levelNames[level] || `Level ${level}`}</p>
+              {score >= highScore && score > 0 && (
+                <p className="text-xs text-[#D4A5A5] font-bold mb-4 font-hand">NEW HIGH SCORE!</p>
+              )}
+              <div className="flex gap-3 justify-center">
                 <button
                   onClick={startGame}
-                  className="px-8 py-3 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105"
+                  className="px-6 py-2 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105 sketchy-border font-hand"
                 >
-                  Press ↑ or Space to Start
+                  Play Again
                 </button>
-              </div>
-            )}
-
-            {/* Game Over Screen */}
-            {isGameOver && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-20 p-8">
-                <div className="text-center">
-                  <h4 className="text-5xl font-bold text-navy mb-4 font-hand">Game Over</h4>
-                  <div className="text-6xl font-mono font-bold text-[#D4A5A5] mb-2 tabular-nums">{score.toString().padStart(4, '0')}</div>
-                  <p className="text-sm text-navy/60 mb-2">Level {level}</p>
-                  {score >= highScore && score > 0 && (
-                    <p className="text-xs text-[#D4A5A5] font-bold mb-6">NEW HIGH SCORE!</p>
-                  )}
+                {score > 0 && (
                   <button
-                    onClick={startGame}
-                    className="px-8 py-3 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105"
+                    onClick={shareScore}
+                    className="px-6 py-2 bg-[#D4A5A5] text-white font-bold rounded-lg shadow-lg hover:bg-[#c49595] transition-all transform hover:scale-105 sketchy-border font-hand"
                   >
-                    Play Again
+                    Share Score
                   </button>
-                </div>
+                )}
               </div>
-            )}
+            </div>
+          </div>
+        )}
 
-            {/* Pause Screen */}
-            {isPaused && isPlaying && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-20">
-                <div className="bg-white rounded-xl px-8 py-6 shadow-2xl text-center">
-                  <h4 className="text-3xl font-bold text-navy mb-4 font-hand">Paused</h4>
-                  <p className="text-sm text-navy/60 mb-4">Press Space or Esc to resume</p>
-                  <button
-                    onClick={() => setIsPaused(false)}
-                    className="px-6 py-2 bg-[#1B3A57] text-white font-bold rounded-lg hover:bg-[#2c5378] transition-all"
-                  >
-                    Resume
-                  </button>
-                </div>
-              </div>
-            )}
+        {/* Pause Screen */}
+        {isPaused && isPlaying && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-20">
+            <div className="bg-white rounded-xl px-8 py-6 shadow-2xl text-center sketchy-border">
+              <h4 className="text-3xl font-bold text-navy mb-4 font-hand">Paused</h4>
+              <p className="text-sm text-navy/60 mb-4 font-hand">Press Space or Esc to resume</p>
+              <button
+                onClick={() => setIsPaused(false)}
+                className="px-6 py-2 bg-[#1B3A57] text-white font-bold rounded-lg hover:bg-[#2c5378] transition-all sketchy-border font-hand"
+              >
+                Resume
+              </button>
+            </div>
+          </div>
+        )}
 
-            {/* Game Area */}
-            {isPlaying && (
-              <div className="relative w-full h-full bg-gradient-to-b from-[#B8D4E8]/40 via-[#F5F0E8] to-[#F5F0E8] overflow-hidden">
-                {/* Animated Ground */}
-                <div 
-                  className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#8B7355] to-[#A68B6B] border-t-4 border-[#6B5A45]"
-                  style={{
-                    backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.1) 40px)`,
-                    backgroundPosition: `${groundOffset}px 0`
-                  }}
-                >
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-                </div>
+        {/* Game Area */}
+        {isPlaying && (
+          <div className="relative w-full h-full game-beach-bg overflow-hidden">
+            {/* Palm trees in background */}
+            <div className="absolute top-10 left-10 palm-tree opacity-30"></div>
+            <div className="absolute top-20 right-20 palm-tree opacity-20" style={{ transform: 'scaleX(-1)' }}></div>
+            
+            {/* Animated Ground */}
+            <div 
+              className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#8B7355] to-[#A68B6B] border-t-4 border-[#6B5A45]"
+              style={{
+                backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.1) 40px)`,
+                backgroundPosition: `${groundOffset}px 0`
+              }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+            </div>
 
-                {/* Game lanes */}
-                {Array.from({ length: LANES }).map((_, laneIndex) => (
-                  <div
-                    key={laneIndex}
-                    className="absolute left-0 right-0"
-                    style={{
-                      top: `${(laneIndex + 1) * (100 / (LANES + 1))}%`,
-                      height: `${100 / (LANES + 1)}%`,
-                      borderBottom: laneIndex < LANES - 1 ? '1px dashed rgba(27, 58, 87, 0.1)' : 'none'
+            {/* Game lanes */}
+            {Array.from({ length: LANES }).map((_, laneIndex) => (
+              <div
+                key={laneIndex}
+                className="absolute left-0 right-0"
+                style={{
+                  top: `${(laneIndex + 1) * (100 / (LANES + 1))}%`,
+                  height: `${100 / (LANES + 1)}%`,
+                  borderBottom: laneIndex < LANES - 1 ? '1px dashed rgba(27, 58, 87, 0.1)' : 'none'
+                }}
+              >
+                {/* Cookie sticker */}
+                {cookieLane === laneIndex && (
+                  <motion.div
+                    className="absolute left-8 z-10"
+                    style={{ top: '50%', transform: 'translateY(-50%)' }}
+                    animate={{ 
+                      y: [0, -3, 0],
+                      scale: isInvincible ? [1, 1.1, 1] : 1
+                    }}
+                    transition={{ 
+                      y: { repeat: Infinity, duration: 0.5, ease: 'easeInOut' },
+                      scale: { repeat: Infinity, duration: 0.3 }
                     }}
                   >
-                    {/* Cookie sticker */}
-                    {cookieLane === laneIndex && (
-                      <motion.div
-                        className="absolute left-8 z-10"
-                        style={{ top: '50%', transform: 'translateY(-50%)' }}
-                        animate={{ y: [0, -3, 0] }}
-                        transition={{ repeat: Infinity, duration: 0.5, ease: 'easeInOut' }}
-                      >
-                        <div className="w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden" style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.2), 0 0 0 3px rgba(212, 165, 165, 0.4)' }}>
-                          <img
-                            src="/images/cookie.png"
-                            alt="Cookie"
-                            className="w-full h-full object-cover rounded-full"
-                            style={{ objectPosition: 'center' }}
-                            onError={(e) => {
-                              e.target.src = '/images/cookie.jpg';
-                              e.target.style.objectPosition = 'center';
-                            }}
-                          />
-                        </div>
-                      </motion.div>
-                    )}
+                    <div className={`w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden sketchy-border ${isInvincible ? 'ring-4 ring-[#D4A5A5]' : ''}`}>
+                      <img
+                        src="/images/cookie.png"
+                        alt="Cookie"
+                        className="w-full h-full object-cover rounded-full"
+                        style={{ objectPosition: 'center' }}
+                        onError={(e) => {
+                          e.target.src = '/images/cookie.jpg';
+                          e.target.style.objectPosition = 'center';
+                        }}
+                      />
+                    </div>
+                  </motion.div>
+                )}
 
-                    {/* Obstacles */}
-                    {obstacles
-                      .filter(obs => obs.lane === laneIndex)
-                      .map(obs => (
-                        <motion.div
-                          key={obs.id}
-                          className="absolute z-5"
-                          style={{
-                            left: `${obs.position * 10}%`,
-                            top: '50%',
-                            transform: 'translateY(-50%)'
-                          }}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ 
-                            opacity: 1, 
-                            scale: 1,
-                            rotate: obs.type === 'catch' ? [0, 5, -5, 0] : 0
-                          }}
-                          transition={{ 
-                            rotate: { repeat: Infinity, duration: 0.5 },
-                            opacity: { duration: 0.2 }
-                          }}
-                        >
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center text-4xl shadow-xl border-3 ${
-                            obs.type === 'avoid' 
-                              ? 'bg-red-100 border-red-500' 
-                              : 'bg-green-100 border-green-500'
-                          }`} style={{ borderWidth: '3px' }}>
-                            {obs.emoji}
-                          </div>
-                        </motion.div>
-                      ))}
-                  </div>
-                ))}
-
-                {/* Pun popup */}
-                <AnimatePresence>
-                  {showPun && (
+                {/* Obstacles */}
+                {obstacles
+                  .filter(obs => obs.lane === laneIndex)
+                  .map(obs => (
                     <motion.div
-                      initial={{ opacity: 0, y: 30, scale: 0.7 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -30, scale: 0.7 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                      className="absolute top-1/3 left-1/2 -translate-x-1/2 z-30 bg-[#D4A5A5] text-white px-5 py-3 rounded-full shadow-2xl border-3 border-white font-hand text-base font-bold whitespace-nowrap pointer-events-none"
-                      style={{ borderWidth: '3px' }}
+                      key={obs.id}
+                      className="absolute z-5"
+                      style={{
+                        left: `${obs.position * 10}%`,
+                        top: '50%',
+                        transform: 'translateY(-50%)'
+                      }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ 
+                        opacity: 1, 
+                        scale: 1,
+                        rotate: obs.type === 'catch' || obs.type === 'powerup' ? [0, 5, -5, 0] : 0
+                      }}
+                      transition={{ 
+                        rotate: { repeat: Infinity, duration: 0.5 },
+                        opacity: { duration: 0.2 }
+                      }}
                     >
-                      {showPun}
+                      <div className={`w-16 h-16 rounded-full flex items-center justify-center text-4xl shadow-xl border-3 sketchy-border ${
+                        obs.type === 'avoid' 
+                          ? 'bg-red-100 border-red-500' 
+                          : obs.type === 'powerup'
+                          ? 'bg-purple-100 border-purple-500'
+                          : 'bg-green-100 border-green-500'
+                      }`} style={{ borderWidth: '3px' }}>
+                        {obs.emoji}
+                      </div>
                     </motion.div>
-                  )}
-                </AnimatePresence>
+                  ))}
               </div>
-            )}
+            ))}
+          </div>
+        )}
 
-            {/* Mobile controls */}
-            {isPlaying && (
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 md:hidden z-20">
-                <button
-                  onClick={() => moveCookie('up')}
-                  className="w-14 h-14 rounded-full bg-white/95 backdrop-blur-sm shadow-xl hover:scale-110 active:scale-95 transition-transform border-2 border-navy/20 flex items-center justify-center text-2xl font-bold text-navy"
-                  aria-label="Move up"
-                >
-                  ↑
-                </button>
-                <button
-                  onClick={() => moveCookie('down')}
-                  className="w-14 h-14 rounded-full bg-white/95 backdrop-blur-sm shadow-xl hover:scale-110 active:scale-95 transition-transform border-2 border-navy/20 flex items-center justify-center text-2xl font-bold text-navy"
-                  aria-label="Move down"
-                >
-                  ↓
-                </button>
-              </div>
-            )}
+        {/* Mobile controls - Paw print buttons */}
+        {isPlaying && (
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 md:hidden z-20">
+            <button
+              onClick={() => handleButtonPress('up')}
+              className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
+              aria-label="Move up"
+            >
+              <PawPrint size={32} className="text-[#D4A5A5]" />
+            </button>
+            <button
+              onClick={() => handleButtonPress('down')}
+              className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
+              aria-label="Move down"
+            >
+              <PawPrint size={32} className="text-[#B8D4E8]" />
+            </button>
+          </div>
+        )}
           </div>
         </div>
   );
