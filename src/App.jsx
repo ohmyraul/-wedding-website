@@ -2433,6 +2433,7 @@ const KidenaHouseCarousel = memo(() => {
     { src: '/images/kidena-house2.jpg', alt: 'Kidena House - View 2' },
     { src: '/images/kidena-house3.jpg', alt: 'Kidena House - View 3' },
     { src: '/images/kidena-house4.jpg', alt: 'Kidena House - View 4' },
+    { src: '/images/kidena-house5.jpg', alt: 'Kidena House - View 5' },
   ];
 
   const nextImage = () => {
@@ -2474,15 +2475,19 @@ const KidenaHouseCarousel = memo(() => {
             <div key={index} className="min-w-full flex-shrink-0 w-full">
               <ParallaxWrapper offset={30} hoverEffect>
                 <div className="sketchy-border bg-white p-2 shadow-2xl">
-                  <div className="relative w-full aspect-[4/3] overflow-hidden">
+                  <div className="relative w-full" style={{ paddingBottom: '75%' }}>
                     <img 
                       src={image.src} 
                       alt={image.alt} 
-                      className="w-full h-full object-cover" 
+                      className="absolute inset-0 w-full h-full object-cover" 
                       style={{ objectPosition: 'center center' }}
                       loading={index === 0 ? "eager" : "lazy"}
                       width={1024}
                       height={768}
+                      onError={(e) => {
+                        console.error(`Failed to load image: ${image.src}`);
+                        e.target.style.display = 'none';
+                      }}
                     />
                   </div>
                 </div>
