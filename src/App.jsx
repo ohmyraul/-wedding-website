@@ -1282,7 +1282,6 @@ const Hero = ({ onScrollToSection }) => (
               />
             </motion.div>
           </div>
-          <ApprovedStamp />
         </ParallaxWrapper>
       </div>
 
