@@ -1067,9 +1067,9 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
   if (isFamilyMode) {
 
-    // Add Family Plan after Travel (position 2), then Kidena House right after Family Plan (position 3)
-    links.splice(2, 0, { name: 'Family Plan', href: '#family-itinerary' });
-    links.splice(3, 0, { name: 'Kidena House', href: '#kidena-house' });
+    // Add Kidena House after Travel (position 2), then Family Plan after Kidena House (position 3)
+    links.splice(2, 0, { name: 'Kidena House', href: '#kidena-house' });
+    links.splice(3, 0, { name: 'Family Plan', href: '#family-itinerary' });
 
   }
 
@@ -2484,9 +2484,19 @@ const KidenaHouseCarousel = memo(() => {
                       loading={index === 0 ? "eager" : "lazy"}
                       width={1024}
                       height={768}
+                      decoding="async"
                       onError={(e) => {
                         console.error(`Failed to load image: ${image.src}`);
-                        e.target.style.display = 'none';
+                        console.error('Attempting to reload with cache bust...');
+                        const img = e.target;
+                        const originalSrc = img.src;
+                        // Try reloading with cache bust parameter
+                        img.src = originalSrc.split('?')[0] + '?v=' + Date.now();
+                      }}
+                      onLoad={() => {
+                        if (image.src.includes('kidena-house5')) {
+                          console.log(`✓ Successfully loaded: ${image.src}`);
+                        }
                       }}
                     />
                   </div>
@@ -4381,9 +4391,9 @@ const App = () => {
 
     ...(isFamilyMode ? [
 
-      { id: 'family-itinerary', name: 'Itinerary', component: FamilyItinerary },
+      { id: 'kidena-house', name: 'Kidena', component: KidenaHouse },
 
-      { id: 'kidena-house', name: 'Kidena', component: KidenaHouse }
+      { id: 'family-itinerary', name: 'Itinerary', component: FamilyItinerary }
 
     ] : []),
 
@@ -4574,17 +4584,17 @@ const App = () => {
 
           <>
 
-            <section id="family-itinerary" className="scroll-section">
+            <section id="kidena-house" className="scroll-section">
 
-            <FamilyItinerary />
+            <KidenaHouse />
 
             </section>
 
 
 
-            <section id="kidena-house" className="scroll-section">
+            <section id="family-itinerary" className="scroll-section">
 
-            <KidenaHouse />
+            <FamilyItinerary />
 
             </section>
 
