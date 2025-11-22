@@ -3148,7 +3148,7 @@ const RSVP = () => {
 
 const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
 
-  <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 overflow-hidden py-20 md:py-28 lg:py-32">
+  <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 lg:px-8 overflow-hidden py-16 md:py-24 lg:py-32">
 
     {/* Decorative background elements */}
     <div className="absolute inset-0 opacity-5">
@@ -3159,24 +3159,24 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
 
     <div className="absolute inset-0 bg-gradient-to-b from-[#1B3A57] via-[#1B3A57] to-[#0f2538]"></div>
 
-    <div className="relative z-10 max-w-4xl mx-auto space-y-12 md:space-y-16">
+    <div className="relative z-10 max-w-4xl mx-auto space-y-8 md:space-y-12 lg:space-y-16 px-2">
 
       {/* Main message */}
       <FadeInWhenVisible>
-        <div className="space-y-6 md:space-y-8">
-          <p className="text-xl md:text-2xl lg:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto">
+        <div className="space-y-4 md:space-y-6 lg:space-y-8">
+          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto px-2">
             Seven years ago, we found each other again.
           </p>
-          <p className="text-xl md:text-2xl lg:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] max-w-3xl mx-auto px-2">
             Every day since, we've chosen each other.
           </p>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D4A5A5] mt-4">
-            Now we're choosing forever -<br />and we want you there when we say it out loud.
+          <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-hand font-bold text-[#D4A5A5] mt-4 px-2">
+            Now we're choosing forever -<br className="hidden md:block" /> and we want you there when we say it out loud.
           </p>
-          <p className="text-xl md:text-2xl font-hand text-[#F5F0E8] mt-6">
+          <p className="text-lg md:text-xl lg:text-2xl font-hand text-[#F5F0E8] mt-4 md:mt-6">
             Shubs & Alysha
           </p>
-          <p className="text-lg md:text-xl font-hand text-[#F5F0E8]/80 mt-2">
+          <p className="text-base md:text-lg lg:text-xl font-hand text-[#F5F0E8]/80 mt-2">
             March 20, 2026
           </p>
         </div>
@@ -3187,23 +3187,23 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
         <div className="flex flex-col items-center">
           <button
             onClick={onOpenGame}
-            className="flex items-center gap-4 bg-white/25 backdrop-blur-md px-8 py-5 sketchy-border border-[3px] border-[#D4A5A5] rounded-lg hover:border-[#D4A5A5] hover:bg-white/35 transition-all group shadow-xl cursor-pointer active:scale-95"
+            className="flex items-center gap-2 md:gap-4 bg-white/25 backdrop-blur-md px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D4A5A5] rounded-lg hover:border-[#D4A5A5] hover:bg-white/35 transition-all group shadow-xl cursor-pointer active:scale-95 max-w-full"
             aria-label="Cookie & Bailey"
           >
-            <PawPrint size={28} className="text-[#D4A5A5] group-hover:scale-110 transition-transform fill-current" /> 
-            <span className="text-xl md:text-2xl font-hand font-bold text-navy">Cookie & Bailey</span>
-            <PawPrint size={28} className="text-[#B8D4E8] group-hover:scale-110 transition-transform fill-current" />
+            <PawPrint size={20} className="md:w-7 md:h-7 text-[#D4A5A5] group-hover:scale-110 transition-transform fill-current flex-shrink-0" /> 
+            <span className="text-base md:text-xl lg:text-2xl font-hand font-bold text-navy whitespace-nowrap">Cookie & Bailey</span>
+            <PawPrint size={20} className="md:w-7 md:h-7 text-[#B8D4E8] group-hover:scale-110 transition-transform fill-current flex-shrink-0" />
           </button>
         </div>
       </FadeInWhenVisible>
 
       {/* Bottom section */}
       <FadeInWhenVisible delay={0.2}>
-        <div className="border-t-2 border-[#F5F0E8]/50 pt-10 md:pt-12 space-y-4">
-          <p className="text-base md:text-lg uppercase tracking-widest text-[#F5F0E8] font-hand font-semibold">
+        <div className="border-t-2 border-[#F5F0E8]/50 pt-8 md:pt-10 lg:pt-12 space-y-3 md:space-y-4 px-2">
+          <p className="text-sm md:text-base lg:text-lg uppercase tracking-widest text-[#F5F0E8] font-hand font-semibold">
             Made with love, momos & feni
           </p>
-          <p className="text-sm md:text-base text-[#F5F0E8] font-medium">
+          <p className="text-xs md:text-sm lg:text-base text-[#F5F0E8] font-medium">
             Goa 2026
           </p>
         </div>
