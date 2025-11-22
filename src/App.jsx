@@ -2635,12 +2635,37 @@ const Celebration = ({ isFamilyMode }) => (
 
 
 const DressCode = () => {
+  const [copiedColor, setCopiedColor] = useState(null);
 
   const colors = [
     { name: 'Coral Orange', hex: '#ffbd7b', bg: '#ffbd7b' },
     { name: 'Beige', hex: '#F5F0E8', bg: '#F5F0E8' },
     { name: 'Sky Blue', hex: '#B8D4E8', bg: '#B8D4E8' }
   ];
+
+  const copyColorCode = async (hex, colorName) => {
+    try {
+      await navigator.clipboard.writeText(hex);
+      setCopiedColor(colorName);
+      setTimeout(() => setCopiedColor(null), 2000);
+    } catch (err) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = hex;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopiedColor(colorName);
+        setTimeout(() => setCopiedColor(null), 2000);
+      } catch (fallbackErr) {
+        console.error('Failed to copy color code:', fallbackErr);
+      }
+      document.body.removeChild(textArea);
+    }
+  };
 
   return (
 
@@ -2710,11 +2735,16 @@ const DressCode = () => {
 
                 <FadeInWhenVisible key={color.name} delay={idx * 0.08} className="group">
 
-                  <motion.div className="flex items-center gap-6 p-5 md:p-6 bg-white/70 sketchy-border border-2 border-transparent hover:border-navy/30 transition-all duration-300 hover:shadow-lg" whileHover={{ scale: 1.02, x: 4 }}>
+                  <motion.div 
+                    className="flex items-center gap-6 p-5 md:p-6 bg-white/70 sketchy-border border-2 border-transparent hover:border-navy/30 transition-all duration-300 hover:shadow-lg cursor-pointer" 
+                    whileHover={{ scale: 1.02, x: 4 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => copyColorCode(color.hex, color.name)}
+                  >
 
                     <motion.div 
 
-                      className="w-20 h-20 rounded-full shadow-lg border-3 border-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300" 
+                      className="w-20 h-20 rounded-full shadow-lg border-3 border-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300 relative" 
 
                       style={{ 
 
@@ -2726,14 +2756,36 @@ const DressCode = () => {
 
                       }}
 
-                    ></motion.div>
+                    >
+                      {copiedColor === color.name && (
+                        <motion.div
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full"
+                        >
+                          <CheckCircle size={24} className="text-white drop-shadow-lg" />
+                        </motion.div>
+                      )}
+                    </motion.div>
 
-                    <div className="flex-1">
-
+                    <div className="flex-1 relative">
                       <h4 className="font-bold text-lg font-hand text-navy mb-1">{color.name}</h4>
-
-                      <p className="font-mono text-sm text-navy/60 tracking-wider font-semibold">{color.hex.toUpperCase()}</p>
-
+                      <div className="flex items-center gap-2">
+                        <p className="font-mono text-sm text-navy/60 tracking-wider font-semibold">{color.hex.toUpperCase()}</p>
+                        {copiedColor === color.name ? (
+                          <motion.span
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -10 }}
+                            className="text-xs text-[#D4A5A5] font-hand font-semibold"
+                          >
+                            Copied!
+                          </motion.span>
+                        ) : (
+                          <span className="text-xs text-navy/40 font-hand">Click to copy</span>
+                        )}
+                      </div>
                     </div>
 
                   </motion.div>
