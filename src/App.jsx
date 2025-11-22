@@ -1067,9 +1067,9 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
   if (isFamilyMode) {
 
-    // Add Family Plan after Travel (position 2), Kidena House after Story (position 6 after Family Plan is added)
+    // Add Family Plan after Travel (position 2), then Kidena House right after Family Plan (position 3)
     links.splice(2, 0, { name: 'Family Plan', href: '#family-itinerary' });
-    links.splice(6, 0, { name: 'Kidena House', href: '#kidena-house' });
+    links.splice(3, 0, { name: 'Kidena House', href: '#kidena-house' });
 
   }
 
@@ -4379,6 +4379,14 @@ const App = () => {
 
     { id: 'travel', name: 'Travel', component: Travel },
 
+    ...(isFamilyMode ? [
+
+      { id: 'family-itinerary', name: 'Itinerary', component: FamilyItinerary },
+
+      { id: 'kidena-house', name: 'Kidena', component: KidenaHouse }
+
+    ] : []),
+
     { id: 'rsvp', name: 'RSVP', component: RSVP },
 
     { id: 'dress-code', name: 'Dress', component: DressCode },
@@ -4386,14 +4394,6 @@ const App = () => {
     { id: 'our-story', name: 'Story', component: Story },
 
     { id: 'dogs', name: 'Dogs', component: CookieAndBailey },
-
-    ...(isFamilyMode ? [
-
-      { id: 'kidena-house', name: 'Kidena', component: KidenaHouse },
-
-      { id: 'family-itinerary', name: 'Itinerary', component: FamilyItinerary }
-
-    ] : []),
 
     { id: 'explore-goa', name: 'Goa', component: ExploreGoa },
 
@@ -4570,6 +4570,30 @@ const App = () => {
 
 
 
+        {isFamilyMode && (
+
+          <>
+
+            <section id="family-itinerary" className="scroll-section">
+
+            <FamilyItinerary />
+
+            </section>
+
+
+
+            <section id="kidena-house" className="scroll-section">
+
+            <KidenaHouse />
+
+            </section>
+
+          </>
+
+        )}
+
+
+
         <section id="rsvp" className="scroll-section">
 
         <RSVP />
@@ -4601,27 +4625,6 @@ const App = () => {
         </section>
 
 
-        {isFamilyMode && (
-
-          <>
-
-            <section id="kidena-house" className="scroll-section">
-
-            <KidenaHouse />
-
-            </section>
-
-
-
-            <section id="family-itinerary" className="scroll-section">
-
-            <FamilyItinerary />
-
-            </section>
-
-          </>
-
-        )}
 
 
 
