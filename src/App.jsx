@@ -865,7 +865,7 @@ const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
 
   const controls = useAnimation();
 
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: '100px' });
 
 
 
@@ -1402,11 +1402,11 @@ const Story = () => (
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-20 md:mb-32">
 
-            <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-2 order-2 md:order-1 photo-frame">
+            <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-white rotate-2 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '700px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '600px' }}>
 
-               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
+               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
 
             </div>
 
@@ -1464,11 +1464,11 @@ const Story = () => (
 
           </div>
 
-            <ParallaxWrapper offset={-20} hoverEffect className="sketchy-border p-3 bg-white -rotate-2 photo-frame">
+            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-white -rotate-2 photo-frame">
 
-            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '700px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '600px' }}>
 
-               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} />
+               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} fetchPriority="low" decoding="async" />
 
             </div>
 
@@ -1488,11 +1488,11 @@ const Story = () => (
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-20 md:mb-32">
 
-            <ParallaxWrapper offset={30} hoverEffect className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
+            <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '700px' }}>
+            <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '600px' }}>
 
-               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ objectPosition: 'center bottom' }} loading="lazy" width={765} height={1024} />
+               <img src="/images/goa-scooter.jpg" className="w-full h-full object-cover" alt="Goa Life" style={{ objectPosition: 'center bottom' }} loading="lazy" width={765} height={1024} fetchPriority="low" decoding="async" />
 
             </div>
 
@@ -1552,11 +1552,11 @@ const Story = () => (
 
           </div>
 
-            <ParallaxWrapper offset={-25} hoverEffect className="sketchy-border p-4 bg-white -rotate-1">
+            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-4 bg-white -rotate-1">
 
-             <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '700px' }}>
+             <div className="overflow-hidden relative" style={{ minHeight: '400px', maxHeight: '600px' }}>
 
-                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} />
+                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
 
              </div>
 
