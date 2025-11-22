@@ -495,11 +495,12 @@ const styles = `
   /* --- Countdown Timer Styles --- */
   .countdown-box {
     position: relative;
-    background: white;
-    border: 3px solid #1B3A57;
+    background: rgba(245, 240, 232, 0.1);
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(245, 240, 232, 0.4);
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     padding: 1.5rem 2rem;
-    box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.3);
+    box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.2);
   }
 
   .countdown-box::before {
@@ -509,7 +510,7 @@ const styles = `
     left: -2px;
     right: -2px;
     bottom: -2px;
-    border: 2px solid rgba(212, 165, 165, 0.2);
+    border: 2px solid rgba(212, 165, 165, 0.15);
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     pointer-events: none;
   }
@@ -519,12 +520,13 @@ const styles = `
     flex-direction: column;
     align-items: center;
     padding: 0.75rem 1rem;
-    background: linear-gradient(135deg, #F5F0E8 0%, #ffffff 100%);
-    border: 2px solid #1B3A57;
+    background: rgba(245, 240, 232, 0.15);
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(245, 240, 232, 0.3);
     border-radius: 20px 5px 20px 5px;
     min-width: 70px;
     position: relative;
-    box-shadow: 2px 2px 0px rgba(212, 165, 165, 0.2);
+    box-shadow: 2px 2px 0px rgba(212, 165, 165, 0.15);
   }
 
   .countdown-unit::after {
@@ -534,7 +536,7 @@ const styles = `
     left: -1px;
     right: -1px;
     bottom: -1px;
-    border: 1px solid rgba(184, 212, 232, 0.3);
+    border: 1px solid rgba(184, 212, 232, 0.2);
     border-radius: 20px 5px 20px 5px;
     pointer-events: none;
   }
@@ -543,16 +545,16 @@ const styles = `
     font-family: 'Kalam', cursive;
     font-weight: 700;
     font-size: 1.75rem;
-    color: #1B3A57;
+    color: #F5F0E8;
     line-height: 1;
-    text-shadow: 1px 1px 0px rgba(212, 165, 165, 0.2);
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
   }
 
   .countdown-label {
     font-family: 'Kalam', cursive;
     font-size: 0.65rem;
-    color: #1B3A57;
-    opacity: 0.7;
+    color: #F5F0E8;
+    opacity: 0.8;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-top: 0.25rem;
@@ -1195,18 +1197,18 @@ const CountdownTimer = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5, duration: 0.6 }}
-      className="countdown-box mt-6 md:mt-8"
+      transition={{ delay: 0.3, duration: 0.6 }}
+      className="countdown-box"
     >
-      <div className="text-center mb-3">
-        <p className="text-xs md:text-sm font-hand text-navy/60 uppercase tracking-wider mb-2">
+      <div className="text-center mb-4">
+        <p className="text-xs md:text-sm font-hand text-[#F5F0E8]/70 uppercase tracking-wider mb-2">
           Counting down to
         </p>
-        <p className="text-sm md:text-base font-hand text-navy font-semibold">
+        <p className="text-sm md:text-base font-hand text-[#F5F0E8] font-semibold">
           March 20, 2026
         </p>
       </div>
-      <div className="flex items-center justify-center gap-3 md:gap-4">
+      <div className="flex items-center justify-center gap-2 md:gap-3">
         {units.map((unit, index) => (
           <motion.div
             key={unit.label}
@@ -1324,8 +1326,6 @@ const Hero = ({ onScrollToSection }) => (
             </div>
           </div>
         </div>
-
-        <CountdownTimer />
       </div>
 
 
@@ -3789,8 +3789,15 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
         </div>
       </FadeInWhenVisible>
 
-      {/* Cookie & Bailey section */}
+      {/* Countdown Timer */}
       <FadeInWhenVisible delay={0.1}>
+        <div className="flex justify-center">
+          <CountdownTimer />
+        </div>
+      </FadeInWhenVisible>
+
+      {/* Cookie & Bailey section */}
+      <FadeInWhenVisible delay={0.15}>
         <div className="flex flex-col items-center">
           <button
             onClick={onOpenGame}
@@ -3805,7 +3812,7 @@ const Footer = ({ toggleFamilyMode, isFamilyMode, onOpenGame }) => (
       </FadeInWhenVisible>
 
       {/* Bottom section */}
-      <FadeInWhenVisible delay={0.2}>
+      <FadeInWhenVisible delay={0.25}>
         <div className="border-t-2 border-[#F5F0E8]/50 pt-8 md:pt-10 lg:pt-12 space-y-3 md:space-y-4 px-2">
           <p className="text-sm md:text-base lg:text-lg uppercase tracking-widest text-[#F5F0E8] font-hand font-semibold">
             Made with love, momos & feni
