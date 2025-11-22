@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
-import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock } from 'lucide-react';
+import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -1044,19 +1044,22 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
   
 
+  // Chronological navigation order
   let links = [
-
-    { name: 'Story', href: '#our-story' },
 
     { name: 'Party', href: '#the-celebration' },
 
-    { name: 'Goa Tips', href: '#explore-goa' },
-
     { name: 'Travel', href: '#travel' },
 
-    { name: 'Q&A', href: '#q-a' },
+    { name: 'RSVP', href: '#rsvp' },
 
-    { name: 'RSVP', href: '#rsvp' }
+    { name: 'Dress', href: '#dress-code' },
+
+    { name: 'Story', href: '#our-story' },
+
+    { name: 'Goa', href: '#explore-goa' },
+
+    { name: 'Q&A', href: '#q-a' }
 
   ];
 
@@ -1064,9 +1067,9 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
   if (isFamilyMode) {
 
-    links.splice(1, 0, { name: 'Kidena House', href: '#kidena-house' });
-
+    // Add Family Plan after Travel (position 2), Kidena House after Story (position 6 after Family Plan is added)
     links.splice(2, 0, { name: 'Family Plan', href: '#family-itinerary' });
+    links.splice(6, 0, { name: 'Kidena House', href: '#kidena-house' });
 
   }
 
@@ -2421,6 +2424,114 @@ const CookieAndBailey = () => (
 
 /* --- NEW COMPONENTS (Missing in original) --- */
 
+// Kidena House Image Carousel Component (defined first since KidenaHouse uses it)
+const KidenaHouseCarousel = memo(() => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const images = [
+    { src: '/images/kidena-house.jpg', alt: 'Kidena House - Main View' },
+    { src: '/images/kidena-house2.jpg', alt: 'Kidena House - View 2' },
+    { src: '/images/kidena-house3.jpg', alt: 'Kidena House - View 3' },
+    { src: '/images/kidena-house4.jpg', alt: 'Kidena House - View 4' },
+  ];
+
+  const nextImage = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const goToImage = (index) => {
+    setCurrentIndex(index);
+  };
+
+  // Auto-advance carousel every 5 seconds (pauses on hover)
+  useEffect(() => {
+    if (isPaused) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [images.length, isPaused]);
+
+  return (
+    <div className="relative w-full max-w-4xl mx-auto">
+      {/* Carousel Container */}
+      <div 
+        className="relative w-full overflow-hidden rounded-lg"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <div 
+          className="flex w-full transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {images.map((image, index) => (
+            <div key={index} className="min-w-full flex-shrink-0 w-full">
+              <ParallaxWrapper offset={30} hoverEffect>
+                <div className="sketchy-border bg-white p-2 shadow-2xl">
+                  <img 
+                    src={image.src} 
+                    alt={image.alt} 
+                    className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover" 
+                    style={{ objectPosition: 'center' }}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    width={1024}
+                    height={765}
+                  />
+                </div>
+              </ParallaxWrapper>
+            </div>
+          ))}
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevImage}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110"
+          aria-label="Previous image"
+        >
+          <ChevronLeft size={24} className="text-[#1B3A57]" />
+        </button>
+        <button
+          onClick={nextImage}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-lg sketchy-border border-2 border-[#1B3A57] transition-all hover:scale-110"
+          aria-label="Next image"
+        >
+          <ChevronRight size={24} className="text-[#1B3A57]" />
+        </button>
+
+        {/* Dots Indicator */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToImage(index)}
+              className={`w-2.5 h-2.5 rounded-full transition-all ${
+                index === currentIndex
+                  ? 'bg-white w-8'
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+              aria-label={`Go to image ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Image Counter */}
+      <div className="text-center mt-4 text-[#F5F0E8] font-hand text-lg md:text-xl">
+        {currentIndex + 1} / {images.length}
+      </div>
+    </div>
+  );
+});
+
+KidenaHouseCarousel.displayName = 'KidenaHouseCarousel';
+
 const KidenaHouse = () => (
 
   <section id="kidena-house" className={`py-20 md:py-24 lg:py-28 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden`}>
@@ -2438,21 +2549,11 @@ const KidenaHouse = () => (
             <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">Kidena House • Batim Village, Goa Velha</p>
     </div>
 
-        {/* Hero Image - Full Width */}
+        {/* Photo Carousel - All 4 Images */}
         <div className="mb-16 md:mb-20">
-            <ParallaxWrapper offset={30} hoverEffect>
-                <div className="sketchy-border bg-white p-2 shadow-2xl max-w-4xl mx-auto">
-                    <img 
-                        src="/images/kidena-house.jpg" 
-                        alt="Kidena House" 
-                        className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover" 
-                        style={{ objectPosition: 'center' }}
-                        loading="lazy"
-                        width={1024}
-                        height={765}
-                    />
-                </div>
-            </ParallaxWrapper>
+            <FadeInWhenVisible>
+                <KidenaHouseCarousel />
+            </FadeInWhenVisible>
         </div>
 
         {/* Features Grid - 2x2 Layout */}
