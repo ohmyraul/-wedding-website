@@ -1080,7 +1080,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
         
 
-        <div className="hidden lg:flex gap-8">
+        <div className="hidden lg:flex gap-8 items-center">
 
           {links.map(link => (
 
@@ -1091,6 +1091,30 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
             </a>
 
           ))}
+
+          {/* Family Mode Button - Desktop */}
+          <button
+            onClick={() => {
+              if (isFamilyMode) {
+                onFamilyModeToggle();
+              } else {
+                onRequestFamilyAccess();
+              }
+            }}
+            className="ml-4 text-lg font-hand font-bold text-navy/80 hover:text-[#D4A5A5] hover:rotate-2 transition-all flex items-center gap-2 border-l border-navy/20 pl-4"
+          >
+            {isFamilyMode ? (
+              <>
+                <Unlock size={18} />
+                <span>Guest View</span>
+              </>
+            ) : (
+              <>
+                <Lock size={18} />
+                <span>Family</span>
+              </>
+            )}
+          </button>
 
         </div>
 
