@@ -1305,6 +1305,18 @@ const Hero = ({ onScrollToSection }) => (
 
   <section className={`min-h-screen flex flex-col ${SECTION_PADDING} pt-16 md:pt-24 pb-4 md:pb-12 relative`} aria-label="Hero section">
 
+    {/* Background image */}
+    <div className="absolute inset-0 z-0">
+      <img 
+        src="/images/bg.jpg" 
+        alt="" 
+        className="w-full h-full object-cover opacity-30"
+        style={{ objectPosition: 'center' }}
+        loading="eager"
+        aria-hidden="true"
+      />
+    </div>
+    
     <div className="watercolor-bg"></div>
 
     {/* Doodles - Hidden on mobile to reduce clutter */}
@@ -1353,45 +1365,16 @@ const Hero = ({ onScrollToSection }) => (
           <span className="md:hidden"> </span>we're making it forever.
         </p>
 
-        {/* S&A Logo with Subtle Line-Art */}
-        <motion.div
-          className="relative inline-block"
+        {/* S&A Logo */}
+        <motion.h1 
+          className="text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text inline-block" 
+          style={{ textShadow: '2px 2px 0px rgba(212, 165, 165, 0.2)' }}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 120, damping: 14 }}
         >
-          {/* Very faint oval outline */}
-          <svg 
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[140%] pointer-events-none"
-            viewBox="0 0 200 120"
-            preserveAspectRatio="xMidYMid"
-            style={{ opacity: 0.05 }}
-          >
-            <ellipse cx="100" cy="60" rx="90" ry="55" fill="none" stroke="#1B3A57" strokeWidth="1" />
-          </svg>
-
-          {/* Subtle wispy curved lines - very faint */}
-          <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.06 }}>
-            {/* Left side - subtle arcs */}
-            <svg className="absolute -left-8 md:-left-12 top-1/2 -translate-y-1/2 w-16 md:w-20 h-32 md:h-40" viewBox="0 0 50 100" preserveAspectRatio="xMidYMid">
-              <path d="M10,80 Q5,60 10,40 Q15,20 20,30" stroke="#1B3A57" strokeWidth="0.5" fill="none" />
-              <path d="M15,75 Q10,55 15,35 Q20,15 25,25" stroke="#1B3A57" strokeWidth="0.5" fill="none" />
-            </svg>
-            {/* Right side - subtle arcs */}
-            <svg className="absolute -right-8 md:-right-12 top-1/2 -translate-y-1/2 w-16 md:w-20 h-32 md:h-40" viewBox="0 0 50 100" preserveAspectRatio="xMidYMid">
-              <path d="M40,80 Q45,60 40,40 Q35,20 30,30" stroke="#1B3A57" strokeWidth="0.5" fill="none" />
-              <path d="M35,75 Q40,55 35,35 Q30,15 25,25" stroke="#1B3A57" strokeWidth="0.5" fill="none" />
-            </svg>
-          </div>
-
-          {/* S&A Monogram */}
-          <motion.h1 
-            className="text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text" 
-            style={{ textShadow: '2px 2px 0px rgba(212, 165, 165, 0.2)' }}
-          >
-            S<span className="text-[#D4A5A5]">&</span>A
-          </motion.h1>
-        </motion.div>
+          S<span className="text-[#D4A5A5]">&</span>A
+        </motion.h1>
 
         {/* Names and Invitation */}
         <div className="flex flex-col items-center gap-2 md:gap-3 mt-1 md:mt-2 rotate-[-1deg]">
