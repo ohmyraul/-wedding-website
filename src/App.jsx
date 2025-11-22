@@ -422,13 +422,21 @@ const styles = `
     background: white;
     border: 3px solid #1B3A57;
     border-radius: 20px 20px 20px 5px;
-    padding: 12px 16px;
+    padding: 10px 12px;
     font-family: 'Kalam', cursive;
-    font-size: 14px;
+    font-size: 12px;
     color: #1B3A57;
     box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.3);
-    max-width: 250px;
+    max-width: 220px;
     line-height: 1.4;
+  }
+  
+  @media (min-width: 768px) {
+    .cookie-dialogue {
+      padding: 12px 16px;
+      font-size: 14px;
+      max-width: 250px;
+    }
   }
 
   .cookie-dialogue::before {
@@ -2088,7 +2096,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative w-full max-w-2xl game-sketchy-border overflow-hidden" style={{ height: '90vh', maxHeight: '700px' }}>
+      <div className="relative w-full max-w-2xl game-sketchy-border overflow-hidden" style={{ height: '85vh', maxHeight: '600px', minHeight: '500px' }}>
         <div className="game-texture-overlay"></div>
         
         <button
@@ -2121,7 +2129,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.8 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="absolute top-20 left-1/2 -translate-x-1/2 z-40 cookie-dialogue"
+              className="absolute top-16 md:top-20 left-1/2 -translate-x-1/2 z-40 cookie-dialogue max-w-[90%] md:max-w-none"
             >
               {showDialogue}
             </motion.div>
@@ -2300,13 +2308,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                         opacity: { duration: 0.2 }
                       }}
                     >
-                      <div className={`w-16 h-16 rounded-full flex items-center justify-center text-4xl shadow-xl border-3 sketchy-border ${
-                        obs.type === 'avoid' 
-                          ? 'bg-red-100 border-red-500' 
-                          : obs.type === 'powerup'
-                          ? 'bg-purple-100 border-purple-500'
-                          : 'bg-green-100 border-green-500'
-                      }`} style={{ borderWidth: '3px' }}>
+                      <div className="w-16 h-16 rounded-full flex items-center justify-center text-4xl shadow-xl">
                         {obs.emoji}
                       </div>
                     </motion.div>
