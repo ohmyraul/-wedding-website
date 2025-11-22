@@ -3052,7 +3052,7 @@ const DressCode = () => {
 
   return (
 
-    <section className={`py-12 md:py-14 lg:py-16 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 relative`}>
+    <section className={`py-10 md:py-12 lg:py-14 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 relative`}>
 
       {/* Decorative elements */}
       <Sun className="absolute top-10 right-10 w-16 h-16 text-[#ffbd7b]/20 rotate-12 animate-float" />
@@ -3062,18 +3062,18 @@ const DressCode = () => {
 
       <FadeInWhenVisible className="max-w-6xl mx-auto relative z-10">
 
-        <div className="text-center mb-8 md:mb-10">
+        <div className="text-center mb-6 md:mb-8">
 
           <SignboardHeading>What to Wear</SignboardHeading>
 
-          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-4"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-3"></div>
 
           <p className="text-navy/70 font-hand text-base md:text-lg max-w-2xl mx-auto">Dress for celebration, comfort, and Goa's warm embrace.</p>
 
         </div>
 
         {/* Compact Layout: Image + Content Side by Side */}
-        <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-10">
+        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
           
           {/* Wardrobe Image - Takes 1 column */}
           <FadeInWhenVisible className="md:col-span-1">
@@ -3093,27 +3093,27 @@ const DressCode = () => {
           </FadeInWhenVisible>
 
           {/* Beach Formal + Colors - Takes 2 columns */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 space-y-4 md:space-y-5">
             
             {/* Beach Formal - Compact */}
-            <FadeInWhenVisible className="bg-white/90 backdrop-blur-sm sketchy-border p-6 md:p-8 rotate-[-1deg] hover:rotate-0 transition-all duration-300 shadow-lg">
-              <div className="flex items-center gap-3 mb-4">
+            <FadeInWhenVisible className="bg-white/90 backdrop-blur-sm sketchy-border p-5 md:p-6 rotate-[-1deg] hover:rotate-0 transition-all duration-300 shadow-lg">
+              <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-[#ffbd7b]/20 flex items-center justify-center flex-shrink-0">
                   <Music className="w-5 h-5 text-[#ffbd7b]" />
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-navy font-hand">Beach Formal</h3>
               </div>
-              <p className="font-hand text-base md:text-lg text-navy/80 leading-relaxed mb-3">Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand - dress beautifully, but practically.</p>
-              <div className="flex items-start gap-2 pt-3 border-t border-navy/10">
+              <p className="font-hand text-base md:text-lg text-navy/80 leading-relaxed mb-2.5">Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand - dress beautifully, but practically.</p>
+              <div className="flex items-start gap-2 pt-2.5 border-t border-navy/10">
                 <Sun className="w-5 h-5 text-[#ffbd7b] mt-0.5 flex-shrink-0" />
                 <p className="font-hand text-sm text-navy/70"><span className="font-bold text-navy">Weather:</span> March in Goa is warm. Pack light.</p>
               </div>
             </FadeInWhenVisible>
 
             {/* Color Palette - Compact Horizontal */}
-            <FadeInWhenVisible delay={0.1} className="bg-gradient-to-br from-[#F5F0E8] via-white to-[#F5F0E8]/50 sketchy-border p-6 md:p-8 rotate-1 hover:rotate-0 transition-all duration-300 shadow-lg">
-              <h3 className="text-xl md:text-2xl font-hand mb-4 text-navy font-bold text-center">Our Color Palette</h3>
-              <div className="grid grid-cols-3 gap-4">
+            <FadeInWhenVisible delay={0.1} className="bg-gradient-to-br from-[#F5F0E8] via-white to-[#F5F0E8]/50 sketchy-border p-5 md:p-6 rotate-1 hover:rotate-0 transition-all duration-300 shadow-lg">
+              <h3 className="text-xl md:text-2xl font-hand mb-3 text-navy font-bold text-center">Our Color Palette</h3>
+              <div className="grid grid-cols-3 gap-3 md:gap-4">
                 {colors.map((color, idx) => (
                   <motion.div 
                     key={color.name}
@@ -3123,7 +3123,7 @@ const DressCode = () => {
                     onClick={() => copyColorCode(color.hex, color.name)}
                   >
                     <motion.div 
-                      className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg border-3 border-white mx-auto mb-2 relative" 
+                      className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg border-3 border-white mx-auto mb-1.5 relative" 
                       style={{ 
                         backgroundColor: color.bg,
                         borderWidth: '3px',
@@ -3140,12 +3140,12 @@ const DressCode = () => {
                         </motion.div>
                       )}
                     </motion.div>
-                    <h4 className="font-bold text-sm font-hand text-navy mb-1">{color.name}</h4>
+                    <h4 className="font-bold text-sm font-hand text-navy mb-0.5">{color.name}</h4>
                     <p className="font-mono text-xs text-navy/60">{color.hex.toUpperCase()}</p>
                   </motion.div>
                 ))}
               </div>
-              <p className="text-xs text-navy/50 font-hand italic text-center mt-4">Click colors to copy • Wear what makes you happy</p>
+              <p className="text-xs text-navy/50 font-hand italic text-center mt-3">Click colors to copy • Wear what makes you happy</p>
             </FadeInWhenVisible>
 
           </div>
