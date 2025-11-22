@@ -3009,7 +3009,7 @@ const DressCode = () => {
 
       <FadeInWhenVisible className="max-w-6xl mx-auto relative z-10">
 
-        <div className="text-center mb-20 md:mb-24">
+        <div className="text-center mb-12 md:mb-16">
 
           <SignboardHeading>What to Wear</SignboardHeading>
 
@@ -3018,6 +3018,23 @@ const DressCode = () => {
           <p className="text-navy/70 font-hand text-lg md:text-xl max-w-2xl mx-auto">Dress for celebration, comfort, and Goa's warm embrace.</p>
 
         </div>
+
+        {/* Bride & Groom in Colors - Visual Reference */}
+        <FadeInWhenVisible className="mb-12 md:mb-16 max-w-3xl mx-auto">
+          <ParallaxWrapper offset={20} hoverEffect>
+            <div className="sketchy-border bg-white p-3 shadow-xl">
+              <img 
+                src="/images/warddrobe.jpg" 
+                alt="Bride and Groom in wedding colors" 
+                className="w-full h-auto object-cover rounded-sm" 
+                loading="lazy"
+                width={1024}
+                height={768}
+              />
+            </div>
+          </ParallaxWrapper>
+          <p className="text-center mt-4 text-navy/60 font-hand text-sm md:text-base italic">Here's us in our color palette!</p>
+        </FadeInWhenVisible>
 
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
 
