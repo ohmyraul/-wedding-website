@@ -1746,103 +1746,7 @@ CookieAndBailey.displayName = 'CookieAndBailey';
 
 /* --- NEW COMPONENTS (Missing in original) --- */
 
-const KidenaHouse = memo(() => (
-
-  <section id="kidena-house" className={`py-20 md:py-24 lg:py-28 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden`}>
-
-    {/* Subtle background decoration */}
-    <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <SketchIcon type="palm" className="absolute top-20 right-20 w-96 h-96 text-white" />
-    </div>
-
-    <FadeInWhenVisible className="max-w-7xl mx-auto relative z-10">
-
-        {/* Header Section */}
-        <div className="text-center mb-16 md:mb-20">
-            <SignboardHeading variant="dark">Where You'll Stay</SignboardHeading>
-            <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">Kidena House • Batim Village, Goa Velha</p>
-    </div>
-
-        {/* Photo Carousel - All 4 Images */}
-        <div className="mb-16 md:mb-20">
-            <FadeInWhenVisible>
-                <KidenaHouseCarousel />
-            </FadeInWhenVisible>
-        </div>
-
-        {/* Features Grid - 2x2 Layout */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-16">
-            
-            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D4A5A5] shadow-lg hover:shadow-xl transition-shadow">
-                <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#D4A5A5]/20 flex items-center justify-center flex-shrink-0">
-                        <Home className="w-6 h-6 text-[#D4A5A5]" />
-                    </div>
-                    <div className="flex-1">
-                        <h3 className="font-bold text-[#D4A5A5] text-2xl md:text-3xl font-hand mb-3">The House</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">6 bedrooms, 9 bathrooms. Private pool and a private lake on the property. Three acres of space to spread out and breathe.</p>
-                    </div>
-                </div>
-        </div>
-
-            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#B8D4E8] shadow-lg hover:shadow-xl transition-shadow">
-                <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#B8D4E8]/20 flex items-center justify-center flex-shrink-0">
-                        <SketchIcon type="plate" className="w-6 h-6 text-[#B8D4E8]" />
-                    </div>
-                    <div className="flex-1">
-                        <h3 className="font-bold text-[#B8D4E8] text-2xl md:text-3xl font-hand mb-3">No Cooking, No Cleaning</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Personal chefs will cook whatever you're craving. Breakfast, lunch, dinner, midnight snacks. Whatever. Butlers handle everything else. You just relax.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D4A5A5] shadow-lg hover:shadow-xl transition-shadow">
-                <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#D4A5A5]/20 flex items-center justify-center flex-shrink-0">
-                        <Sun className="w-6 h-6 text-[#D4A5A5]" />
-                    </div>
-                    <div className="flex-1">
-                        <h3 className="font-bold text-[#D4A5A5] text-2xl md:text-3xl font-hand mb-3">Spa</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">There's an on-site spa if you need to decompress before all the wedding chaos starts.</p>
-                    </div>
-                </div>
-        </div>
-
-            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#B8D4E8] shadow-lg hover:shadow-xl transition-shadow">
-                <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#B8D4E8]/20 flex items-center justify-center flex-shrink-0">
-                        <Music className="w-6 h-6 text-[#B8D4E8]" />
-                    </div>
-                    <div className="flex-1">
-                        <h3 className="font-bold text-[#B8D4E8] text-2xl md:text-3xl font-hand mb-3">Keep Busy (or Don't)</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, fishing in the private lake, bicycles to ride around. Or just lounge by the pool all day. Your choice.</p>
-                    </div>
-                </div>
-        </div>
-
-      </div>
-
-        {/* Dates Section - Centered */}
-        <div className="max-w-2xl mx-auto">
-            <div className="bg-[#F5F0E8] text-navy p-8 md:p-10 sketchy-border border-2 border-[#D4A5A5] shadow-lg text-center">
-                <div className="flex items-center justify-center gap-4 mb-4">
-                    <Calendar className="text-[#D4A5A5]" size={32} />
-                    <h3 className="font-bold text-2xl md:text-3xl font-hand text-navy">March 18-22, 2026</h3>
-                </div>
-                <p className="font-hand text-xl md:text-2xl text-navy/80 leading-relaxed">This is home base for the family. Where we'll all be together in the days leading up to the wedding. The calm before the beautiful storm.</p>
-            </div>
-    </div>
-
-    </FadeInWhenVisible>
-
-  </section>
-
-));
-
-KidenaHouse.displayName = 'KidenaHouse';
-
-// Kidena House Image Carousel Component
+// Kidena House Image Carousel Component (defined first since KidenaHouse uses it)
 const KidenaHouseCarousel = memo(() => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -1949,6 +1853,102 @@ const KidenaHouseCarousel = memo(() => {
 });
 
 KidenaHouseCarousel.displayName = 'KidenaHouseCarousel';
+
+const KidenaHouse = memo(() => (
+
+  <section id="kidena-house" className={`py-20 md:py-24 lg:py-28 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden`}>
+
+    {/* Subtle background decoration */}
+    <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <SketchIcon type="palm" className="absolute top-20 right-20 w-96 h-96 text-white" />
+    </div>
+
+    <FadeInWhenVisible className="max-w-7xl mx-auto relative z-10">
+
+        {/* Header Section */}
+        <div className="text-center mb-16 md:mb-20">
+            <SignboardHeading variant="dark">Where You'll Stay</SignboardHeading>
+            <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">Kidena House • Batim Village, Goa Velha</p>
+    </div>
+
+        {/* Photo Carousel - All 4 Images */}
+        <div className="mb-16 md:mb-20">
+            <FadeInWhenVisible>
+                <KidenaHouseCarousel />
+            </FadeInWhenVisible>
+        </div>
+
+        {/* Features Grid - 2x2 Layout */}
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-16">
+            
+            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D4A5A5] shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#D4A5A5]/20 flex items-center justify-center flex-shrink-0">
+                        <Home className="w-6 h-6 text-[#D4A5A5]" />
+                    </div>
+                    <div className="flex-1">
+                        <h3 className="font-bold text-[#D4A5A5] text-2xl md:text-3xl font-hand mb-3">The House</h3>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">6 bedrooms, 9 bathrooms. Private pool and a private lake on the property. Three acres of space to spread out and breathe.</p>
+                    </div>
+                </div>
+        </div>
+
+            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#B8D4E8] shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#B8D4E8]/20 flex items-center justify-center flex-shrink-0">
+                        <SketchIcon type="plate" className="w-6 h-6 text-[#B8D4E8]" />
+                    </div>
+                    <div className="flex-1">
+                        <h3 className="font-bold text-[#B8D4E8] text-2xl md:text-3xl font-hand mb-3">No Cooking, No Cleaning</h3>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Personal chefs will cook whatever you're craving. Breakfast, lunch, dinner, midnight snacks. Whatever. Butlers handle everything else. You just relax.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D4A5A5] shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#D4A5A5]/20 flex items-center justify-center flex-shrink-0">
+                        <Sun className="w-6 h-6 text-[#D4A5A5]" />
+                    </div>
+                    <div className="flex-1">
+                        <h3 className="font-bold text-[#D4A5A5] text-2xl md:text-3xl font-hand mb-3">Spa</h3>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">There's an on-site spa if you need to decompress before all the wedding chaos starts.</p>
+                    </div>
+                </div>
+        </div>
+
+            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#B8D4E8] shadow-lg hover:shadow-xl transition-shadow">
+                <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#B8D4E8]/20 flex items-center justify-center flex-shrink-0">
+                        <Music className="w-6 h-6 text-[#B8D4E8]" />
+                    </div>
+                    <div className="flex-1">
+                        <h3 className="font-bold text-[#B8D4E8] text-2xl md:text-3xl font-hand mb-3">Keep Busy (or Don't)</h3>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, fishing in the private lake, bicycles to ride around. Or just lounge by the pool all day. Your choice.</p>
+                    </div>
+                </div>
+        </div>
+
+      </div>
+
+        {/* Dates Section - Centered */}
+        <div className="max-w-2xl mx-auto">
+            <div className="bg-[#F5F0E8] text-navy p-8 md:p-10 sketchy-border border-2 border-[#D4A5A5] shadow-lg text-center">
+                <div className="flex items-center justify-center gap-4 mb-4">
+                    <Calendar className="text-[#D4A5A5]" size={32} />
+                    <h3 className="font-bold text-2xl md:text-3xl font-hand text-navy">March 18-22, 2026</h3>
+                </div>
+                <p className="font-hand text-xl md:text-2xl text-navy/80 leading-relaxed">This is home base for the family. Where we'll all be together in the days leading up to the wedding. The calm before the beautiful storm.</p>
+            </div>
+    </div>
+
+    </FadeInWhenVisible>
+
+  </section>
+
+));
+
+KidenaHouse.displayName = 'KidenaHouse';
 
 const FamilyItinerary = memo(() => (
 
