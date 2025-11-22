@@ -1078,87 +1078,64 @@ const Hero = ({ onScrollToSection }) => (
 
 
 
-    <FadeInWhenVisible className="max-w-5xl w-full text-center relative z-10">
+    <FadeInWhenVisible className="max-w-4xl w-full text-center relative z-10">
 
-      
-
-      <div className="mb-8 md:mb-12">
-        <p className="text-xl md:text-2xl lg:text-3xl font-hand text-navy/80 leading-relaxed text-center max-w-3xl mx-auto">
+      <div className="space-y-6 md:space-y-8">
+        <p className="text-xl md:text-2xl lg:text-3xl font-hand text-navy/80 leading-relaxed max-w-2xl mx-auto">
           After seven years of choosing each other,<br />
           we're making it forever.
         </p>
-      </div>
 
-      <motion.h1 
+        <motion.h1 
+          className="text-[5rem] md:text-[6rem] leading-[0.9] text-navy font-hand select-none relative inline-block sketchy-text" 
+          style={{ textShadow: '4px 4px 0px rgba(212, 165, 165, 0.3)' }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 120, damping: 14 }}
+        >
+          S<span className="text-[#D4A5A5]">&</span>A
+        </motion.h1>
 
-        className="text-[5rem] md:text-[6rem] leading-[0.8] text-navy font-hand select-none relative inline-block sketchy-text" 
+        <div className="flex flex-col items-center gap-3 mt-2 rotate-[-1deg]">
+          <h2 className="text-3xl md:text-5xl font-hand text-navy relative">
+            Shubs & Alysha
+            <svg className="absolute -bottom-3 left-0 w-full h-2.5" viewBox="0 0 100 10" preserveAspectRatio="none">
+               <path d="M0,5 Q50,10 100,5" stroke="#D4A5A5" strokeWidth="2.5" fill="none" />
+            </svg>
+          </h2>
 
-        style={{ textShadow: '4px 4px 0px rgba(212, 165, 165, 0.3)' }}
+          <p className="text-base md:text-lg font-hand text-navy/80 max-w-xl mx-auto">
+            invite you to witness our wedding
+          </p>
 
-        initial={{ scale: 0.8, opacity: 0 }}
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-navy/80 font-hand text-lg md:text-xl uppercase tracking-wider mt-1">
+            <span>March 20, 2026</span>
+            <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-[#D4A5A5]"></span>
+            <span>Goa, India</span>
+          </div>
 
-        animate={{ scale: 1, opacity: 1 }}
-
-        transition={{ type: 'spring', stiffness: 120, damping: 14 }}
-
-      >
-
-        S<span className="text-[#D4A5A5]">&</span>A
-
-      </motion.h1>
-
-      
-
-      <div className="flex flex-col items-center gap-4 mt-6 mb-10 rotate-[-1deg]">
-
-        <h2 className="text-3xl md:text-5xl font-hand text-navy relative">
-
-          Shubs & Alysha
-
-          <svg className="absolute -bottom-4 left-0 w-full h-3" viewBox="0 0 100 10" preserveAspectRatio="none">
-
-             <path d="M0,5 Q50,10 100,5" stroke="#D4A5A5" strokeWidth="3" fill="none" />
-
-          </svg>
-
-        </h2>
-
-        <p className="text-lg md:text-xl font-hand text-navy/80 text-center max-w-2xl mx-auto">
-          invite you to witness our wedding
-        </p>
-
-        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-navy/80 font-hand text-xl uppercase tracking-widest mt-2">
-
-          <span>March 20, 2026</span>
-
-          <span className="hidden md:block w-2 h-2 rounded-full bg-[#D4A5A5]"></span>
-
-          <span>Goa, India</span>
-
+          <p className="text-sm md:text-base font-hand text-navy/70 mt-2 italic">
+            Your presence would mean the world to us.
+          </p>
         </div>
 
-        <p className="text-base md:text-lg font-hand text-navy/70 text-center mt-4 italic">
-          Your presence would mean the world to us.
-        </p>
-
-      </div>
-
-      <div className="max-w-3xl mx-auto mb-12">
-        <div className="sketchy-border border-2 border-[#D4A5A5]/30 bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-5 text-navy/80 font-hand shadow-md">
-          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-sm md:text-base">
-            <div className="flex items-center gap-2">
-              <Calendar size={16} className="text-[#D4A5A5] flex-shrink-0" />
-              <span className="font-bold text-navy">Friday, March 20, 2026</span>
-            </div>
-            <span className="hidden md:block text-[#D4A5A5]">·</span>
-            <div className="flex items-center gap-2">
-              <Clock size={16} className="text-[#D4A5A5] flex-shrink-0" />
-              <span className="font-semibold text-navy">3:30 PM onwards</span>
-            </div>
-            <span className="hidden md:block text-[#D4A5A5]">·</span>
-            <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-[#D4A5A5] flex-shrink-0" />
-              <span className="font-semibold text-navy">Blu Missel by the River, Fondvem, Ribandar</span>
+        <div className="max-w-2xl mx-auto mt-6 md:mt-8">
+          <div className="sketchy-border border-2 border-[#D4A5A5]/30 bg-white/80 backdrop-blur-sm rounded-xl px-5 py-4 text-navy/80 font-hand shadow-md">
+            <div className="flex flex-wrap items-center justify-center gap-2.5 md:gap-3 text-xs md:text-sm">
+              <div className="flex items-center gap-1.5">
+                <Calendar size={14} className="text-[#D4A5A5] flex-shrink-0" />
+                <span className="font-semibold text-navy">Friday, March 20, 2026</span>
+              </div>
+              <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
+              <div className="flex items-center gap-1.5">
+                <Clock size={14} className="text-[#D4A5A5] flex-shrink-0" />
+                <span className="font-medium text-navy">3:30 PM onwards</span>
+              </div>
+              <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
+              <div className="flex items-center gap-1.5">
+                <MapPin size={14} className="text-[#D4A5A5] flex-shrink-0" />
+                <span className="font-medium text-navy">Blu Missel by the River, Fondvem, Ribandar</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1166,7 +1143,7 @@ const Hero = ({ onScrollToSection }) => (
 
 
 
-      <ParallaxWrapper offset={80} hoverEffect className="relative max-w-2xl mx-auto rotate-1 hover:rotate-0 transition-transform duration-500 px-4">
+      <ParallaxWrapper offset={80} hoverEffect className="relative max-w-2xl mx-auto rotate-1 hover:rotate-0 transition-transform duration-500 px-4 mt-8 md:mt-10">
 
          <div className="bg-white p-4 sketchy-border shadow-xl">
 
