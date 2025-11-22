@@ -1243,38 +1243,60 @@ const CountdownTimer = () => {
 
 const Hero = ({ onScrollToSection }) => (
 
-  <section className={`min-h-screen flex flex-col items-center justify-center ${SECTION_PADDING} pt-20 md:pt-24 pb-8 md:pb-12 relative`} aria-label="Hero section">
+  <section className={`min-h-screen flex flex-col ${SECTION_PADDING} pt-16 md:pt-24 pb-4 md:pb-12 relative`} aria-label="Hero section">
 
     <div className="watercolor-bg"></div>
 
-    
-
-    {/* Doodles */}
-
-    <ParallaxWrapper offset={30} className="absolute top-24 left-10">
-
+    {/* Doodles - Hidden on mobile to reduce clutter */}
+    <ParallaxWrapper offset={30} className="absolute top-24 left-10 hidden md:block">
       <Sun className="w-12 h-12 text-[#D4A5A5] opacity-60 rotate-12 animate-float" />
-
     </ParallaxWrapper>
 
-    <ParallaxWrapper offset={-30} className="absolute bottom-32 right-8">
-
+    <ParallaxWrapper offset={-30} className="absolute bottom-32 right-8 hidden md:block">
       <Heart className="w-8 h-8 text-[#B8D4E8] opacity-60 -rotate-6 animate-float" />
-
     </ParallaxWrapper>
 
+    <FadeInWhenVisible className="w-full max-w-4xl mx-auto relative z-10 flex flex-col md:flex-col">
+      
+      {/* Mobile: Photo First */}
+      <div className="order-1 md:order-2 mb-4 md:mb-0">
+        <ParallaxWrapper offset={80} hoverEffect className="relative w-full max-w-xl mx-auto rotate-1 hover:rotate-0 transition-transform duration-500">
+          <div className="bg-white p-2 md:p-4 sketchy-border shadow-xl">
+            <motion.div 
+              className="w-full bg-[#F5F0E8] overflow-hidden relative" 
+              style={{ minHeight: '280px', maxHeight: '400px' }}
+              initial={{ scale: 1.05 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <motion.img 
+                src="/images/hero.jpg" 
+                alt="Shubs and Alysha" 
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center' }}
+                width={1024}
+                height={890}
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 1.2, ease: 'easeOut' }}
+                loading="eager"
+              />
+            </motion.div>
+          </div>
+          <ApprovedStamp />
+        </ParallaxWrapper>
+      </div>
 
-
-    <FadeInWhenVisible className="max-w-4xl w-full text-center relative z-10">
-
-      <div className="space-y-6 md:space-y-8">
-        <p className="text-xl md:text-2xl lg:text-3xl font-hand text-navy/80 leading-relaxed max-w-2xl mx-auto">
-          After seven years of choosing each other,<br />
-          we're making it forever.
+      {/* Mobile: Text Content Second */}
+      <div className="order-2 md:order-1 text-center space-y-4 md:space-y-6">
+        {/* Opening Message - Smaller on mobile */}
+        <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand text-navy/80 leading-relaxed max-w-2xl mx-auto px-2">
+          After seven years of choosing each other,<br className="hidden md:block" />
+          <span className="md:hidden"> </span>we're making it forever.
         </p>
 
+        {/* S&A Logo */}
         <motion.h1 
-          className="text-[5rem] md:text-[6rem] leading-[0.9] text-navy font-hand select-none relative inline-block sketchy-text" 
+          className="text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative inline-block sketchy-text" 
           style={{ textShadow: '4px 4px 0px rgba(212, 165, 165, 0.3)' }}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -1283,44 +1305,47 @@ const Hero = ({ onScrollToSection }) => (
           S<span className="text-[#D4A5A5]">&</span>A
         </motion.h1>
 
-        <div className="flex flex-col items-center gap-3 mt-2 rotate-[-1deg]">
-          <h2 className="text-3xl md:text-5xl font-hand text-navy relative">
+        {/* Names and Invitation */}
+        <div className="flex flex-col items-center gap-2 md:gap-3 mt-1 md:mt-2 rotate-[-1deg]">
+          <h2 className="text-2xl md:text-3xl lg:text-5xl font-hand text-navy relative">
             Shubs & Alysha
-            <svg className="absolute -bottom-3 left-0 w-full h-2.5" viewBox="0 0 100 10" preserveAspectRatio="none">
-               <path d="M0,5 Q50,10 100,5" stroke="#D4A5A5" strokeWidth="2.5" fill="none" />
+            <svg className="absolute -bottom-2 md:-bottom-3 left-0 w-full h-2 md:h-2.5" viewBox="0 0 100 10" preserveAspectRatio="none">
+               <path d="M0,5 Q50,10 100,5" stroke="#D4A5A5" strokeWidth="2" fill="none" />
             </svg>
           </h2>
 
-          <p className="text-base md:text-lg font-hand text-navy/80 max-w-xl mx-auto">
+          <p className="text-sm md:text-base lg:text-lg font-hand text-navy/80 max-w-xl mx-auto px-2">
             invite you to witness our wedding
           </p>
 
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-navy/80 font-hand text-lg md:text-xl uppercase tracking-wider mt-1">
+          {/* Date and Location - More compact on mobile */}
+          <div className="flex flex-col md:flex-row items-center gap-1.5 md:gap-3 text-navy/80 font-hand text-base md:text-lg lg:text-xl uppercase tracking-wide md:tracking-wider mt-1">
             <span>March 20, 2026</span>
             <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-[#D4A5A5]"></span>
-            <span>Goa, India</span>
+            <span className="text-sm md:text-base lg:text-lg">Goa, India</span>
           </div>
 
-          <p className="text-sm md:text-base font-hand text-navy/70 mt-2 italic">
+          <p className="text-xs md:text-sm lg:text-base font-hand text-navy/70 mt-1 md:mt-2 italic px-2">
             Your presence would mean the world to us.
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto mt-6 md:mt-8">
-          <div className="sketchy-border border-2 border-[#D4A5A5]/30 bg-white/80 backdrop-blur-sm rounded-xl px-5 py-4 text-navy/80 font-hand shadow-md">
-            <div className="flex flex-wrap items-center justify-center gap-2.5 md:gap-3 text-xs md:text-sm">
-              <div className="flex items-center gap-1.5">
-                <Calendar size={14} className="text-[#D4A5A5] flex-shrink-0" />
+        {/* Event Details - Compact on mobile */}
+        <div className="max-w-2xl mx-auto mt-4 md:mt-6 lg:mt-8">
+          <div className="sketchy-border border-2 border-[#D4A5A5]/30 bg-white/80 backdrop-blur-sm rounded-lg md:rounded-xl px-3 py-2.5 md:px-5 md:py-4 text-navy/80 font-hand shadow-md">
+            <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-2 md:gap-2.5 text-[10px] md:text-xs lg:text-sm">
+              <div className="flex items-center gap-1 md:gap-1.5">
+                <Calendar size={12} className="md:w-[14px] md:h-[14px] text-[#D4A5A5] flex-shrink-0" />
                 <span className="font-semibold text-navy">Friday, March 20, 2026</span>
               </div>
               <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
-              <div className="flex items-center gap-1.5">
-                <Clock size={14} className="text-[#D4A5A5] flex-shrink-0" />
+              <div className="flex items-center gap-1 md:gap-1.5">
+                <Clock size={12} className="md:w-[14px] md:h-[14px] text-[#D4A5A5] flex-shrink-0" />
                 <span className="font-medium text-navy">3:30 PM onwards</span>
               </div>
               <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
-              <div className="flex items-center gap-1.5">
-                <MapPin size={14} className="text-[#D4A5A5] flex-shrink-0" />
+              <div className="flex items-center gap-1 md:gap-1.5 text-center">
+                <MapPin size={12} className="md:w-[14px] md:h-[14px] text-[#D4A5A5] flex-shrink-0" />
                 <span className="font-medium text-navy">Blu Missel by the River, Fondvem, Ribandar</span>
               </div>
             </div>
@@ -1328,72 +1353,15 @@ const Hero = ({ onScrollToSection }) => (
         </div>
       </div>
 
-
-
-      <ParallaxWrapper offset={80} hoverEffect className="relative max-w-2xl mx-auto rotate-1 hover:rotate-0 transition-transform duration-500 px-4 mt-8 md:mt-10">
-
-         <div className="bg-white p-4 sketchy-border shadow-xl">
-
-            <motion.div 
-
-              className="w-full bg-[#F5F0E8] overflow-hidden relative" 
-
-              style={{ minHeight: '400px' }}
-
-              initial={{ scale: 1.05 }}
-
-              whileHover={{ scale: 1.02 }}
-
-            >
-
-               <motion.img 
-
-                 src="/images/hero.jpg" 
-
-                 alt="Shubs and Alysha" 
-
-                 className="w-full h-full object-cover"
-                 style={{ objectPosition: 'center' }}
-                 width={1024}
-                 height={890}
-
-                 initial={{ scale: 1.2 }}
-
-                 animate={{ scale: 1 }}
-
-                 transition={{ duration: 1.2, ease: 'easeOut' }}
-
-                 loading="eager"
-
-               />
-
-
-
-
-            </motion.div>
-
-         </div>
-
-         <ApprovedStamp />
-
-      </ParallaxWrapper>
-
     </FadeInWhenVisible>
 
-    
-
+    {/* Scroll Indicator - Smaller on mobile */}
     <motion.div 
-
-      className="absolute bottom-8 text-navy/30"
-
+      className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 text-navy/30"
       animate={{ y: [0, -10, 0] }}
-
       transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-
     >
-
-      <ArrowDown size={32} aria-hidden="true" />
-
+      <ArrowDown size={24} className="md:w-8 md:h-8" aria-hidden="true" />
     </motion.div>
 
   </section>
