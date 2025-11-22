@@ -2456,7 +2456,7 @@ const ExploreGoa = () => {
 
     <FadeInWhenVisible className="max-w-6xl mx-auto">
 
-        <div className="text-center mb-16 md:mb-20">
+        <div className="text-center mb-12 md:mb-16">
 
           <SignboardHeading>Explore Goa</SignboardHeading>
 
@@ -2564,7 +2564,7 @@ const Travel = ({ isFamilyMode }) => (
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
-      <div className="text-center mb-16">
+      <div className="text-center mb-12 md:mb-16">
 
         <SignboardHeading variant="dark">Travel & Stay</SignboardHeading>
 
@@ -2670,7 +2670,7 @@ const Travel = ({ isFamilyMode }) => (
 
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#B8D4E8]/50 transform -rotate-2"></div>
 
-          <h3 className="text-3xl font-bold mb-6 font-hand text-center">Our Recommendations</h3>
+          <h3 className="text-3xl font-bold mb-8 md:mb-10 font-hand text-center">Our Recommendations</h3>
 
           
 
@@ -2692,13 +2692,25 @@ const Travel = ({ isFamilyMode }) => (
 
           ) : (
 
-            <ul className="font-hand text-lg space-y-4">
+            <ul className="font-hand text-lg space-y-5">
 
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
+               <li className="flex gap-3 items-start border-b border-navy/10 pb-4">
 
-                 <div>
+                 <div className="flex-1">
 
-                    <p className="font-bold">The Crown Goa</p>
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <p className="font-bold">The Crown Goa</p>
+                      <a
+                        href="https://www.google.com/maps/search/?api=1&query=The+Crown+Goa+Panaji"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
+                        aria-label="Open The Crown Goa in Google Maps"
+                        title="Open in Google Maps"
+                      >
+                        <MapPin size={18} />
+                      </a>
+                    </div>
 
                     <p className="text-sm opacity-70">15 minutes from the venue. Boutique 5-star perched on a hill in Panaji. River Mandovi views, rooftop pool, spa to recover from dancing. Walk to casinos if you're up early.</p>
 
@@ -2706,11 +2718,23 @@ const Travel = ({ isFamilyMode }) => (
 
                </li>
 
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
+               <li className="flex gap-3 items-start border-b border-navy/10 pb-4">
 
-                 <div>
+                 <div className="flex-1">
 
-                    <p className="font-bold">DoubleTree by Hilton Goa – Panaji</p>
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <p className="font-bold">DoubleTree by Hilton Goa – Panaji</p>
+                      <a
+                        href="https://www.google.com/maps/search/?api=1&query=DoubleTree+by+Hilton+Goa+Panaji"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
+                        aria-label="Open DoubleTree by Hilton Goa in Google Maps"
+                        title="Open in Google Maps"
+                      >
+                        <MapPin size={18} />
+                      </a>
+                    </div>
 
                     <p className="text-sm opacity-70">20 minutes from the venue. Riverside resort with infinity pool melting into Mandovi River. Perfect if you're extending your stay to explore Old Goa churches. Free warm cookies at check-in (yes, really).</p>
 
@@ -2718,11 +2742,23 @@ const Travel = ({ isFamilyMode }) => (
 
                </li>
 
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-3">
+               <li className="flex gap-3 items-start border-b border-navy/10 pb-4">
 
-                 <div>
+                 <div className="flex-1">
 
-                    <p className="font-bold">The Fern Kadamba Hotel</p>
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <p className="font-bold">The Fern Kadamba Hotel</p>
+                      <a
+                        href="https://www.google.com/maps/search/?api=1&query=The+Fern+Kadamba+Hotel+Old+Goa"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
+                        aria-label="Open The Fern Kadamba Hotel in Google Maps"
+                        title="Open in Google Maps"
+                      >
+                        <MapPin size={18} />
+                      </a>
+                    </div>
 
                     <p className="text-sm opacity-70">10 minutes from the venue. Heritage hotel near Old Goa, best value for families. Lush greenery, pool, spa. Staff will remember your kids' names by day two.</p>
 
