@@ -492,6 +492,82 @@ const styles = `
     animation: buttonPress 0.15s ease-out;
   }
 
+  /* --- Countdown Timer Styles --- */
+  .countdown-box {
+    position: relative;
+    background: white;
+    border: 3px solid #1B3A57;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    padding: 1.5rem 2rem;
+    box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.3);
+  }
+
+  .countdown-box::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid rgba(212, 165, 165, 0.2);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    pointer-events: none;
+  }
+
+  .countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, #F5F0E8 0%, #ffffff 100%);
+    border: 2px solid #1B3A57;
+    border-radius: 20px 5px 20px 5px;
+    min-width: 70px;
+    position: relative;
+    box-shadow: 2px 2px 0px rgba(212, 165, 165, 0.2);
+  }
+
+  .countdown-unit::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border: 1px solid rgba(184, 212, 232, 0.3);
+    border-radius: 20px 5px 20px 5px;
+    pointer-events: none;
+  }
+
+  .countdown-number {
+    font-family: 'Kalam', cursive;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: #1B3A57;
+    line-height: 1;
+    text-shadow: 1px 1px 0px rgba(212, 165, 165, 0.2);
+  }
+
+  .countdown-label {
+    font-family: 'Kalam', cursive;
+    font-size: 0.65rem;
+    color: #1B3A57;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+    font-weight: 600;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .countdown-milestone {
+    animation: pulse 0.5s ease-in-out;
+  }
+
   .animate-fade-in {
 
     animation: fadeInUp 0.6s ease-out forwards;
@@ -1054,6 +1130,115 @@ const Nav = ({ isFamilyMode }) => {
 
 
 
+const CountdownTimer = () => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+  const [hasCelebrated, setHasCelebrated] = useState({
+    100: false,
+    50: false,
+    30: false,
+    7: false,
+    1: false
+  });
+
+  useEffect(() => {
+    const weddingDate = new Date('2026-03-20T15:30:00+05:30').getTime();
+
+    const updateTimer = () => {
+      const now = new Date().getTime();
+      const difference = weddingDate - now;
+
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        setTimeLeft({ days, hours, minutes, seconds });
+
+        // Celebrate milestones
+        const milestones = [100, 50, 30, 7, 1];
+        milestones.forEach(milestone => {
+          if (days === milestone && !hasCelebrated[milestone]) {
+            setHasCelebrated(prev => ({ ...prev, [milestone]: true }));
+            fireConfetti({
+              particleCount: 50,
+              spread: 60,
+              origin: { y: 0.5 },
+              colors: ['#D4A5A5', '#B8D4E8', '#1B3A57']
+            });
+          }
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+
+    return () => clearInterval(interval);
+  }, [hasCelebrated]);
+
+  const units = [
+    { value: timeLeft.days, label: 'Days' },
+    { value: timeLeft.hours, label: 'Hours' },
+    { value: timeLeft.minutes, label: 'Minutes' },
+    { value: timeLeft.seconds, label: 'Seconds' }
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5, duration: 0.6 }}
+      className="countdown-box mt-6 md:mt-8"
+    >
+      <div className="text-center mb-3">
+        <p className="text-xs md:text-sm font-hand text-navy/60 uppercase tracking-wider mb-2">
+          Counting down to
+        </p>
+        <p className="text-sm md:text-base font-hand text-navy font-semibold">
+          March 20, 2026
+        </p>
+      </div>
+      <div className="flex items-center justify-center gap-3 md:gap-4">
+        {units.map((unit, index) => (
+          <motion.div
+            key={unit.label}
+            className="countdown-unit"
+            animate={unit.value === 0 ? {} : { scale: [1, 1.05, 1] }}
+            transition={{ 
+              duration: 0.3, 
+              delay: index * 0.05,
+              repeat: Infinity,
+              repeatDelay: 1
+            }}
+          >
+            <span className="countdown-number">
+              {unit.value.toString().padStart(2, '0')}
+            </span>
+            <span className="countdown-label">{unit.label}</span>
+          </motion.div>
+        ))}
+      </div>
+      {timeLeft.days <= 1 && timeLeft.days > 0 && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center mt-3 text-xs font-hand text-[#D4A5A5] font-bold"
+        >
+          Almost there! 🎉
+        </motion.p>
+      )}
+    </motion.div>
+  );
+};
+
 const Hero = ({ onScrollToSection }) => (
 
   <section className={`min-h-screen flex flex-col items-center justify-center ${SECTION_PADDING} pt-20 md:pt-24 pb-8 md:pb-12 relative`} aria-label="Hero section">
@@ -1139,6 +1324,8 @@ const Hero = ({ onScrollToSection }) => (
             </div>
           </div>
         </div>
+
+        <CountdownTimer />
       </div>
 
 
