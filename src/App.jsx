@@ -434,7 +434,7 @@ const styles = `
 
   .dotted-background {
     background-image: 
-      radial-gradient(circle at 1px 1px, rgba(59, 47, 42, 0.08) 1px, transparent 0);
+      radial-gradient(circle at 1px 1px, rgba(59, 47, 42, 0.18) 1.5px, transparent 0);
     background-size: 20px 20px;
     background-position: 0 0;
   }
