@@ -1466,15 +1466,9 @@ const Story = () => (
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
-      <div className="text-center mb-10">
+      <div className="text-center mb-3 md:mb-4">
         <SignboardHeading>Our Story</SignboardHeading>
       </div>
-
-
-
-      <div className="mb-12 md:mb-20"></div>
-
-      
 
       <div className="space-y-16 md:space-y-24 lg:space-y-28 relative pt-8 md:pt-0">
 
@@ -3134,8 +3128,6 @@ const ExploreGoa = () => {
   return (
 
   <section id="explore-goa" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4]`} aria-label="Explore Goa">
-
-    <SectionDivider />
 
     <FadeInWhenVisible className="max-w-6xl mx-auto">
 
