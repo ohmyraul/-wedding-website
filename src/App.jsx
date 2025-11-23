@@ -2203,7 +2203,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               Catch Goan food • Avoid obstacles • Survive the chaos!
             </p>
             <p className="text-xs text-navy/60 mb-8 text-center font-hand">
-              Use ↑↓ or W/S keys • Swipe on mobile
+              Use ↑↓←→ or WASD keys • Use ←↑↓→ buttons below on mobile
             </p>
             <button
               onClick={startGame}

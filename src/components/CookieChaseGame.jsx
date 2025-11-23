@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, PawPrint } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -193,7 +193,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const moveCookie = (direction) => {
+  const moveCookie = useCallback((direction) => {
     if (!isPlaying || isGameOver || isPaused) return;
     triggerHaptic();
     
@@ -214,7 +214,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         return newPos;
       });
     }
-  };
+  }, [isPlaying, isGameOver, isPaused]);
 
   const startGame = () => {
     if (gameIntervalRef.current) {
@@ -408,22 +408,33 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (event) => {
+      // Only handle if game is open and not typing in an input
+      if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+        return;
+      }
+      
       if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
         event.preventDefault();
         if (isGameOver) {
           startGame();
-        } else {
+        } else if (isPlaying && !isPaused) {
           moveCookie('up');
         }
       } else if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
         event.preventDefault();
-        moveCookie('down');
+        if (isPlaying && !isPaused) {
+          moveCookie('down');
+        }
       } else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
         event.preventDefault();
-        moveCookie('left');
+        if (isPlaying && !isPaused) {
+          moveCookie('left');
+        }
       } else if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
         event.preventDefault();
-        moveCookie('right');
+        if (isPlaying && !isPaused) {
+          moveCookie('right');
+        }
       } else if (event.key === ' ' || event.key === 'Enter') {
         event.preventDefault();
         if (isGameOver || (!isPlaying && !isGameOver)) {
@@ -442,7 +453,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isPlaying, isGameOver, isPaused]);
+  }, [isOpen, isPlaying, isGameOver, isPaused, moveCookie, startGame]);
 
   // Swipe gestures
   const handleTouchStart = (e) => {
@@ -495,22 +506,23 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-[150] flex flex-col items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4 py-4"
+      className="fixed inset-0 z-[150] flex flex-col items-center justify-start md:justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4 py-4 overflow-y-auto"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Close button - outside overflow container */}
+      {/* Close button - positioned relative to viewport, not parent */}
       <button
         onClick={closeGame}
-        className="absolute top-4 right-4 z-[200] w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
+        className="fixed top-4 right-4 z-[200] w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
         aria-label="Close game"
+        style={{ margin: '0' }}
       >
         <X size={20} />
       </button>
 
       <div
-        className="relative w-full max-w-2xl game-sketchy-border overflow-hidden"
+        className="relative w-full max-w-2xl game-sketchy-border overflow-hidden flex-shrink-0"
         style={{ height: 'clamp(320px, 70vh, 640px)' }}
       >
         <div className="game-texture-overlay"></div>
@@ -578,7 +590,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               Catch Goan food • Avoid obstacles • Survive the chaos!
             </p>
             <p className="text-xs text-navy/60 mb-8 text-center font-hand">
-              Use ↑↓←→ or WASD keys • Swipe on mobile
+              Use ↑↓←→ or WASD keys • Use ←↑↓→ buttons below on mobile
             </p>
             <button
               onClick={startGame}
@@ -669,20 +681,20 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                   <motion.div
                     className="absolute z-10"
                     style={{ 
-                      top: '50%', 
-                      left: `${50 + cookiePosition * 30}%`,
-                      transform: 'translate(-50%, -50%)'
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
                     }}
                     animate={{ 
                       y: [0, -3, 0],
                       scale: isInvincible ? [1, 1.1, 1] : 1,
-                      x: 0
+                      left: `${50 + cookiePosition * 30}%`,
                     }}
                     transition={{ 
                       y: { repeat: Infinity, duration: 0.5, ease: 'easeInOut' },
                       scale: { repeat: Infinity, duration: 0.3 },
                       left: { duration: 0.15, ease: 'easeOut' }
                     }}
+                    initial={false}
                   >
                     <div className={`w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden sketchy-border ${isInvincible ? 'ring-4 ring-[#D4A5A5]' : ''}`}>
                       <img
@@ -739,40 +751,72 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
       </div>
 
-      {/* Mobile controls - Paw print buttons */}
+      {/* Mobile controls - Horizontal layout below game */}
       {isPlaying && (
-        <div className="w-full max-w-2xl mt-6 md:hidden">
-          <div className="flex flex-col items-center gap-4">
+        <div className="w-full max-w-2xl mt-4 pb-4 md:hidden relative z-50">
+          <div className="flex items-center justify-center gap-3 px-4">
             <button
-              onClick={() => handleButtonPress('up')}
-              className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
-              aria-label="Move up"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButtonPress('left');
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+                handleButtonPress('left');
+              }}
+              className={`paw-button ${buttonPressed === 'left' ? 'pressed' : ''}`}
+              aria-label="Move left"
+              style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
             >
-              <span className="text-2xl text-[#D88D66] font-semibold">△</span>
+              <span className="text-2xl text-[#3B2F2A] font-semibold">◀</span>
             </button>
-            <div className="flex items-center gap-8">
+            <div className="flex flex-col gap-3">
               <button
-                onClick={() => handleButtonPress('left')}
-                className={`paw-button ${buttonPressed === 'left' ? 'pressed' : ''}`}
-                aria-label="Move left"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonPress('up');
+                }}
+                onTouchStart={(e) => {
+                  e.stopPropagation();
+                  handleButtonPress('up');
+                }}
+                className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
+                aria-label="Move up"
+                style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
               >
-                <span className="text-2xl text-[#3B2F2A] font-semibold">◀</span>
+                <span className="text-2xl text-[#D88D66] font-semibold">△</span>
               </button>
               <button
-                onClick={() => handleButtonPress('down')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonPress('down');
+                }}
+                onTouchStart={(e) => {
+                  e.stopPropagation();
+                  handleButtonPress('down');
+                }}
                 className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
                 aria-label="Move down"
+                style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
               >
                 <span className="text-2xl text-[#D88D66] font-semibold">▽</span>
               </button>
-              <button
-                onClick={() => handleButtonPress('right')}
-                className={`paw-button ${buttonPressed === 'right' ? 'pressed' : ''}`}
-                aria-label="Move right"
-              >
-                <span className="text-2xl text-[#EBBA9A] font-semibold">▶</span>
-              </button>
             </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButtonPress('right');
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+                handleButtonPress('right');
+              }}
+              className={`paw-button ${buttonPressed === 'right' ? 'pressed' : ''}`}
+              aria-label="Move right"
+              style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
+            >
+              <span className="text-2xl text-[#EBBA9A] font-semibold">▶</span>
+            </button>
           </div>
         </div>
       )}
