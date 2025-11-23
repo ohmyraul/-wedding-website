@@ -2510,24 +2510,20 @@ const KidenaHouse = () => (
 
     <FadeInWhenVisible className="max-w-7xl mx-auto relative z-10">
 
+      <div className="text-center mb-10 md:mb-12">
+        <SignboardHeading>Where You'll Stay</SignboardHeading>
+      </div>
+
       <div className="grid lg:grid-cols-[1fr,1.35fr] gap-10 lg:gap-14 items-start">
         {/* Left intro */}
         <div className="space-y-6 text-center lg:text-left">
-          <div className="space-y-4">
-            <div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-hand font-bold text-[#3B2F2A] leading-tight mb-2">
-                Where You'll Stay
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-[#D88D66] to-[#EBBA9A] mb-4"></div>
-            </div>
-            <div className="space-y-1">
-              <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D88D66] leading-tight">
-                Kidena House
-              </p>
-              <p className="text-lg md:text-xl font-hand text-[#3B2F2A]/70 leading-relaxed">
-                Gancim, Maina, Goa Velha
-              </p>
-            </div>
+          <div className="space-y-1">
+            <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D88D66] leading-tight">
+              Kidena House
+            </p>
+            <p className="text-lg md:text-xl font-hand text-[#3B2F2A]/70 leading-relaxed">
+              Gancim, Maina, Goa Velha
+            </p>
           </div>
 
         </div>
