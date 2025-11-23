@@ -2849,10 +2849,6 @@ const Celebration = ({ isFamilyMode }) => (
 
         <div className="relative pt-4 md:pt-8 pl-8 md:pl-12">
 
-           <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-navy" style={{ filter: 'url(#roughen)' }}></div>
-
-           
-
            <div className="space-y-8 md:space-y-12">
 
               {[
@@ -2994,7 +2990,7 @@ const DressCode = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-[0.95fr,1.05fr] gap-5 md:gap-8 lg:gap-10 items-start">
           
           {/* Wardrobe Image */}
-          <FadeInWhenVisible className="flex justify-center md:justify-start mb-6">
+          <FadeInWhenVisible className="flex justify-center md:justify-start mb-2">
             <ParallaxWrapper 
               offset={18} 
               hoverEffect 
