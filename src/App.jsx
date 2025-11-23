@@ -2386,6 +2386,8 @@ const KidenaHouseCarousel = memo(() => {
     { src: '/images/kidena-house3.jpg', alt: 'Kidena House - View 3' },
     { src: '/images/kidena-house4.jpg', alt: 'Kidena House - View 4' },
     { src: '/images/kidena-house5.jpg', alt: 'Kidena House - View 5' },
+    { src: '/images/spa.jpg', alt: 'Kidena House - Spa' },
+    { src: '/images/boat.jpg', alt: 'Kidena House - Boat' },
   ], []);
 
   const nextImage = () => {
