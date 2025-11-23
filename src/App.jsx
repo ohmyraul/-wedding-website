@@ -611,9 +611,9 @@ const styles = `
 
     padding: 12px;
 
-    background: white;
+    background: var(--canvas);
 
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(216, 141, 102, 0.1);
 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -623,7 +623,7 @@ const styles = `
 
     transform: scale(1.02) rotate(0deg) !important;
 
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 25px -5px rgba(216, 141, 102, 0.15), 0 10px 10px -5px rgba(216, 141, 102, 0.1);
 
     z-index: 10;
 
@@ -828,10 +828,28 @@ const styles = `
 
 const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs%20%26%20Alysha%20Wedding%20Celebration&dates=20260320T140000Z/20260320T180000Z&details=Celebrate%20with%20us%20in%20Goa.%20RSVP%20and%20travel%20info%20on%20our%20site.&location=Blu%20Missel%20by%20the%20River%2C%20Fondvem%2C%20Ribandar%2C%20Goa%2C%20India';
 const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River,+Fondvem,+Ribandar,+Goa,+India';
-const VENUE_APPLE_MAPS_URL = 'http://maps.apple.com/?address=Fondvem,Ribandar,Goa,India&q=Blu+Missel+by+the+River';
 // Consistent spacing scale for better visual rhythm - reduced for seamless sections
 const SECTION_PADDING = 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16';
 const SECTION_SPACING = 'py-8 md:py-12 lg:py-16 xl:py-20';
+
+// Typography constants
+const TYPO_H1 = 'text-3xl md:text-4xl lg:text-5xl font-hand font-bold'; // Section titles
+const TYPO_H2 = 'text-2xl md:text-3xl font-hand font-bold'; // Major card titles
+const TYPO_BODY = 'text-base md:text-lg font-normal leading-relaxed'; // Body text
+const TYPO_LABEL = 'text-xs md:text-sm font-hand font-semibold uppercase tracking-wider'; // Labels/captions
+
+// Card pattern constants
+const CARD_PRIMARY = 'rounded-2xl border border-[#D4CDC2]'; // Primary narrative cards
+const CARD_SECONDARY = 'rounded-xl border border-[#D4CDC2]'; // Secondary cards
+const CARD_PHOTO = 'sketchy-border'; // Photo frames (uses CSS class)
+
+// Spacing constants
+const SPACE_GRID_SM = 'gap-6'; // Small grid gaps
+const SPACE_GRID_MD = 'gap-8'; // Medium grid gaps
+const SPACE_GRID_LG = 'gap-12'; // Large grid gaps
+const CARD_PAD_SM = 'p-4 md:p-5'; // Small card padding
+const CARD_PAD_MD = 'p-6 md:p-8'; // Medium card padding
+const CARD_PAD_LG = 'p-8 md:p-10'; // Large card padding
 
 /* --- Mario Miranda Style Components --- */
 
@@ -1297,14 +1315,14 @@ const CountdownTimer = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.6 }}
-      className="countdown-box rounded-3xl bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] border border-[#D4CDC2] px-8 py-6"
-      style={{ boxShadow: '0 18px 32px rgba(59, 47, 42, 0.12)' }}
+      className={`countdown-box ${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] ${CARD_PAD_MD}`}
+      style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
     >
       <div className="text-center mb-4">
-        <p className="text-xs md:text-sm font-hand text-[#3B2F2A]/70 uppercase tracking-wider mb-2">
+        <p className={`${TYPO_LABEL} text-[#3B2F2A] mb-2`}>
           Counting down to
         </p>
-        <p className="text-sm md:text-base font-hand text-[#3B2F2A] font-semibold">
+        <p className={`${TYPO_BODY} text-[#3B2F2A] font-semibold`}>
           March 20, 2026
         </p>
         <div className="w-16 h-1 bg-[#D88D66] mx-auto mt-3 rounded-full opacity-60"></div>
@@ -1325,7 +1343,7 @@ const CountdownTimer = () => {
             <span className="countdown-number text-[#3B2F2A] text-2xl md:text-3xl font-bold font-mono">
               {unit.value.toString().padStart(2, '0')}
             </span>
-            <span className="countdown-label text-[#3B2F2A]/60 text-xs uppercase tracking-widest mt-1 block">{unit.label}</span>
+            <span className={`countdown-label ${TYPO_LABEL} text-[#3B2F2A] mt-1 block`}>{unit.label}</span>
           </motion.div>
         ))}
       </div>
@@ -1333,7 +1351,7 @@ const CountdownTimer = () => {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center mt-3 text-xs font-hand text-[#EBBA9A] font-bold"
+          className={`text-center mt-3 ${TYPO_LABEL} text-[#3B2F2A] font-bold`}
         >
           Almost there! 🎉
         </motion.p>
@@ -1344,7 +1362,7 @@ const CountdownTimer = () => {
 
 const Hero = ({ onScrollToSection }) => (
 
-  <section className={`min-h-screen flex flex-col ${SECTION_PADDING} pt-16 md:pt-24 pb-4 md:pb-12 bg-[#FDF9F4] relative`} aria-label="Hero section">
+  <section className={`min-h-screen flex flex-col ${SECTION_PADDING} ${SECTION_SPACING} bg-[#FDF9F4] relative`} aria-label="Hero section">
 
     <div className="watercolor-bg"></div>
 
@@ -1361,30 +1379,28 @@ const Hero = ({ onScrollToSection }) => (
       
       {/* Mobile: Photo First */}
       <div className="order-1 md:order-2 mb-4 md:mb-0">
-        <ParallaxWrapper offset={80} hoverEffect className="relative w-full max-w-xl mx-auto rotate-1 hover:rotate-0 transition-transform duration-500">
-          <div className="bg-white p-2 md:p-4 sketchy-border shadow-xl">
-            <div 
-              className="w-full bg-[#EDEDE3] overflow-hidden relative" 
-              style={{ minHeight: '280px', maxHeight: '400px' }}
-            >
-               <img 
-                 src="/images/hero.jpg" 
-                 alt="Shubs and Alysha" 
-                 className="w-full h-full object-cover"
-                 style={{ objectPosition: 'center' }}
-                 width={1024}
-                 height={890}
-                 loading="eager"
-               />
-            </div>
+        <div className="relative w-full max-w-xl mx-auto">
+          <div 
+            className="w-full bg-[#EDEDE3] overflow-hidden relative" 
+            style={{ minHeight: '280px', maxHeight: '400px' }}
+          >
+             <img 
+               src="/images/hero.jpg" 
+               alt="Shubs and Alysha" 
+               className="w-full h-full object-cover"
+               style={{ objectPosition: 'center center' }}
+               width={1024}
+               height={890}
+               loading="eager"
+             />
           </div>
-        </ParallaxWrapper>
+        </div>
       </div>
 
       {/* Mobile: Text Content Second */}
       <div className="order-2 md:order-1 text-center space-y-4 md:space-y-6 mt-6 md:mt-0">
         {/* Opening Message - Smaller on mobile */}
-        <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand text-navy/80 leading-relaxed max-w-2xl mx-auto px-2">
+        <p className={`${TYPO_BODY} text-navy max-w-2xl mx-auto px-2`}>
           After seven years of choosing each other,<br className="hidden md:block" />
           <span className="md:hidden"> </span>we're making it forever.
         </p>
@@ -1402,39 +1418,39 @@ const Hero = ({ onScrollToSection }) => (
 
         {/* Names and Invitation */}
         <div className="flex flex-col items-center gap-3 md:gap-4 mt-1 md:mt-2 rotate-[-1deg]">
-          <h2 className="text-2xl md:text-3xl lg:text-5xl font-hand text-navy relative">
+          <h2 className={`${TYPO_H1} text-navy relative`}>
             Shubs & Alysha
             <svg className="absolute -bottom-2 md:-bottom-3 left-0 w-full h-2 md:h-2.5" viewBox="0 0 100 10" preserveAspectRatio="none">
                <path d="M0,5 Q50,10 100,5" stroke="#D88D66" strokeWidth="2" fill="none" />
             </svg>
           </h2>
 
-          <p className="text-base md:text-lg font-hand text-navy/80 max-w-xl mx-auto px-2">
+          <p className={`${TYPO_BODY} text-navy max-w-xl mx-auto px-2`}>
             invite you to witness our wedding
           </p>
 
-          <p className="text-sm md:text-lg font-hand text-navy/70 mt-1 md:mt-2 italic px-2">
+          <p className={`${TYPO_BODY} text-navy mt-1 md:mt-2 italic px-2`}>
             Your presence would mean the world to us.
           </p>
          </div>
 
         {/* Event Details - Compact on mobile */}
         <div className="max-w-2xl mx-auto mt-4 md:mt-6 lg:mt-8">
-          <div className="sketchy-border border-2 border-[#D88D66]/30 bg-white/80 backdrop-blur-sm rounded-lg md:rounded-xl px-4 py-3 md:px-5 md:py-4 text-navy/80 font-hand shadow-md">
-            <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-3 md:gap-3 text-sm md:text-base lg:text-lg">
+          <div className={`${CARD_SECONDARY} bg-[#FDF9F4] border-[#D88D66]/30 ${CARD_PAD_MD} text-navy`} style={{ boxShadow: '0 4px 6px -1px rgba(216, 141, 102, 0.1)' }}>
+            <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-3 md:gap-3">
               <div className="flex items-center gap-1.5 md:gap-1.5">
                 <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
-                <span className="font-semibold text-navy text-base md:text-lg">Friday, March 20, 2026</span>
+                <span className={`${TYPO_BODY} text-navy`}>Friday, March 20, 2026</span>
               </div>
               <span className="hidden md:block text-[#D88D66] text-xs">·</span>
               <div className="flex items-center gap-1.5 md:gap-1.5">
                 <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
-                <span className="font-medium text-navy text-base md:text-lg">3:30 PM onwards</span>
+                <span className={`${TYPO_BODY} text-navy`}>3:30 PM onwards</span>
               </div>
               <span className="hidden md:block text-[#D88D66] text-xs">·</span>
               <div className="flex items-center gap-1.5 md:gap-1.5 text-center">
                 <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
-                <span className="font-medium text-navy text-base md:text-lg">Blu Missel, Ribandar</span>
+                <span className={`${TYPO_BODY} text-navy`}>Blu Missel, Ribandar</span>
               </div>
             </div>
           </div>
@@ -1476,25 +1492,25 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.1}>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-20 md:mb-32">
+          <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} md:${SPACE_GRID_LG} items-center mb-20 md:mb-32`}>
 
-            <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-white rotate-2 order-2 md:order-1 photo-frame">
+            <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-2 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative rounded-[24px] bg-[#EDEDE3]/30 flex items-center justify-center" style={{ aspectRatio: '3 / 4' }}>
+            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center`} style={{ aspectRatio: '3 / 4' }}>
                <img src="/images/firsttime.jpg" className="w-full h-full object-contain sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
             </div>
 
-            <p className="text-center font-hand text-navy/50 mt-2">Hello, goodbye, sea you in three years</p>
+            <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Hello, goodbye, sea you in three years</p>
 
             </ParallaxWrapper>
 
           <div className="order-1 md:order-2">
 
-              <span className="inline-block bg-[#D88D66] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-2deg] shadow-sm">2015</span>
+              <span className={`inline-block bg-[#D88D66] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-2deg] shadow-sm`}>2015</span>
 
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The First Time</h3>
+              <h3 className={`${TYPO_H2} text-navy mb-3 md:mb-4`}>The First Time</h3>
 
-              <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
+              <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
 
               <p>House party in Bangalore. Her place. His friend insisted he come along.</p>
 
@@ -1517,15 +1533,15 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.15}>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-20 md:mb-32">
+          <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} md:${SPACE_GRID_LG} items-center mb-20 md:mb-32`}>
 
           <div>
 
-              <span className="inline-block bg-[#EBBA9A] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">July 2018</span>
+              <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>July 2018</span>
 
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The Reunion</h3>
+              <h3 className={`${TYPO_H2} text-navy mb-3 md:mb-4`}>The Reunion</h3>
 
-              <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
+              <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
 
               <p>She starts new job, walks down office corridor, there he is.</p>
 
@@ -1539,13 +1555,13 @@ const Story = () => (
 
           </div>
 
-            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-white -rotate-2 photo-frame">
+            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] -rotate-2 photo-frame">
 
-            <div className="overflow-hidden relative rounded-[24px] bg-[#EDEDE3]/30 flex items-center justify-center" style={{ aspectRatio: '3 / 4' }}>
+            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center`} style={{ aspectRatio: '3 / 4' }}>
                <img src="/images/office.jpg" className="w-full h-full object-contain sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} fetchPriority="low" decoding="async" />
             </div>
 
-             <p className="text-center font-hand text-navy/50 mt-2">From slack DMs to slacking off together</p>
+             <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>From slack DMs to slacking off together</p>
 
             </ParallaxWrapper>
 
@@ -1559,11 +1575,11 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.2}>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center mb-20 md:mb-32">
+          <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} md:${SPACE_GRID_LG} items-center mb-20 md:mb-32`}>
 
-            <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-white rotate-1 order-2 md:order-1 photo-frame">
+            <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-1 order-2 md:order-1 photo-frame">
 
-            <div className="overflow-hidden relative rounded-[24px] bg-[#EDEDE3]/30 flex items-center justify-center w-full" style={{ aspectRatio: '3 / 4' }}>
+            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center w-full`} style={{ aspectRatio: '3 / 4' }}>
                <img 
                  src="/images/goa-scooter.jpg" 
                  className="w-full h-auto object-contain" 
@@ -1586,17 +1602,17 @@ const Story = () => (
 
             </div>
 
-            <p className="text-center font-hand text-navy/50 mt-2">Goa, dogs & growing together</p>
+            <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Goa, dogs & growing together</p>
 
             </ParallaxWrapper>
 
           <div className="order-1 md:order-2">
 
-              <span className="inline-block bg-[#D88D66] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-1deg] shadow-sm">2018-2025</span>
+              <span className={`inline-block bg-[#D88D66] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-1deg] shadow-sm`}>2018-2025</span>
 
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">Building a Life</h3>
+              <h3 className={`${TYPO_H2} text-navy mb-3 md:mb-4`}>Building a Life</h3>
 
-              <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
+              <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
 
               <p>She took him to Goa. Made it a ritual. Twice a year, every single year. Palolem Beach, Colomb Bay. Their sanctuary. The place they'd go to reset and remember what mattered.</p>
 
@@ -1622,11 +1638,11 @@ const Story = () => (
 
           <div>
 
-              <span className="inline-block bg-[#EBBA9A] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">January 6, 2025</span>
+              <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>January 6, 2025</span>
 
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The Question</h3>
+              <h3 className={`${TYPO_H2} text-navy mb-3 md:mb-4`}>The Question</h3>
 
-              <div className="text-base md:text-lg text-navy/80 space-y-2 md:space-y-3 leading-relaxed">
+              <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
 
               <p>Back at Palolem Beach. He'd made plans. Plan A: underwater proposal (ring might sink, she might panic). Plan B: Kakolem Beach at sunset (neither wanted the trek that day).</p>
 
@@ -1642,11 +1658,11 @@ const Story = () => (
 
           </div>
 
-            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-white -rotate-1 photo-frame">
-             <div className="overflow-hidden relative rounded-[24px] bg-[#EDEDE3]/30 flex items-center justify-center" style={{ aspectRatio: '3 / 4' }}>
+            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] -rotate-1 photo-frame">
+             <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center`} style={{ aspectRatio: '3 / 4' }}>
                 <img src="/images/proposal.jpg" className="w-full h-full object-contain" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
              </div>
-             <p className="text-center font-hand text-navy/50 mt-2">Ring. Sand. Forever.</p>
+             <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Ring. Sand. Forever.</p>
             </ParallaxWrapper>
 
       </div>
@@ -2202,7 +2218,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
             </p>
             <button
               onClick={startGame}
-              className="px-8 py-3 bg-[#D88D66] text-white font-bold rounded-lg shadow-lg hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand"
+              className={`px-8 py-3 bg-[#D88D66] text-[#FDF9F4] font-bold ${CARD_SECONDARY} shadow-sm hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand`}
             >
               Press ↑ or Space to Start
             </button>
@@ -2222,14 +2238,14 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               <div className="flex gap-3 justify-center">
                 <button
                   onClick={startGame}
-                  className="px-6 py-2 bg-[#D88D66] text-white font-bold rounded-lg shadow-lg hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand"
+                  className={`px-6 py-2 bg-[#D88D66] text-[#FDF9F4] font-bold ${CARD_SECONDARY} shadow-sm hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand`}
                 >
                   Play Again
                 </button>
                 {score > 0 && (
                   <button
                     onClick={shareScore}
-                    className="px-6 py-2 bg-[#D88D66] text-white font-bold rounded-lg shadow-lg hover:bg-[#EBBA9A] transition-all transform hover:scale-105 sketchy-border font-hand"
+                    className={`px-6 py-2 bg-[#D88D66] text-[#FDF9F4] font-bold ${CARD_SECONDARY} shadow-sm hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand`}
                   >
                     Share Score
                   </button>
@@ -2247,7 +2263,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               <p className="text-sm text-navy/60 mb-4 font-hand">Press Space or Esc to resume</p>
               <button
                 onClick={() => setIsPaused(false)}
-                className="px-6 py-2 bg-[#D88D66] text-white font-bold rounded-lg hover:bg-[#C97452] transition-all sketchy-border font-hand"
+                className={`px-6 py-2 bg-[#D88D66] text-[#FDF9F4] font-bold ${CARD_SECONDARY} hover:bg-[#C97452] transition-all sketchy-border font-hand`}
               >
                 Resume
               </button>
@@ -2839,53 +2855,53 @@ const KidenaHouse = () => (
         {/* Features Grid - 2x2 Layout */}
         <div className="grid md:grid-cols-2 gap-6 md:gap-8 mt-14 mb-14">
             
-            <div className="bg-white text-navy p-6 md:p-8 sketchy-border border-2 border-[#D88D66] shadow-lg hover:shadow-xl transition-shadow">
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border-2 border-[#D88D66] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
                         <Home className="w-6 h-6 text-[#D88D66]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: '#D88D66' }}>The House</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">6 bedrooms, 9 bathrooms. Private pool and private lake. Three acres. Enough room for everyone.</p>
+                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>The House</h3>
+                        <p className={`font-hand ${TYPO_BODY} text-navy`}>6 bedrooms, 9 bathrooms. Private pool and private lake. Three acres. Enough room for everyone.</p>
                     </div>
                 </div>
         </div>
 
-            <div className="bg-white text-navy p-6 md:p-8 sketchy-border border-2 border-[#EBBA9A] shadow-lg hover:shadow-xl transition-shadow">
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border-2 border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
                         <SketchIcon type="plate" className="w-6 h-6 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: '#D88D66' }}>No Cooking, No Cleaning</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Personal chefs cook whatever you're craving - breakfast, lunch, dinner, midnight snacks. Meals get billed to your room. Butlers handle everything else.</p>
+                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>No Cooking, No Cleaning</h3>
+                        <p className={`font-hand ${TYPO_BODY} text-navy`}>Personal chefs cook whatever you're craving - breakfast, lunch, dinner, midnight snacks. Meals get billed to your room. Butlers handle everything else.</p>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-white text-navy p-6 md:p-8 sketchy-border border-2 border-[#D88D66] shadow-lg hover:shadow-xl transition-shadow">
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border-2 border-[#D88D66] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
                         <Sun className="w-6 h-6 text-[#D88D66]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: '#D88D66' }}>Spa & Steam Room</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">There's a spa room and steam room. Book a massage with advance notice - we'll arrange it.</p>
+                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>Spa & Steam Room</h3>
+                        <p className={`font-hand ${TYPO_BODY} text-navy`}>There's a spa room and steam room. Book a massage with advance notice - we'll arrange it.</p>
                     </div>
                 </div>
         </div>
 
-            <div className="bg-white text-navy p-6 md:p-8 sketchy-border border-2 border-[#EBBA9A] shadow-lg hover:shadow-xl transition-shadow">
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border-2 border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
                         <Music className="w-6 h-6 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: '#D88D66' }}>Keep Busy (or Don't)</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, bicycles, coracles on the private lake. Or just lounge by the pool all day.</p>
+                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>Keep Busy (or Don't)</h3>
+                        <p className={`font-hand ${TYPO_BODY} text-navy`}>Pool table, PlayStation, bicycles, coracles on the private lake. Or just lounge by the pool all day.</p>
                     </div>
                 </div>
-        </div>
+            </div>
 
       </div>
 
@@ -2913,7 +2929,7 @@ const FamilyItinerary = () => (
 
             <SignboardHeading>The Family Plan</SignboardHeading>
 
-            <p className="text-navy/70 font-hand text-xl md:text-2xl mt-2">Your guide to four days in Goa</p>
+            <p className={`${TYPO_BODY} font-hand text-navy mt-2`}>Your guide to four days in Goa</p>
 
         </div>
 
@@ -2972,7 +2988,7 @@ const FamilyItinerary = () => (
 
                 <FadeInWhenVisible key={`${item.day}-${i}`} delay={i * 0.1}>
 
-                    <div className="bg-white sketchy-border p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow border-2" style={{ borderColor: item.color }}>
+                    <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_MD} shadow-sm transition-shadow border-2`} style={{ borderColor: item.color }}>
 
                         <div className="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
 
@@ -2991,7 +3007,7 @@ const FamilyItinerary = () => (
 
                                     {item.time && (
 
-                                        <div className="font-hand text-sm text-navy/60">{item.time}</div>
+                                        <div className={`font-hand ${TYPO_LABEL} text-navy`}>{item.time}</div>
 
                                     )}
 
@@ -3009,7 +3025,7 @@ const FamilyItinerary = () => (
                                     <p className="font-hand font-bold text-lg md:text-xl text-navy leading-tight">{item.summary}</p>
                                 )}
 
-                                <p className="font-hand text-base md:text-lg text-navy/70 leading-relaxed">{item.desc}</p>
+                                <p className={`font-hand ${TYPO_BODY} text-navy`}>{item.desc}</p>
 
                             </div>
 
@@ -3047,15 +3063,16 @@ const Celebration = ({ isFamilyMode }) => (
 
 
 
-      <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-start">
+      <div className={`grid lg:grid-cols-2 ${SPACE_GRID_LG} items-start`}>
 
         <ParallaxWrapper
           offset={25}
           hoverEffect
-          className="sketchy-border p-4 bg-gradient-to-br from-white/95 via-[#FDF9F4] to-[#FDF9F4] rotate-1 shadow-xl border border-white/30"
+          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-[#EBBA9A]/30 ${CARD_PAD_MD} rotate-1`}
+          style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
         >
 
-            <div className="w-full overflow-hidden border-2 border-navy rounded-[24px] bg-white">
+            <div className={`w-full overflow-hidden border-2 border-navy ${CARD_PRIMARY} bg-[#FDF9F4]`}>
 
                <img 
 
@@ -3074,25 +3091,25 @@ const Celebration = ({ isFamilyMode }) => (
 
             </div>
 
-             <div className="p-6 md:p-8 space-y-6">
+             <div className={`${CARD_PAD_MD} space-y-6`}>
 
-                <h3 className="text-3xl md:text-4xl font-hand font-bold text-navy">Friday, March 20, 2026</h3>
+                <h3 className={`${TYPO_H2} text-navy`}>Friday, March 20, 2026</h3>
 
                 <div className="flex items-start gap-4">
 
                    <SketchIcon type="palm" className="w-8 h-8 md:w-10 md:h-10 text-[#D88D66] flex-shrink-0" />
 
-                   <div className="font-hand text-xl md:text-2xl leading-tight">
+                   <div className={`font-hand ${TYPO_BODY} leading-tight`}>
 
                      <p className="font-bold text-navy">Blu Missel by the River</p>
 
-                     <p className="text-navy/70">Fondvem, Ribandar, Goa</p>
+                     <p className="text-navy">Fondvem, Ribandar, Goa</p>
 
                      <a
                        href={VENUE_GOOGLE_MAPS_URL}
                        target="_blank"
                        rel="noreferrer"
-                       className="inline-flex items-center gap-2 mt-2 text-sm md:text-base text-[#D88D66] hover:text-navy transition-colors"
+                       className={`inline-flex items-center gap-2 mt-2 ${TYPO_BODY} text-navy hover:text-[#D88D66] transition-colors`}
                        aria-label="Open Blu Missel location in Google Maps"
                      >
                        <MapPin size={16} />
@@ -3103,9 +3120,9 @@ const Celebration = ({ isFamilyMode }) => (
 
                 </div>
 
-              <div className="bg-white/85 backdrop-blur-sm p-5 md:p-6 rounded-2xl border border-[#D88D66]/20 shadow-inner">
-                <p className="text-base md:text-lg text-navy/80 leading-relaxed font-bold">A ceremony, a celebration</p>
-                <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">
+              <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} border-[#D88D66]/20 ${CARD_PAD_SM}`}>
+                <p className={`${TYPO_BODY} text-navy font-bold`}>A ceremony, a celebration</p>
+                <p className={`${TYPO_BODY} text-navy mt-3`}>
                   We'll take our vows with God at the center and our loved ones by our side. Then we feast, dance, and stay until the stars come out.
                 </p>
               </div>
@@ -3118,7 +3135,7 @@ const Celebration = ({ isFamilyMode }) => (
 
         <div className="relative pt-4 md:pt-8 pl-8 md:pl-12">
 
-           <div className="space-y-8 md:space-y-12">
+           <div className="space-y-12">
 
               {[
 
@@ -3138,7 +3155,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                   <FadeInWhenVisible key={item.event} delay={i * 0.05} className="relative pl-8 md:pl-10 group">
 
-                      <div className="absolute -left-[26px] md:-left-[30px] top-0 w-12 h-12 md:w-14 md:h-14 bg-white border-3 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-125 transition-transform shadow-lg hover:shadow-xl">
+                      <div className="absolute -left-[26px] md:-left-[30px] top-0 w-12 h-12 md:w-14 md:h-14 bg-[#FDF9F4] border-3 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-125 transition-transform" style={{ boxShadow: '0 10px 15px -3px rgba(216, 141, 102, 0.15)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(216, 141, 102, 0.25)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(216, 141, 102, 0.15)'}>
 
                          {item.type ? 
 
@@ -3150,11 +3167,11 @@ const Celebration = ({ isFamilyMode }) => (
 
                       </div>
 
-                      <h4 className="font-hand font-bold text-2xl md:text-3xl text-navy mb-2">{item.event}</h4>
+                      <h4 className={`font-hand ${TYPO_H2} text-navy mb-2`}>{item.event}</h4>
 
-                      <p className="font-hand text-[#D88D66] text-lg md:text-xl font-bold mb-3">{item.time}</p>
+                      <p className={`font-hand ${TYPO_BODY} text-navy font-bold mb-3`}>{item.time}</p>
 
-                      <p className="font-hand text-navy/70 text-base md:text-lg leading-relaxed">{item.note}</p>
+                      <p className={`font-hand ${TYPO_BODY} text-navy`}>{item.note}</p>
 
                   </FadeInWhenVisible>
 
@@ -3171,17 +3188,17 @@ const Celebration = ({ isFamilyMode }) => (
           href={GOOGLE_CALENDAR_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border border-[#D88D66]/40 bg-white/90 text-navy text-xs font-semibold tracking-wide px-3 py-2 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all"
+          className={`${CARD_SECONDARY} border-[#D88D66]/40 bg-[#FDF9F4] text-navy text-xs font-semibold tracking-wide px-3 py-2 flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all`}
           aria-label="Add wedding to Google Calendar"
         >
           <Calendar size={14} />
-          <span className="hidden sm:inline">Add to</span> Calendar
+          Add to Calendar
         </a>
         <a
           href={VENUE_GOOGLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border border-[#D88D66]/30 bg-white/90 text-navy text-xs font-semibold tracking-wide px-3 py-2 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all"
+          className={`${CARD_SECONDARY} border-[#D88D66]/30 bg-[#FDF9F4] text-navy text-xs font-semibold tracking-wide px-3 py-2 flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all`}
           aria-label="Open venue in Google Maps"
         >
           {/* Google/Android logo - simple G icon */}
@@ -3192,19 +3209,6 @@ const Celebration = ({ isFamilyMode }) => (
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
           </svg>
           <span className="hidden sm:inline">Google</span> Maps
-        </a>
-        <a
-          href={VENUE_APPLE_MAPS_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="sketchy-border border border-[#EBBA9A]/40 bg-white/90 text-navy text-xs font-semibold tracking-wide px-3 py-2 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all"
-          aria-label="Open venue in Apple Maps"
-        >
-          {/* Apple logo */}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
-            <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-          </svg>
-          <span className="hidden sm:inline">Apple</span> Maps
         </a>
       </div>
 
@@ -3261,7 +3265,7 @@ const DressCode = () => {
 
           <SignboardHeading>What to Wear</SignboardHeading>
 
-          <p className="text-navy/70 font-hand text-base md:text-lg max-w-2xl mx-auto mt-2">Beach formal, but make it yours.</p>
+          <p className={`${TYPO_BODY} font-hand text-navy max-w-2xl mx-auto mt-2`}>Beach formal, but make it yours.</p>
 
         </div>
 
@@ -3274,7 +3278,7 @@ const DressCode = () => {
               hoverEffect 
               className="relative max-w-lg w-full"
             >
-              <div className="rounded-[32px] overflow-hidden flex items-center justify-center" style={{ aspectRatio: '2 / 3' }}>
+              <div className={`${CARD_PRIMARY} overflow-hidden flex items-center justify-center`} style={{ aspectRatio: '2 / 3' }}>
                 <img 
                   src="/images/warddrobe.jpg" 
                   alt="Wedding wardrobe inspiration"
@@ -3290,25 +3294,25 @@ const DressCode = () => {
 
           {/* Guidance + Palette */}
           <div className="space-y-5">
-            <FadeInWhenVisible className="bg-[#FDF9F4]/95 border border-[#D4CDC2] rounded-[28px] p-6 shadow-lg">
+            <FadeInWhenVisible className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_MD} shadow-sm`}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-[#EBBA9A]/35 flex items-center justify-center">
                   <Sun className="w-5 h-5 text-[#D88D66]" />
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-[#3B2F2A] font-hand">Beach Formal</h3>
               </div>
-              <p className="font-hand text-base md:text-lg text-navy/80 leading-relaxed mb-3">
+              <p className={`font-hand ${TYPO_BODY} text-navy mb-3`}>
                 Flowing dresses, mid-length skirts, linen suits, easy sandals. We’re on grass,
                 sand, and dance floors - pick pieces that breathe and move.
               </p>
             </FadeInWhenVisible>
 
-            <FadeInWhenVisible delay={0.1} className="bg-[#FDF9F4]/95 border border-[#D4CDC2] rounded-[28px] p-6 shadow-lg">
+            <FadeInWhenVisible delay={0.1} className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_MD} shadow-sm`}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-[#D88D66]/30 flex items-center justify-center">
                   <Palette className="w-5 h-5 text-[#3B2F2A]" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-hand font-bold text-[#3B2F2A]">Palette Notes</h3>
+                <h3 className={`${TYPO_H2} font-hand text-[#3B2F2A]`}>Palette Notes</h3>
               </div>
               <div className="grid grid-cols-3 gap-3 md:gap-4">
                 {colors.map((color) => (
@@ -3419,7 +3423,7 @@ const ExploreGoa = () => {
 
           <SignboardHeading>Explore Goa</SignboardHeading>
 
-          <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto mt-2">
+          <p className={`${TYPO_BODY} font-hand text-navy max-w-2xl mx-auto mt-4 md:mt-6`}>
             Come for the wedding, stay for the food and feni. <br className="hidden md:block" />
             Here's how to spend your time.
           </p>
@@ -3433,7 +3437,7 @@ const ExploreGoa = () => {
             
             return (
               <FadeInWhenVisible key={section.category} delay={idx * 0.1}>
-                <div className="bg-white/80 backdrop-blur-sm sketchy-border p-8 md:p-10 shadow-lg hover:shadow-xl transition-all">
+                <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} transition-all`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                   
                   {/* Mobile: Collapsible button header */}
                   <button
@@ -3443,7 +3447,7 @@ const ExploreGoa = () => {
                     aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${section.category} section`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-6 h-6 rounded-full border-2 border-navy flex items-center justify-center transition-all ${isExpanded ? 'bg-[#D88D66] border-[#D88D66]' : 'bg-white group-hover:bg-[#D88D66]/10'}`}>
+                      <div className={`w-6 h-6 rounded-full border-2 border-navy flex items-center justify-center transition-all ${isExpanded ? 'bg-[#D88D66] border-[#D88D66]' : 'bg-[#FDF9F4] group-hover:bg-[#D88D66]/10'}`}>
                         {section.category === 'North Goa' ? (
                           <ArrowUp size={14} className={isExpanded ? 'text-white' : 'text-navy'} />
                         ) : (
@@ -3456,7 +3460,7 @@ const ExploreGoa = () => {
                   </button>
 
                   {/* Desktop: Static header */}
-                  <h3 className="hidden md:block text-2xl md:text-3xl font-bold text-navy border-b-2 border-[#D88D66]/40 pb-4 mb-6">
+                  <h3 className={`hidden md:block ${TYPO_H2} text-navy border-b-2 border-[#D88D66]/40 pb-4 mb-6`}>
                     {section.category}
                   </h3>
                   
@@ -3478,7 +3482,7 @@ const ExploreGoa = () => {
                     <div className="space-y-5 md:space-y-6 pt-0 md:pt-0">
                       {section.items.map((item, i) => (
                         <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#EDEDE3]/50 transition-colors" whileHover={{ x: 6 }}>
-                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white border-2 border-navy/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-white group-hover:border-[#D88D66] transition-all shadow-md group-hover:shadow-lg">
+                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#FDF9F4] border-2 border-[#D4CDC2] flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-[#FDF9F4] group-hover:border-[#D88D66] transition-all shadow-sm group-hover:shadow-md">
                             {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
                             {item.type === 'food' && <SketchIcon type="plate" className="w-5 h-5" />}
                             {item.type === 'beach' && <Sun className="w-5 h-5" />}
@@ -3492,7 +3496,7 @@ const ExploreGoa = () => {
                                   href={item.mapUrl}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="flex-shrink-0 text-[#D88D66] hover:text-navy transition-colors"
+                                  className="flex-shrink-0 text-navy hover:text-[#D88D66] transition-colors"
                                   aria-label={`Open ${item.name} in Google Maps`}
                                   title="Open in Google Maps"
                                 >
@@ -3501,7 +3505,7 @@ const ExploreGoa = () => {
                               )}
                             </div>
                             {item.location && <p className="text-xs md:text-sm text-navy/50 mb-2 italic">{item.location}</p>}
-                            <p className="text-sm md:text-base text-navy/70 leading-relaxed">{item.desc}</p>
+                            <p className={`${TYPO_BODY} text-navy`}>{item.desc}</p>
                           </div>
                         </motion.div>
                       ))}
@@ -3518,7 +3522,7 @@ const ExploreGoa = () => {
 
 
         <div className="mt-16 md:mt-20 p-8 md:p-10 bg-gradient-to-br from-[#EBBA9A]/20 to-[#D88D66]/10 sketchy-border text-center border-2 border-navy/10 max-w-3xl mx-auto shadow-lg">
-          <p className="text-navy/80 italic font-hand text-lg md:text-xl leading-relaxed">
+          <p className={`${TYPO_BODY} italic font-hand text-navy`}>
             Colomb Bay is where they learned to slow down together. <br className="hidden md:block" />
             Palolem is where they spent most of their time in the water. <br className="hidden md:block" />
             He proposed at Colomb. Go if you can.
@@ -3547,22 +3551,22 @@ const Travel = ({ isFamilyMode }) => (
 
         <SignboardHeading variant="dark">Travel & Stay</SignboardHeading>
 
-        <p className="text-lg opacity-80 font-hand max-w-lg mx-auto mt-2">Pack your sunscreen and sunglasses. We're taking care of the vibes.</p>
+          <p className={`${TYPO_BODY} font-hand text-navy max-w-lg mx-auto mt-2`}>Pack your sunscreen and sunglasses. We're taking care of the vibes.</p>
 
       </div>
 
 
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD}`}>
 
         {/* Card 1: Journey - Ticket Style */}
 
         <FadeInWhenVisible
-          className="bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] relative group hover:-translate-y-1 transition-transform duration-300 border border-[#D4CDC2]"
+          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-t-[#D88D66]/30 relative group hover:-translate-y-1 transition-transform duration-300`}
           style={{
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
             maskImage: 'radial-gradient(circle at left center, transparent 10px, black 10px)',
-            boxShadow: '0 18px 30px rgba(59, 47, 42, 0.08)'
+            boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)'
           }}
         >
 
@@ -3572,7 +3576,7 @@ const Travel = ({ isFamilyMode }) => (
 
           </div>
 
-          <div className="pl-24 pr-8 py-8 relative">
+          <div className={`pl-24 pr-8 ${CARD_PAD_MD} relative`}>
 
              <div className="absolute top-4 right-4 opacity-30">
 
@@ -3580,13 +3584,13 @@ const Travel = ({ isFamilyMode }) => (
 
              </div>
 
-             <h3 className="text-2xl font-bold mb-1 font-hand uppercase tracking-wider">Boarding Pass</h3>
+             <h3 className={`${TYPO_H2} mb-1 font-hand uppercase tracking-wider`}>Boarding Pass</h3>
 
-             <p className="text-xs uppercase tracking-widest opacity-50 mb-6">Ticket to Paradise</p>
+             <p className={`${TYPO_LABEL} opacity-50 mb-6`}>Ticket to Paradise</p>
 
              
 
-             <div className="space-y-4 font-hand text-lg">
+             <div className={`space-y-4 font-hand ${TYPO_BODY}`}>
 
                 <div className="border-b border-dashed border-[#D4CDC2] pb-3 mb-3">
                     <div className="flex justify-between pb-2">
@@ -3654,7 +3658,8 @@ const Travel = ({ isFamilyMode }) => (
 
         <FadeInWhenVisible
           delay={0.1}
-          className="bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] p-6 md:p-8 lg:p-10 relative shadow-2xl rounded-[28px] overflow-hidden border border-[#D4CDC2]"
+          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden`}
+          style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
         >
 
           <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-36 h-10 bg-[#EBBA9A]/50 rounded-full blur-[2px] opacity-80"></div>
@@ -3666,24 +3671,24 @@ const Travel = ({ isFamilyMode }) => (
 
             <div className="space-y-6 relative z-10">
               <div className="space-y-3 text-left">
-                <p className="text-xs uppercase tracking-[0.3em] text-navy/60">Your Stay</p>
-                <h3 className="text-3xl md:text-4xl font-hand font-bold text-[#D88D66]">Kidena House</h3>
-                <p className="text-base md:text-lg text-navy/80 leading-relaxed">
+                  <p className={`${TYPO_LABEL} text-navy`}>Your Stay</p>
+                <h3 className={`${TYPO_H2} text-[#D88D66]`}>Kidena House</h3>
+                <p className={`${TYPO_BODY} text-navy`}>
                   You're with us for the full four days. Rooms are assigned. Fridge is stocked. Pool is ready. Just show up.
                 </p>
               </div>
 
-              <div className="bg-[#FDF9F4]/85 border border-[#D4CDC2] rounded-2xl px-4 py-3 text-sm text-navy/75 leading-relaxed shadow-sm">
+              <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_SM} ${TYPO_BODY} text-navy shadow-sm`}>
                 Six bedrooms, nine bathrooms. Private pool, private lake. Personal chefs, butlers, stocked pantry. Lawns for the kids. Space for every cousin. Just arrive - everything else is sorted.
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 justify-between bg-[#FDF9F4]/90 border border-[#D4CDC2] rounded-2xl px-5 py-4 shadow-sm">
+              <div className={`flex flex-wrap items-center gap-4 justify-between bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_SM} shadow-sm`}>
                 <div>
                   <p className="text-xs uppercase tracking-[0.25em] text-navy/60">Check-in window</p>
                   <p className="font-hand text-xl text-navy">12:00 PM • March 18–22</p>
                 </div>
                 <a
-                  href="https://maps.app.goo.gl/hZuyKOIhNYSXhZtwo"
+                  href="https://maps.app.goo.gl/jftGUT8cBxf2zH1X8"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors"
@@ -3698,9 +3703,9 @@ const Travel = ({ isFamilyMode }) => (
           ) : (
 
             <>
-              <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 font-hand text-center">Our Recommendations</h3>
+              <h3 className={`${TYPO_H2} mb-6 md:mb-8 font-hand text-center`}>Our Recommendations</h3>
 
-            <ul className="font-hand text-lg space-y-5">
+            <ul className={`font-hand ${TYPO_BODY} space-y-5`}>
 
                <li className="flex gap-3 items-start border-b border-[#D4CDC2] pb-4">
 
@@ -3712,7 +3717,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=The+Crown+Goa+Panaji"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-[#D88D66] hover:text-navy transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-[#D88D66] transition-colors"
                         aria-label="Open The Crown Goa in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -3720,7 +3725,7 @@ const Travel = ({ isFamilyMode }) => (
                       </a>
             </div>
 
-                    <p className="text-sm opacity-70"><span className="font-bold text-base opacity-90">15 minutes from the venue.</span> Boutique 5-star perched on a hill in Panaji. River Mandovi views, rooftop pool, spa to decompress the next morning.</p>
+                    <p className={`${TYPO_BODY} text-navy`}><span className="font-bold">15 minutes from the venue.</span> Boutique 5-star perched on a hill in Panaji. River Mandovi views, rooftop pool, spa to decompress the next morning.</p>
 
                  </div>
 
@@ -3736,7 +3741,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=DoubleTree+by+Hilton+Goa+Panaji"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-[#D88D66] hover:text-navy transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-[#D88D66] transition-colors"
                         aria-label="Open DoubleTree by Hilton Goa in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -3760,7 +3765,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=The+Fern+Kadamba+Hotel+Old+Goa"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-[#D88D66] hover:text-navy transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-[#D88D66] transition-colors"
                         aria-label="Open The Fern Kadamba Hotel in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -3775,8 +3780,8 @@ const Travel = ({ isFamilyMode }) => (
                </li>
 
                <li className="pt-4">
-                  <div className="max-w-sm mx-auto bg-white/90 border-2 border-[#D4CDC2] rounded-2xl px-4 py-3 shadow-inner text-center">
-                    <p className="font-hand text-sm md:text-base text-[#3B2F2A] leading-relaxed">
+                  <div className={`max-w-sm mx-auto bg-[#FDF9F4] ${CARD_SECONDARY} border-[#D88D66]/30 ${CARD_PAD_SM} shadow-sm text-center`}>
+                    <p className={`font-hand ${TYPO_BODY} text-[#3B2F2A]`}>
                       <span className="font-bold text-[#D88D66] block">Important</span>
                       Book early — March is peak wedding season in Goa.
                     </p>
@@ -3836,24 +3841,24 @@ const QnA = () => {
 
           {questions.map((item, i) => (
 
-          <FadeInWhenVisible key={item.q} delay={i * 0.05} className="sketchy-border p-6 md:p-8 bg-white shadow-md hover:shadow-xl rotate-1 hover:rotate-0 transition-all duration-300">
+          <FadeInWhenVisible key={item.q} delay={i * 0.05} className={`${CARD_SECONDARY} bg-[#FDF9F4] ${CARD_PAD_MD} rotate-1 hover:rotate-0 transition-all duration-300`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
 
-               <h4 className="font-bold text-xl md:text-2xl font-hand text-navy mb-3 flex items-start gap-3">
+               <h4 className={`font-bold ${TYPO_H2} font-hand text-navy mb-3 flex items-start gap-3`}>
 
                  <span className="text-[#D88D66] text-2xl md:text-3xl leading-none flex-shrink-0">?</span> 
                  <span>{item.q}</span>
 
                </h4>
 
-               <p className="text-base md:text-lg text-navy/80 leading-relaxed">{item.a}</p>
+               <p className={`${TYPO_BODY} text-navy`}>{item.a}</p>
 
           </FadeInWhenVisible>
 
           ))}
 
-        <FadeInWhenVisible delay={questions.length * 0.05} className="sketchy-border p-8 md:p-10 bg-gradient-to-br from-[#D88D66]/10 to-[#EBBA9A]/10 border-2 border-[#D88D66]/30 -rotate-1 hover:rotate-0 transition-all shadow-lg md:col-span-2">
+        <FadeInWhenVisible delay={questions.length * 0.05} className={`${CARD_SECONDARY} bg-gradient-to-br from-[#D88D66]/10 to-[#EBBA9A]/10 border-2 border-[#D88D66]/30 ${CARD_PAD_LG} -rotate-1 hover:rotate-0 transition-all shadow-sm md:col-span-2`}>
 
-             <h4 className="font-bold text-xl md:text-2xl font-hand text-navy mb-4 flex items-start gap-3">
+             <h4 className={`font-bold ${TYPO_H2} font-hand text-navy mb-4 flex items-start gap-3`}>
 
                  <Phone size={24} className="text-[#D88D66] flex-shrink-0" />
 
@@ -3861,7 +3866,7 @@ const QnA = () => {
 
              </h4>
 
-             <div className="text-base md:text-lg text-navy/80 ml-8 space-y-2 leading-relaxed">
+             <div className={`${TYPO_BODY} text-navy ml-8 space-y-2`}>
 
                 <p className="font-bold text-navy">Contact our coordinator Priya Sharma</p>
                 <p>+91 98765 43210</p>
@@ -3999,15 +4004,17 @@ const RSVP = () => {
       <FadeInWhenVisible className="max-w-3xl mx-auto relative">
 
         <Postcard>
-          <div className="text-center mb-8">
-          <h2 className="text-4xl md:text-5xl text-navy mb-4 font-hand">R.S.V.P.</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-4"></div>
-          <p className="text-navy/70 text-base md:text-lg font-hand mb-2">We want you there.</p>
-          <p className="text-navy/60 text-sm md:text-base font-hand">Please let us know if you can make it by January 20, 2026.</p>
-        </div>
+          {!submitted && (
+            <div className="text-center mb-8">
+              <h2 className="text-4xl md:text-5xl text-navy mb-4 font-hand">R.S.V.P.</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-4"></div>
+              <p className={`${TYPO_BODY} text-navy font-hand mb-2`}>We want you there.</p>
+              <p className="text-navy/60 text-sm md:text-base font-hand">Please let us know if you can make it by January 20, 2026.</p>
+            </div>
+          )}
 
-        {!submitted ? (
-                        <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-6">
+        {!submitted && (
+          <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-6">
             <div>
                 <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
               <input 
@@ -4136,48 +4143,85 @@ const RSVP = () => {
                 {isSubmitting ? 'Sending...' : 'Submit RSVP'}
             </button>
           </form>
-
-        ) : (
-
-          submittedAttendance === 'Count Me In' ? (
-            <div className="text-center py-12 animate-in fade-in zoom-in duration-500 space-y-4">
-              <CheckCircle size={64} className="mx-auto text-[#D88D66]" />
-              <h3 className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
-              <p className="text-navy/60">We can't wait to celebrate with you.</p>
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors"
-                onClick={() => {
-                  setSubmitted(false);
-                  setSubmittedAttendance(null);
-                }}
-              >
-                Update my response
-              </button>
-            </div>
-          ) : (
-            <div className="text-center py-12 animate-in fade-in zoom-in duration-500 space-y-4">
-              <X size={56} className="mx-auto text-navy/50" />
-              <h3 className="text-3xl font-bold text-navy font-hand">We'll Miss You</h3>
-              <p className="text-navy/70 max-w-md mx-auto">
-                Thank you for letting us know. We'll share photos and stories after the festivities so you can celebrate from afar.
-              </p>
-              <p className="text-sm text-navy/60">If plans change, just resubmit the form - we'll make room.</p>
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors"
-                onClick={() => {
-                  setSubmitted(false);
-                  setSubmittedAttendance(null);
-                }}
-              >
-                Send a different RSVP
-              </button>
-            </div>
-          )
-
         )}
         </Postcard>
+
+        {/* Success Modal Popup */}
+        <AnimatePresence>
+          {submitted && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+              onClick={() => {
+                setSubmitted(false);
+                setSubmittedAttendance(null);
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                onClick={(e) => e.stopPropagation()}
+                className={`relative bg-[#FDF9F4] ${CARD_PRIMARY} max-w-md w-full ${CARD_PAD_LG}`}
+                style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
+              >
+                <button
+                  onClick={() => {
+                    setSubmitted(false);
+                    setSubmittedAttendance(null);
+                  }}
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white hover:bg-gray-100 shadow-md flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+                  aria-label="Close"
+                >
+                  <X size={18} />
+                </button>
+                <Postcard>
+                  <div className="text-center space-y-6">
+                    {submittedAttendance === 'Count Me In' ? (
+                      <>
+                        <CheckCircle size={64} className="mx-auto text-[#D88D66]" />
+                        <h3 className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
+                        <p className="text-navy/60">We can't wait to celebrate with you.</p>
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors underline"
+                          onClick={() => {
+                            setSubmitted(false);
+                            setSubmittedAttendance(null);
+                          }}
+                        >
+                          Update my response
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <X size={56} className="mx-auto text-navy/50" />
+                        <h3 className="text-3xl font-bold text-navy font-hand">We'll Miss You</h3>
+                        <p className={`${TYPO_BODY} text-navy max-w-md mx-auto`}>
+                          Thank you for letting us know. We'll share photos and stories after the festivities so you can celebrate from afar.
+                        </p>
+                        <p className="text-sm text-navy/60">If plans change, just resubmit the form - we'll make room.</p>
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors underline"
+                          onClick={() => {
+                            setSubmitted(false);
+                            setSubmittedAttendance(null);
+                          }}
+                        >
+                          Send a different RSVP
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </Postcard>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </FadeInWhenVisible>
 
     </section>
@@ -4206,19 +4250,17 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
       {/* Main message */}
       <FadeInWhenVisible>
         <div className="space-y-5 md:space-y-6 lg:space-y-8 max-w-3xl mx-auto px-4">
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#3B2F2A] text-center">
+          <p className={`${TYPO_BODY} font-hand text-[#3B2F2A] text-center`}>
             Seven years ago, we found each other again.<br /> Every day since, we've chosen each other.
           </p>
-          <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-hand font-bold text-[#D88D66] mt-6 md:mt-8 text-center leading-tight">
-            Now we're making it official —<br className="hidden md:block" />
-            and we want you there<br className="hidden md:block" />
-            when we say it out loud.
+          <p className={`${TYPO_H1} font-hand text-[#3B2F2A] mt-6 md:mt-8 text-center`}>
+            Now we're making it official — and we want you there when we say it out loud.
           </p>
           <div className="pt-6 md:pt-8 space-y-2">
-            <p className="text-lg md:text-xl lg:text-2xl font-hand text-[#3B2F2A] text-center">
+            <p className={`${TYPO_BODY} font-hand text-[#3B2F2A] text-center`}>
               Shubs & Alysha
             </p>
-            <p className="text-base md:text-lg lg:text-xl font-hand text-[#3B2F2A]/80 text-center">
+            <p className={`${TYPO_BODY} font-hand text-[#3B2F2A] text-center`}>
               March 20, 2026
             </p>
           </div>
@@ -4407,12 +4449,13 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white sketchy-border p-8 md:p-10 max-w-md w-full shadow-2xl"
+          className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} max-w-md w-full`}
+          style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}
         >
-          <h3 className="text-2xl md:text-3xl font-hand font-bold text-navy mb-4 text-center">
+          <h3 className={`${TYPO_H2} font-hand text-navy mb-4 text-center`}>
             Family Mode
           </h3>
-          <p className="text-navy/70 text-center mb-6 font-hand">
+          <p className={`${TYPO_BODY} text-navy text-center mb-6 font-hand`}>
             Enter the password to access family-only content
           </p>
           <form onSubmit={handleSubmit}>
@@ -4440,7 +4483,7 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-[#D88D66] text-white font-hand font-bold py-3 px-4 rounded-lg hover:bg-[#C97452] transition-colors"
+                className={`flex-1 bg-[#D88D66] text-[#FDF9F4] font-hand font-bold py-3 px-4 ${CARD_SECONDARY} hover:bg-[#C97452] transition-colors`}
               >
                 Enter
               </button>
