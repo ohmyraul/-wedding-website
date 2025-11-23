@@ -2519,30 +2519,11 @@ const KidenaHouse = () => (
 
     <FadeInWhenVisible className="max-w-7xl mx-auto relative z-10">
 
-      <div className="text-center mb-10 md:mb-12">
-        <SignboardHeading>Where You'll Stay</SignboardHeading>
-      </div>
-
-      <div className="grid lg:grid-cols-[1fr,1.35fr] gap-10 lg:gap-14 items-start">
-        {/* Left intro */}
-        <div className="space-y-6 text-center lg:text-left">
-          <div className="space-y-1">
-            <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D88D66] leading-tight">
-              Kidena House
-            </p>
-            <p className="text-lg md:text-xl font-hand text-[#3B2F2A]/70 leading-relaxed">
-              Gancim, Maina, Goa Velha
-            </p>
-          </div>
-
-        </div>
-
-        {/* Photo Carousel - wider on desktop */}
-        <div className="relative">
-          <FadeInWhenVisible>
-            <KidenaHouseCarousel />
-          </FadeInWhenVisible>
-        </div>
+      {/* Photo Carousel */}
+      <div className="relative">
+        <FadeInWhenVisible>
+          <KidenaHouseCarousel />
+        </FadeInWhenVisible>
       </div>
 
         {/* Features Grid - 2x2 Layout */}
