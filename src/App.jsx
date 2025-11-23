@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
-import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette } from 'lucide-react';
+import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -1363,25 +1363,20 @@ const Hero = ({ onScrollToSection }) => (
       <div className="order-1 md:order-2 mb-4 md:mb-0">
         <ParallaxWrapper offset={80} hoverEffect className="relative w-full max-w-xl mx-auto rotate-1 hover:rotate-0 transition-transform duration-500">
           <div className="bg-white p-2 md:p-4 sketchy-border shadow-xl">
-            <motion.div 
+            <div 
               className="w-full bg-[#EDEDE3] overflow-hidden relative" 
               style={{ minHeight: '280px', maxHeight: '400px' }}
-              initial={{ scale: 1.05 }}
-              whileHover={{ scale: 1.02 }}
             >
-               <motion.img 
+               <img 
                  src="/images/hero.jpg" 
                  alt="Shubs and Alysha" 
                  className="w-full h-full object-cover"
-                style={{ objectPosition: 'center' }}
-                width={1024}
-                height={890}
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
+                 style={{ objectPosition: 'center' }}
+                 width={1024}
+                 height={890}
                  loading="eager"
-              />
-            </motion.div>
+               />
+            </div>
           </div>
         </ParallaxWrapper>
       </div>
@@ -2380,11 +2375,246 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
 /* --- NEW COMPONENTS (Missing in original) --- */
 
+// Image Modal Component with Zoom
+const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext, onPrev }) => {
+  const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const imageRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setScale(1);
+      setPosition({ x: 0, y: 0 });
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key === 'ArrowLeft') {
+        onPrev();
+      } else if (e.key === 'ArrowRight') {
+        onNext();
+      } else if (e.key === '+' || e.key === '=') {
+        setScale(prev => Math.min(prev + 0.25, 3));
+      } else if (e.key === '-') {
+        setScale(prev => Math.max(prev - 0.25, 0.5));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose, onNext, onPrev]);
+
+  const handleWheel = (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      setScale(prev => Math.max(0.5, Math.min(3, prev + delta)));
+    }
+  };
+
+  const handleMouseDown = (e) => {
+    if (scale > 1) {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging && scale > 1) {
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 2) {
+      // Pinch zoom
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const distance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      e.touchDistance = distance;
+      e.touchScale = scale;
+    } else if (scale > 1) {
+      setIsDragging(true);
+      setDragStart({ x: e.touches[0].clientX - position.x, y: e.touches[0].clientY - position.y });
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const distance = Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY
+      );
+      if (e.touchDistance) {
+        const newScale = (distance / e.touchDistance) * e.touchScale;
+        setScale(Math.max(0.5, Math.min(3, newScale)));
+      }
+    } else if (isDragging && scale > 1) {
+      setPosition({
+        x: e.touches[0].clientX - dragStart.x,
+        y: e.touches[0].clientY - dragStart.y
+      });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const resetZoom = () => {
+    setScale(1);
+    setPosition({ x: 0, y: 0 });
+  };
+
+  if (!isOpen || !image) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) onClose();
+        }}
+        onWheel={handleWheel}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        ref={containerRef}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-[201] w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+          aria-label="Close"
+        >
+          <X size={24} />
+        </button>
+
+        {/* Zoom Controls */}
+        <div className="absolute top-4 left-4 z-[201] flex gap-2">
+          <button
+            onClick={() => setScale(prev => Math.min(prev + 0.25, 3))}
+            className="w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+            aria-label="Zoom in"
+          >
+            <ZoomIn size={20} />
+          </button>
+          <button
+            onClick={() => setScale(prev => Math.max(prev - 0.25, 0.5))}
+            className="w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+            aria-label="Zoom out"
+          >
+            <ZoomOut size={20} />
+          </button>
+          {scale > 1 && (
+            <button
+              onClick={resetZoom}
+              className="w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+              aria-label="Reset zoom"
+            >
+              <Maximize2 size={20} />
+            </button>
+          )}
+        </div>
+
+        {/* Navigation Arrows */}
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={onPrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-[201] w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+              aria-label="Previous image"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button
+              onClick={onNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-[201] w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+              aria-label="Next image"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </>
+        )}
+
+        {/* Image Counter */}
+        {images.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[201] bg-white/95 px-4 py-2 rounded-full shadow-lg text-navy/60 text-sm">
+            {currentIndex + 1} / {images.length}
+          </div>
+        )}
+
+        {/* Image */}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          className="relative max-w-full max-h-full"
+          style={{
+            cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
+            touchAction: 'none'
+          }}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <img
+            ref={imageRef}
+            src={image.src}
+            alt={image.alt}
+            className="max-w-full max-h-[90vh] object-contain select-none"
+            style={{
+              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+              transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+            }}
+            draggable={false}
+          />
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+});
+
+ImageModal.displayName = 'ImageModal';
+
 // Kidena House Image Carousel Component (defined first since KidenaHouse uses it)
 const KidenaHouseCarousel = memo(() => {
   const [currentIndex, setCurrentIndex] = useState(1); // Start at 1 because we duplicate first image at start
   const [isPaused, setIsPaused] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [modalImageIndex, setModalImageIndex] = useState(null);
   const images = useMemo(() => [
     { src: '/images/kidena-house.jpg', alt: 'Kidena House - Main View' },
     { src: '/images/kidena-house2.jpg', alt: 'Kidena House - View 2' },
@@ -2418,6 +2648,27 @@ const KidenaHouseCarousel = memo(() => {
     setIsTransitioning(true);
     setCurrentIndex(index + 1); // +1 because of the cloned first image
   };
+
+  // Modal handlers
+  const openModal = (index) => {
+    // Convert carousel index to actual image index
+    const actualIndex = index === 0 ? images.length - 1 : index === endlessImages.length - 1 ? 0 : index - 1;
+    setModalImageIndex(actualIndex);
+  };
+
+  const closeModal = () => {
+    setModalImageIndex(null);
+  };
+
+  const nextModalImage = () => {
+    setModalImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevModalImage = () => {
+    setModalImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const currentModalImage = modalImageIndex !== null ? images[modalImageIndex] : null;
 
   // Handle seamless looping
   useEffect(() => {
@@ -2479,8 +2730,9 @@ const KidenaHouseCarousel = memo(() => {
             <div key={index} className="min-w-full flex-shrink-0 w-full">
               <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
                 <div 
-                  className="relative bg-white w-full overflow-hidden"
+                  className="relative bg-white w-full overflow-hidden cursor-pointer"
                   style={{ maxHeight: '70vh' }}
+                  onClick={() => openModal(index)}
                 >
                   <img 
                     src={image.src} 
@@ -2549,6 +2801,17 @@ const KidenaHouseCarousel = memo(() => {
           })}
                         </div>
       </div>
+
+      {/* Image Modal */}
+      <ImageModal
+        isOpen={modalImageIndex !== null}
+        image={currentModalImage}
+        images={images}
+        currentIndex={modalImageIndex || 0}
+        onClose={closeModal}
+        onNext={nextModalImage}
+        onPrev={prevModalImage}
+      />
     </div>
   );
 });
@@ -3157,8 +3420,7 @@ const ExploreGoa = () => {
           <SignboardHeading>Explore Goa</SignboardHeading>
 
           <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto mt-2">
-            Come for the wedding, stay for the food and feni.
-            <br className="hidden md:block" />
+            Come for the wedding, stay for the food and feni. <br className="hidden md:block" />
             Here's how to spend your time.
           </p>
 
@@ -3257,8 +3519,8 @@ const ExploreGoa = () => {
 
         <div className="mt-16 md:mt-20 p-8 md:p-10 bg-gradient-to-br from-[#EBBA9A]/20 to-[#D88D66]/10 sketchy-border text-center border-2 border-navy/10 max-w-3xl mx-auto shadow-lg">
           <p className="text-navy/80 italic font-hand text-lg md:text-xl leading-relaxed">
-            Colomb Bay is where they learned to slow down together.<br className="hidden md:block" />
-            Palolem is where they spent most of their time in the water.<br className="hidden md:block" />
+            Colomb Bay is where they learned to slow down together. <br className="hidden md:block" />
+            Palolem is where they spent most of their time in the water. <br className="hidden md:block" />
             He proposed at Colomb. Go if you can.
           </p>
         </div>

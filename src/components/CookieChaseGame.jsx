@@ -751,71 +751,76 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
       </div>
 
-      {/* Mobile controls - Horizontal layout below game */}
+      {/* Mobile controls - D-pad layout with better spacing */}
       {isPlaying && (
-        <div className="w-full max-w-2xl mt-4 pb-4 md:hidden relative z-50">
-          <div className="flex items-center justify-center gap-3 px-4">
+        <div className="w-full max-w-2xl mt-6 pb-6 md:hidden relative z-50">
+          <div className="flex flex-col items-center justify-center gap-4 px-4">
+            {/* Up button - Top */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleButtonPress('left');
+                handleButtonPress('up');
               }}
               onTouchStart={(e) => {
                 e.stopPropagation();
-                handleButtonPress('left');
+                handleButtonPress('up');
               }}
-              className={`paw-button ${buttonPressed === 'left' ? 'pressed' : ''}`}
-              aria-label="Move left"
+              className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
+              aria-label="Move up"
               style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
             >
-              <span className="text-2xl text-[#3B2F2A] font-semibold">◀</span>
+              <span className="text-2xl text-[#D88D66] font-semibold">△</span>
             </button>
-            <div className="flex flex-col gap-3">
+            
+            {/* Left and Right buttons - Middle row */}
+            <div className="flex items-center justify-center gap-8">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleButtonPress('up');
+                  handleButtonPress('left');
                 }}
                 onTouchStart={(e) => {
                   e.stopPropagation();
-                  handleButtonPress('up');
+                  handleButtonPress('left');
                 }}
-                className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
-                aria-label="Move up"
+                className={`paw-button ${buttonPressed === 'left' ? 'pressed' : ''}`}
+                aria-label="Move left"
                 style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
               >
-                <span className="text-2xl text-[#D88D66] font-semibold">△</span>
+                <span className="text-2xl text-[#3B2F2A] font-semibold">◀</span>
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleButtonPress('down');
+                  handleButtonPress('right');
                 }}
                 onTouchStart={(e) => {
                   e.stopPropagation();
-                  handleButtonPress('down');
+                  handleButtonPress('right');
                 }}
-                className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
-                aria-label="Move down"
+                className={`paw-button ${buttonPressed === 'right' ? 'pressed' : ''}`}
+                aria-label="Move right"
                 style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
               >
-                <span className="text-2xl text-[#D88D66] font-semibold">▽</span>
+                <span className="text-2xl text-[#EBBA9A] font-semibold">▶</span>
               </button>
             </div>
+            
+            {/* Down button - Bottom */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleButtonPress('right');
+                handleButtonPress('down');
               }}
               onTouchStart={(e) => {
                 e.stopPropagation();
-                handleButtonPress('right');
+                handleButtonPress('down');
               }}
-              className={`paw-button ${buttonPressed === 'right' ? 'pressed' : ''}`}
-              aria-label="Move right"
+              className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
+              aria-label="Move down"
               style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
             >
-              <span className="text-2xl text-[#EBBA9A] font-semibold">▶</span>
+              <span className="text-2xl text-[#D88D66] font-semibold">▽</span>
             </button>
           </div>
         </div>
