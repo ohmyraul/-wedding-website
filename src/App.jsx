@@ -124,9 +124,9 @@ const styles = `
 
   body {
 
-    background-color: var(--stone);
+    background-color: var(--canvas);
 
-    background-image: linear-gradient(180deg, rgba(253, 249, 244, 0.96) 0%, rgba(237, 237, 227, 0.92) 45%, rgba(237, 237, 227, 1) 100%), var(--paper-texture);
+    background-image: var(--paper-texture);
 
     color: var(--ink);
 
@@ -147,6 +147,11 @@ const styles = `
     font-family: 'Crimson Pro', serif;
     font-weight: 600;
 
+  }
+
+  /* Allow font-bold to override the default weight */
+  h1.font-bold, h2.font-bold, h3.font-bold, .font-hand.font-bold {
+    font-weight: 700 !important;
   }
 
 
@@ -629,13 +634,9 @@ const styles = `
   
   .page-shell {
     min-height: 100vh;
-    background-color: var(--bg-cream);
-    background-image:
-      radial-gradient(circle at 4px 4px, rgba(58,49,43,0.14) 1.2px, transparent 0),
-      radial-gradient(circle at 12px 12px, rgba(58,49,43,0.08) 1.2px, transparent 0),
-      linear-gradient(135deg, rgba(235, 186, 154, 0.18) 0%, rgba(216, 141, 102, 0.12) 55%, rgba(237, 237, 227, 0.7) 100%),
-      var(--paper-texture);
-    background-size: 18px 18px, 28px 28px, auto, cover;
+    background-color: var(--canvas);
+    background-image: var(--paper-texture);
+    background-size: cover;
   }
 
   .section-panel {
@@ -818,23 +819,11 @@ const styles = `
 const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs%20%26%20Alysha%20Wedding%20Celebration&dates=20260320T140000Z/20260320T180000Z&details=Celebrate%20with%20us%20in%20Goa.%20RSVP%20and%20travel%20info%20on%20our%20site.&location=Blu%20Missel%20by%20the%20River%2C%20Fondvem%2C%20Ribandar%2C%20Goa%2C%20India';
 const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River,+Fondvem,+Ribandar,+Goa,+India';
 const VENUE_APPLE_MAPS_URL = 'http://maps.apple.com/?address=Fondvem,Ribandar,Goa,India&q=Blu+Missel+by+the+River';
-// Consistent spacing scale for better visual rhythm
+// Consistent spacing scale for better visual rhythm - reduced for seamless sections
 const SECTION_PADDING = 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16';
-const SECTION_SPACING = 'py-16 md:py-20 lg:py-24 xl:py-28';
+const SECTION_SPACING = 'py-8 md:py-12 lg:py-16 xl:py-20';
 
 /* --- Mario Miranda Style Components --- */
-
-const SectionPanel = ({ id, label, variant = 'light', children, className = '' }) => {
-  return (
-    <section
-      id={id}
-      data-label={label}
-      className={`section-panel section-panel--${variant} ${className}`}
-    >
-      {children}
-    </section>
-  );
-};
 
 const SignboardHeading = ({ children, variant = 'light' }) => {
   return (
@@ -850,33 +839,6 @@ const Postcard = ({ children, className = '' }) => {
 
 const SectionDivider = () => {
   return <div className="section-divider" />;
-};
-
-const GoaMiniMap = ({ activeId, onSelect, points = [] }) => {
-  const defaultPoints = [
-    { id: 'agonda', label: 'Agonda', x: 32, y: 48 },
-    { id: 'palolem', label: 'Palolem', x: 36, y: 58 },
-    { id: 'ribandar', label: 'Ribandar', x: 48, y: 42 },
-    { id: 'panjim', label: 'Panjim', x: 25, y: 35 },
-    { id: 'dona-paula', label: 'Dona Paula', x: 28, y: 38 },
-  ];
-
-  const mapPoints = points.length > 0 ? points : defaultPoints;
-
-  return (
-    <div className="goa-mini-map">
-      {mapPoints.map(p => (
-        <button
-          key={p.id}
-          className={`goa-mini-map__pin ${p.id === activeId ? 'is-active' : ''}`}
-          style={{ left: `${p.x}%`, top: `${p.y}%` }}
-          onClick={() => onSelect?.(p.id)}
-          aria-label={p.label}
-          title={p.label}
-        />
-      ))}
-    </div>
-  );
 };
 
 const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
@@ -1051,13 +1013,31 @@ const ApprovedStamp = () => (
 const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNavigate }) => {
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const moreDropdownRef = useRef(null);
+
+  // Close More dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
+        setIsMoreOpen(false);
+      }
+    };
+
+    if (isMoreOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [isMoreOpen]);
 
   
 
-  // Navigation order
-  let links = [
+  // Navigation order - change Party to Ceremony
+  let allLinks = [
 
-    { name: 'Party', href: '#the-celebration' },
+    { name: 'Ceremony', href: '#the-celebration' },
 
     { name: 'Travel', href: '#travel' },
 
@@ -1078,10 +1058,28 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
   if (isFamilyMode) {
 
     // Add Kidena House after Travel (position 2), then Family Plan after Kidena House (position 3)
-    links.splice(2, 0, { name: 'Kidena House', href: '#kidena-house' });
-    links.splice(3, 0, { name: 'Family Plan', href: '#family-itinerary' });
+    allLinks.splice(2, 0, { name: 'Kidena House', href: '#kidena-house' });
+    allLinks.splice(3, 0, { name: 'Family Plan', href: '#family-itinerary' });
 
   }
+
+  // For family mode on smaller screens, separate main links from "more" links
+  let mainLinks = allLinks;
+  let moreLinks = [];
+  
+  if (isFamilyMode) {
+    // Main links: Ceremony, Travel, Kidena House, Family Plan, RSVP, Dress
+    mainLinks = allLinks.filter(link => 
+      ['Ceremony', 'Travel', 'Kidena House', 'Family Plan', 'RSVP', 'Dress'].includes(link.name)
+    );
+    // More links: Story, Goa, Q&A
+    moreLinks = allLinks.filter(link => 
+      ['Story', 'Goa', 'Q&A'].includes(link.name)
+    );
+  }
+
+  // For desktop (lg and above), use all links
+  const desktopLinks = allLinks;
 
 
 
@@ -1093,6 +1091,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
     }
     if (closeMenu) {
       setIsOpen(false);
+      setIsMoreOpen(false);
     }
   };
 
@@ -1112,9 +1111,10 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
 
         
 
+        {/* Desktop Navigation - lg and above */}
         <div className="hidden lg:flex gap-8 items-center">
 
-          {links.map(link => (
+          {desktopLinks.map(link => (
 
             <a 
               key={link.name} 
@@ -1157,29 +1157,76 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
 
         </div>
 
+        {/* Tablet/Mobile Navigation - below lg, family mode with More dropdown */}
+        {isFamilyMode && (
+          <div className="lg:hidden flex gap-4 md:gap-6 items-center">
+            {mainLinks.map(link => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                onClick={(e) => handleLinkClick(e, link.href)}
+                className="text-sm md:text-base font-hand font-bold nav-link hover:rotate-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded"
+                aria-label={`Navigate to ${link.name} section`}
+              >
+                {link.name}
+              </a>
+            ))}
+            
+            {/* More Dropdown */}
+            {moreLinks.length > 0 && (
+              <div className="relative" ref={moreDropdownRef}>
+                <button
+                  onClick={() => setIsMoreOpen(!isMoreOpen)}
+                  className="text-sm md:text-base font-hand font-bold nav-link hover:rotate-2 transition-all flex items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
+                  aria-label="More navigation options"
+                  aria-expanded={isMoreOpen}
+                >
+                  More
+                  {isMoreOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
+                
+                {isMoreOpen && (
+                  <div className="absolute top-full right-0 mt-2 nav-panel p-3 flex flex-col gap-2 min-w-[120px] z-50 shadow-lg">
+                    {moreLinks.map(link => (
+                      <a 
+                        key={link.name} 
+                        href={link.href} 
+                        onClick={(e) => handleLinkClick(e, link.href, true)}
+                        className="text-sm font-hand font-semibold nav-link text-center py-1 border-b border-gray-100 last:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
+                        aria-label={`Navigate to ${link.name} section`}
+                      >
+                        {link.name}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         
 
-        <button 
-          onClick={() => setIsOpen(!isOpen)} 
-          className="lg:hidden text-espresso focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded" 
-          aria-label="Toggle navigation menu" 
-          aria-expanded={isOpen}
-        >
-
-          {isOpen ? <X /> : <Menu />}
-
-        </button>
+        {/* Hamburger menu - only show when NOT in family mode on mobile/tablet */}
+        {!isFamilyMode && (
+          <button 
+            onClick={() => setIsOpen(!isOpen)} 
+            className="lg:hidden text-espresso focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded" 
+            aria-label="Toggle navigation menu" 
+            aria-expanded={isOpen}
+          >
+            {isOpen ? <X /> : <Menu />}
+          </button>
+        )}
 
       </div>
 
       
 
+      {/* Mobile Hamburger Menu - only show when not in family mode or when hamburger is clicked */}
       {isOpen && (
-
         <div className="absolute top-24 right-6 left-6 nav-panel p-6 flex flex-col gap-4 lg:hidden rotate-1 z-50">
-
-          {links.map(link => (
-
+          {allLinks.map(link => (
             <a 
               key={link.name} 
               href={link.href} 
@@ -1187,11 +1234,8 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
               className="text-2xl font-hand font-semibold nav-link text-center border-b border-gray-100 pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
               aria-label={`Navigate to ${link.name} section`}
             >
-
               {link.name}
-
             </a>
-
           ))}
 
           {/* Family Mode Button */}
@@ -1218,9 +1262,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
               </>
             )}
           </button>
-
         </div>
-
       )}
 
     </nav>
@@ -1344,7 +1386,7 @@ const CountdownTimer = () => {
 
 const Hero = ({ onScrollToSection }) => (
 
-  <section className={`min-h-screen flex flex-col ${SECTION_PADDING} pt-16 md:pt-24 pb-4 md:pb-12 relative`} aria-label="Hero section">
+  <section className={`min-h-screen flex flex-col ${SECTION_PADDING} pt-16 md:pt-24 pb-4 md:pb-12 bg-[#FDF9F4] relative`} aria-label="Hero section">
 
     <div className="watercolor-bg"></div>
 
@@ -1465,7 +1507,7 @@ const Hero = ({ onScrollToSection }) => (
 
 const Story = () => (
 
-  <section id="our-story" className={`${SECTION_SPACING} ${SECTION_PADDING} relative`} aria-label="Our Story">
+  <section id="our-story" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] relative`} aria-label="Our Story">
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
@@ -2437,13 +2479,13 @@ const KidenaHouseCarousel = memo(() => {
             <div key={index} className="min-w-full flex-shrink-0 w-full">
               <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
                 <div 
-                  className="relative bg-gray-100 w-full overflow-hidden flex items-center justify-center" 
-                  style={{ aspectRatio: '4/3', maxHeight: '70vh' }}
+                  className="relative bg-white w-full overflow-hidden"
+                  style={{ maxHeight: '70vh' }}
                 >
                   <img 
                     src={image.src} 
                     alt={image.alt} 
-                    className="w-full h-full object-contain"
+                    className="w-full h-auto object-contain block"
                     loading={index === 0 ? "eager" : "lazy"}
                     width={1024}
                     height={768}
@@ -2462,7 +2504,6 @@ const KidenaHouseCarousel = memo(() => {
                       }
                     }}
                   />
-                  <div className="absolute inset-x-0 bottom-0 h-5 bg-white pointer-events-none" aria-hidden="true" />
                 </div>
               </ParallaxWrapper>
             </div>
@@ -2504,11 +2545,6 @@ const KidenaHouseCarousel = memo(() => {
           ))}
                         </div>
       </div>
-
-      {/* Image Counter */}
-      <div className="text-center mt-4 text-[#EDEDE3] font-hand text-lg md:text-xl">
-        {currentIndex + 1} / {images.length}
-                        </div>
     </div>
   );
 });
@@ -2517,7 +2553,7 @@ KidenaHouseCarousel.displayName = 'KidenaHouseCarousel';
 
 const KidenaHouse = () => (
 
-  <section id="kidena-house" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#EDEDE3] text-[#3B2F2A] relative overflow-hidden`} aria-label="Kidena House">
+  <section id="kidena-house" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] text-[#3B2F2A] relative overflow-hidden`} aria-label="Kidena House">
 
     {/* Subtle background decoration */}
     <div className="absolute inset-0 opacity-5 pointer-events-none">
@@ -2529,22 +2565,21 @@ const KidenaHouse = () => (
       <div className="grid lg:grid-cols-[1fr,1.35fr] gap-10 lg:gap-14 items-start">
         {/* Left intro */}
         <div className="space-y-6 text-center lg:text-left">
-          <div>
-            <SignboardHeading variant="dark">Where You'll Stay</SignboardHeading>
-            <p className="text-xl md:text-2xl font-hand text-[#3B2F2A]/80 mt-3 leading-relaxed">
-              Kidena House • Gancim, Maina, Goa Velha
-              <a 
-                href="https://maps.app.goo.gl/hZuyKOIhNYSXhZtwo" 
-                target="_blank" 
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 ml-2 text-[#D88D66] hover:text-[#3B2F2A] transition-colors"
-                aria-label="View Kidena House on Google Maps"
-                title="View on Google Maps"
-              >
-                <MapPin size={20} />
-                Map
-              </a>
-            </p>
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-hand font-bold text-[#3B2F2A] leading-tight mb-2">
+                Where You'll Stay
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-[#D88D66] to-[#EBBA9A] mb-4"></div>
+            </div>
+            <div className="space-y-1">
+              <p className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-[#D88D66] leading-tight">
+                Kidena House
+              </p>
+              <p className="text-lg md:text-xl font-hand text-[#3B2F2A]/70 leading-relaxed">
+                Gancim, Maina, Goa Velha
+              </p>
+            </div>
           </div>
 
         </div>
@@ -2560,66 +2595,55 @@ const KidenaHouse = () => (
         {/* Features Grid - 2x2 Layout */}
         <div className="grid md:grid-cols-2 gap-6 md:gap-8 mt-14 mb-14">
             
-            <div className="bg-[#EDEDE3] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D88D66] shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white text-navy p-6 md:p-8 sketchy-border border-2 border-[#D88D66] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
                         <Home className="w-6 h-6 text-[#D88D66]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-[#D88D66] text-2xl md:text-3xl font-hand mb-3">The House</h3>
+                        <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: '#D88D66' }}>The House</h3>
                         <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">6 bedrooms, 9 bathrooms. Private pool and private lake. Three acres. Enough room for everyone.</p>
                     </div>
                 </div>
         </div>
 
-            <div className="bg-[#EDEDE3] text-navy p-6 md:p-8 sketchy-border border-2 border-[#EBBA9A] shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white text-navy p-6 md:p-8 sketchy-border border-2 border-[#EBBA9A] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
                         <SketchIcon type="plate" className="w-6 h-6 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-[#EBBA9A] text-2xl md:text-3xl font-hand mb-3">No Cooking, No Cleaning</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Personal chefs cook whatever you're craving. Breakfast, lunch, dinner, midnight snacks. Butlers handle the rest.</p>
+                        <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: '#D88D66' }}>No Cooking, No Cleaning</h3>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Personal chefs cook whatever you're craving - breakfast, lunch, dinner, midnight snacks. Meals get billed to your room. Butlers handle everything else.</p>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-[#EDEDE3] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D88D66] shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white text-navy p-6 md:p-8 sketchy-border border-2 border-[#D88D66] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
                         <Sun className="w-6 h-6 text-[#D88D66]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-[#D88D66] text-2xl md:text-3xl font-hand mb-3">Spa</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">On-site spa for whenever you need it.</p>
+                        <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: '#D88D66' }}>Spa & Steam Room</h3>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">There's a spa room and steam room. Book a massage with advance notice - we'll arrange it.</p>
                     </div>
                 </div>
         </div>
 
-            <div className="bg-[#EDEDE3] text-navy p-6 md:p-8 sketchy-border border-2 border-[#EBBA9A] shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white text-navy p-6 md:p-8 sketchy-border border-2 border-[#EBBA9A] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
                         <Music className="w-6 h-6 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-[#EBBA9A] text-2xl md:text-3xl font-hand mb-3">Keep Busy (or Don't)</h3>
-                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, fishing in the private lake, bicycles. Or just lounge by the pool all day.</p>
+                        <h3 className="font-hand font-bold text-2xl md:text-3xl mb-3" style={{ color: '#D88D66' }}>Keep Busy (or Don't)</h3>
+                        <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, bicycles, coracles on the private lake. Or just lounge by the pool all day.</p>
                     </div>
                 </div>
         </div>
 
       </div>
-
-        {/* Dates Section - Centered */}
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-[#EDEDE3] text-navy p-8 md:p-10 sketchy-border border-2 border-[#D88D66] shadow-lg text-center">
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
-              <Calendar className="text-[#D88D66]" size={32} />
-              <h3 className="font-bold text-2xl md:text-3xl font-hand text-navy">March 18-22, 2026</h3>
-            </div>
-            <p className="font-hand text-xl md:text-2xl text-navy/80 leading-relaxed">This is where we'll all be together in the days before the wedding. Home base for the family.</p>
-          </div>
-        </div>
 
     </FadeInWhenVisible>
 
@@ -2631,7 +2655,7 @@ const KidenaHouse = () => (
 
 const FamilyItinerary = () => (
 
-  <section id="family-itinerary" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-[#EDEDE3] to-white relative`} aria-label="Family Itinerary">
+  <section id="family-itinerary" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] relative`} aria-label="Family Itinerary">
 
     <div className="absolute inset-0 opacity-5 pointer-events-none">
 
@@ -2659,8 +2683,7 @@ const FamilyItinerary = () => (
                     day: "Thursday, March 19", 
                     time: "All Day",
                     title: "Arrival & Pool Party", 
-                    summary: "Land, drop your bags, straight into the pool.",
-                    desc: "You're finally here. Cars will be waiting at the airport to bring you to Kidena House. Unpack at your own pace. We'll order the best Goan food for dinner, then hit the pool. Later that evening, some of us are heading to Panjim for a pub crawl—Joseph's Bar, Miguel's, all our old haunts. Come along or stay back by the pool. Either way works.",
+                    desc: "Cars will be waiting at the airport. Unpack at your own pace. We'll be serving the best Goan food while everyone hits the pool. Later that night, some of us are heading to Panjim for a pub crawl - Joseph's Bar, Miguel's, all our old haunts. Come along or stay back by the pool.",
                     icon: Home,
                     color: "#D88D66"
                 },
@@ -2669,17 +2692,15 @@ const FamilyItinerary = () => (
                     day: "Friday, March 20", 
                     time: "Morning",
                     title: "Rehearsal Day", 
-                    summary: "Breakfast together, then rehearsal for ceremony crew.",
                     desc: "Breakfast together at the house. Slow morning, good coffee, no rush. Then the ceremony crew heads to Blu Missel for rehearsal. Kids stay back at Kidena with the pool.",
                     icon: Sun,
-                    color: "#EBBA9A"
+                    color: "#D88D66"
                 },
 
                 { 
                     day: "Friday, March 20", 
                     time: "Afternoon",
                     title: "The Wedding", 
-                    summary: "Cars leave at 2:30 PM sharp. Be ready on time.",
                     desc: "The wedding. Cars leave Kidena House at 2:30 PM sharp. We'll sort out the mix of rentals and cabs closer to the date. Just be ready on time. (Yes, we're talking to specific family members who are always fashionably late.)",
                     icon: Heart,
                     color: "#D88D66"
@@ -2689,18 +2710,16 @@ const FamilyItinerary = () => (
                     day: "Saturday, March 21", 
                     time: "All Day",
                     title: "Recovery & Chill", 
-                    summary: "No agenda. Pool, naps, sunset drinks at Bar Outrigger.",
-                    desc: "Sleep as late as you want. No agenda. No schedule. Pool, spa, naps—whatever. Later in the evening, we'll meet at Bar Outrigger. Gorgeous spot by the beach with a little cove, perfect for sunset. We'll have drinks and watch the day end together.",
+                    desc: "Sleep as late as you want. No agenda. No schedule. Pool, spa, naps - whatever. Later in the evening, we'll meet at Bar Outrigger. Gorgeous spot by the beach with a little cove, perfect for sunset. We'll have drinks and watch the day end together.",
                     icon: Anchor,
-                    color: "#EBBA9A"
+                    color: "#D88D66"
                 },
 
                 { 
                     day: "Sunday, March 22", 
                     time: "All Day",
                     title: "Rest & Goodbyes", 
-                    summary: "Leave whenever your flight is. We'll be around all day.",
-                    desc: "Leave whenever your flight leaves. Take your time checking out. We'll be around all day to say proper goodbyes and squeeze in a few more hours together. Thank you for being here for all of this. For showing up, for celebrating with us, for making this week exactly what we hoped it would be. It means absolutely everything.",
+                    desc: "Leave whenever your flight leaves. Take your time checking out. We'll be around all day to say proper goodbyes and squeeze in a few more hours together. Thank you for being here for all of this.",
                     icon: Coffee,
                     color: "#D88D66"
                 }
@@ -2742,7 +2761,9 @@ const FamilyItinerary = () => (
                                 <h3 className="font-hand font-bold text-2xl md:text-3xl" style={{ color: item.color }}>{item.title}</h3>
 
                                 {/* Bold one-liner summary */}
-                                <p className="font-hand font-bold text-lg md:text-xl text-navy leading-tight">{item.summary}</p>
+                                {item.summary && (
+                                    <p className="font-hand font-bold text-lg md:text-xl text-navy leading-tight">{item.summary}</p>
+                                )}
 
                                 <p className="font-hand text-base md:text-lg text-navy/70 leading-relaxed">{item.desc}</p>
 
@@ -2768,7 +2789,7 @@ const FamilyItinerary = () => (
 
 const Celebration = ({ isFamilyMode }) => (
 
-  <section id="the-celebration" className={`${SECTION_SPACING} ${SECTION_PADDING} relative`} aria-label="The Celebration">
+  <section id="the-celebration" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] relative`} aria-label="The Celebration">
 
     <div className="watercolor-bg" style={{ transform: 'scaleY(-1)' }}></div>
 
@@ -2981,7 +3002,7 @@ const DressCode = () => {
 
   return (
 
-    <section className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-white to-[#EDEDE3]/30 relative`} aria-label="Dress Code">
+    <section className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] relative`} aria-label="Dress Code">
 
       <SectionDivider />
 
@@ -3143,7 +3164,7 @@ const ExploreGoa = () => {
 
   return (
 
-  <section id="explore-goa" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-white to-[#EDEDE3]/30 border-t border-navy/10`} aria-label="Explore Goa">
+  <section id="explore-goa" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4]`} aria-label="Explore Goa">
 
     <SectionDivider />
 
@@ -3557,7 +3578,7 @@ const QnA = () => {
 
   return (
 
-  <section id="q-a" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-white to-[#EDEDE3]/20`} aria-label="Questions & Answers">
+  <section id="q-a" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4]`} aria-label="Questions & Answers">
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
@@ -3731,7 +3752,7 @@ const RSVP = () => {
 
   return (
 
-  <section id="rsvp" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-[#EDEDE3] to-white relative`} aria-label="RSVP">
+  <section id="rsvp" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] relative`} aria-label="RSVP">
 
       <SectionDivider />
 
@@ -4399,7 +4420,7 @@ const App = () => {
 
     { id: 'hero', name: 'Home', component: Hero },
 
-    { id: 'the-celebration', name: 'Party', component: Celebration },
+    { id: 'the-celebration', name: 'Ceremony', component: Celebration },
 
     { id: 'travel', name: 'Travel', component: Travel },
 
@@ -4679,3 +4700,5 @@ const App = () => {
 
 
 export default App;
+
+
