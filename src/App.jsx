@@ -1489,7 +1489,7 @@ const Hero = ({ onScrollToSection }) => (
       <Heart className="w-8 h-8 text-[#EBBA9A] opacity-60 -rotate-6 animate-float" />
     </ParallaxWrapper>
 
-    <FadeInWhenVisible className="w-full max-w-6xl mx-auto relative z-10 flex flex-col md:flex-col">
+    <FadeInWhenVisible className="w-full max-w-6xl mx-auto relative z-10 flex flex-col md:flex-col overflow-visible">
       
       {/* Mobile: Photo First */}
       <div className="order-1 md:order-2 mb-4 md:mb-0">
@@ -1512,9 +1512,9 @@ const Hero = ({ onScrollToSection }) => (
       </div>
 
       {/* Mobile: Text Content Second */}
-      <div className="order-2 md:order-1 text-center space-y-4 md:space-y-6 mt-6 md:mt-0">
+      <div className="order-2 md:order-1 text-center space-y-4 md:space-y-6 mt-6 md:mt-0 overflow-visible">
         {/* Opening Message - More prominent */}
-        <p className={`${TYPO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2`}>
+        <p className={`${TYPO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2 overflow-visible`}>
           After seven years of choosing each other,<br className="hidden md:block" />
           <span className="md:hidden"> </span>we're making it forever.
         </p>
