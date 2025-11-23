@@ -432,6 +432,13 @@ const styles = `
     pointer-events: none;
   }
 
+  .dotted-background {
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(59, 47, 42, 0.08) 1px, transparent 0);
+    background-size: 20px 20px;
+    background-position: 0 0;
+  }
+
   .game-beach-bg {
     background: 
       linear-gradient(to bottom, #EBBA9A 0%, #EBBA9A 40%, #EDEDE3 40%, #EDEDE3 100%),
@@ -2503,7 +2510,7 @@ KidenaHouseCarousel.displayName = 'KidenaHouseCarousel';
 
 const KidenaHouse = () => (
 
-  <section id="kidena-house" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] text-[#3B2F2A] relative overflow-hidden`} aria-label="Kidena House">
+  <section id="kidena-house" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] dotted-background text-[#3B2F2A] relative overflow-hidden`} aria-label="Kidena House">
 
     {/* Subtle background decoration */}
     <div className="absolute inset-0 opacity-5 pointer-events-none">
