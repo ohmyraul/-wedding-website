@@ -869,13 +869,33 @@ const SectionDivider = () => {
   return <div className="section-divider" />;
 };
 
-const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
+// Hook to detect prefers-reduced-motion
+const useReducedMotion = () => {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handler = (e) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  return prefersReducedMotion;
+};
+
+const FadeInWhenVisible = memo(({ children, delay = 0, className = '', variant = 'normal' }) => {
 
   const controls = useAnimation();
+  const prefersReducedMotion = useReducedMotion();
 
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: '100px' });
 
-
+  // Define translate distances based on variant
+  const translateY = variant === 'emphasized' ? 16 : variant === 'subtle' ? 8 : 12;
 
   useEffect(() => {
 
@@ -899,9 +919,13 @@ const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
 
       variants={{
 
-        hidden: { opacity: 0, y: 40 },
+        hidden: prefersReducedMotion 
+          ? { opacity: 0 }
+          : { opacity: 0, y: translateY },
 
-        visible: { opacity: 1, y: 0 }
+        visible: prefersReducedMotion
+          ? { opacity: 1 }
+          : { opacity: 1, y: 0 }
 
       }}
 
@@ -909,7 +933,7 @@ const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
 
       animate={controls}
 
-      transition={{ duration: 0.9, ease: 'easeOut', delay }}
+      transition={{ duration: prefersReducedMotion ? 0.2 : 0.28, ease: [0.25, 0.1, 0.25, 1], delay }}
 
     >
 
@@ -928,6 +952,7 @@ FadeInWhenVisible.displayName = 'FadeInWhenVisible';
 const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffect = false }) => {
 
   const ref = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
 
@@ -937,11 +962,12 @@ const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffe
 
   });
 
+  // Reduce parallax offset when reduced motion is preferred
+  const adjustedOffset = prefersReducedMotion ? 0 : offset * 0.3; // Make parallax very subtle
 
+  const y = useTransform(scrollYProgress, [0, 1], [adjustedOffset, -adjustedOffset]);
 
-  const y = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
-
-  const smoothY = useSpring(y, { stiffness: 120, damping: 20, mass: 0.2 });
+  const smoothY = prefersReducedMotion ? 0 : useSpring(y, { stiffness: 120, damping: 20, mass: 0.2 });
 
 
 
@@ -949,10 +975,10 @@ const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffe
 
     <motion.div 
       ref={ref} 
-      style={{ y: smoothY }} 
+      style={{ y: prefersReducedMotion ? 0 : smoothY }} 
       className={className}
-      whileHover={hoverEffect ? { scale: 1.02, rotate: 0 } : undefined}
-      whileTap={hoverEffect ? { scale: 0.98 } : undefined}
+      whileHover={hoverEffect && !prefersReducedMotion ? { scale: 1.02 } : undefined}
+      whileTap={hoverEffect && !prefersReducedMotion ? { scale: 0.98 } : undefined}
       transition={hoverEffect ? { type: 'spring', stiffness: 220, damping: 18 } : undefined}
     >
 
@@ -1360,6 +1386,70 @@ const CountdownTimer = () => {
   );
 };
 
+// Hero Logo component with reduced motion support
+const HeroLogo = memo(() => {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <motion.h1 
+      className="text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text inline-block mt-8 md:mt-12" 
+      style={{ textShadow: '2px 2px 0px rgba(212, 165, 165, 0.2)' }}
+      initial={prefersReducedMotion ? { opacity: 0 } : { scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={prefersReducedMotion 
+        ? { duration: 0.3, ease: 'easeOut' }
+        : { type: 'spring', stiffness: 120, damping: 14 }
+      }
+    >
+      S<span className="text-[#D88D66]">&</span>A
+    </motion.h1>
+  );
+});
+
+HeroLogo.displayName = 'HeroLogo';
+
+// Venue card with subtle pulse on entry
+const VenueCardWithPulse = memo(({ children }) => {
+  const prefersReducedMotion = useReducedMotion();
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('visible');
+      if (!prefersReducedMotion) {
+        // Subtle pulse after entrance
+        setTimeout(() => {
+          controls.start({ scale: [1, 1.02, 1], transition: { duration: 0.6, ease: 'easeOut' } });
+        }, 300);
+      }
+    }
+  }, [inView, controls, prefersReducedMotion]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: { opacity: 0, y: 12 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.28,
+            ease: [0.25, 0.1, 0.25, 1]
+          }
+        }
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+});
+
+VenueCardWithPulse.displayName = 'VenueCardWithPulse';
+
 const Hero = ({ onScrollToSection }) => (
 
   <section className={`min-h-screen flex flex-col ${SECTION_PADDING} ${SECTION_SPACING} bg-[#FDF9F4] relative`} aria-label="Hero section">
@@ -1399,22 +1489,14 @@ const Hero = ({ onScrollToSection }) => (
 
       {/* Mobile: Text Content Second */}
       <div className="order-2 md:order-1 text-center space-y-4 md:space-y-6 mt-6 md:mt-0">
-        {/* Opening Message - Smaller on mobile */}
-        <p className={`${TYPO_BODY} text-navy max-w-2xl mx-auto px-2`}>
+        {/* Opening Message - More prominent */}
+        <p className={`${TYPO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2`}>
           After seven years of choosing each other,<br className="hidden md:block" />
           <span className="md:hidden"> </span>we're making it forever.
         </p>
 
         {/* S&A Logo */}
-        <motion.h1 
-          className="text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text inline-block" 
-          style={{ textShadow: '2px 2px 0px rgba(212, 165, 165, 0.2)' }}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 120, damping: 14 }}
-        >
-          S<span className="text-[#D88D66]">&</span>A
-        </motion.h1>
+        <HeroLogo />
 
         {/* Names and Invitation */}
         <div className="flex flex-col items-center gap-3 md:gap-4 mt-1 md:mt-2 rotate-[-1deg]">
@@ -1434,9 +1516,9 @@ const Hero = ({ onScrollToSection }) => (
           </p>
          </div>
 
-        {/* Event Details - Compact on mobile */}
-        <div className="max-w-2xl mx-auto mt-4 md:mt-6 lg:mt-8">
-          <div className={`${CARD_SECONDARY} bg-[#FDF9F4] border-[#D88D66]/30 ${CARD_PAD_MD} text-navy`} style={{ boxShadow: '0 4px 6px -1px rgba(216, 141, 102, 0.1)' }}>
+        {/* Event Details - More prominent */}
+        <div className="max-w-2xl mx-auto mt-6 md:mt-8 lg:mt-10">
+          <div className={`${CARD_SECONDARY} bg-[#FDF9F4] border-[#D88D66]/30 ${CARD_PAD_MD} md:${CARD_PAD_LG} text-navy`} style={{ boxShadow: '0 8px 16px -2px rgba(216, 141, 102, 0.15)' }}>
             <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-3 md:gap-3">
               <div className="flex items-center gap-1.5 md:gap-1.5">
                 <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
@@ -1450,7 +1532,7 @@ const Hero = ({ onScrollToSection }) => (
               <span className="hidden md:block text-[#D88D66] text-xs">·</span>
               <div className="flex items-center gap-1.5 md:gap-1.5 text-center">
                 <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
-                <span className={`${TYPO_BODY} text-navy`}>Blu Missel, Ribandar</span>
+                <span className={`${TYPO_BODY} text-navy`}>Blu Missel, Ribandar, Goa</span>
               </div>
             </div>
           </div>
@@ -1484,16 +1566,15 @@ const Story = () => (
         <SignboardHeading>Our Story</SignboardHeading>
       </div>
 
-      <div className="space-y-16 md:space-y-24 lg:space-y-28 relative pt-8 md:pt-0">
+      <div className="space-y-20 md:space-y-28 lg:space-y-32 relative pt-10 md:pt-12">
 
 
 
         {/* 2015 */}
 
-        <FadeInWhenVisible delay={0.1}>
+        <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} md:${SPACE_GRID_LG} items-center mb-20 md:mb-32`}>
 
-          <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} md:${SPACE_GRID_LG} items-center mb-20 md:mb-32`}>
-
+          <FadeInWhenVisible delay={0.2} variant="subtle">
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-2 order-2 md:order-1 photo-frame">
 
             <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center`} style={{ aspectRatio: '3 / 4' }}>
@@ -1503,12 +1584,14 @@ const Story = () => (
             <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Hello, goodbye, sea you in three years</p>
 
             </ParallaxWrapper>
+          </FadeInWhenVisible>
 
           <div className="order-1 md:order-2">
-
+            <FadeInWhenVisible delay={0} variant="subtle">
               <span className={`inline-block bg-[#D88D66] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-2deg] shadow-sm`}>2015</span>
-
-              <h3 className={`${TYPO_H2} text-navy mb-3 md:mb-4`}>The First Time</h3>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible delay={0.12}>
+              <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The First Time</h3>
 
               <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
 
@@ -1520,12 +1603,10 @@ const Story = () => (
               <p>Then the party ended. They didn't exchange numbers. Three years of complete radio silence.</p>
 
             </div>
-
+            </FadeInWhenVisible>
           </div>
 
         </div>
-
-        </FadeInWhenVisible>
 
 
 
@@ -1539,7 +1620,7 @@ const Story = () => (
 
               <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>July 2018</span>
 
-              <h3 className={`${TYPO_H2} text-navy mb-3 md:mb-4`}>The Reunion</h3>
+              <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Reunion</h3>
 
               <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
 
@@ -1610,7 +1691,7 @@ const Story = () => (
 
               <span className={`inline-block bg-[#D88D66] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-1deg] shadow-sm`}>2018-2025</span>
 
-              <h3 className={`${TYPO_H2} text-navy mb-3 md:mb-4`}>Building a Life</h3>
+              <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>Building a Life</h3>
 
               <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
 
@@ -1640,7 +1721,7 @@ const Story = () => (
 
               <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>January 6, 2025</span>
 
-              <h3 className={`${TYPO_H2} text-navy mb-3 md:mb-4`}>The Question</h3>
+              <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Question</h3>
 
               <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
 
@@ -3065,12 +3146,13 @@ const Celebration = ({ isFamilyMode }) => (
 
       <div className={`grid lg:grid-cols-2 ${SPACE_GRID_LG} items-start`}>
 
-        <ParallaxWrapper
-          offset={25}
-          hoverEffect
-          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-[#EBBA9A]/30 ${CARD_PAD_MD} rotate-1`}
-          style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
-        >
+        <VenueCardWithPulse>
+          <ParallaxWrapper
+            offset={25}
+            hoverEffect
+            className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-[#EBBA9A]/30 ${CARD_PAD_MD} rotate-1`}
+            style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
+          >
 
             <div className={`w-full overflow-hidden border-2 border-navy ${CARD_PRIMARY} bg-[#FDF9F4]`}>
 
@@ -3129,13 +3211,14 @@ const Celebration = ({ isFamilyMode }) => (
 
              </div>
 
-        </ParallaxWrapper>
+          </ParallaxWrapper>
+        </VenueCardWithPulse>
 
 
 
         <div className="relative pt-4 md:pt-8 pl-8 md:pl-12">
 
-           <div className="space-y-12">
+           <div className="space-y-14 md:space-y-16">
 
               {[
 
@@ -3153,9 +3236,9 @@ const Celebration = ({ isFamilyMode }) => (
 
               ].map((item, i) => (
 
-                  <FadeInWhenVisible key={item.event} delay={i * 0.05} className="relative pl-8 md:pl-10 group">
+                  <FadeInWhenVisible key={item.event} delay={i * 0.05} className="relative pl-10 md:pl-12 group">
 
-                      <div className="absolute -left-[26px] md:-left-[30px] top-0 w-12 h-12 md:w-14 md:h-14 bg-[#FDF9F4] border-3 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-125 transition-transform" style={{ boxShadow: '0 10px 15px -3px rgba(216, 141, 102, 0.15)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(216, 141, 102, 0.25)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(216, 141, 102, 0.15)'}>
+                      <div className="absolute -left-[28px] md:-left-[34px] top-0 w-14 h-14 md:w-16 md:h-16 bg-[#FDF9F4] border-3 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-110 transition-all duration-200" style={{ boxShadow: '0 10px 15px -3px rgba(216, 141, 102, 0.15)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 15px 20px -3px rgba(216, 141, 102, 0.2)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(216, 141, 102, 0.15)'}>
 
                          {item.type ? 
 
@@ -3183,12 +3266,12 @@ const Celebration = ({ isFamilyMode }) => (
 
       </div>
 
-      <div className="mt-8 flex flex-wrap gap-2 justify-center">
+      <div className="mt-10 md:mt-12 flex flex-wrap gap-3 justify-center">
         <a
           href={GOOGLE_CALENDAR_URL}
           target="_blank"
           rel="noreferrer"
-          className={`${CARD_SECONDARY} border-[#D88D66]/40 bg-[#FDF9F4] text-navy text-xs font-semibold tracking-wide px-3 py-2 flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all`}
+          className={`${CARD_SECONDARY} border-[#D88D66]/40 bg-[#FDF9F4] text-navy text-xs font-semibold tracking-wide px-3 py-2 flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-md active:scale-[0.98] active:translate-y-[1px] transition-all duration-200`}
           aria-label="Add wedding to Google Calendar"
         >
           <Calendar size={14} />
@@ -3198,7 +3281,7 @@ const Celebration = ({ isFamilyMode }) => (
           href={VENUE_GOOGLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className={`${CARD_SECONDARY} border-[#D88D66]/30 bg-[#FDF9F4] text-navy text-xs font-semibold tracking-wide px-3 py-2 flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all`}
+          className={`${CARD_SECONDARY} border-[#D88D66]/30 bg-[#FDF9F4] text-navy text-xs font-semibold tracking-wide px-3 py-2 flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-md active:scale-[0.98] active:translate-y-[1px] transition-all duration-200`}
           aria-label="Open venue in Google Maps"
         >
           {/* Google/Android logo - simple G icon */}
@@ -3557,7 +3640,7 @@ const Travel = ({ isFamilyMode }) => (
 
 
 
-      <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD}`}>
+      <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} lg:${SPACE_GRID_LG}`}>
 
         {/* Card 1: Journey - Ticket Style */}
 
@@ -3576,7 +3659,7 @@ const Travel = ({ isFamilyMode }) => (
 
           </div>
 
-          <div className={`pl-24 pr-8 ${CARD_PAD_MD} relative`}>
+          <div className={`pl-24 pr-8 ${CARD_PAD_MD} md:${CARD_PAD_LG} relative`}>
 
              <div className="absolute top-4 right-4 opacity-30">
 
@@ -3657,8 +3740,8 @@ const Travel = ({ isFamilyMode }) => (
         {/* Card 2: Base Camp - Notepad Style */}
 
         <FadeInWhenVisible
-          delay={0.1}
-          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden`}
+          delay={0.15}
+          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden hidden md:block md:hover:-translate-y-1 md:hover:shadow-lg md:hover:rotate-[0.5deg] transition-all duration-250`}
           style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
         >
 
@@ -4005,8 +4088,8 @@ const RSVP = () => {
 
         <Postcard>
           {!submitted && (
-            <div className="text-center mb-8">
-              <h2 className="text-4xl md:text-5xl text-navy mb-4 font-hand">R.S.V.P.</h2>
+            <div className="text-center mb-10 md:mb-12">
+              <h2 className={`${TYPO_H1} text-navy mb-4`}>R.S.V.P.</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-4"></div>
               <p className={`${TYPO_BODY} text-navy font-hand mb-2`}>We want you there.</p>
               <p className="text-navy/60 text-sm md:text-base font-hand">Please let us know if you can make it by January 20, 2026.</p>
@@ -4014,7 +4097,7 @@ const RSVP = () => {
           )}
 
         {!submitted && (
-          <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-6">
+          <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-7 md:space-y-8">
             <div>
                 <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
               <input 
@@ -4137,7 +4220,7 @@ const RSVP = () => {
             <button 
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-[#D88D66] text-[#FDF9F4] font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#C97452] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#D88D66] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBBA9A] focus-visible:ring-offset-2"
+              className="w-full bg-[#D88D66] text-[#FDF9F4] font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#C97452] transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] hover:-translate-y-[2px] active:scale-[0.98] active:translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#D88D66] disabled:hover:scale-100 disabled:hover:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBBA9A] focus-visible:ring-offset-2"
               aria-label="Submit RSVP form"
             >
                 {isSubmitting ? 'Sending...' : 'Submit RSVP'}
@@ -4160,10 +4243,10 @@ const RSVP = () => {
               }}
             >
               <motion.div
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                 onClick={(e) => e.stopPropagation()}
                 className={`relative bg-[#FDF9F4] ${CARD_PRIMARY} max-w-md w-full ${CARD_PAD_LG}`}
                 style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
@@ -4245,7 +4328,7 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
 
     <div className="absolute inset-0 footer-gradient w-full" style={{ backgroundColor: 'var(--page-canvas)' }}></div>
 
-    <div className="relative z-10 max-w-4xl mx-auto space-y-8 md:space-y-12 lg:space-y-16 px-2">
+    <div className="relative z-10 max-w-4xl mx-auto space-y-10 md:space-y-14 lg:space-y-18 px-2">
 
       {/* Main message */}
       <FadeInWhenVisible>
@@ -4276,7 +4359,7 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
 
       {/* Cookie & Bailey section */}
       <FadeInWhenVisible delay={0.15}>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-6 md:mt-8">
           <button
             onClick={onOpenGame}
             className="flex items-center gap-2 md:gap-4 bg-[#EDEDE3] px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D4CDC2] rounded-lg hover:bg-[#FDF9F4] transition-all group shadow-md cursor-pointer active:scale-95 max-w-full"
@@ -4632,9 +4715,9 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
           }`}
 
-            whileHover={{ scale: 1.2 }}
+            whileHover={{ scale: 1.1 }}
 
-          whileTap={{ scale: 0.9 }}
+          whileTap={{ scale: 1.15 }}
 
           aria-label={section.name || section.id}
 
