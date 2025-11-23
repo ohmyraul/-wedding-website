@@ -2531,13 +2531,13 @@ const KidenaHouse = () => (
         <div className="space-y-6 text-center lg:text-left">
           <div>
             <SignboardHeading variant="dark">Where You'll Stay</SignboardHeading>
-            <p className="text-xl md:text-2xl font-hand text-[#EDEDE3]/80 mt-3 leading-relaxed">
+            <p className="text-xl md:text-2xl font-hand text-[#3B2F2A]/80 mt-3 leading-relaxed">
               Kidena House • Gancim, Maina, Goa Velha
               <a 
                 href="https://maps.app.goo.gl/hZuyKOIhNYSXhZtwo" 
                 target="_blank" 
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 ml-2 text-[#EBBA9A] hover:text-white transition-colors"
+                className="inline-flex items-center gap-2 ml-2 text-[#D88D66] hover:text-[#3B2F2A] transition-colors"
                 aria-label="View Kidena House on Google Maps"
                 title="View on Google Maps"
               >
