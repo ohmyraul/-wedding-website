@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
-import { Menu, X, ArrowDown, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -66,15 +66,15 @@ const styles = `
 
   :root {
 
-    --bg-cream: #F5F0E8;
+    --stone: #EDEDE3;
+    --stone-muted: #D4CDC2;
+    --peach-deep: #D88D66;
+    --peach-soft: #EBBA9A;
+    --ink: #3B2F2A;
+    --ink-soft: #3B2F2A;
+    --canvas: #FDF9F4;
 
-    --text-navy: #1B3A57;
-
-    --accent-pink: #D4A5A5;
-
-    --accent-blue: #B8D4E8;
-
-    --paper-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    --paper-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cdefs%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='%23fdf9f4'/%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.07'/%3E%3Cline x1='0' y1='0' x2='0' y2='140' stroke='%23d4cdc2' stroke-width='0.35' opacity='0.23'/%3E%3Cline x1='0' y1='0' x2='140' y2='0' stroke='%23d4cdc2' stroke-width='0.35' opacity='0.2'/%3E%3C/svg%3E");
 
   }
 
@@ -108,6 +108,12 @@ const styles = `
     flex-direction: column;
   }
 
+  /* Footer section should allow full-width backgrounds */
+  #footer.scroll-section {
+    display: block;
+    width: 100%;
+  }
+
   /* Remove snap-stop from long content sections for smoother scrolling */
   .scroll-section-long {
     scroll-snap-stop: normal;
@@ -118,11 +124,11 @@ const styles = `
 
   body {
 
-    background-color: var(--bg-cream);
+    background-color: var(--stone);
 
-    background-image: var(--paper-texture);
+    background-image: linear-gradient(180deg, rgba(253, 249, 244, 0.96) 0%, rgba(237, 237, 227, 0.92) 45%, rgba(237, 237, 227, 1) 100%), var(--paper-texture);
 
-    color: var(--text-navy);
+    color: var(--ink);
 
     font-family: 'Inter', sans-serif;
 
@@ -156,63 +162,103 @@ const styles = `
 
   /* --- Utility Classes for Custom Colors (Fixes Contrast Issues) --- */
 
-  .text-navy { color: var(--text-navy); }
+  .text-navy { color: var(--ink) !important; }
 
-  .bg-navy { background-color: var(--text-navy); }
+  .text-navy\/80 { color: rgba(59, 47, 42, 0.8) !important; }
 
-  .text-cream { color: var(--bg-cream); }
+  .text-navy\/75 { color: rgba(59, 47, 42, 0.75) !important; }
+
+  .text-navy\/70 { color: rgba(59, 47, 42, 0.7) !important; }
+
+  .text-navy\/60 { color: rgba(59, 47, 42, 0.6) !important; }
+
+  .text-navy\/50 { color: rgba(59, 47, 42, 0.5) !important; }
+
+  .text-navy\/30 { color: rgba(59, 47, 42, 0.3) !important; }
+
+  .text-espresso { color: var(--ink-soft); }
+
+  .bg-navy { background-color: var(--ink); }
+
+  .bg-espresso { background-color: var(--ink-soft); }
+
+  .text-cream { color: var(--stone); }
+
+  .border-navy\/20 { border-color: rgba(212, 205, 194, 0.4) !important; }
+
+  .border-navy\/10 { border-color: rgba(212, 205, 194, 0.2) !important; }
+
+  .nav-shell {
+    background: linear-gradient(180deg, rgba(253, 249, 244, 0.95), rgba(237, 237, 227, 0.95));
+    border-radius: 999px;
+    border: 1px solid rgba(212, 205, 194, 0.6);
+    box-shadow: 0 18px 45px rgba(59, 47, 42, 0.12);
+  }
+
+  .nav-link {
+    color: var(--ink);
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    color: var(--peach-deep);
+  }
+
+  .nav-panel {
+    background: linear-gradient(180deg, rgba(253, 249, 244, 0.98), rgba(237, 237, 227, 0.96));
+    border-radius: 28px;
+    border: 1px solid rgba(212, 205, 194, 0.6);
+    box-shadow: 0 20px 45px rgba(59, 47, 42, 0.12);
+  }
+
+  :root {
+    --page-canvas: #FDF9F4;
+  }
+
+  .footer-gradient {
+    background: var(--page-canvas);
+  }
 
   
 
   /* --- Sketchy Effects --- */
 
   .sketchy-border {
-
     position: relative;
-
     isolation: isolate;
-
-    box-shadow: 2px 2px 0px rgba(27, 58, 87, 0.1);
-
+    border-radius: 18px;
+    box-shadow: 2px 2px 0px rgba(58, 49, 43, 0.12);
     transition: transform 0.3s ease;
-
   }
 
   
 
   .sketchy-border::before {
-
     content: '';
-
     position: absolute;
-
-    inset: -2px;
-
-    border: 2px solid var(--text-navy);
-
-    border-radius: 2px 255px 3px 25px / 255px 5px 225px 3px;
-
+    inset: 0;
+    border: 2px solid var(--ink);
+    border-radius: inherit;
     z-index: -1;
-
     pointer-events: none;
-
   }
 
 
 
   .sketchy-text {
-    text-shadow: 2px 2px 0px rgba(212, 165, 165, 0.4);
+    text-shadow: 2px 2px 0px rgba(216, 141, 102, 0.35);
   }
 
 
 
   .watercolor-bg {
 
-    background: radial-gradient(circle at 30% 30%, #D4A5A5 0%, transparent 50%),
+    background: radial-gradient(circle at 28% 32%, rgba(216, 141, 102, 0.55) 0%, transparent 46%),
 
-                radial-gradient(circle at 70% 70%, #B8D4E8 0%, transparent 50%);
+                radial-gradient(circle at 70% 72%, rgba(235, 186, 154, 0.55) 0%, transparent 50%);
 
-    filter: blur(60px) opacity(0.4);
+    filter: blur(60px) opacity(0.38);
 
     position: absolute;
 
@@ -279,15 +325,15 @@ const styles = `
   }
 
   .modern-input:focus {
-
     outline: none;
-
     border-color: var(--accent-pink);
-
     transform: scale(1.01) rotate(-0.5deg);
+    box-shadow: 4px 4px 0px rgba(184, 212, 232, 0.4), 0 0 0 3px rgba(212, 165, 165, 0.2);
+  }
 
-    box-shadow: 4px 4px 0px rgba(184, 212, 232, 0.4);
-
+  .modern-input:focus-visible {
+    outline: 2px solid var(--accent-pink);
+    outline-offset: 2px;
   }
 
 
@@ -352,10 +398,10 @@ const styles = `
 
   /* --- Cookie Game Styles --- */
   .game-sketchy-border {
-    border: 4px solid #1B3A57;
+    border: 4px solid #3B2F2A;
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     position: relative;
-    background: #F5F0E8;
+    background: #EDEDE3;
   }
 
   .game-sketchy-border::before {
@@ -383,7 +429,7 @@ const styles = `
 
   .game-beach-bg {
     background: 
-      linear-gradient(to bottom, #87CEEB 0%, #87CEEB 40%, #F5F0E8 40%, #F5F0E8 100%),
+      linear-gradient(to bottom, #EBBA9A 0%, #EBBA9A 40%, #EDEDE3 40%, #EDEDE3 100%),
       radial-gradient(ellipse at bottom, rgba(255,255,255,0.3) 0%, transparent 70%);
     position: relative;
   }
@@ -397,14 +443,14 @@ const styles = `
     height: 20%;
     background: 
       repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.1) 20px, rgba(255,255,255,0.1) 21px),
-      linear-gradient(to top, #8B7355 0%, #A68B6B 100%);
+      linear-gradient(to top, #3B2F2A 0%, #D4CDC2 100%);
   }
 
   .palm-tree {
     position: absolute;
     width: 40px;
     height: 80px;
-    background: #2d5016;
+    background: #3B2F2A;
     clip-path: polygon(30% 0%, 70% 0%, 65% 100%, 35% 100%);
   }
 
@@ -420,12 +466,12 @@ const styles = `
   .cookie-dialogue {
     position: relative;
     background: white;
-    border: 3px solid #1B3A57;
+    border: 3px solid #3B2F2A;
     border-radius: 20px 20px 20px 5px;
     padding: 10px 12px;
     font-family: 'Kalam', cursive;
     font-size: 12px;
-    color: #1B3A57;
+    color: #3B2F2A;
     box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.3);
     max-width: 220px;
     line-height: 1.4;
@@ -460,7 +506,7 @@ const styles = `
     height: 0;
     border-left: 9px solid transparent;
     border-right: 9px solid transparent;
-    border-top: 9px solid #1B3A57;
+    border-top: 9px solid #3B2F2A;
   }
 
   .paw-button {
@@ -468,7 +514,7 @@ const styles = `
     height: 80px;
     border-radius: 50%;
     background: white;
-    border: 4px solid #1B3A57;
+    border: 4px solid #3B2F2A;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -503,70 +549,30 @@ const styles = `
   /* --- Countdown Timer Styles --- */
   .countdown-box {
     position: relative;
-    background: rgba(245, 240, 232, 0.1);
-    backdrop-filter: blur(10px);
-    border: 3px solid rgba(245, 240, 232, 0.4);
-    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-    padding: 1.5rem 2rem;
-    box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.2);
-  }
-
-  .countdown-box::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border: 2px solid rgba(212, 165, 165, 0.15);
-    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-    pointer-events: none;
+    border-radius: 28px;
   }
 
   .countdown-unit {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.75rem 1rem;
-    background: rgba(245, 240, 232, 0.15);
-    backdrop-filter: blur(5px);
-    border: 2px solid rgba(245, 240, 232, 0.3);
-    border-radius: 20px 5px 20px 5px;
     min-width: 70px;
-    position: relative;
-    box-shadow: 2px 2px 0px rgba(212, 165, 165, 0.15);
-  }
-
-  .countdown-unit::after {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    right: -1px;
-    bottom: -1px;
-    border: 1px solid rgba(184, 212, 232, 0.2);
-    border-radius: 20px 5px 20px 5px;
-    pointer-events: none;
   }
 
   .countdown-number {
     font-family: 'Kalam', cursive;
     font-weight: 700;
     font-size: 1.75rem;
-    color: #F5F0E8;
     line-height: 1;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
   }
 
   .countdown-label {
     font-family: 'Kalam', cursive;
     font-size: 0.65rem;
-    color: #F5F0E8;
-    opacity: 0.8;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-top: 0.25rem;
     font-weight: 600;
+    text-transform: uppercase;
   }
 
   @keyframes pulse {
@@ -623,11 +629,13 @@ const styles = `
   
   .page-shell {
     min-height: 100vh;
-    background-color: #f7efe3;
+    background-color: var(--bg-cream);
     background-image:
-      radial-gradient(circle at 2px 2px, rgba(0,0,0,0.12) 1px, transparent 0),
-      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0);
-    background-size: 12px 12px, 18px 18px;
+      radial-gradient(circle at 4px 4px, rgba(58,49,43,0.14) 1.2px, transparent 0),
+      radial-gradient(circle at 12px 12px, rgba(58,49,43,0.08) 1.2px, transparent 0),
+      linear-gradient(135deg, rgba(235, 186, 154, 0.18) 0%, rgba(216, 141, 102, 0.12) 55%, rgba(237, 237, 227, 0.7) 100%),
+      var(--paper-texture);
+    background-size: 18px 18px, 28px 28px, auto, cover;
   }
 
   .section-panel {
@@ -635,9 +643,9 @@ const styles = `
     margin: 0 auto;
     padding: 3.5rem 1.75rem;
     border-radius: 20px;
-    border: 2px solid rgba(0, 0, 0, 0.15);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    background: var(--panel-bg, #fdf6ec);
+    border: 2px solid rgba(58, 49, 43, 0.14);
+    box-shadow: 0 12px 30px rgba(58, 49, 43, 0.12);
+    background: var(--panel-bg, #FDF9F4);
     position: relative;
   }
 
@@ -646,12 +654,12 @@ const styles = `
     position: absolute;
     inset: 10px;
     border-radius: 18px;
-    border: 1px dashed rgba(0, 0, 0, 0.08);
+    border: 1px dashed rgba(58, 49, 43, 0.08);
     pointer-events: none;
   }
 
-  .section-panel--sunset { --panel-bg: #ffe6d3; }
-  .section-panel--ocean { --panel-bg: #e3f3f3; }
+  .section-panel--sunset { --panel-bg: #FDF9F4; }
+  .section-panel--ocean { --panel-bg: #FDF9F4; }
 
   .signboard {
     display: inline-flex;
@@ -659,10 +667,10 @@ const styles = `
     justify-content: center;
     padding: 0.6rem 1.8rem;
     margin-bottom: 2rem;
-    background: linear-gradient(135deg, #f9b27e, #f58b7a);
+    background: linear-gradient(135deg, #EBBA9A, #D88D66);
     border-radius: 999px;
     position: relative;
-    box-shadow: 0 6px 0 #c5664e;
+    box-shadow: 0 6px 0 rgba(58, 49, 43, 0.35);
     max-width: 100%;
   }
 
@@ -680,7 +688,7 @@ const styles = `
     width: 10px;
     height: 10px;
     border-radius: 999px;
-    background: #fdf6ec;
+    background: var(--bg-ivory);
     top: 50%;
     transform: translateY(-50%);
   }
@@ -712,16 +720,16 @@ const styles = `
   }
 
   .signboard--dark .signboard__text {
-    color: #F5F0E8;
+    color: #EDEDE3;
   }
 
   .signboard--dark::before,
   .signboard--dark::after {
-    background: #1B3A57;
+    background: var(--text-navy);
   }
 
   .postcard {
-    background: #fffdf6;
+    background: #FDF9F4;
     border-radius: 16px;
     border: 1px solid rgba(0,0,0,0.18);
     padding: 1.75rem 1.5rem;
@@ -745,7 +753,7 @@ const styles = `
     left: 0;
     right: 0;
     top: 50%;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(58,49,43,0.12);
     transform: translateY(-50%);
   }
 
@@ -766,8 +774,8 @@ const styles = `
     aspect-ratio: 3 / 4;
     margin: 0 auto;
     border-radius: 18px;
-    border: 2px solid rgba(0,0,0,0.2);
-    background: linear-gradient(to bottom, #f9f0e0 55%, #cfe9f5 55%);
+    border: 2px solid rgba(58,49,43,0.22);
+    background: linear-gradient(to bottom, #FDF9F4 55%, #FDF9F4 55%);
     overflow: hidden;
   }
 
@@ -778,8 +786,8 @@ const styles = `
     top: 30%;
     width: 120%;
     height: 200%;
-    background: radial-gradient(circle at 0 50%, #f9f0e0 40%, transparent 41%);
-    opacity: 0.9;
+    background: radial-gradient(circle at 0 50%, #FDF9F4 40%, transparent 41%);
+    opacity: 0.85;
   }
 
   .goa-mini-map__pin {
@@ -787,9 +795,9 @@ const styles = `
     width: 14px;
     height: 14px;
     border-radius: 999px;
-    border: 2px solid #1b3a57;
-    background: #f58b7a;
-    box-shadow: 0 0 0 3px rgba(245,139,122,0.35);
+    border: 2px solid var(--text-navy);
+    background: var(--accent-pink);
+    box-shadow: 0 0 0 3px rgba(216,141,102,0.35);
     cursor: pointer;
     transition: transform 0.2s;
   }
@@ -810,7 +818,9 @@ const styles = `
 const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs%20%26%20Alysha%20Wedding%20Celebration&dates=20260320T140000Z/20260320T180000Z&details=Celebrate%20with%20us%20in%20Goa.%20RSVP%20and%20travel%20info%20on%20our%20site.&location=Blu%20Missel%20by%20the%20River%2C%20Fondvem%2C%20Ribandar%2C%20Goa%2C%20India';
 const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River,+Fondvem,+Ribandar,+Goa,+India';
 const VENUE_APPLE_MAPS_URL = 'http://maps.apple.com/?address=Fondvem,Ribandar,Goa,India&q=Blu+Missel+by+the+River';
-const SECTION_PADDING = 'px-4 md:px-8 lg:px-16 xl:px-24';
+// Consistent spacing scale for better visual rhythm
+const SECTION_PADDING = 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16';
+const SECTION_SPACING = 'py-16 md:py-20 lg:py-24 xl:py-28';
 
 /* --- Mario Miranda Style Components --- */
 
@@ -1024,7 +1034,7 @@ const SketchIcon = ({ type, className }) => {
 
 const ApprovedStamp = () => (
 
-  <div className="absolute -top-6 -right-6 bg-[#D4A5A5] text-white font-hand text-xl p-4 rounded-full rotate-12 shadow-lg animate-float z-20 border-4 border-white border-dashed transform hover:scale-110 transition-transform cursor-pointer">
+  <div className="absolute -top-6 -right-6 bg-[#D88D66] text-white font-hand text-xl p-4 rounded-full rotate-12 shadow-lg animate-float z-20 border-4 border-white border-dashed transform hover:scale-110 transition-transform cursor-pointer">
 
     <div className="text-center leading-tight font-bold">
 
@@ -1038,13 +1048,13 @@ const ApprovedStamp = () => (
 
 
 
-const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
+const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNavigate }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
   
 
-  // Chronological navigation order
+  // Navigation order
   let links = [
 
     { name: 'Party', href: '#the-celebration' },
@@ -1075,17 +1085,28 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
 
 
+  const handleLinkClick = (event, href, closeMenu = false) => {
+    if (onNavigate) {
+      event.preventDefault();
+      const sectionId = href.replace('#', '');
+      onNavigate(sectionId);
+    }
+    if (closeMenu) {
+      setIsOpen(false);
+    }
+  };
+
   return (
 
     <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
 
-      <div className="max-w-6xl mx-auto bg-[#F5F0E8]/95 backdrop-blur-sm border-b-2 border-navy/10 px-6 py-3 flex justify-between items-center shadow-sm" style={{ borderRadius: '255px 15px 225px 15px / 15px 225px 15px 255px' }}>
+      <div className="max-w-6xl mx-auto nav-shell px-6 py-3 flex justify-between items-center">
 
         <a href="#" className="text-3xl text-navy font-hand font-bold tracking-wide flex items-center gap-2 sketchy-text">
 
           S & A 
 
-          {isFamilyMode && <span className="text-xs bg-[#D4A5A5] text-white px-2 py-0.5 font-sans rotate-3 rounded-sm">FAMILY</span>}
+          {isFamilyMode && <span className="text-xs bg-[#D88D66] text-white px-2 py-0.5 font-sans rotate-3 rounded-sm">FAMILY</span>}
 
         </a>
 
@@ -1095,7 +1116,13 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
           {links.map(link => (
 
-            <a key={link.name} href={link.href} className="text-lg font-hand font-bold text-navy/80 hover:text-[#D4A5A5] hover:rotate-2 transition-all">
+            <a 
+              key={link.name} 
+              href={link.href} 
+              onClick={(e) => handleLinkClick(e, link.href)}
+              className="text-lg font-hand font-bold nav-link hover:rotate-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded"
+              aria-label={`Navigate to ${link.name} section`}
+            >
 
               {link.name}
 
@@ -1112,7 +1139,8 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
                 onRequestFamilyAccess();
               }
             }}
-            className="ml-4 text-lg font-hand font-bold text-navy/80 hover:text-[#D4A5A5] hover:rotate-2 transition-all flex items-center gap-2 border-l border-navy/20 pl-4"
+            className="ml-4 text-lg font-hand font-bold nav-link hover:rotate-2 transition-all flex items-center gap-2 border-l border-navy/20 pl-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
+            aria-label={isFamilyMode ? "Switch to guest view" : "Switch to family view"}
           >
             {isFamilyMode ? (
               <>
@@ -1131,7 +1159,12 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
         
 
-        <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-navy" aria-label="Toggle navigation menu" aria-expanded={isOpen}>
+        <button 
+          onClick={() => setIsOpen(!isOpen)} 
+          className="lg:hidden text-espresso focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded" 
+          aria-label="Toggle navigation menu" 
+          aria-expanded={isOpen}
+        >
 
           {isOpen ? <X /> : <Menu />}
 
@@ -1143,11 +1176,17 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
 
       {isOpen && (
 
-        <div className="absolute top-24 right-6 left-6 bg-white border-2 border-navy shadow-lg p-6 flex flex-col gap-4 lg:hidden sketchy-border rotate-1 z-50">
+        <div className="absolute top-24 right-6 left-6 nav-panel p-6 flex flex-col gap-4 lg:hidden rotate-1 z-50">
 
           {links.map(link => (
 
-            <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="text-2xl font-hand text-navy hover:text-[#D4A5A5] text-center border-b border-gray-100 pb-2">
+            <a 
+              key={link.name} 
+              href={link.href} 
+              onClick={(e) => handleLinkClick(e, link.href, true)} 
+              className="text-2xl font-hand font-semibold nav-link text-center border-b border-gray-100 pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
+              aria-label={`Navigate to ${link.name} section`}
+            >
 
               {link.name}
 
@@ -1165,7 +1204,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess }) => {
                 onRequestFamilyAccess();
               }
             }}
-            className="mt-2 text-xl font-hand text-navy/80 hover:text-[#D4A5A5] text-center border-t border-gray-100 pt-4 flex items-center justify-center gap-2"
+            className="mt-2 text-xl font-hand nav-link text-center border-t border-gray-100 pt-4 flex items-center justify-center gap-2"
           >
             {isFamilyMode ? (
               <>
@@ -1231,7 +1270,7 @@ const CountdownTimer = () => {
               particleCount: 50,
               spread: 60,
               origin: { y: 0.5 },
-              colors: ['#D4A5A5', '#B8D4E8', '#1B3A57']
+              colors: ['#D88D66', '#EBBA9A', '#3B2F2A']
             });
           }
         });
@@ -1258,21 +1297,23 @@ const CountdownTimer = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.6 }}
-      className="countdown-box"
+      className="countdown-box rounded-3xl bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] border border-[#D4CDC2] px-8 py-6"
+      style={{ boxShadow: '0 18px 32px rgba(59, 47, 42, 0.12)' }}
     >
       <div className="text-center mb-4">
-        <p className="text-xs md:text-sm font-hand text-[#F5F0E8]/70 uppercase tracking-wider mb-2">
+        <p className="text-xs md:text-sm font-hand text-[#3B2F2A]/70 uppercase tracking-wider mb-2">
           Counting down to
         </p>
-        <p className="text-sm md:text-base font-hand text-[#F5F0E8] font-semibold">
+        <p className="text-sm md:text-base font-hand text-[#3B2F2A] font-semibold">
           March 20, 2026
         </p>
+        <div className="w-16 h-1 bg-[#D88D66] mx-auto mt-3 rounded-full opacity-60"></div>
         </div>
       <div className="flex items-center justify-center gap-2 md:gap-3">
         {units.map((unit, index) => (
           <motion.div
             key={unit.label}
-            className="countdown-unit"
+            className="countdown-unit bg-[#FDF9F4] border border-[#D4CDC2] rounded-2xl px-4 py-3 text-center"
             animate={unit.value === 0 ? {} : { scale: [1, 1.05, 1] }}
             transition={{ 
               duration: 0.3, 
@@ -1281,10 +1322,10 @@ const CountdownTimer = () => {
               repeatDelay: 1
             }}
           >
-            <span className="countdown-number">
+            <span className="countdown-number text-[#3B2F2A] text-2xl md:text-3xl font-bold font-mono">
               {unit.value.toString().padStart(2, '0')}
             </span>
-            <span className="countdown-label">{unit.label}</span>
+            <span className="countdown-label text-[#3B2F2A]/60 text-xs uppercase tracking-widest mt-1 block">{unit.label}</span>
           </motion.div>
         ))}
       </div>
@@ -1292,7 +1333,7 @@ const CountdownTimer = () => {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center mt-3 text-xs font-hand text-[#D4A5A5] font-bold"
+          className="text-center mt-3 text-xs font-hand text-[#EBBA9A] font-bold"
         >
           Almost there! 🎉
         </motion.p>
@@ -1309,11 +1350,11 @@ const Hero = ({ onScrollToSection }) => (
 
     {/* Doodles - Hidden on mobile to reduce clutter */}
     <ParallaxWrapper offset={30} className="absolute top-24 left-10 hidden md:block">
-      <Sun className="w-12 h-12 text-[#D4A5A5] opacity-60 rotate-12 animate-float" />
+      <Sun className="w-12 h-12 text-[#D88D66] opacity-60 rotate-12 animate-float" />
     </ParallaxWrapper>
 
     <ParallaxWrapper offset={-30} className="absolute bottom-32 right-8 hidden md:block">
-      <Heart className="w-8 h-8 text-[#B8D4E8] opacity-60 -rotate-6 animate-float" />
+      <Heart className="w-8 h-8 text-[#EBBA9A] opacity-60 -rotate-6 animate-float" />
     </ParallaxWrapper>
 
     <FadeInWhenVisible className="w-full max-w-4xl mx-auto relative z-10 flex flex-col md:flex-col">
@@ -1323,7 +1364,7 @@ const Hero = ({ onScrollToSection }) => (
         <ParallaxWrapper offset={80} hoverEffect className="relative w-full max-w-xl mx-auto rotate-1 hover:rotate-0 transition-transform duration-500">
           <div className="bg-white p-2 md:p-4 sketchy-border shadow-xl">
             <motion.div 
-              className="w-full bg-[#F5F0E8] overflow-hidden relative" 
+              className="w-full bg-[#EDEDE3] overflow-hidden relative" 
               style={{ minHeight: '280px', maxHeight: '400px' }}
               initial={{ scale: 1.05 }}
               whileHover={{ scale: 1.02 }}
@@ -1361,7 +1402,7 @@ const Hero = ({ onScrollToSection }) => (
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 120, damping: 14 }}
         >
-          S<span className="text-[#D4A5A5]">&</span>A
+          S<span className="text-[#D88D66]">&</span>A
         </motion.h1>
 
         {/* Names and Invitation */}
@@ -1369,7 +1410,7 @@ const Hero = ({ onScrollToSection }) => (
           <h2 className="text-2xl md:text-3xl lg:text-5xl font-hand text-navy relative">
             Shubs & Alysha
             <svg className="absolute -bottom-2 md:-bottom-3 left-0 w-full h-2 md:h-2.5" viewBox="0 0 100 10" preserveAspectRatio="none">
-               <path d="M0,5 Q50,10 100,5" stroke="#D4A5A5" strokeWidth="2" fill="none" />
+               <path d="M0,5 Q50,10 100,5" stroke="#D88D66" strokeWidth="2" fill="none" />
             </svg>
           </h2>
 
@@ -1384,20 +1425,20 @@ const Hero = ({ onScrollToSection }) => (
 
         {/* Event Details - Compact on mobile */}
         <div className="max-w-2xl mx-auto mt-4 md:mt-6 lg:mt-8">
-          <div className="sketchy-border border-2 border-[#D4A5A5]/30 bg-white/80 backdrop-blur-sm rounded-lg md:rounded-xl px-4 py-3 md:px-5 md:py-4 text-navy/80 font-hand shadow-md">
+          <div className="sketchy-border border-2 border-[#D88D66]/30 bg-white/80 backdrop-blur-sm rounded-lg md:rounded-xl px-4 py-3 md:px-5 md:py-4 text-navy/80 font-hand shadow-md">
             <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-2.5 md:gap-2.5 text-xs md:text-sm lg:text-base">
               <div className="flex items-center gap-1.5 md:gap-1.5">
-                <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D4A5A5] flex-shrink-0" />
+                <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
                 <span className="font-semibold text-navy">Friday, March 20, 2026</span>
               </div>
-              <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
+              <span className="hidden md:block text-[#D88D66] text-xs">·</span>
               <div className="flex items-center gap-1.5 md:gap-1.5">
-                <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#D4A5A5] flex-shrink-0" />
+                <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
                 <span className="font-medium text-navy">3:30 PM onwards</span>
               </div>
-              <span className="hidden md:block text-[#D4A5A5] text-xs">·</span>
+              <span className="hidden md:block text-[#D88D66] text-xs">·</span>
               <div className="flex items-center gap-1.5 md:gap-1.5 text-center">
-                <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#D4A5A5] flex-shrink-0" />
+                <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
                 <span className="font-medium text-navy">Blu Missel, Ribandar</span>
               </div>
             </div>
@@ -1424,25 +1465,13 @@ const Hero = ({ onScrollToSection }) => (
 
 const Story = () => (
 
-  <section id="our-story" className={`pt-8 md:pt-12 lg:pt-16 pb-12 md:pb-16 lg:pb-20 ${SECTION_PADDING} relative`}>
+  <section id="our-story" className={`${SECTION_SPACING} ${SECTION_PADDING} relative`} aria-label="Our Story">
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
-      <StickyHeader>
-
-        <div className="text-center">
-
-          <h2 className="text-4xl md:text-6xl font-hand text-navy inline-block sketchy-text mb-2">
-
-          Our Story
-
-        </h2>
-
-        <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto"></div>
-
+      <div className="text-center mb-10">
+        <SignboardHeading>Our Story</SignboardHeading>
       </div>
-
-      </StickyHeader>
 
 
 
@@ -1451,8 +1480,6 @@ const Story = () => (
       
 
       <div className="space-y-16 md:space-y-24 lg:space-y-28 relative pt-8 md:pt-0">
-
-        <SketchIcon type="palm" className="absolute bottom-0 right-0 w-16 md:w-24 text-navy/5 rotate-12 z-0" />
 
 
 
@@ -1476,7 +1503,7 @@ const Story = () => (
 
           <div className="order-1 md:order-2">
 
-              <span className="inline-block bg-[#D4A5A5] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-2deg] shadow-sm">2015</span>
+              <span className="inline-block bg-[#D88D66] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-2deg] shadow-sm">2015</span>
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The First Time</h3>
 
@@ -1506,7 +1533,7 @@ const Story = () => (
 
           <div>
 
-              <span className="inline-block bg-[#B8D4E8] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">July 2018</span>
+              <span className="inline-block bg-[#EBBA9A] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">July 2018</span>
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The Reunion</h3>
 
@@ -1579,7 +1606,7 @@ const Story = () => (
 
           <div className="order-1 md:order-2">
 
-              <span className="inline-block bg-[#D4A5A5] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-1deg] shadow-sm">2018-2025</span>
+              <span className="inline-block bg-[#D88D66] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[-1deg] shadow-sm">2018-2025</span>
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">Building a Life</h3>
 
@@ -1609,7 +1636,7 @@ const Story = () => (
 
           <div>
 
-              <span className="inline-block bg-[#B8D4E8] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">January 6, 2025</span>
+              <span className="inline-block bg-[#EBBA9A] text-white px-3 md:px-4 py-1 font-hand text-lg md:text-xl mb-3 md:mb-4 rotate-[2deg] shadow-sm">January 6, 2025</span>
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-hand font-bold text-navy mb-3 md:mb-4">The Question</h3>
 
@@ -2111,7 +2138,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4"
+      className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#EBBA9A]/20 to-[#EDEDE3] px-4"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -2161,7 +2188,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
           <motion.div
             animate={{ opacity: [1, 0.5, 1] }}
             transition={{ repeat: Infinity, duration: 0.5 }}
-            className="absolute top-16 left-1/2 -translate-x-1/2 z-30 bg-[#D4A5A5] text-white px-3 py-1 rounded-full text-xs font-hand font-bold sketchy-border"
+            className="absolute top-16 left-1/2 -translate-x-1/2 z-30 bg-[#D88D66] text-white px-3 py-1 rounded-full text-xs font-hand font-bold sketchy-border"
           >
             INVINCIBLE!
           </motion.div>
@@ -2169,7 +2196,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
         {/* Start Screen */}
         {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#F5F0E8] to-white z-10 p-8">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#EDEDE3] to-white z-10 p-8">
             <div className="mb-8">
               <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white border-4 border-white shadow-2xl p-1 flex items-center justify-center overflow-hidden sketchy-border">
                 <img
@@ -2194,7 +2221,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
             </p>
             <button
               onClick={startGame}
-              className="px-8 py-3 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105 sketchy-border font-hand"
+              className="px-8 py-3 bg-[#D88D66] text-white font-bold rounded-lg shadow-lg hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand"
             >
               Press ↑ or Space to Start
             </button>
@@ -2206,22 +2233,22 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-20 p-8">
             <div className="text-center">
               <h4 className="text-5xl font-bold text-navy mb-4 font-hand">Game Over</h4>
-              <div className="text-6xl font-mono font-bold text-[#D4A5A5] mb-2 tabular-nums">{score.toString().padStart(4, '0')}</div>
+              <div className="text-6xl font-mono font-bold text-[#D88D66] mb-2 tabular-nums">{score.toString().padStart(4, '0')}</div>
               <p className="text-sm text-navy/60 mb-2 font-hand">{levelNames[level] || `Level ${level}`}</p>
               {score >= highScore && score > 0 && (
-                <p className="text-xs text-[#D4A5A5] font-bold mb-4 font-hand">NEW HIGH SCORE!</p>
+                <p className="text-xs text-[#D88D66] font-bold mb-4 font-hand">NEW HIGH SCORE!</p>
               )}
               <div className="flex gap-3 justify-center">
                 <button
                   onClick={startGame}
-                  className="px-6 py-2 bg-[#1B3A57] text-white font-bold rounded-lg shadow-lg hover:bg-[#2c5378] transition-all transform hover:scale-105 sketchy-border font-hand"
+                  className="px-6 py-2 bg-[#D88D66] text-white font-bold rounded-lg shadow-lg hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand"
                 >
                   Play Again
                 </button>
                 {score > 0 && (
                   <button
                     onClick={shareScore}
-                    className="px-6 py-2 bg-[#D4A5A5] text-white font-bold rounded-lg shadow-lg hover:bg-[#c49595] transition-all transform hover:scale-105 sketchy-border font-hand"
+                    className="px-6 py-2 bg-[#D88D66] text-white font-bold rounded-lg shadow-lg hover:bg-[#EBBA9A] transition-all transform hover:scale-105 sketchy-border font-hand"
                   >
                     Share Score
                   </button>
@@ -2239,7 +2266,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               <p className="text-sm text-navy/60 mb-4 font-hand">Press Space or Esc to resume</p>
               <button
                 onClick={() => setIsPaused(false)}
-                className="px-6 py-2 bg-[#1B3A57] text-white font-bold rounded-lg hover:bg-[#2c5378] transition-all sketchy-border font-hand"
+                className="px-6 py-2 bg-[#D88D66] text-white font-bold rounded-lg hover:bg-[#C97452] transition-all sketchy-border font-hand"
               >
                 Resume
               </button>
@@ -2256,7 +2283,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
             
             {/* Animated Ground */}
             <div 
-              className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#8B7355] to-[#A68B6B] border-t-4 border-[#6B5A45]"
+              className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#3B2F2A] to-[#D4CDC2] border-t-4 border-[#3B2F2A]"
               style={{
                 backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.1) 40px)`,
                 backgroundPosition: `${groundOffset}px 0`
@@ -2273,7 +2300,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                 style={{
                   top: `${(laneIndex + 1) * (100 / (LANES + 1))}%`,
                   height: `${100 / (LANES + 1)}%`,
-                  borderBottom: laneIndex < LANES - 1 ? '1px dashed rgba(27, 58, 87, 0.1)' : 'none'
+                  borderBottom: laneIndex < LANES - 1 ? '1px dashed rgba(58, 49, 43, 0.1)' : 'none'
                 }}
               >
                 {/* Cookie sticker */}
@@ -2290,7 +2317,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                       scale: { repeat: Infinity, duration: 0.3 }
                     }}
                   >
-                    <div className={`w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden sketchy-border ${isInvincible ? 'ring-4 ring-[#D4A5A5]' : ''}`}>
+                    <div className={`w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden sketchy-border ${isInvincible ? 'ring-4 ring-[#D88D66]' : ''}`}>
                       <img
                         src="/images/cookie.png"
                         alt="Cookie"
@@ -2346,14 +2373,14 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
               aria-label="Move up"
             >
-              <PawPrint size={32} className="text-[#D4A5A5]" />
+              <PawPrint size={32} className="text-[#D88D66]" />
             </button>
             <button
               onClick={() => handleButtonPress('down')}
               className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
               aria-label="Move down"
             >
-              <PawPrint size={32} className="text-[#B8D4E8]" />
+              <PawPrint size={32} className="text-[#EBBA9A]" />
             </button>
           </div>
         )}
@@ -2362,80 +2389,6 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   );
 };
 
-const CookieAndBailey = () => (
-
-  <section className={`py-12 md:py-16 lg:py-20 ${SECTION_PADDING} relative bg-white`}>
-
-    <FadeInWhenVisible className="max-w-5xl mx-auto text-center">
-
-      <SignboardHeading>Our Babies</SignboardHeading>
-
-      <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-12 md:mb-16"></div>
-      
-      <div className="grid md:grid-cols-2 gap-12 md:gap-16">
-
-        {/* Cookie */}
-
-        <FadeInWhenVisible delay={0.1} className="relative group">
-
-            <motion.div 
-
-              className="sketchy-border bg-white p-8 md:p-10 relative transform rotate-2 transition-all group-hover:rotate-0 shadow-lg hover:shadow-xl"
-
-              whileHover={{ rotate: 0, scale: 1.03 }}
-
-            >
-
-                <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
-
-                   <motion.img src="/images/cookie.jpg" alt="Cookie" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} whileHover={{ scale: 1.08 }} loading="lazy" width={687} height={1024} />
-
-                </div>
-
-                <h4 className="font-bold text-3xl md:text-4xl text-navy font-hand mb-4">Cookie</h4>
-
-                <p className="font-hand text-lg md:text-xl mt-2 leading-relaxed text-navy/80">Alysha's first love. Been around for 12 years. Will absolutely bark at you during the ceremony. Multiple times, probably. We're not apologizing for it.</p>
-
-            </motion.div>
-
-        </FadeInWhenVisible>
-
-
-
-        {/* Bailey */}
-
-        <FadeInWhenVisible delay={0.15} className="relative group">
-
-            <motion.div 
-
-              className="sketchy-border bg-white p-8 md:p-10 relative transform -rotate-2 transition-all group-hover:rotate-0 shadow-lg hover:shadow-xl"
-
-              whileHover={{ rotate: 0, scale: 1.03 }}
-
-            >
-
-                <div className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 md:mb-8 border-4 border-navy rounded-full overflow-hidden bg-gray-100 flex items-center justify-center shadow-md">
-
-                    <motion.img src="/images/bailey.jpg" alt="Bailey" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} whileHover={{ scale: 1.08 }} loading="lazy" width={696} height={1024} />
-
-                </div>
-
-                <h4 className="font-bold text-3xl md:text-4xl text-navy font-hand mb-4">Bailey</h4>
-
-                <p className="font-hand text-lg md:text-xl mt-2 leading-relaxed text-navy/80">Their rescue dog. She's two-faced, literally. Half her face is a different color. Shubs brought her to Bangalore after COVID. She's family now.</p>
-
-            </motion.div>
-
-        </FadeInWhenVisible>
-
-      </div>
-
-
-    </FadeInWhenVisible>
-
-  </section>
-
-);
 
 
 
@@ -2491,13 +2444,16 @@ const KidenaHouseCarousel = memo(() => {
           {images.map((image, index) => (
             <div key={index} className="min-w-full flex-shrink-0 w-full">
               <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
-                <div className="bg-gray-100 w-full overflow-hidden border-b-2 border-[#1B3A57]">
+                <div 
+                  className="relative bg-gray-100 w-full overflow-hidden flex items-center justify-center" 
+                  style={{ aspectRatio: '4/3', maxHeight: '70vh' }}
+                >
                   <img 
                     src={image.src} 
                     alt={image.alt} 
-                    className="w-full h-auto object-contain" 
+                    className="w-full h-full object-contain"
                     loading={index === 0 ? "eager" : "lazy"}
-                        width={1024}
+                    width={1024}
                     height={768}
                     decoding="async"
                     onError={(e) => {
@@ -2513,9 +2469,10 @@ const KidenaHouseCarousel = memo(() => {
                         console.log(`✓ Successfully loaded: ${image.src}`);
                       }
                     }}
-                    />
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-5 bg-white pointer-events-none" aria-hidden="true" />
                 </div>
-            </ParallaxWrapper>
+              </ParallaxWrapper>
             </div>
           ))}
         </div>
@@ -2523,19 +2480,19 @@ const KidenaHouseCarousel = memo(() => {
         {/* Navigation Arrows - Only one set */}
         <button
           onClick={prevImage}
-          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#1B3A57] transition-all hover:scale-110"
+          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A] transition-all hover:scale-110"
           aria-label="Previous image"
           type="button"
         >
-          <ChevronLeft size={28} className="md:w-8 md:h-8 text-[#1B3A57]" />
+          <ChevronLeft size={28} className="md:w-8 md:h-8 text-[#3B2F2A]" />
         </button>
         <button
           onClick={nextImage}
-          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#1B3A57] transition-all hover:scale-110"
+          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A] transition-all hover:scale-110"
           aria-label="Next image"
           type="button"
         >
-          <ChevronRight size={28} className="md:w-8 md:h-8 text-[#1B3A57]" />
+          <ChevronRight size={28} className="md:w-8 md:h-8 text-[#3B2F2A]" />
         </button>
 
         {/* Dots Indicator - Only one set */}
@@ -2557,7 +2514,7 @@ const KidenaHouseCarousel = memo(() => {
       </div>
 
       {/* Image Counter */}
-      <div className="text-center mt-4 text-[#F5F0E8] font-hand text-lg md:text-xl">
+      <div className="text-center mt-4 text-[#EDEDE3] font-hand text-lg md:text-xl">
         {currentIndex + 1} / {images.length}
                         </div>
     </div>
@@ -2568,7 +2525,7 @@ KidenaHouseCarousel.displayName = 'KidenaHouseCarousel';
 
 const KidenaHouse = () => (
 
-  <section id="kidena-house" className={`py-16 md:py-16 lg:py-20 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8] relative overflow-hidden`}>
+  <section id="kidena-house" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#EDEDE3] text-[#3B2F2A] relative overflow-hidden`} aria-label="Kidena House">
 
     {/* Subtle background decoration */}
     <div className="absolute inset-0 opacity-5 pointer-events-none">
@@ -2577,78 +2534,83 @@ const KidenaHouse = () => (
 
     <FadeInWhenVisible className="max-w-7xl mx-auto relative z-10">
 
-        {/* Header Section */}
-        <div className="text-center mb-12 md:mb-12">
+      <div className="grid lg:grid-cols-[1fr,1.35fr] gap-10 lg:gap-14 items-start">
+        {/* Left intro */}
+        <div className="space-y-6 text-center lg:text-left">
+          <div>
             <SignboardHeading variant="dark">Where You'll Stay</SignboardHeading>
-            <p className="text-xl md:text-2xl font-hand text-[#F5F0E8]/80 mt-4">
+            <p className="text-xl md:text-2xl font-hand text-[#EDEDE3]/80 mt-3 leading-relaxed">
               Kidena House • Gancim, Maina, Goa Velha
-              {' '}
               <a 
                 href="https://maps.app.goo.gl/hZuyKOIhNYSXhZtwo" 
                 target="_blank" 
                 rel="noreferrer"
-                className="inline-block ml-2 text-[#B8D4E8] hover:text-white transition-colors"
+                className="inline-flex items-center gap-2 ml-2 text-[#EBBA9A] hover:text-white transition-colors"
                 aria-label="View Kidena House on Google Maps"
                 title="View on Google Maps"
               >
-                <MapPin size={20} className="inline align-middle" />
+                <MapPin size={20} />
+                Map
               </a>
             </p>
-                </div>
+          </div>
 
-        {/* Photo Carousel - All 4 Images */}
-        <div className="mb-8 md:mb-10">
-            <FadeInWhenVisible>
-                <KidenaHouseCarousel />
-            </FadeInWhenVisible>
         </div>
 
+        {/* Photo Carousel - wider on desktop */}
+        <div className="relative">
+          <FadeInWhenVisible>
+            <KidenaHouseCarousel />
+          </FadeInWhenVisible>
+        </div>
+      </div>
+
         {/* Features Grid - 2x2 Layout */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mt-14 mb-14">
             
-            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D4A5A5] shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-[#EDEDE3] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D88D66] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#D4A5A5]/20 flex items-center justify-center flex-shrink-0">
-                        <Home className="w-6 h-6 text-[#D4A5A5]" />
+                    <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
+                        <Home className="w-6 h-6 text-[#D88D66]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-[#D4A5A5] text-2xl md:text-3xl font-hand mb-3">The House</h3>
+                        <h3 className="font-bold text-[#D88D66] text-2xl md:text-3xl font-hand mb-3">The House</h3>
                         <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">6 bedrooms, 9 bathrooms. Private pool and a private lake on the property. Three acres of space to spread out and breathe.</p>
                     </div>
                 </div>
         </div>
 
-            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#B8D4E8] shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-[#EDEDE3] text-navy p-6 md:p-8 sketchy-border border-2 border-[#EBBA9A] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#B8D4E8]/20 flex items-center justify-center flex-shrink-0">
-                        <SketchIcon type="plate" className="w-6 h-6 text-[#B8D4E8]" />
+                    <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
+                        <SketchIcon type="plate" className="w-6 h-6 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-[#B8D4E8] text-2xl md:text-3xl font-hand mb-3">No Cooking, No Cleaning</h3>
+                        <h3 className="font-bold text-[#EBBA9A] text-2xl md:text-3xl font-hand mb-3">No Cooking, No Cleaning</h3>
                         <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Personal chefs will cook whatever you're craving. Breakfast, lunch, dinner, midnight snacks. Whatever. Butlers handle everything else. You just relax.</p>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D4A5A5] shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-[#EDEDE3] text-navy p-6 md:p-8 sketchy-border border-2 border-[#D88D66] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#D4A5A5]/20 flex items-center justify-center flex-shrink-0">
-                        <Sun className="w-6 h-6 text-[#D4A5A5]" />
+                    <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
+                        <Sun className="w-6 h-6 text-[#D88D66]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-[#D4A5A5] text-2xl md:text-3xl font-hand mb-3">Spa</h3>
+                        <h3 className="font-bold text-[#D88D66] text-2xl md:text-3xl font-hand mb-3">Spa</h3>
                         <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">There's an on-site spa if you need to decompress before all the wedding chaos starts.</p>
                     </div>
                 </div>
         </div>
 
-            <div className="bg-[#F5F0E8] text-navy p-6 md:p-8 sketchy-border border-2 border-[#B8D4E8] shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-[#EDEDE3] text-navy p-6 md:p-8 sketchy-border border-2 border-[#EBBA9A] shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#B8D4E8]/20 flex items-center justify-center flex-shrink-0">
-                        <Music className="w-6 h-6 text-[#B8D4E8]" />
+                    <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
+                        <Music className="w-6 h-6 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className="font-bold text-[#B8D4E8] text-2xl md:text-3xl font-hand mb-3">Keep Busy (or Don't)</h3>
+                        <h3 className="font-bold text-[#EBBA9A] text-2xl md:text-3xl font-hand mb-3">Keep Busy (or Don't)</h3>
                         <p className="text-navy/80 font-hand text-lg md:text-xl leading-relaxed">Pool table, PlayStation, fishing in the private lake, bicycles to ride around. Or just lounge by the pool all day. Your choice.</p>
                     </div>
                 </div>
@@ -2657,15 +2619,15 @@ const KidenaHouse = () => (
       </div>
 
         {/* Dates Section - Centered */}
-        <div className="max-w-2xl mx-auto">
-            <div className="bg-[#F5F0E8] text-navy p-8 md:p-10 sketchy-border border-2 border-[#D4A5A5] shadow-lg text-center">
-                <div className="flex items-center justify-center gap-4 mb-4">
-                    <Calendar className="text-[#D4A5A5]" size={32} />
-                    <h3 className="font-bold text-2xl md:text-3xl font-hand text-navy">March 18-22, 2026</h3>
-                </div>
-                <p className="font-hand text-xl md:text-2xl text-navy/80 leading-relaxed">This is home base for the family. Where we'll all be together in the days leading up to the wedding. The calm before the beautiful storm.</p>
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-[#EDEDE3] text-navy p-8 md:p-10 sketchy-border border-2 border-[#D88D66] shadow-lg text-center">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+              <Calendar className="text-[#D88D66]" size={32} />
+              <h3 className="font-bold text-2xl md:text-3xl font-hand text-navy">March 18-22, 2026</h3>
             </div>
-    </div>
+            <p className="font-hand text-xl md:text-2xl text-navy/80 leading-relaxed">This is home base for the family. Where we'll all be together in the days leading up to the wedding. The calm before the beautiful storm.</p>
+          </div>
+        </div>
 
     </FadeInWhenVisible>
 
@@ -2677,7 +2639,7 @@ const KidenaHouse = () => (
 
 const FamilyItinerary = () => (
 
-  <section id="family-itinerary" className={`py-12 md:py-16 lg:py-20 ${SECTION_PADDING} bg-gradient-to-b from-[#F5F0E8] to-white relative`}>
+  <section id="family-itinerary" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-[#EDEDE3] to-white relative`} aria-label="Family Itinerary">
 
     <div className="absolute inset-0 opacity-5 pointer-events-none">
 
@@ -2708,7 +2670,7 @@ const FamilyItinerary = () => (
                     summary: "Land, dump bags, straight into the pool.",
                     desc: "You're finally here. We'll have cars waiting at the airport to bring you straight to Kidena House. Take your time unpacking and settling into your rooms. We'll order the best Goan food we can find for dinner. Then: pool party. Later that evening, some of us are heading to Panjim for a pub crawl. Joseph's Bar, Miguel's, all our favorite haunts from the past seven years. Come along if you want, or stay back at the house and relax by the pool. Whatever feels right.",
                     icon: Home,
-                    color: "#D4A5A5"
+                    color: "#D88D66"
                 },
 
                 { 
@@ -2718,7 +2680,7 @@ const FamilyItinerary = () => (
                     summary: "Breakfast together, then rehearsal for ceremony crew.",
                     desc: "We'll all have breakfast together at the house. Slow morning, good coffee, no rush. Then those of us actually in the ceremony will head to Blu Missel for rehearsal. Kids can absolutely stay back at Kidena and enjoy the pool. No need to drag them to a boring rehearsal.",
                     icon: Sun,
-                    color: "#B8D4E8"
+                    color: "#EBBA9A"
                 },
 
                 { 
@@ -2728,7 +2690,7 @@ const FamilyItinerary = () => (
                     summary: "Cars leave at 2:30 PM sharp. Be ready on time.",
                     desc: "This is it. The day we've been planning for months. Cars leave Kidena House at 2:30 PM sharp. We're still figuring out the mix of rental cars and cabs, but we'll have it sorted. Just please be ready on time. (Yes, we're talking to specific family members who are always fashionably late.)",
                     icon: Heart,
-                    color: "#D4A5A5"
+                    color: "#D88D66"
                 },
 
                 { 
@@ -2738,7 +2700,7 @@ const FamilyItinerary = () => (
                     summary: "No agenda. Pool, naps, sunset drinks at Bar Outrigger.",
                     desc: "Sleep as late as you need to. No agenda today. No schedule. Pool, spa, naps, whatever your body is asking for after last night. Later in the evening, let's all meet up at Bar Outrigger. It's this gorgeous spot right by the beach with a little cove. Perfect for sunset. We'll have drinks, decompress together, soak in the fact that we actually pulled this off.",
                     icon: Anchor,
-                    color: "#B8D4E8"
+                    color: "#EBBA9A"
                 },
 
                 { 
@@ -2748,7 +2710,7 @@ const FamilyItinerary = () => (
                     summary: "Leave whenever your flight is. We'll be around all day.",
                     desc: "People can leave whenever their flights are. Take your time checking out. We'll be around all day to say proper goodbyes and squeeze in a few more hours together. Thank you for being here for all of this. For showing up, for celebrating with us, for making this week exactly what we hoped it would be. It means absolutely everything.",
                     icon: Coffee,
-                    color: "#D4A5A5"
+                    color: "#D88D66"
                 }
 
             ].map((item, i) => (
@@ -2757,20 +2719,20 @@ const FamilyItinerary = () => (
 
                     <div className="bg-white sketchy-border p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow border-2" style={{ borderColor: item.color }}>
 
-                        <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+                        <div className="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
 
                             {/* Icon and date column */}
-                            <div className="flex-shrink-0 flex items-start gap-4">
+                            <div className="flex-shrink-0 flex items-start gap-4 md:w-64 lg:w-72">
 
                                 <div className="w-16 h-16 rounded-full flex items-center justify-center border-4 flex-shrink-0" style={{ backgroundColor: `${item.color}20`, borderColor: item.color }}>
 
                                     <item.icon className="w-8 h-8" style={{ color: item.color }} />
 
-                    </div>
+                                </div>
 
-                                <div className="flex-1 md:min-w-[140px]">
+                                <div className="flex-1 space-y-1 text-left">
 
-                                    <div className="font-hand font-bold text-navy text-lg md:text-xl mb-1">{item.day}</div>
+                                    <div className="font-hand font-bold text-navy text-lg md:text-xl">{item.day}</div>
 
                                     {item.time && (
 
@@ -2778,23 +2740,23 @@ const FamilyItinerary = () => (
 
                                     )}
 
-                    </div>
+                                </div>
 
-                </div>
+                            </div>
 
                             {/* Content column */}
-                            <div className="flex-1">
+                            <div className="flex-1 text-left space-y-3">
 
-                                <h3 className="font-hand font-bold text-2xl md:text-3xl mb-2" style={{ color: item.color }}>{item.title}</h3>
+                                <h3 className="font-hand font-bold text-2xl md:text-3xl" style={{ color: item.color }}>{item.title}</h3>
 
                                 {/* Bold one-liner summary */}
-                                <p className="font-hand font-bold text-lg md:text-xl text-navy mb-3 leading-tight">{item.summary}</p>
+                                <p className="font-hand font-bold text-lg md:text-xl text-navy leading-tight">{item.summary}</p>
 
                                 <p className="font-hand text-base md:text-lg text-navy/70 leading-relaxed">{item.desc}</p>
 
-    </div>
+                            </div>
 
-        </div>
+                        </div>
 
                 </div>
 
@@ -2814,7 +2776,7 @@ const FamilyItinerary = () => (
 
 const Celebration = ({ isFamilyMode }) => (
 
-  <section id="the-celebration" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} relative`}>
+  <section id="the-celebration" className={`${SECTION_SPACING} ${SECTION_PADDING} relative`} aria-label="The Celebration">
 
     <div className="watercolor-bg" style={{ transform: 'scaleY(-1)' }}></div>
 
@@ -2822,41 +2784,38 @@ const Celebration = ({ isFamilyMode }) => (
 
     <FadeInWhenVisible className="max-w-6xl mx-auto">
 
-      <StickyHeader>
-
-        <div className="text-center mb-12 md:mb-16">
-
-          <SignboardHeading>The Celebration</SignboardHeading>
-
+      <div className="text-center mb-10">
+        <SignboardHeading>The Celebration</SignboardHeading>
       </div>
-
-      </StickyHeader>
 
 
 
       <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-start">
 
-        <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-lg">
+        <ParallaxWrapper
+          offset={25}
+          hoverEffect
+          className="sketchy-border p-4 bg-gradient-to-br from-white/95 via-[#FDF9F4] to-[#FDF9F4] rotate-1 shadow-xl border border-white/30"
+        >
 
-             <div className="bg-gray-100 h-80 md:h-96 w-full overflow-hidden border-b-2 border-navy relative">
+            <div className="w-full overflow-hidden border-2 border-navy rounded-[24px] bg-white">
 
-                <img 
+               <img 
 
-                  src="/images/blu-missel.jpeg" 
+                 src="/images/blu-missel.jpeg" 
 
-                  alt="Blu Missel by the River" 
+                 alt="Blu Missel by the River" 
 
-                  loading="lazy" 
+                 loading="lazy" 
 
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ objectPosition: 'center' }}
-                  width={1024}
-                  height={683}
+                 className="w-full h-auto block"
+                 width={1024}
+                 height={683}
 
-                />
+               />
 
 
-             </div>
+            </div>
 
              <div className="p-6 md:p-8 space-y-6">
 
@@ -2864,7 +2823,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                 <div className="flex items-start gap-4">
 
-                   <SketchIcon type="palm" className="w-8 h-8 md:w-10 md:h-10 text-[#D4A5A5] flex-shrink-0 mt-1" />
+                   <SketchIcon type="palm" className="w-8 h-8 md:w-10 md:h-10 text-[#D88D66] flex-shrink-0" />
 
                    <div className="font-hand text-xl md:text-2xl leading-tight">
 
@@ -2876,7 +2835,7 @@ const Celebration = ({ isFamilyMode }) => (
                        href={VENUE_GOOGLE_MAPS_URL}
                        target="_blank"
                        rel="noreferrer"
-                       className="inline-flex items-center gap-2 mt-2 text-sm md:text-base text-[#D4A5A5] hover:text-navy transition-colors"
+                       className="inline-flex items-center gap-2 mt-2 text-sm md:text-base text-[#D88D66] hover:text-navy transition-colors"
                        aria-label="Open Blu Missel location in Google Maps"
                      >
                        <MapPin size={16} />
@@ -2887,7 +2846,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                 </div>
 
-                <div className="bg-[#F5F0E8] p-4 md:p-5 rounded-sm border-2 border-navy/20 transform -rotate-1">
+               <div className="bg-white/85 backdrop-blur-sm p-5 md:p-6 rounded-2xl border border-[#D88D66]/20 shadow-inner">
 
                    <p className="text-base md:text-lg text-navy/80 leading-relaxed">Good food, dancing, chaos</p>
                    <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: Good food & lots of dancing, marking a night we won't forget – made better by you.</p>
@@ -2928,7 +2887,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                   <FadeInWhenVisible key={item.event} delay={i * 0.05} className="relative pl-8 md:pl-10 group">
 
-                      <div className="absolute -left-[26px] md:-left-[30px] top-1 w-12 h-12 md:w-14 md:h-14 bg-white border-3 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-125 transition-transform shadow-lg hover:shadow-xl">
+                      <div className="absolute -left-[26px] md:-left-[30px] top-0 w-12 h-12 md:w-14 md:h-14 bg-white border-3 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-125 transition-transform shadow-lg hover:shadow-xl">
 
                          {item.type ? 
 
@@ -2942,7 +2901,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                       <h4 className="font-hand font-bold text-2xl md:text-3xl text-navy mb-2">{item.event}</h4>
 
-                      <p className="font-hand text-[#D4A5A5] text-lg md:text-xl font-bold mb-3">{item.time}</p>
+                      <p className="font-hand text-[#D88D66] text-lg md:text-xl font-bold mb-3">{item.time}</p>
 
                       <p className="font-hand text-navy/70 text-base md:text-lg leading-relaxed">{item.note}</p>
 
@@ -2961,7 +2920,7 @@ const Celebration = ({ isFamilyMode }) => (
           href={GOOGLE_CALENDAR_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border border-[#D4A5A5]/40 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
+          className="sketchy-border border border-[#D88D66]/40 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Add wedding to Google Calendar"
         >
           <Calendar size={18} />
@@ -2971,7 +2930,7 @@ const Celebration = ({ isFamilyMode }) => (
           href={VENUE_GOOGLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border border-[#D4A5A5]/30 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
+          className="sketchy-border border border-[#D88D66]/30 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Open venue in Google Maps"
         >
           <MapPin size={18} />
@@ -2981,7 +2940,7 @@ const Celebration = ({ isFamilyMode }) => (
           href={VENUE_APPLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border border-[#B8D4E8]/40 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
+          className="sketchy-border border border-[#EBBA9A]/40 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Open venue in Apple Maps"
         >
           <MapPin size={18} />
@@ -3001,9 +2960,9 @@ const DressCode = () => {
   const [copiedColor, setCopiedColor] = useState(null);
 
   const colors = [
-    { name: 'Coral Orange', hex: '#ffbd7b', bg: '#ffbd7b' },
-    { name: 'Beige', hex: '#F5F0E8', bg: '#F5F0E8' },
-    { name: 'Sky Blue', hex: '#B8D4E8', bg: '#B8D4E8' }
+    { name: 'Terracotta', hex: '#D88D66', bg: '#D88D66' },
+    { name: 'Blush Sand', hex: '#EBBA9A', bg: '#EBBA9A' },
+    { name: 'Linen Ivory', hex: '#EDEDE3', bg: '#EDEDE3' }
   ];
 
   const copyColorCode = async (hex, colorName) => {
@@ -3032,11 +2991,7 @@ const DressCode = () => {
 
   return (
 
-    <section className={`py-10 md:py-12 lg:py-14 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 relative`}>
-
-      {/* Decorative elements */}
-      <Sun className="absolute top-10 right-10 w-16 h-16 text-[#ffbd7b]/20 rotate-12 animate-float" />
-      <Heart className="absolute bottom-10 left-10 w-12 h-12 text-[#B8D4E8]/20 -rotate-6 animate-float" />
+    <section className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-white to-[#EDEDE3]/30 relative`} aria-label="Dress Code">
 
       <SectionDivider />
 
@@ -3046,55 +3001,61 @@ const DressCode = () => {
 
           <SignboardHeading>What to Wear</SignboardHeading>
 
-          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#ffbd7b] to-transparent mx-auto mb-3"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#EBBA9A] to-transparent mx-auto mb-3"></div>
 
-          <p className="text-navy/70 font-hand text-base md:text-lg max-w-2xl mx-auto">Dress for celebration, comfort, and Goa's warm embrace.</p>
+          <p className="text-navy/70 font-hand text-base md:text-lg max-w-2xl mx-auto">Wear what makes you happy.</p>
 
         </div>
 
-        {/* Compact Layout: Image + Content Side by Side */}
-        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-[0.95fr,1.05fr] gap-5 md:gap-8 lg:gap-10 items-start">
           
-          {/* Wardrobe Image - Takes 1 column */}
-          <FadeInWhenVisible className="md:col-span-1">
-            <ParallaxWrapper offset={15} hoverEffect>
-              <div className="sketchy-border bg-white p-2 shadow-lg h-full">
-                <img 
-                  src="/images/warddrobe.jpg" 
-                  alt="Bride and Groom in wedding colors" 
-                  className="w-full h-full object-cover rounded-sm" 
-                  style={{ aspectRatio: '3/4', objectPosition: 'center' }}
-                  loading="lazy"
-                  width={400}
-                  height={533}
-                />
+          {/* Wardrobe Image */}
+          <FadeInWhenVisible className="flex justify-center md:justify-start">
+            <ParallaxWrapper 
+              offset={18} 
+              hoverEffect 
+              className="relative max-w-sm w-full"
+            >
+              <div className="sketchy-border bg-[#FDF9F4] p-3 rounded-[32px] shadow-xl overflow-hidden">
+                <div className="rounded-[24px] border border-[#D4CDC2] overflow-hidden">
+                  <img 
+                    src="/images/warddrobe.jpg" 
+                    alt="Wedding wardrobe inspiration"
+                    className="w-full h-full object-cover"
+                    style={{ aspectRatio: '2 / 3', maxHeight: '460px', objectPosition: 'center top' }}
+                    loading="lazy"
+                    width={400}
+                    height={533}
+                  />
+                </div>
               </div>
             </ParallaxWrapper>
           </FadeInWhenVisible>
 
-          {/* Beach Formal + Colors - Takes 2 columns */}
-          <div className="md:col-span-2 space-y-4 md:space-y-5">
-            
-            {/* Beach Formal - Compact */}
-            <FadeInWhenVisible className="bg-white/90 backdrop-blur-sm sketchy-border p-5 md:p-6 rotate-[-1deg] hover:rotate-0 transition-all duration-300 shadow-lg">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-[#ffbd7b]/20 flex items-center justify-center flex-shrink-0">
-                  <Music className="w-5 h-5 text-[#ffbd7b]" />
+          {/* Guidance + Palette */}
+          <div className="space-y-5">
+            <FadeInWhenVisible className="bg-[#FDF9F4]/95 border border-[#D4CDC2] rounded-[28px] p-6 shadow-lg">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-[#EBBA9A]/35 flex items-center justify-center">
+                  <Sun className="w-5 h-5 text-[#D88D66]" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-[#3B2F2A] font-hand">Beach Formal</h3>
               </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-navy font-hand">Beach Formal</h3>
-              </div>
-              <p className="font-hand text-base md:text-lg text-navy/80 leading-relaxed mb-2.5">Think flowy dresses, linen suits, comfortable shoes. We're on grass and sand - dress beautifully, but practically.</p>
-              <div className="flex items-start gap-2 pt-2.5 border-t border-navy/10">
-                <Sun className="w-5 h-5 text-[#ffbd7b] mt-0.5 flex-shrink-0" />
-                <p className="font-hand text-sm text-navy/70"><span className="font-bold text-navy">Weather:</span> March in Goa is warm. Pack light.</p>
-              </div>
+              <p className="font-hand text-base md:text-lg text-navy/80 leading-relaxed mb-3">
+                Flowing dresses, mid-length skirts, linen suits, easy sandals. We’re on grass,
+                sand, and dance floors - pick pieces that breathe and move.
+              </p>
             </FadeInWhenVisible>
 
-            {/* Color Palette - Compact Horizontal */}
-            <FadeInWhenVisible delay={0.1} className="bg-gradient-to-br from-[#F5F0E8] via-white to-[#F5F0E8]/50 sketchy-border p-5 md:p-6 rotate-1 hover:rotate-0 transition-all duration-300 shadow-lg">
-              <h3 className="text-xl md:text-2xl font-hand mb-3 text-navy font-bold text-center">Our Color Palette</h3>
+            <FadeInWhenVisible delay={0.1} className="bg-[#FDF9F4]/95 border border-[#D4CDC2] rounded-[28px] p-6 shadow-lg">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-[#D88D66]/30 flex items-center justify-center">
+                  <Palette className="w-5 h-5 text-[#3B2F2A]" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-hand font-bold text-[#3B2F2A]">Palette Notes</h3>
+              </div>
               <div className="grid grid-cols-3 gap-3 md:gap-4">
-                {colors.map((color, idx) => (
+                {colors.map((color) => (
                   <motion.div 
                     key={color.name}
                     className="text-center cursor-pointer group"
@@ -3103,32 +3064,32 @@ const DressCode = () => {
                     onClick={() => copyColorCode(color.hex, color.name)}
                   >
                     <motion.div 
-                      className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg border-3 border-white mx-auto mb-1.5 relative" 
+                      className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg border border-[#FDF9F4] mx-auto mb-1.5 relative" 
                       style={{ 
                         backgroundColor: color.bg,
-                        borderWidth: '3px',
-                        boxShadow: `0 4px 12px ${color.bg}40`
+                        boxShadow: `0 6px 18px ${color.bg}55`
                       }}
                     >
                       {copiedColor === color.name && (
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full"
+                          className="absolute inset-0 flex items-center justify-center bg-[#3B2F2A]/20 rounded-full"
                         >
                           <CheckCircle size={20} className="text-white" />
                         </motion.div>
                       )}
                     </motion.div>
-                    <h4 className="font-bold text-sm font-hand text-navy mb-0.5">{color.name}</h4>
+                    <h4 className="font-bold text-sm font-hand text-[#3B2F2A] mb-0.5">{color.name}</h4>
                     <p className="font-mono text-xs text-navy/60">{color.hex.toUpperCase()}</p>
                   </motion.div>
                 ))}
               </div>
-              <p className="text-xs text-navy/50 font-hand italic text-center mt-3">Click colors to copy • Wear what makes you happy</p>
+              <p className="text-xs text-navy/70 font-hand italic text-center mt-4">
+                Click to copy • But honestly, wear whatever you want.
+              </p>
             </FadeInWhenVisible>
-
-            </div>
+          </div>
 
         </div>
 
@@ -3143,6 +3104,8 @@ const DressCode = () => {
 
 
 const ExploreGoa = () => {
+  // On mobile, start with both sections collapsed. On desktop, they're always visible via CSS
+  const [expandedSection, setExpandedSection] = useState(null);
 
   const recommendations = [
 
@@ -3174,11 +3137,9 @@ const ExploreGoa = () => {
 
         { name: "Tejas Bar", type: "food", location: "Talpona Beach", desc: "Beach shack legends for kalwa sukka (oysters in coconut masala). Eat with your hands, chase with cold beer, lick the spice off.", mapUrl: "https://maps.app.goo.gl/Km7FEL987PiJXUMa6" },
 
-        { name: "Kala Bahia", type: "party", location: "Colomb Bay", desc: "Euro-Goan house party on a cliff. DJs, espresso martinis, surprise sunrise views. Nobody judges your dance face.", mapUrl: "https://maps.app.goo.gl/HiKQ1DyQM28Y9tZc8" },
+        { name: "Kala Bahia", type: "party", location: "Colomb Bay", desc: "Euro-Goan house party vibes. DJs, espresso martinis, great gigs. Dancing, partying, and good times. Nobody judges your dance face.", mapUrl: "https://maps.app.goo.gl/HiKQ1DyQM28Y9tZc8" },
 
         { name: "Kakolem Beach", type: "beach", location: "Tiger Beach", desc: "15-minute scramble down a private staircase to a hidden horseshoe bay with a freshwater fall. Bring water, leave nothing.", mapUrl: "https://maps.app.goo.gl/mSfg3UnLz28dPdVV9" },
-
-        { name: "Colomb Bay", type: "beach", location: "Between Palolem and Patnem", desc: "Our calm bay for morning swims. Fishing families haul nets while you sip chai. Quiet, blue, very ours.", mapUrl: "https://maps.app.goo.gl/wsWU8AZBdsc4YZhr7" },
 
         { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "The postcard crescent. Hit sunrise before the boat guys wake up - mirror water, palms silhouetted, just you.", mapUrl: "https://maps.app.goo.gl/oTJGboCKsGPkTmCs5" },
 
@@ -3194,7 +3155,7 @@ const ExploreGoa = () => {
 
   return (
 
-  <section id="explore-goa" className={`pt-8 md:pt-12 lg:pt-16 pb-16 md:pb-20 lg:pb-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/30 border-t border-navy/10`}>
+  <section id="explore-goa" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-white to-[#EDEDE3]/30 border-t border-navy/10`} aria-label="Explore Goa">
 
     <SectionDivider />
 
@@ -3204,7 +3165,7 @@ const ExploreGoa = () => {
 
           <SignboardHeading>Explore Goa</SignboardHeading>
 
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-6"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-6"></div>
 
           <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto">
 
@@ -3216,71 +3177,96 @@ const ExploreGoa = () => {
 
         <div className="grid md:grid-cols-2 gap-8 md:gap-12">
 
-          {recommendations.map((section, idx) => (
-
-          <FadeInWhenVisible key={section.category} delay={idx * 0.1} className="space-y-8 bg-white/80 backdrop-blur-sm sketchy-border p-8 md:p-10 shadow-lg hover:shadow-xl transition-all">
-
-              <h3 className="text-2xl md:text-3xl font-bold text-navy border-b-2 border-[#D4A5A5]/40 pb-4 mb-6">
-
-                {section.category}
-
-              </h3>
-
-              <div className="space-y-5 md:space-y-6">
-
-                {section.items.map((item, i) => (
-
-                <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#F5F0E8]/50 transition-colors" whileHover={{ x: 6 }}>
-
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white border-2 border-navy/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4A5A5] group-hover:text-white group-hover:border-[#D4A5A5] transition-all shadow-md group-hover:shadow-lg">
-
-                      {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
-
-                      {item.type === 'food' && <SketchIcon type="plate" className="w-5 h-5" />}
-
-                      {item.type === 'beach' && <Sun className="w-5 h-5" />}
-
-                      {item.type === 'party' && <Music className="w-5 h-5" />}
-
-                    </div>
-
-                    <div className="flex-1">
-
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h4 className="font-bold text-lg md:text-xl text-navy">{item.name}</h4>
-                        {item.mapUrl && (
-                          <a
-                            href={item.mapUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
-                            aria-label={`Open ${item.name} in Google Maps`}
-                            title="Open in Google Maps"
-                          >
-                            <MapPin size={18} />
-                          </a>
+          {recommendations.map((section, idx) => {
+            const isExpanded = expandedSection === section.category;
+            
+            return (
+              <FadeInWhenVisible key={section.category} delay={idx * 0.1}>
+                <div className="bg-white/80 backdrop-blur-sm sketchy-border p-8 md:p-10 shadow-lg hover:shadow-xl transition-all">
+                  
+                  {/* Mobile: Collapsible button header */}
+                  <button
+                    onClick={() => setExpandedSection(isExpanded ? null : section.category)}
+                    className="md:hidden w-full flex items-center justify-between text-2xl font-bold text-navy pb-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 transition-all group"
+                    aria-expanded={isExpanded}
+                    aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${section.category} section`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-6 h-6 rounded-full border-2 border-navy flex items-center justify-center transition-all ${isExpanded ? 'bg-[#D88D66] border-[#D88D66]' : 'bg-white group-hover:bg-[#D88D66]/10'}`}>
+                        {section.category === 'North Goa' ? (
+                          <ArrowUp size={14} className={isExpanded ? 'text-white' : 'text-navy'} />
+                        ) : (
+                          <ArrowDown size={14} className={isExpanded ? 'text-white' : 'text-navy'} />
                         )}
                       </div>
-                      {item.location && <p className="text-xs md:text-sm text-navy/50 mb-2 italic">{item.location}</p>}
-                      <p className="text-sm md:text-base text-navy/70 leading-relaxed">{item.desc}</p>
-
+                      <span>{section.category}</span>
                     </div>
+                    {isExpanded ? <ChevronUp size={20} className="text-[#D88D66]" /> : <ChevronDown size={20} className="text-navy/60" />}
+                  </button>
 
+                  {/* Desktop: Static header */}
+                  <h3 className="hidden md:block text-2xl md:text-3xl font-bold text-navy border-b-2 border-[#D88D66]/40 pb-4 mb-6">
+                    {section.category}
+                  </h3>
+                  
+                  {/* Mobile divider - only show when expanded */}
+                  {isExpanded && (
+                    <div className="md:hidden border-b-2 border-[#D88D66]/40 pb-4 mb-6"></div>
+                  )}
+
+                  {/* Content area - always visible on desktop, collapsible on mobile */}
+                  <motion.div
+                    initial={false}
+                    animate={{ 
+                      height: isExpanded ? 'auto' : 0,
+                      opacity: isExpanded ? 1 : 0
+                    }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="overflow-hidden md:!h-auto md:!opacity-100"
+                  >
+                    <div className="space-y-5 md:space-y-6 pt-0 md:pt-0">
+                      {section.items.map((item, i) => (
+                        <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#EDEDE3]/50 transition-colors" whileHover={{ x: 6 }}>
+                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white border-2 border-navy/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-white group-hover:border-[#D88D66] transition-all shadow-md group-hover:shadow-lg">
+                            {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
+                            {item.type === 'food' && <SketchIcon type="plate" className="w-5 h-5" />}
+                            {item.type === 'beach' && <Sun className="w-5 h-5" />}
+                            {item.type === 'party' && <Music className="w-5 h-5" />}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between gap-2 mb-1">
+                              <h4 className="font-bold text-lg md:text-xl text-navy">{item.name}</h4>
+                              {item.mapUrl && (
+                                <a
+                                  href={item.mapUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="flex-shrink-0 text-[#D88D66] hover:text-navy transition-colors"
+                                  aria-label={`Open ${item.name} in Google Maps`}
+                                  title="Open in Google Maps"
+                                >
+                                  <MapPin size={18} />
+                                </a>
+                              )}
+                            </div>
+                            {item.location && <p className="text-xs md:text-sm text-navy/50 mb-2 italic">{item.location}</p>}
+                            <p className="text-sm md:text-base text-navy/70 leading-relaxed">{item.desc}</p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
                   </motion.div>
 
-                ))}
-
-              </div>
-
-                </FadeInWhenVisible>
-
-              ))}
+                </div>
+              </FadeInWhenVisible>
+            );
+          })}
 
             </div>
 
 
 
-        <div className="mt-16 md:mt-20 p-8 md:p-10 bg-gradient-to-br from-[#B8D4E8]/20 to-[#D4A5A5]/10 sketchy-border text-center border-2 border-navy/10 max-w-3xl mx-auto shadow-lg">
+        <div className="mt-16 md:mt-20 p-8 md:p-10 bg-gradient-to-br from-[#EBBA9A]/20 to-[#D88D66]/10 sketchy-border text-center border-2 border-navy/10 max-w-3xl mx-auto shadow-lg">
 
           <p className="text-navy/80 italic font-hand text-lg md:text-xl leading-relaxed">
 
@@ -3302,7 +3288,7 @@ const ExploreGoa = () => {
 
 const Travel = ({ isFamilyMode }) => (
 
-  <section id="travel" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-[#1B3A57] text-[#F5F0E8]`}>
+  <section id="travel" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] text-[#3B2F2A]`} aria-label="Travel & Stay">
 
     <SectionDivider />
 
@@ -3322,9 +3308,16 @@ const Travel = ({ isFamilyMode }) => (
 
         {/* Card 1: Journey - Ticket Style */}
 
-        <FadeInWhenVisible className="bg-white text-navy relative group hover:-translate-y-1 transition-transform duration-300" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', maskImage: 'radial-gradient(circle at left center, transparent 10px, black 10px)' }}>
+        <FadeInWhenVisible
+          className="bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] relative group hover:-translate-y-1 transition-transform duration-300 border border-[#D4CDC2]"
+          style={{
+            clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+            maskImage: 'radial-gradient(circle at left center, transparent 10px, black 10px)',
+            boxShadow: '0 18px 30px rgba(59, 47, 42, 0.08)'
+          }}
+        >
 
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-[#D4A5A5] flex items-center justify-center border-r-2 border-dashed border-navy/20">
+          <div className="absolute left-0 top-0 bottom-0 w-16 bg-[#D88D66] flex items-center justify-center border-r-2 border-dashed border-[#D4CDC2]">
 
              <div className="-rotate-90 font-hand font-bold text-xl text-white whitespace-nowrap tracking-widest">GOA EXPRESS</div>
 
@@ -3332,9 +3325,9 @@ const Travel = ({ isFamilyMode }) => (
 
           <div className="pl-24 pr-8 py-8 relative">
 
-             <div className="absolute top-4 right-4 opacity-20">
+             <div className="absolute top-4 right-4 opacity-30">
 
-                <Anchor className="w-16 h-16 text-navy" />
+                <Anchor className="w-16 h-16 text-[#D4CDC2]" />
 
              </div>
 
@@ -3346,7 +3339,7 @@ const Travel = ({ isFamilyMode }) => (
 
              <div className="space-y-4 font-hand text-lg">
 
-                 <div className="border-b border-dashed border-navy/20 pb-3 mb-3">
+                <div className="border-b border-dashed border-[#D4CDC2] pb-3 mb-3">
                     <div className="flex justify-between pb-2">
                     <span className="opacity-60">DESTINATION</span>
                     </div>
@@ -3362,7 +3355,7 @@ const Travel = ({ isFamilyMode }) => (
                     </div>
                  </div>
 
-                 <div className="border-b border-dashed border-navy/20 pb-3 mb-3">
+                <div className="border-b border-dashed border-[#D4CDC2] pb-3 mb-3">
                     <div className="flex justify-between pb-2">
                     <span className="opacity-60">TRANSFER</span>
                     </div>
@@ -3382,7 +3375,7 @@ const Travel = ({ isFamilyMode }) => (
 
                  {isFamilyMode ? (
 
-                     <div className="bg-[#B8D4E8]/30 p-3 rounded-sm mt-4 text-base transform -rotate-1">
+                     <div className="bg-[#EBBA9A]/30 p-3 rounded-sm mt-4 text-base transform -rotate-1">
 
                        <p className="font-bold">Family pickup:</p>
 
@@ -3402,7 +3395,7 @@ const Travel = ({ isFamilyMode }) => (
 
           {/* Perforated edge visual */}
 
-          <div className="absolute left-16 top-0 bottom-0 w-[2px] border-l-2 border-dashed border-white/50"></div>
+          <div className="absolute left-16 top-0 bottom-0 w-[2px] border-l-2 border-dashed border-[#D4CDC2]/80"></div>
 
         </FadeInWhenVisible>
 
@@ -3410,35 +3403,57 @@ const Travel = ({ isFamilyMode }) => (
 
         {/* Card 2: Base Camp - Notepad Style */}
 
-        <FadeInWhenVisible delay={0.1} className="bg-[#F5F0E8] text-navy p-8 relative shadow-lg transform rotate-1 hover:rotate-0 transition-transform duration-300 border-t-8 border-[#B8D4E8]">
+        <FadeInWhenVisible
+          delay={0.1}
+          className="bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] p-6 md:p-8 lg:p-10 relative shadow-2xl rounded-[28px] overflow-hidden border border-[#D4CDC2]"
+        >
 
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#B8D4E8]/50 transform -rotate-2"></div>
-
-          <h3 className="text-3xl font-bold mb-6 md:mb-8 font-hand text-center">Our Recommendations</h3>
+          <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-36 h-10 bg-[#EBBA9A]/50 rounded-full blur-[2px] opacity-80"></div>
+          <div className="absolute top-4 right-4 w-20 h-20 bg-[#FDF9F4]/70 rounded-full blur-3xl pointer-events-none"></div>
 
           
 
           {isFamilyMode ? (
 
-            <div className="font-hand text-xl space-y-4 md:space-y-5 text-center">
+            <div className="space-y-6 relative z-10">
+              <div className="space-y-3 text-left">
+                <p className="text-xs uppercase tracking-[0.3em] text-navy/60">Your Stay</p>
+                <h3 className="text-3xl md:text-4xl font-hand font-bold text-[#D88D66]">Kidena House</h3>
+                <p className="text-base md:text-lg text-navy/80 leading-relaxed">
+                  You're with us for the full four days. Rooms are already assigned. Fridge will be stocked. Pool will be ready. Arrive, unpack, and slip into vacation pace.
+                </p>
+              </div>
 
-               <div className="border-2 border-navy p-4 rounded-sm bg-white transform rotate-1">
+              <div className="bg-[#FDF9F4]/85 border border-[#D4CDC2] rounded-2xl px-4 py-3 text-sm text-navy/75 leading-relaxed shadow-sm">
+                Six bedrooms, nine baths, a stocked pantry, chefs, butlers, a pool, a private lake, lawns for the kids, and space for every cousin. Just arrive-everything else is sorted.
+              </div>
 
-                   <p className="text-2xl font-bold text-[#D4A5A5]">Kidena House</p>
-
-                   <p className="text-base mt-2">You're with us for the full four days. Rooms are already assigned. Fridge will be stocked. Pool will be ready.</p>
-
+              <div className="flex flex-wrap items-center gap-4 justify-between bg-[#FDF9F4]/90 border border-[#D4CDC2] rounded-2xl px-5 py-4 shadow-sm">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.25em] text-navy/60">Check-in window</p>
+                  <p className="font-hand text-xl text-navy">12:00 PM • March 18–22</p>
                 </div>
-
-                <p className="text-sm opacity-60">Check-in starts at 12:00 PM on March 18.</p>
-
-               </div>
+                <a
+                  href="https://maps.app.goo.gl/hZuyKOIhNYSXhZtwo"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors"
+                  aria-label="View Kidena House on Google Maps"
+                >
+                  <MapPin size={18} />
+                  Kidena on Maps
+                </a>
+              </div>
+            </div>
 
           ) : (
 
+            <>
+              <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 font-hand text-center">Our Recommendations</h3>
+
             <ul className="font-hand text-lg space-y-5">
 
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-4">
+               <li className="flex gap-3 items-start border-b border-[#D4CDC2] pb-4">
 
                  <div className="flex-1">
 
@@ -3448,7 +3463,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=The+Crown+Goa+Panaji"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
+                        className="flex-shrink-0 text-[#D88D66] hover:text-navy transition-colors"
                         aria-label="Open The Crown Goa in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -3462,7 +3477,7 @@ const Travel = ({ isFamilyMode }) => (
 
                </li>
 
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-4">
+               <li className="flex gap-3 items-start border-b border-[#D4CDC2] pb-4">
 
                  <div className="flex-1">
 
@@ -3472,7 +3487,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=DoubleTree+by+Hilton+Goa+Panaji"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
+                        className="flex-shrink-0 text-[#D88D66] hover:text-navy transition-colors"
                         aria-label="Open DoubleTree by Hilton Goa in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -3486,7 +3501,7 @@ const Travel = ({ isFamilyMode }) => (
 
                </li>
 
-               <li className="flex gap-3 items-start border-b border-navy/10 pb-4">
+               <li className="flex gap-3 items-start border-b border-[#D4CDC2] pb-4">
 
                  <div className="flex-1">
 
@@ -3496,7 +3511,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=The+Fern+Kadamba+Hotel+Old+Goa"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-[#D4A5A5] hover:text-navy transition-colors"
+                        className="flex-shrink-0 text-[#D88D66] hover:text-navy transition-colors"
                         aria-label="Open The Fern Kadamba Hotel in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -3512,11 +3527,12 @@ const Travel = ({ isFamilyMode }) => (
 
                <li className="text-center pt-2">
 
-                  <span className="bg-white px-3 py-1 border border-navy rounded-full text-sm"><span className="font-bold">Important:</span> Book early. March is peak wedding<br className="md:hidden" /> season in Goa.</span>
+                  <span className="bg-[#FDF9F4] px-3 py-1 border border-[#D4CDC2] rounded-full text-sm text-[#3B2F2A]"><span className="font-bold">Important:</span> Book early. March is peak wedding<br className="md:hidden" /> season in Goa.</span>
 
                </li>
 
             </ul>
+            </>
 
           )}
 
@@ -3552,7 +3568,7 @@ const QnA = () => {
 
   return (
 
-  <section id="q-a" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-gradient-to-b from-white to-[#F5F0E8]/20`}>
+  <section id="q-a" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-white to-[#EDEDE3]/20`} aria-label="Questions & Answers">
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
@@ -3560,7 +3576,7 @@ const QnA = () => {
 
           <SignboardHeading>FAQ</SignboardHeading>
           
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mt-4"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mt-4"></div>
 
         </div>
 
@@ -3574,22 +3590,22 @@ const QnA = () => {
 
                <h4 className="font-bold text-xl md:text-2xl font-hand text-navy mb-3 flex items-start gap-3">
 
-                 <span className="text-[#D4A5A5] text-2xl md:text-3xl leading-none">?</span> 
+                 <span className="text-[#D88D66] text-2xl md:text-3xl leading-none flex-shrink-0">?</span> 
                  <span>{item.q}</span>
 
                </h4>
 
-               <p className="text-base md:text-lg text-navy/80 ml-8 md:ml-10 leading-relaxed">{item.a}</p>
+               <p className="text-base md:text-lg text-navy/80 leading-relaxed">{item.a}</p>
 
           </FadeInWhenVisible>
 
           ))}
 
-        <FadeInWhenVisible delay={questions.length * 0.05} className="sketchy-border p-8 md:p-10 bg-gradient-to-br from-[#D4A5A5]/10 to-[#B8D4E8]/10 border-2 border-[#D4A5A5]/30 -rotate-1 hover:rotate-0 transition-all shadow-lg md:col-span-2">
+        <FadeInWhenVisible delay={questions.length * 0.05} className="sketchy-border p-8 md:p-10 bg-gradient-to-br from-[#D88D66]/10 to-[#EBBA9A]/10 border-2 border-[#D88D66]/30 -rotate-1 hover:rotate-0 transition-all shadow-lg md:col-span-2">
 
-             <h4 className="font-bold text-xl md:text-2xl font-hand text-navy mb-4 flex items-center gap-3">
+             <h4 className="font-bold text-xl md:text-2xl font-hand text-navy mb-4 flex items-start gap-3">
 
-                 <Phone size={24} className="text-[#D4A5A5] flex-shrink-0" />
+                 <Phone size={24} className="text-[#D88D66] flex-shrink-0" />
 
                  Real Questions?
 
@@ -3630,6 +3646,7 @@ const RSVP = () => {
     dietary: '',
     song: ''
   });
+  const [submittedAttendance, setSubmittedAttendance] = useState(null);
 
   const FORMSPREE_ENDPOINT = "https://formspree.io/f/mnnwwold";
 
@@ -3684,14 +3701,17 @@ const RSVP = () => {
       const responseData = await response.json();
 
       if (response.ok) {
+        setSubmittedAttendance(formData.attending);
         setSubmitted(true);
         setIsSubmitting(false);
-        fireConfetti({
-          particleCount: 120,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#D4A5A5', '#B8D4E8', '#1B3A57', '#F5F0E8']
-        });
+        if (formData.attending === 'Count Me In') {
+          fireConfetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#D88D66', '#EBBA9A', '#3B2F2A', '#EDEDE3']
+          });
+        }
       } else {
         setIsSubmitting(false);
         
@@ -3722,7 +3742,7 @@ const RSVP = () => {
 
   return (
 
-  <section id="rsvp" className={`py-16 md:py-20 lg:py-24 ${SECTION_PADDING} bg-gradient-to-b from-[#F5F0E8] to-white relative`}>
+  <section id="rsvp" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-gradient-to-b from-[#EDEDE3] to-white relative`} aria-label="RSVP">
 
       <SectionDivider />
 
@@ -3731,7 +3751,7 @@ const RSVP = () => {
         <Postcard>
           <div className="text-center mb-8">
           <h2 className="text-4xl md:text-5xl text-navy mb-4 font-hand">R.S.V.P.</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4A5A5] to-transparent mx-auto mb-4"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-4"></div>
           <p className="text-navy/70 text-base md:text-lg font-hand mb-2">Your presence would be our greatest gift.</p>
           <p className="text-navy/60 text-sm md:text-base font-hand">Please let us know if you can celebrate with us by January 20, 2026</p>
         </div>
@@ -3835,8 +3855,8 @@ const RSVP = () => {
                   className="hidden peer" 
                   required
                 />
-                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#B8D4E8]/20 transition-all hover:bg-gray-50">
-                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#D4A5A5]" />
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#EBBA9A]/20 transition-all hover:bg-gray-50">
+                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#D88D66]" />
                   <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
                 </div>
               </label>
@@ -3850,7 +3870,7 @@ const RSVP = () => {
                   className="hidden peer" 
                   required
                 />
-                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D4A5A5]/20 transition-all hover:bg-gray-50">
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D88D66]/20 transition-all hover:bg-gray-50">
                   <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
                   <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
                 </div>
@@ -3860,7 +3880,8 @@ const RSVP = () => {
             <button 
               type="submit"
               disabled={isSubmitting}
-                className="w-full bg-[#1B3A57] text-white font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#2c5378] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1B3A57]"
+              className="w-full bg-[#D88D66] text-[#FDF9F4] font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#C97452] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#D88D66] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBBA9A] focus-visible:ring-offset-2"
+              aria-label="Submit RSVP form"
             >
                 {isSubmitting ? 'Sending...' : 'Submit RSVP'}
             </button>
@@ -3868,15 +3889,42 @@ const RSVP = () => {
 
         ) : (
 
-          <div className="text-center py-12 animate-in fade-in zoom-in duration-500">
-
-            <CheckCircle size={64} className="mx-auto text-[#D4A5A5] mb-4" />
-
-            <h3 className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
-
-            <p className="text-navy/60 mt-2">We can't wait to celebrate with you.</p>
-
-          </div>
+          submittedAttendance === 'Count Me In' ? (
+            <div className="text-center py-12 animate-in fade-in zoom-in duration-500 space-y-4">
+              <CheckCircle size={64} className="mx-auto text-[#D88D66]" />
+              <h3 className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
+              <p className="text-navy/60">We can't wait to celebrate with you.</p>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors"
+                onClick={() => {
+                  setSubmitted(false);
+                  setSubmittedAttendance(null);
+                }}
+              >
+                Update my response
+              </button>
+            </div>
+          ) : (
+            <div className="text-center py-12 animate-in fade-in zoom-in duration-500 space-y-4">
+              <X size={56} className="mx-auto text-navy/50" />
+              <h3 className="text-3xl font-bold text-navy font-hand">We'll Miss You</h3>
+              <p className="text-navy/70 max-w-md mx-auto">
+                Thank you for letting us know. We'll share photos and stories after the festivities so you can celebrate from afar.
+              </p>
+              <p className="text-sm text-navy/60">If plans change, just resubmit the form - we'll make room.</p>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors"
+                onClick={() => {
+                  setSubmitted(false);
+                  setSubmittedAttendance(null);
+                }}
+              >
+                Send a different RSVP
+              </button>
+            </div>
+          )
 
         )}
         </Postcard>
@@ -3892,33 +3940,33 @@ const RSVP = () => {
 
 const Footer = ({ isFamilyMode, onOpenGame }) => (
 
-  <footer className="relative text-[#F5F0E8] text-center px-4 md:px-6 lg:px-8 overflow-hidden py-16 md:py-24 lg:py-32">
+  <footer className="relative text-[#3B2F2A] text-center overflow-hidden py-16 md:py-24 lg:py-32 w-full" style={{ backgroundColor: 'var(--page-canvas)' }}>
 
     {/* Decorative background elements */}
-    <div className="absolute inset-0 opacity-5">
-      <div className="absolute top-10 left-10 w-32 h-32 border-2 border-[#D4A5A5] rounded-full transform rotate-12"></div>
-      <div className="absolute bottom-20 right-20 w-24 h-24 border-2 border-[#B8D4E8] rounded-full transform -rotate-6"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-[#D4A5A5]/20 rounded-full"></div>
+    <div className="absolute inset-0 opacity-10">
+      <div className="absolute top-10 left-10 w-32 h-32 border-2 border-[#EBBA9A]/60 rounded-full transform rotate-12"></div>
+      <div className="absolute bottom-20 right-20 w-24 h-24 border-2 border-[#D4CDC2]/70 rounded-full transform -rotate-6"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-[#D4CDC2]/40 rounded-full"></div>
     </div>
 
-    <div className="absolute inset-0 bg-gradient-to-b from-[#1B3A57] via-[#1B3A57] to-[#0f2538]"></div>
+    <div className="absolute inset-0 footer-gradient w-full" style={{ backgroundColor: 'var(--page-canvas)' }}></div>
 
     <div className="relative z-10 max-w-4xl mx-auto space-y-8 md:space-y-12 lg:space-y-16 px-2">
 
       {/* Main message */}
       <FadeInWhenVisible>
         <div className="space-y-5 md:space-y-6 lg:space-y-8 max-w-3xl mx-auto px-4">
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#F5F0E8] text-center">
+          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-hand leading-relaxed text-[#3B2F2A] text-center">
             Seven years ago, we found each other again.<br /> Every day since, we've chosen each other.
           </p>
-          <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-hand font-bold text-[#D4A5A5] mt-6 md:mt-8 text-center leading-tight">
+          <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-hand font-bold text-[#D88D66] mt-6 md:mt-8 text-center leading-tight">
             Now we're choosing forever -<br className="hidden md:block" /> and we want you there when we say it out loud.
           </p>
           <div className="pt-6 md:pt-8 space-y-2">
-            <p className="text-lg md:text-xl lg:text-2xl font-hand text-[#F5F0E8] text-center">
+            <p className="text-lg md:text-xl lg:text-2xl font-hand text-[#3B2F2A] text-center">
               Shubs & Alysha
             </p>
-            <p className="text-base md:text-lg lg:text-xl font-hand text-[#F5F0E8]/80 text-center">
+            <p className="text-base md:text-lg lg:text-xl font-hand text-[#3B2F2A]/80 text-center">
               March 20, 2026
             </p>
           </div>
@@ -3927,7 +3975,7 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
 
       {/* Countdown Timer */}
       <FadeInWhenVisible delay={0.1}>
-        <div className="flex justify-center">
+        <div className="flex justify-center p-4">
           <CountdownTimer />
         </div>
       </FadeInWhenVisible>
@@ -3937,23 +3985,23 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
         <div className="flex flex-col items-center">
           <button
             onClick={onOpenGame}
-            className="flex items-center gap-2 md:gap-4 bg-white/25 backdrop-blur-md px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D4A5A5] rounded-lg hover:border-[#D4A5A5] hover:bg-white/35 transition-all group shadow-xl cursor-pointer active:scale-95 max-w-full"
+            className="flex items-center gap-2 md:gap-4 bg-[#EDEDE3] px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D88D66] rounded-lg hover:bg-[#FDF9F4] transition-all group shadow-md cursor-pointer active:scale-95 max-w-full"
             aria-label="Cookie & Bailey"
           >
-            <PawPrint size={20} className="md:w-7 md:h-7 text-[#D4A5A5] group-hover:scale-110 transition-transform fill-current flex-shrink-0" /> 
-            <span className="text-base md:text-xl lg:text-2xl font-hand font-bold text-navy whitespace-nowrap">Cookie & Bailey</span>
-            <PawPrint size={20} className="md:w-7 md:h-7 text-[#B8D4E8] group-hover:scale-110 transition-transform fill-current flex-shrink-0" />
+            <PawPrint size={20} className="md:w-7 md:h-7 text-[#3B2F2A] group-hover:scale-110 transition-transform fill-current flex-shrink-0" /> 
+            <span className="text-base md:text-xl lg:text-2xl font-hand font-bold text-[#3B2F2A] whitespace-nowrap">Cookie & Bailey</span>
+            <PawPrint size={20} className="md:w-7 md:h-7 text-[#3B2F2A] group-hover:scale-110 transition-transform fill-current flex-shrink-0" />
           </button>
         </div>
       </FadeInWhenVisible>
 
       {/* Bottom section */}
       <FadeInWhenVisible delay={0.25}>
-        <div className="border-t-2 border-[#F5F0E8]/50 pt-8 md:pt-10 lg:pt-12 space-y-3 md:space-y-4 px-2">
-          <p className="text-sm md:text-base lg:text-lg uppercase tracking-widest text-[#F5F0E8] font-hand font-semibold">
+        <div className="border-t border-[#D4CDC2] pt-8 md:pt-10 lg:pt-12 space-y-3 md:space-y-4 px-2" style={{ backgroundColor: 'var(--page-canvas)' }}>
+          <p className="text-sm md:text-base lg:text-lg uppercase tracking-widest text-[#3B2F2A] font-hand font-semibold">
             Made with love, momos & feni
           </p>
-          <p className="text-xs md:text-sm lg:text-base text-[#F5F0E8] font-medium">
+          <p className="text-xs md:text-sm lg:text-base text-[#3B2F2A]/80 font-medium">
             Goa 2026
           </p>
         </div>
@@ -4026,16 +4074,16 @@ const MusicPlayer = () => {
 
         onClick={togglePlayback}
 
-        className="fixed bottom-6 left-6 z-[100] w-16 h-16 md:w-20 md:h-20 bg-white sketchy-border border-[3px] border-navy shadow-2xl flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
+        className="fixed bottom-6 left-6 z-[100] w-16 h-16 md:w-20 md:h-20 bg-[#EDEDE3] sketchy-border border-[3px] border-[#D4CDC2] shadow-md flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
         style={{ position: 'fixed' }}
 
         aria-label={playing ? 'Pause background music' : 'Play background music'}
 
       >
 
-        <Music className={`w-6 h-6 ${playing ? 'text-[#D4A5A5]' : 'text-navy/60'} group-hover:text-[#D4A5A5] transition-colors`} />
+        <Music className="w-6 h-6 text-[#3B2F2A] group-hover:text-[#D88D66] transition-colors" />
 
-        <span className={`text-[9px] mt-0.5 tracking-tight ${playing ? 'text-[#D4A5A5] font-bold' : 'text-navy/60'} group-hover:text-[#D4A5A5] transition-colors`}>music</span>
+        <span className="text-[9px] mt-0.5 tracking-tight text-[#3B2F2A] group-hover:text-[#D88D66] transition-colors">music</span>
 
       </button>
 
@@ -4057,8 +4105,8 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
       onClick={() => onScrollToRSVP('rsvp')}
 
-      className="fixed bottom-6 right-6 z-[100] bg-navy text-white sketchy-border border-[3px] border-white shadow-2xl px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
-      style={{ position: 'fixed', backgroundColor: '#1B3A57', color: '#F5F0E8' }}
+      className="fixed bottom-6 right-6 z-[100] bg-[#D88D66] text-[#FDF9F4] sketchy-border border-[3px] border-[#FDF9F4] shadow-md px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
+      style={{ position: 'fixed' }}
 
       aria-label="Go to RSVP"
 
@@ -4134,13 +4182,13 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 bg-gray-200 text-navy font-hand font-bold py-3 px-4 rounded-lg hover:bg-gray-300 transition-colors"
+                className="flex-1 bg-[#EDEDE3] text-[#3B2F2A] font-hand font-bold py-3 px-4 rounded-lg border border-[#D4CDC2] hover:bg-[#D4CDC2] transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-navy text-white font-hand font-bold py-3 px-4 rounded-lg hover:bg-[#2c5378] transition-colors"
+                className="flex-1 bg-[#D88D66] text-white font-hand font-bold py-3 px-4 rounded-lg hover:bg-[#C97452] transition-colors"
               >
                 Enter
               </button>
@@ -4180,7 +4228,7 @@ const FloatingPalmTree = () => {
 
     >
 
-      <SketchIcon type="palm" className="w-full h-full text-[#B8D4E8]" />
+      <SketchIcon type="palm" className="w-full h-full text-[#EBBA9A]" />
 
     </motion.div>
 
@@ -4240,7 +4288,7 @@ const FloatingMusicNotes = () => {
 
           >
 
-            <Music className="w-8 h-8 text-[#D4A5A5]" />
+            <Music className="w-8 h-8 text-[#D88D66]" />
 
           </motion.div>
 
@@ -4256,24 +4304,6 @@ const FloatingMusicNotes = () => {
 
 
 
-
-
-
-/* --- STICKY SECTION HEADERS --- */
-
-const StickyHeader = ({ children, className = '' }) => {
-
-  return (
-
-    <div className={`md:sticky md:top-20 z-10 bg-[#F5F0E8]/95 backdrop-blur-md py-3 md:py-4 mb-6 md:mb-8 border-b-2 border-[#D4A5A5]/20 ${className}`}>
-
-      {children}
-
-    </div>
-
-  );
-
-};
 
 
 
@@ -4297,13 +4327,13 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
           onClick={() => onSectionClick(section.id)}
 
-            className={`w-2.5 h-2.5 rounded-full border transition-all relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D4A5A5]/60 ${
+            className={`w-2.5 h-2.5 rounded-full border transition-all relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D88D66]/60 ${
 
               isActive
 
-                ? 'border-[#D4A5A5] bg-[#D4A5A5]'
+                ? 'border-[#D88D66] bg-[#D88D66]'
 
-                : 'border-navy/20 bg-white/80 hover:border-[#D4A5A5]/60 hover:bg-[#D4A5A5]/20'
+                : 'border-navy/20 bg-white/80 hover:border-[#D88D66]/60 hover:bg-[#D88D66]/20'
 
           }`}
 
@@ -4374,9 +4404,6 @@ const App = () => {
 
 
   // Define sections for navigation
-
-  // Memoize sections array to prevent infinite re-renders
-  // Reordered: Critical info first (Celebration, Travel, RSVP), then emotional content
   const sections = useMemo(() => [
 
     { id: 'hero', name: 'Home', component: Hero },
@@ -4398,8 +4425,6 @@ const App = () => {
     { id: 'dress-code', name: 'Dress', component: DressCode },
 
     { id: 'our-story', name: 'Story', component: Story },
-
-    { id: 'dogs', name: 'Dogs', component: CookieAndBailey },
 
     { id: 'explore-goa', name: 'Goa', component: ExploreGoa },
 
@@ -4530,6 +4555,7 @@ const App = () => {
           isFamilyMode={isFamilyMode}
           onFamilyModeToggle={handleFamilyModeToggle}
           onRequestFamilyAccess={handleFamilyModeToggle}
+          onNavigate={scrollToSection}
         />
 
         <DotNav 
@@ -4624,16 +4650,6 @@ const App = () => {
 
 
 
-        <section id="dogs" className="scroll-section flex items-center justify-center">
-
-        <CookieAndBailey />
-
-        </section>
-
-
-
-
-
         <section id="explore-goa" className="scroll-section scroll-section-long">
 
         <ExploreGoa />
@@ -4650,7 +4666,7 @@ const App = () => {
 
 
 
-        <section id="footer" className="scroll-section flex items-center justify-center">
+        <section id="footer" className="scroll-section">
 
         <Footer 
           isFamilyMode={isFamilyMode}
@@ -4672,4 +4688,3 @@ const App = () => {
 
 
 export default App;
-
