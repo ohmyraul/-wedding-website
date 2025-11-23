@@ -2640,11 +2640,11 @@ const FamilyItinerary = () => (
 
      <FadeInWhenVisible className="max-w-5xl mx-auto relative z-10">
 
-        <div className="text-center mb-16">
+        <div className="text-center mb-3 md:mb-4">
 
             <SignboardHeading>The Family Plan</SignboardHeading>
 
-            <p className="text-navy/70 font-hand text-xl md:text-2xl mt-4">Your guide to four days in Goa</p>
+            <p className="text-navy/70 font-hand text-xl md:text-2xl mt-2">Your guide to four days in Goa</p>
 
         </div>
 
@@ -2983,13 +2983,11 @@ const DressCode = () => {
 
       <FadeInWhenVisible className="max-w-6xl mx-auto relative z-10">
 
-        <div className="text-center mb-6 md:mb-8">
+        <div className="text-center mb-3 md:mb-4">
 
           <SignboardHeading>What to Wear</SignboardHeading>
 
-          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#EBBA9A] to-transparent mx-auto mb-3"></div>
-
-          <p className="text-navy/70 font-hand text-base md:text-lg max-w-2xl mx-auto">Beach formal, but make it yours.</p>
+          <p className="text-navy/70 font-hand text-base md:text-lg max-w-2xl mx-auto mt-2">Beach formal, but make it yours.</p>
 
         </div>
 
@@ -3145,13 +3143,11 @@ const ExploreGoa = () => {
 
     <FadeInWhenVisible className="max-w-6xl mx-auto">
 
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-3 md:mb-4">
 
           <SignboardHeading>Explore Goa</SignboardHeading>
 
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-6"></div>
-
-          <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto">
+          <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto mt-2">
             Come for the wedding, stay for the food and feni.
             <br className="hidden md:block" />
             Here's how to spend your time.
@@ -3276,11 +3272,11 @@ const Travel = ({ isFamilyMode }) => (
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
-      <div className="text-center mb-12 md:mb-16">
+      <div className="text-center mb-3 md:mb-4">
 
         <SignboardHeading variant="dark">Travel & Stay</SignboardHeading>
 
-        <p className="text-lg opacity-80 font-hand max-w-lg mx-auto mt-4">Pack your sunscreen and sunglasses. We're taking care of the vibes.</p>
+        <p className="text-lg opacity-80 font-hand max-w-lg mx-auto mt-2">Pack your sunscreen and sunglasses. We're taking care of the vibes.</p>
 
       </div>
 
@@ -3557,11 +3553,9 @@ const QnA = () => {
 
     <FadeInWhenVisible className="max-w-5xl mx-auto">
 
-        <div className="text-center mb-16 md:mb-20">
+        <div className="text-center mb-3 md:mb-4">
 
           <SignboardHeading>FAQ</SignboardHeading>
-          
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mt-4"></div>
 
         </div>
 
