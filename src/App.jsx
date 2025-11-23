@@ -1097,7 +1097,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
 
   return (
 
-    <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
+    <nav className="hidden lg:block fixed top-0 left-0 right-0 z-50 py-4 px-6">
 
       <div className="max-w-6xl mx-auto nav-shell px-6 py-3 flex justify-between items-center">
 
