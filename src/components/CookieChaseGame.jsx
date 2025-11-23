@@ -308,8 +308,12 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         let shouldEndGame = false;
         moved.forEach(obs => {
           // Only process if in collision range, same lane, same horizontal position, and not already processed
-          const horizontalMatch = obs.horizontalPos === undefined || obs.horizontalPos === cookiePosition;
-          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5 && horizontalMatch && !processed.has(obs.id)) {
+          const baseLeft = obs.position * 10;
+          const obsHorizontalOffset = (obs.horizontalPos || 0) * 30;
+          const obsFinalLeft = baseLeft + obsHorizontalOffset;
+          const cookieLeft = 50 + cookiePosition * 30;
+          const horizontalCollision = Math.abs(obsFinalLeft - cookieLeft) < 15; // 15% tolerance for collision
+          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5 && horizontalCollision && !processed.has(obs.id)) {
             processed.add(obs.id); // Mark as processed
             if (obs.type === 'avoid' && !isInvincible) {
               // Mark obstacle for removal and flag game over
@@ -496,19 +500,20 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* Close button - outside overflow container */}
+      <button
+        onClick={closeGame}
+        className="absolute top-4 right-4 z-[200] w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
+        aria-label="Close game"
+      >
+        <X size={20} />
+      </button>
+
       <div
         className="relative w-full max-w-2xl game-sketchy-border overflow-hidden"
         style={{ height: 'clamp(320px, 70vh, 640px)' }}
       >
         <div className="game-texture-overlay"></div>
-        
-        <button
-          onClick={closeGame}
-          className="absolute -top-2 -right-2 z-50 w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
-          aria-label="Close game"
-        >
-          <X size={20} />
-        </button>
 
         {/* Score Display */}
         <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start">
@@ -665,17 +670,18 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                     className="absolute z-10"
                     style={{ 
                       top: '50%', 
-                      left: `${50 + cookiePosition * 25}%`,
+                      left: `${50 + cookiePosition * 30}%`,
                       transform: 'translate(-50%, -50%)'
                     }}
                     animate={{ 
                       y: [0, -3, 0],
-                      scale: isInvincible ? [1, 1.1, 1] : 1
+                      scale: isInvincible ? [1, 1.1, 1] : 1,
+                      x: 0
                     }}
                     transition={{ 
                       y: { repeat: Infinity, duration: 0.5, ease: 'easeInOut' },
                       scale: { repeat: Infinity, duration: 0.3 },
-                      left: { duration: 0.2, ease: 'easeOut' }
+                      left: { duration: 0.15, ease: 'easeOut' }
                     }}
                   >
                     <div className={`w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden sketchy-border ${isInvincible ? 'ring-4 ring-[#D4A5A5]' : ''}`}>
@@ -696,12 +702,16 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                 {/* Obstacles */}
                 {obstacles
                   .filter(obs => obs.lane === laneIndex)
-                  .map(obs => (
+                  .map(obs => {
+                    const baseLeft = obs.position * 10; // Base position from left (0-100%)
+                    const horizontalOffset = (obs.horizontalPos || 0) * 30; // Horizontal offset (-30, 0, or +30)
+                    const finalLeft = Math.max(0, Math.min(100, baseLeft + horizontalOffset));
+                    return (
                     <motion.div
                       key={obs.id}
                       className="absolute z-5"
                       style={{
-                        left: `${obs.position * 10 + (obs.horizontalPos || 0) * 25}%`,
+                        left: `${finalLeft}%`,
                         top: '50%',
                         transform: 'translate(-50%, -50%)'
                       }}
@@ -720,7 +730,8 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                         {obs.emoji}
                       </div>
                     </motion.div>
-                  ))}
+                    );
+                  })}
               </div>
             ))}
           </div>
