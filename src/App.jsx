@@ -1097,7 +1097,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
 
   return (
 
-    <nav className="hidden lg:block fixed top-0 left-0 right-0 z-50 py-4 px-6">
+    <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
 
       <div className="max-w-6xl mx-auto nav-shell px-6 py-3 flex justify-between items-center">
 
@@ -1157,67 +1157,15 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
 
         </div>
 
-        {/* Tablet/Mobile Navigation - below lg, family mode with More dropdown */}
-        {isFamilyMode && (
-          <div className="lg:hidden flex gap-4 md:gap-6 items-center">
-            {mainLinks.map(link => (
-              <a 
-                key={link.name} 
-                href={link.href} 
-                onClick={(e) => handleLinkClick(e, link.href)}
-                className="text-sm md:text-base font-hand font-bold nav-link hover:rotate-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded"
-                aria-label={`Navigate to ${link.name} section`}
-              >
-                {link.name}
-              </a>
-            ))}
-            
-            {/* More Dropdown */}
-            {moreLinks.length > 0 && (
-              <div className="relative" ref={moreDropdownRef}>
-                <button
-                  onClick={() => setIsMoreOpen(!isMoreOpen)}
-                  className="text-sm md:text-base font-hand font-bold nav-link hover:rotate-2 transition-all flex items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
-                  aria-label="More navigation options"
-                  aria-expanded={isMoreOpen}
-                >
-                  More
-                  {isMoreOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                
-                {isMoreOpen && (
-                  <div className="absolute top-full right-0 mt-2 nav-panel p-3 flex flex-col gap-2 min-w-[120px] z-50 shadow-lg">
-                    {moreLinks.map(link => (
-                      <a 
-                        key={link.name} 
-                        href={link.href} 
-                        onClick={(e) => handleLinkClick(e, link.href, true)}
-                        className="text-sm font-hand font-semibold nav-link text-center py-1 border-b border-gray-100 last:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
-                        aria-label={`Navigate to ${link.name} section`}
-                      >
-                        {link.name}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
-        
-
-        {/* Hamburger menu - only show when NOT in family mode on mobile/tablet */}
-        {!isFamilyMode && (
-          <button 
-            onClick={() => setIsOpen(!isOpen)} 
-            className="lg:hidden text-espresso focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded" 
-            aria-label="Toggle navigation menu" 
-            aria-expanded={isOpen}
-          >
-            {isOpen ? <X /> : <Menu />}
-          </button>
-        )}
+        {/* Hamburger menu button - show on mobile/tablet for all modes */}
+        <button 
+          onClick={() => setIsOpen(!isOpen)} 
+          className="lg:hidden text-navy focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded" 
+          aria-label="Toggle navigation menu" 
+          aria-expanded={isOpen}
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
       </div>
 
