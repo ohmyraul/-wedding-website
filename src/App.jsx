@@ -1,8 +1,11 @@
-import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo, Suspense, lazy } from 'react';
 
 import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+
+// Lazy load heavy components
+const CookieChaseGame = lazy(() => import('./components/CookieChaseGame'));
 
 let confettiInstance = null;
 
@@ -208,6 +211,31 @@ const styles = `
   .nav-link:hover,
   .nav-link:focus-visible {
     color: var(--peach-deep);
+  }
+
+  /* Skip link for accessibility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .sr-only:focus {
+    position: fixed;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    z-index: 9999;
   }
 
   .nav-panel {
@@ -1151,9 +1179,8 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
 
   return (
 
-    <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
-
-      <div className="max-w-6xl mx-auto nav-shell px-6 py-3 flex justify-between items-center">
+    <header className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
+      <nav className="max-w-6xl mx-auto nav-shell px-6 py-3 flex justify-between items-center" aria-label="Main navigation">
 
         <a href="#" className="text-3xl text-navy font-hand font-bold tracking-wide flex items-center gap-2 sketchy-text">
 
@@ -1221,10 +1248,6 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-      </div>
-
-      
-
       {/* Mobile Hamburger Menu - only show when not in family mode or when hamburger is clicked */}
       {isOpen && (
         <div className="absolute top-24 right-6 left-6 nav-panel p-6 flex flex-col gap-4 lg:hidden rotate-1 z-50">
@@ -1267,7 +1290,8 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
         </div>
       )}
 
-    </nav>
+      </nav>
+    </header>
 
   );
 
@@ -1465,7 +1489,7 @@ const Hero = ({ onScrollToSection }) => (
       <Heart className="w-8 h-8 text-[#EBBA9A] opacity-60 -rotate-6 animate-float" />
     </ParallaxWrapper>
 
-    <FadeInWhenVisible className="w-full max-w-4xl mx-auto relative z-10 flex flex-col md:flex-col">
+    <FadeInWhenVisible className="w-full max-w-6xl mx-auto relative z-10 flex flex-col md:flex-col">
       
       {/* Mobile: Photo First */}
       <div className="order-1 md:order-2 mb-4 md:mb-0">
@@ -1500,12 +1524,12 @@ const Hero = ({ onScrollToSection }) => (
 
         {/* Names and Invitation */}
         <div className="flex flex-col items-center gap-3 md:gap-4 mt-1 md:mt-2 rotate-[-1deg]">
-          <h2 className={`${TYPO_H1} text-navy relative`}>
+          <h1 className={`${TYPO_H1} text-navy relative`}>
             Shubs & Alysha
             <svg className="absolute -bottom-2 md:-bottom-3 left-0 w-full h-2 md:h-2.5" viewBox="0 0 100 10" preserveAspectRatio="none">
                <path d="M0,5 Q50,10 100,5" stroke="#D88D66" strokeWidth="2" fill="none" />
             </svg>
-          </h2>
+          </h1>
 
           <p className={`${TYPO_BODY} text-navy max-w-xl mx-auto px-2`}>
             invite you to witness our wedding
@@ -1517,7 +1541,7 @@ const Hero = ({ onScrollToSection }) => (
          </div>
 
         {/* Event Details - More prominent */}
-        <div className="max-w-2xl mx-auto mt-6 md:mt-8 lg:mt-10">
+        <div className="max-w-2xl mx-auto mt-8 md:mt-10 lg:mt-12">
           <div className={`${CARD_SECONDARY} bg-[#FDF9F4] border-[#D88D66]/30 ${CARD_PAD_MD} md:${CARD_PAD_LG} text-navy`} style={{ boxShadow: '0 8px 16px -2px rgba(216, 141, 102, 0.15)' }}>
             <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-3 md:gap-3">
               <div className="flex items-center gap-1.5 md:gap-1.5">
@@ -1560,11 +1584,16 @@ const Story = () => (
 
   <section id="our-story" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] relative`} aria-label="Our Story">
 
-    <FadeInWhenVisible className="max-w-5xl mx-auto">
+    <FadeInWhenVisible className="max-w-6xl mx-auto">
 
       <div className="text-center mb-3 md:mb-4">
         <SignboardHeading>Our Story</SignboardHeading>
       </div>
+
+      {/* Decorative anchor */}
+      <ParallaxWrapper offset={20} className="absolute top-32 left-8 hidden md:block pointer-events-none z-0">
+        <Heart className="w-6 h-6 text-[#EBBA9A] opacity-30 animate-float" aria-hidden="true" />
+      </ParallaxWrapper>
 
       <div className="space-y-20 md:space-y-28 lg:space-y-32 relative pt-10 md:pt-12">
 
@@ -1572,7 +1601,7 @@ const Story = () => (
 
         {/* 2015 */}
 
-        <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} md:${SPACE_GRID_LG} items-center mb-20 md:mb-32`}>
+        <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} items-center mb-20 md:mb-32`}>
 
           <FadeInWhenVisible delay={0.2} variant="subtle">
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-2 order-2 md:order-1 photo-frame">
@@ -1614,7 +1643,7 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.15}>
 
-          <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} md:${SPACE_GRID_LG} items-center mb-20 md:mb-32`}>
+          <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} items-center mb-20 md:mb-32`}>
 
           <div>
 
@@ -1656,7 +1685,7 @@ const Story = () => (
 
         <FadeInWhenVisible delay={0.2}>
 
-          <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} md:${SPACE_GRID_LG} items-center mb-20 md:mb-32`}>
+          <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} items-center mb-20 md:mb-32`}>
 
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-1 order-2 md:order-1 photo-frame">
 
@@ -1719,7 +1748,7 @@ const Story = () => (
 
           <div>
 
-              <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>January 6, 2025</span>
+              <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-4 md:px-5 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>January 6, 2025</span>
 
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Question</h3>
 
@@ -1760,717 +1789,8 @@ const Story = () => (
 
 
 
-const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
-  const LANES = 4;
-  const isOpen = externalIsOpen || false;
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(() => {
-    try {
-      return parseInt(localStorage.getItem('cookieGameHighScore') || '0', 10);
-    } catch {
-      return 0;
-    }
-  });
-  const [level, setLevel] = useState(1);
-  const [speed, setSpeed] = useState(500);
-  const [cookieLane, setCookieLane] = useState(1);
-  const [obstacles, setObstacles] = useState([]);
-  const [showDialogue, setShowDialogue] = useState(null);
-  const [groundOffset, setGroundOffset] = useState(0);
-  const [isInvincible, setIsInvincible] = useState(false);
-  const [invincibleUntil, setInvincibleUntil] = useState(0);
-  const [buttonPressed, setButtonPressed] = useState(null);
-  const gameIntervalRef = useRef(null);
-  const groundIntervalRef = useRef(null);
-  const obstacleIdRef = useRef(0);
-  const cookieImageRef = useRef(null);
-  const touchStartY = useRef(0);
-  const touchEndY = useRef(0);
-
-  // Level names
-  const levelNames = {
-    1: 'Beach Training',
-    2: 'Market Madness',
-    3: 'Wedding Day Chaos',
-    4: 'Rehearsal Dinner Rush',
-  };
-
-  // Dialogue system
-  const dialogues = {
-    gameStart: [
-      "Oh look, the humans are back. WHERE'S MY FOOD?",
-      "Another guest? sigh Fine, let's do this.",
-      "Susegaad? Not when I'm HUNGRY.",
-      "I've been doing this for 12 years. You're new here.",
-      "They see me rolling, they better be feeding.",
-    ],
-    collectingFood: [
-      "FINALLY! Was that so hard?",
-      "Now we're talking, human.",
-      "This is why I tolerate you people.",
-      "ONE fish? That's it? Cheap.",
-      "About damn time.",
-      "Nom nom... okay, MORE.",
-    ],
-    hittingKids: [
-      "MOVE IT, tiny human!",
-      "Kids these days have NO respect.",
-      "Watch where you're going!",
-      "This is MY beach!",
-      "Seriously?? I'm WORKING here!",
-    ],
-    hittingScooters: [
-      "DUDE. Where's my treat, not your scooter!",
-      "That's not edible, genius.",
-      "Wrong lane, buddy!",
-      "Vroom vroom yourself outta here.",
-      "Tourists. eye roll",
-    ],
-    losingLife: [
-      "ARE YOU KIDDING ME RIGHT NOW?",
-      "I'm too old for this nonsense.",
-      "12 years of service and THIS is how you repay me?",
-      "Unacceptable. Do better.",
-      "You're lucky you're getting married.",
-    ],
-    gameOver: [
-      "Well THAT was embarrassing for you.",
-      "I've seen better from the cat. THE CAT.",
-      "And they wonder why I bark at ceremonies...",
-      "Maybe stick to planning weddings, yeah?",
-      "I'm going back to my nap.",
-    ],
-    highScore: [
-      "Not bad, human. Not bad.",
-      "FINALLY someone who gets it.",
-      "This calls for extra treats later.",
-      "You may pet me. Once.",
-      "Okay fine, you can stay.",
-    ],
-    midGame: [
-      "Faster! The fish curry won't catch itself!",
-      "Palolem Beach energy, let's GO!",
-      "Channel your inner Goan!",
-      "Susegaad is NOT an option right now!",
-      "Focus! There's prawn balchão at stake!",
-    ],
-    weddingSpecific: [
-      "Just practicing for the ceremony. I WILL bark.",
-      "Hope the guests are ready for THIS energy.",
-      "Bailey's better at this, don't tell Shubs.",
-      "March 20th better have THIS much food.",
-      "If there's no fish at the wedding, we're done.",
-    ],
-    easterEgg: [
-      "Okay fine, I won't bark at the ceremony. JK I ABSOLUTELY WILL.",
-    ],
-  };
-
-  // Better food items with points
-  const foodItems = [
-    { emoji: '🐟', name: 'Fish Curry', type: 'catch', points: 3, dialogue: "THE GOOD STUFF!" },
-    { emoji: '🍤', name: 'Prawn Balchão', type: 'catch', points: 2, dialogue: "Spicy! I LIKE it!" },
-    { emoji: '🐟', name: 'Kingfish', type: 'catch', points: 5, dialogue: "JACKPOT!" },
-    { emoji: '🍰', name: 'Bebinca', type: 'catch', points: 1, dialogue: "Don't tell Alysha..." },
-    { emoji: '🍷', name: 'Feni', type: 'powerup', points: 0, dialogue: "Woah, easy there!", effect: 'invincible' },
-    { emoji: '🍗', name: 'Chicken Xacuti', type: 'catch', points: 2, dialogue: "About time!" },
-    { emoji: '🥥', name: 'Coconut', type: 'catch', points: 1, dialogue: "Refreshing!" },
-  ];
-
-  // Better obstacles
-  const obstacleItems = [
-    { emoji: '👶', name: 'Goan Kid', type: 'avoid', dialogue: "MOVE IT, tiny human!" },
-    { emoji: '🏍️', name: 'Scooter', type: 'avoid', dialogue: "Wrong lane, buddy!" },
-    { emoji: '📸', name: 'Tourist with Selfie Stick', type: 'avoid', dialogue: "NOT NOW, KAREN!" },
-    { emoji: '🛒', name: 'Beach Vendor', type: 'avoid', dialogue: "Selling what? Where's MY cut?" },
-    { emoji: '🦀', name: 'Crab', type: 'avoid', dialogue: "Nope nope nope!" },
-    { emoji: '🐕', name: 'Other Dog', type: 'avoid', dialogue: "This is MY territory!" },
-  ];
-
-  // Get random dialogue
-  const getDialogue = (category) => {
-    const arr = dialogues[category] || [];
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
-
-  // Haptic feedback
-  const triggerHaptic = () => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate(10);
-    }
-  };
-
-  // Save high score
-  const saveHighScore = (newScore) => {
-    try {
-      localStorage.setItem('cookieGameHighScore', newScore.toString());
-      setHighScore(newScore);
-    } catch (e) {
-      console.error('Failed to save high score:', e);
-    }
-  };
-
-  // Share score
-  const shareScore = async () => {
-    const text = `I scored ${score} points in Cookie's Goan Chase! 🐕 Can you beat my score?`;
-    if (navigator.share) {
-      try {
-        await navigator.share({ text, url: window.location.href });
-      } catch (e) {
-        // User cancelled or error
-      }
-    } else {
-      // Fallback: copy to clipboard
-      try {
-        await navigator.clipboard.writeText(text + ' ' + window.location.href);
-        alert('Score copied to clipboard!');
-      } catch (e) {
-        console.error('Failed to share:', e);
-      }
-    }
-  };
-
-  // Reset game state when closed
-  useEffect(() => {
-    if (!isOpen) {
-      setIsPlaying(false);
-      setIsGameOver(false);
-      setIsPaused(false);
-      if (gameIntervalRef.current) {
-        clearInterval(gameIntervalRef.current);
-        gameIntervalRef.current = null;
-      }
-      if (groundIntervalRef.current) {
-        clearInterval(groundIntervalRef.current);
-        groundIntervalRef.current = null;
-      }
-    }
-  }, [isOpen]);
-
-  const moveCookie = (direction) => {
-    if (!isPlaying || isGameOver || isPaused) return;
-    triggerHaptic();
-    setCookieLane(prev => {
-      const newLane = direction === 'up' 
-        ? Math.max(0, prev - 1)
-        : Math.min(LANES - 1, prev + 1);
-      return newLane;
-    });
-  };
-
-  const startGame = () => {
-    if (gameIntervalRef.current) {
-      clearInterval(gameIntervalRef.current);
-      gameIntervalRef.current = null;
-    }
-    if (groundIntervalRef.current) {
-      clearInterval(groundIntervalRef.current);
-      groundIntervalRef.current = null;
-    }
-    setScore(0);
-    setLevel(1);
-    setSpeed(500);
-    setCookieLane(1);
-    setObstacles([]);
-    setIsGameOver(false);
-    setIsPlaying(true);
-    setIsPaused(false);
-    setShowDialogue(null);
-    setGroundOffset(0);
-    setIsInvincible(false);
-    setInvincibleUntil(0);
-    obstacleIdRef.current = 0;
-    
-    // Show start dialogue
-    const startDialogue = getDialogue('gameStart');
-    setShowDialogue(startDialogue);
-    setTimeout(() => setShowDialogue(null), 2000);
-  };
-
-  // Ground animation
-  useEffect(() => {
-    if (!isPlaying || isGameOver || isPaused) {
-      if (groundIntervalRef.current) {
-        clearInterval(groundIntervalRef.current);
-        groundIntervalRef.current = null;
-      }
-      return;
-    }
-
-    const groundSpeed = Math.max(2, 8 - level);
-    groundIntervalRef.current = setInterval(() => {
-      setGroundOffset(prev => (prev + groundSpeed) % 40);
-    }, 16); // ~60fps
-
-    return () => {
-      if (groundIntervalRef.current) {
-        clearInterval(groundIntervalRef.current);
-        groundIntervalRef.current = null;
-      }
-    };
-  }, [isPlaying, isGameOver, isPaused, level]);
-
-  // Invincibility timer
-  useEffect(() => {
-    if (isInvincible && invincibleUntil > Date.now()) {
-      const timer = setTimeout(() => {
-        if (Date.now() >= invincibleUntil) {
-          setIsInvincible(false);
-        }
-      }, invincibleUntil - Date.now());
-      return () => clearTimeout(timer);
-    }
-  }, [isInvincible, invincibleUntil]);
-
-  // Game loop
-  useEffect(() => {
-    if (!isPlaying || isGameOver || isPaused) {
-      if (gameIntervalRef.current) {
-        clearInterval(gameIntervalRef.current);
-        gameIntervalRef.current = null;
-      }
-      return;
-    }
-
-    if (gameIntervalRef.current) {
-      clearInterval(gameIntervalRef.current);
-    }
-
-    gameIntervalRef.current = setInterval(() => {
-      setObstacles(prev => {
-        const moveSpeed = Math.max(0.5, 2 - (level * 0.1));
-        const moved = prev.map(obs => ({
-          ...obs,
-          position: obs.position - moveSpeed
-        }));
-
-        const toRemove = new Set();
-        moved.forEach(obs => {
-          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5) {
-            if (obs.type === 'avoid' && !isInvincible) {
-              setIsGameOver(true);
-              setIsPlaying(false);
-              const finalScore = score;
-              if (finalScore > highScore) {
-                saveHighScore(finalScore);
-              }
-              const gameOverDialogue = getDialogue('gameOver');
-              setShowDialogue(gameOverDialogue);
-            } else if (obs.type === 'catch' || obs.type === 'powerup') {
-              toRemove.add(obs.id);
-              const points = obs.points || 1;
-              setScore(s => {
-                const newScore = s + points;
-                
-                // Easter egg at 100 points
-                if (newScore === 100) {
-                  const easterEgg = getDialogue('easterEgg');
-                  setShowDialogue(easterEgg);
-                  setTimeout(() => setShowDialogue(null), 3000);
-                }
-                
-                setLevel(prevLevel => {
-                  const newLevel = Math.floor(newScore / 10) + 1;
-                  if (newLevel > prevLevel) {
-                    setSpeed(prevSpeed => Math.max(200, prevSpeed - 30));
-                    const levelUpDialogue = `Level ${newLevel}: ${levelNames[newLevel] || 'Goan Master'}`;
-                    setShowDialogue(levelUpDialogue);
-                    setTimeout(() => setShowDialogue(null), 2000);
-                    return newLevel;
-                  }
-                  return prevLevel;
-                });
-                return newScore;
-              });
-              
-              // Handle power-ups
-              if (obs.effect === 'invincible') {
-                setIsInvincible(true);
-                setInvincibleUntil(Date.now() + 5000); // 5 seconds
-              }
-              
-              const dialogue = obs.dialogue || getDialogue('collectingFood');
-              setShowDialogue(dialogue);
-              setTimeout(() => setShowDialogue(null), 1500);
-            }
-          }
-        });
-
-        const filtered = moved.filter(obs => obs.position > -2 && !toRemove.has(obs.id));
-
-        // Spawn rate based on level
-        const spawnRate = Math.min(0.75, 0.5 + (level * 0.05));
-        if (Math.random() < spawnRate) {
-          const allItems = [...foodItems, ...obstacleItems];
-          const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
-          filtered.push({
-            id: obstacleIdRef.current++,
-            lane: Math.floor(Math.random() * LANES),
-            position: 10,
-            type: randomItem.type,
-            emoji: randomItem.emoji,
-            name: randomItem.name,
-            points: randomItem.points || (randomItem.type === 'catch' ? 1 : 0),
-            dialogue: randomItem.dialogue,
-            effect: randomItem.effect,
-          });
-        }
-
-        return filtered;
-      });
-    }, speed);
-
-    return () => {
-      if (gameIntervalRef.current) {
-        clearInterval(gameIntervalRef.current);
-        gameIntervalRef.current = null;
-      }
-    };
-  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, level, score, highScore, isInvincible]);
-
-  // Keyboard controls
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (event) => {
-      if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
-        event.preventDefault();
-        if (isGameOver) {
-          startGame();
-        } else {
-          moveCookie('up');
-        }
-      } else if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
-        event.preventDefault();
-        moveCookie('down');
-      } else if (event.key === ' ' || event.key === 'Enter') {
-        event.preventDefault();
-        if (isGameOver || (!isPlaying && !isGameOver)) {
-          startGame();
-        } else if (isPlaying) {
-          setIsPaused(prev => !prev);
-        }
-      } else if (event.key === 'Escape') {
-        event.preventDefault();
-        if (isPaused) {
-          setIsPaused(false);
-        } else if (isPlaying) {
-          setIsPaused(true);
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isPlaying, isGameOver, isPaused]);
-
-  // Swipe gestures
-  const handleTouchStart = (e) => {
-    touchStartY.current = e.touches[0].clientY;
-  };
-
-  const handleTouchMove = (e) => {
-    touchEndY.current = e.touches[0].clientY;
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStartY.current || !touchEndY.current) return;
-    const diff = touchStartY.current - touchEndY.current;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        moveCookie('up');
-      } else {
-        moveCookie('down');
-      }
-    }
-    touchStartY.current = 0;
-    touchEndY.current = 0;
-  };
-
-  const handleButtonPress = (direction) => {
-    setButtonPressed(direction);
-    triggerHaptic();
-    moveCookie(direction);
-    setTimeout(() => setButtonPressed(null), 150);
-  };
-
-  const closeGame = () => {
-    setIsPlaying(false);
-    setIsGameOver(false);
-    setIsPaused(false);
-    if (gameIntervalRef.current) {
-      clearInterval(gameIntervalRef.current);
-      gameIntervalRef.current = null;
-    }
-    if (groundIntervalRef.current) {
-      clearInterval(groundIntervalRef.current);
-      groundIntervalRef.current = null;
-    }
-    if (onClose) {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div 
-      className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#EBBA9A]/20 to-[#EDEDE3] px-4"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div className="relative w-full max-w-2xl game-sketchy-border overflow-hidden" style={{ height: '85vh', maxHeight: '600px', minHeight: '500px' }}>
-        <div className="game-texture-overlay"></div>
-        
-        <button
-          onClick={closeGame}
-          className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
-          aria-label="Close game"
-        >
-          <X size={20} />
-        </button>
-
-        {/* Score Display */}
-        <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start">
-          <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md sketchy-border">
-            <div className="text-2xl font-bold text-navy font-mono tabular-nums">{score.toString().padStart(4, '0')}</div>
-            <div className="text-xs text-navy/60 font-hand">{levelNames[level] || `Level ${level}`}</div>
-          </div>
-          {highScore > 0 && (
-            <div className="bg-white/95 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md text-right sketchy-border">
-              <div className="text-xs text-navy/50 font-hand">HI</div>
-              <div className="text-lg font-bold text-navy/70 font-mono tabular-nums">{highScore.toString().padStart(4, '0')}</div>
-            </div>
-          )}
-        </div>
-
-        {/* Cookie Dialogue Bubble */}
-        <AnimatePresence>
-          {showDialogue && (
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.8 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="absolute top-16 md:top-20 left-1/2 -translate-x-1/2 z-40 cookie-dialogue max-w-[90%] md:max-w-none"
-            >
-              {showDialogue}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Invincibility indicator */}
-        {isInvincible && (
-          <motion.div
-            animate={{ opacity: [1, 0.5, 1] }}
-            transition={{ repeat: Infinity, duration: 0.5 }}
-            className="absolute top-16 left-1/2 -translate-x-1/2 z-30 bg-[#D88D66] text-white px-3 py-1 rounded-full text-xs font-hand font-bold sketchy-border"
-          >
-            INVINCIBLE!
-          </motion.div>
-        )}
-
-        {/* Start Screen */}
-        {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#EDEDE3] to-white z-10 p-8">
-            <div className="mb-8">
-              <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white border-4 border-white shadow-2xl p-1 flex items-center justify-center overflow-hidden sketchy-border">
-                <img
-                  ref={cookieImageRef}
-                  src="/images/cookie.png"
-                  alt="Cookie"
-                  className="w-full h-full object-cover rounded-full"
-                  style={{ objectPosition: 'center' }}
-                  onError={(e) => {
-                    e.target.src = '/images/cookie.jpg';
-                    e.target.style.objectPosition = 'center';
-                  }}
-                />
-              </div>
-            </div>
-            <h4 className="text-4xl font-hand text-navy mb-3 font-bold">Cookie's Goan Chase</h4>
-            <p className="text-sm text-navy/70 mb-2 text-center max-w-md font-hand">
-              Catch Goan food • Avoid obstacles • Survive the chaos!
-            </p>
-            <p className="text-xs text-navy/60 mb-8 text-center font-hand">
-              Use ↑↓←→ or WASD keys • Use ←↑↓→ buttons below on mobile
-            </p>
-            <button
-              onClick={startGame}
-              className={`px-8 py-3 bg-[#D88D66] text-[#FDF9F4] font-bold ${CARD_SECONDARY} shadow-sm hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand`}
-            >
-              Press ↑ or Space to Start
-            </button>
-          </div>
-        )}
-
-        {/* Game Over Screen */}
-        {isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm z-20 p-8">
-            <div className="text-center">
-              <h4 className="text-5xl font-bold text-navy mb-4 font-hand">Game Over</h4>
-              <div className="text-6xl font-mono font-bold text-[#D88D66] mb-2 tabular-nums">{score.toString().padStart(4, '0')}</div>
-              <p className="text-sm text-navy/60 mb-2 font-hand">{levelNames[level] || `Level ${level}`}</p>
-              {score >= highScore && score > 0 && (
-                <p className="text-xs text-[#D88D66] font-bold mb-4 font-hand">NEW HIGH SCORE!</p>
-              )}
-              <div className="flex gap-3 justify-center">
-                <button
-                  onClick={startGame}
-                  className={`px-6 py-2 bg-[#D88D66] text-[#FDF9F4] font-bold ${CARD_SECONDARY} shadow-sm hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand`}
-                >
-                  Play Again
-                </button>
-                {score > 0 && (
-                  <button
-                    onClick={shareScore}
-                    className={`px-6 py-2 bg-[#D88D66] text-[#FDF9F4] font-bold ${CARD_SECONDARY} shadow-sm hover:bg-[#C97452] transition-all transform hover:scale-105 sketchy-border font-hand`}
-                  >
-                    Share Score
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Pause Screen */}
-        {isPaused && isPlaying && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-20">
-            <div className="bg-white rounded-xl px-8 py-6 shadow-2xl text-center sketchy-border">
-              <h4 className="text-3xl font-bold text-navy mb-4 font-hand">Paused</h4>
-              <p className="text-sm text-navy/60 mb-4 font-hand">Press Space or Esc to resume</p>
-              <button
-                onClick={() => setIsPaused(false)}
-                className={`px-6 py-2 bg-[#D88D66] text-[#FDF9F4] font-bold ${CARD_SECONDARY} hover:bg-[#C97452] transition-all sketchy-border font-hand`}
-              >
-                Resume
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Game Area */}
-        {isPlaying && (
-          <div className="relative w-full h-full game-beach-bg overflow-hidden">
-            {/* Palm trees in background */}
-            <div className="absolute top-10 left-10 palm-tree opacity-30"></div>
-            <div className="absolute top-20 right-20 palm-tree opacity-20" style={{ transform: 'scaleX(-1)' }}></div>
-            
-            {/* Animated Ground */}
-            <div 
-              className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#3B2F2A] to-[#D4CDC2] border-t-4 border-[#3B2F2A]"
-              style={{
-                backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.1) 40px)`,
-                backgroundPosition: `${groundOffset}px 0`
-              }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-            </div>
-
-            {/* Game lanes */}
-            {Array.from({ length: LANES }).map((_, laneIndex) => (
-              <div
-                key={laneIndex}
-                className="absolute left-0 right-0"
-                style={{
-                  top: `${(laneIndex + 1) * (100 / (LANES + 1))}%`,
-                  height: `${100 / (LANES + 1)}%`,
-                  borderBottom: laneIndex < LANES - 1 ? '1px dashed rgba(58, 49, 43, 0.1)' : 'none'
-                }}
-              >
-                {/* Cookie sticker */}
-                {cookieLane === laneIndex && (
-                  <motion.div
-                    className="absolute left-8 z-10"
-                    style={{ top: '50%', transform: 'translateY(-50%)' }}
-                    animate={{ 
-                      y: [0, -3, 0],
-                      scale: isInvincible ? [1, 1.1, 1] : 1
-                    }}
-                    transition={{ 
-                      y: { repeat: Infinity, duration: 0.5, ease: 'easeInOut' },
-                      scale: { repeat: Infinity, duration: 0.3 }
-                    }}
-                  >
-                    <div className={`w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden sketchy-border ${isInvincible ? 'ring-4 ring-[#D88D66]' : ''}`}>
-                      <img
-                        src="/images/cookie.png"
-                        alt="Cookie"
-                        className="w-full h-full object-cover rounded-full"
-                        style={{ objectPosition: 'center' }}
-                        onError={(e) => {
-                          e.target.src = '/images/cookie.jpg';
-                          e.target.style.objectPosition = 'center';
-                        }}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Obstacles */}
-                {obstacles
-                  .filter(obs => obs.lane === laneIndex)
-                  .map(obs => (
-                    <motion.div
-                      key={obs.id}
-                      className="absolute z-5"
-                      style={{
-                        left: `${obs.position * 10}%`,
-                        top: '50%',
-                        transform: 'translateY(-50%)'
-                      }}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ 
-                        opacity: 1, 
-                        scale: 1,
-                        rotate: obs.type === 'catch' || obs.type === 'powerup' ? [0, 5, -5, 0] : 0
-                      }}
-                      transition={{ 
-                        rotate: { repeat: Infinity, duration: 0.5 },
-                        opacity: { duration: 0.2 }
-                      }}
-                    >
-                      <div className="w-16 h-16 rounded-full flex items-center justify-center text-4xl shadow-xl">
-                        {obs.emoji}
-                      </div>
-                    </motion.div>
-                  ))}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Mobile controls - Paw print buttons */}
-        {isPlaying && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 md:hidden z-20">
-            <button
-              onClick={() => handleButtonPress('up')}
-              className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
-              aria-label="Move up"
-            >
-              <PawPrint size={32} className="text-[#D88D66]" />
-            </button>
-            <button
-              onClick={() => handleButtonPress('down')}
-              className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
-              aria-label="Move down"
-            >
-              <PawPrint size={32} className="text-[#EBBA9A]" />
-            </button>
-          </div>
-        )}
-          </div>
-        </div>
-  );
-};
-
-
-
-
-/* --- NEW COMPONENTS (Missing in original) --- */
+// CookieChaseGame is now lazy-loaded from ./components/CookieChaseGame
+// Removed inline definition to avoid redeclaration
 
 // Image Modal Component with Zoom
 const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext, onPrev }) => {
@@ -2480,14 +1800,21 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const imageRef = useRef(null);
   const containerRef = useRef(null);
+  const triggerRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
       setScale(1);
       setPosition({ x: 0, y: 0 });
       document.body.style.overflow = 'hidden';
+      // Store the element that triggered the modal
+      triggerRef.current = document.activeElement;
     } else {
       document.body.style.overflow = '';
+      // Return focus to the trigger element
+      if (triggerRef.current && typeof triggerRef.current.focus === 'function') {
+        triggerRef.current.focus();
+      }
     }
     return () => {
       document.body.style.overflow = '';
@@ -2508,10 +1835,34 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
         setScale(prev => Math.min(prev + 0.25, 3));
       } else if (e.key === '-') {
         setScale(prev => Math.max(prev - 0.25, 0.5));
+      } else if (e.key === 'Tab') {
+        // Focus trap
+        const focusableElements = containerRef.current?.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusableElements || focusableElements.length === 0) return;
+        
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    // Focus first element when modal opens
+    const focusableElements = containerRef.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusableElements && focusableElements.length > 0) {
+      focusableElements[0].focus();
+    }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose, onNext, onPrev]);
 
@@ -2609,6 +1960,9 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         ref={containerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="image-modal-title"
       >
         {/* Close Button */}
         <button
@@ -2668,7 +2022,7 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
 
         {/* Image Counter */}
         {images.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[201] bg-white/95 px-4 py-2 rounded-full shadow-lg text-navy/60 text-sm">
+          <div id="image-modal-title" className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[201] bg-white/95 px-4 py-2 rounded-full shadow-lg text-navy text-sm">
             {currentIndex + 1} / {images.length}
           </div>
         )}
@@ -2924,7 +2278,7 @@ const KidenaHouse = () => (
         <SketchIcon type="palm" className="absolute top-20 right-20 w-96 h-96 text-white" />
                         </div>
 
-    <FadeInWhenVisible className="max-w-7xl mx-auto relative z-10">
+    <FadeInWhenVisible className="max-w-6xl mx-auto relative z-10">
 
       {/* Photo Carousel */}
       <div className="relative">
@@ -2934,12 +2288,12 @@ const KidenaHouse = () => (
       </div>
 
         {/* Features Grid - 2x2 Layout */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mt-14 mb-14">
+        <div className="grid md:grid-cols-2 gap-8 mt-14 mb-14">
             
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border-2 border-[#D88D66] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#D88D66] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
-                        <Home className="w-6 h-6 text-[#D88D66]" />
+                        <Home className="w-5 h-5 text-[#D88D66]" />
                     </div>
                     <div className="flex-1">
                         <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>The House</h3>
@@ -2948,10 +2302,10 @@ const KidenaHouse = () => (
                 </div>
         </div>
 
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border-2 border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
-                        <SketchIcon type="plate" className="w-6 h-6 text-[#EBBA9A]" />
+                        <SketchIcon type="plate" className="w-5 h-5 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
                         <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>No Cooking, No Cleaning</h3>
@@ -2960,10 +2314,10 @@ const KidenaHouse = () => (
                 </div>
             </div>
 
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border-2 border-[#D88D66] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#D88D66] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
-                        <Sun className="w-6 h-6 text-[#D88D66]" />
+                        <Sun className="w-5 h-5 text-[#D88D66]" />
                     </div>
                     <div className="flex-1">
                         <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>Spa & Steam Room</h3>
@@ -2972,10 +2326,10 @@ const KidenaHouse = () => (
                 </div>
         </div>
 
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border-2 border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
-                        <Music className="w-6 h-6 text-[#EBBA9A]" />
+                        <Music className="w-5 h-5 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
                         <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>Keep Busy (or Don't)</h3>
@@ -2999,9 +2353,6 @@ const FamilyItinerary = () => (
   <section id="family-itinerary" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4] relative`} aria-label="Family Itinerary">
 
     <div className="absolute inset-0 opacity-5 pointer-events-none">
-
-        <SketchIcon type="palm" className="absolute top-20 right-20 w-96 h-96 text-navy rotate-12" />
-
     </div>
 
      <FadeInWhenVisible className="max-w-5xl mx-auto relative z-10">
@@ -3151,7 +2502,7 @@ const Celebration = ({ isFamilyMode }) => (
             offset={25}
             hoverEffect
             className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-[#EBBA9A]/30 ${CARD_PAD_MD} rotate-1`}
-            style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
+            style={{ boxShadow: '0 8px 16px rgba(216, 141, 102, 0.15)' }}
           >
 
             <div className={`w-full overflow-hidden border-2 border-navy ${CARD_PRIMARY} bg-[#FDF9F4]`}>
@@ -3250,7 +2601,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                       </div>
 
-                      <h4 className={`font-hand ${TYPO_H2} text-navy mb-2`}>{item.event}</h4>
+                      <h3 className={`font-hand ${TYPO_H2} text-navy mb-2`}>{item.event}</h3>
 
                       <p className={`font-hand ${TYPO_BODY} text-navy font-bold mb-3`}>{item.time}</p>
 
@@ -3428,7 +2779,7 @@ const DressCode = () => {
                   </motion.div>
                 ))}
               </div>
-              <p className="text-xs text-navy/70 font-hand italic text-center mt-4">
+              <p className="text-xs text-navy font-hand italic text-center mt-4">
                 Click to copy colors • Or don't. Wear what feels right.
               </p>
             </FadeInWhenVisible>
@@ -3500,7 +2851,12 @@ const ExploreGoa = () => {
 
   <section id="explore-goa" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4]`} aria-label="Explore Goa">
 
-    <FadeInWhenVisible className="max-w-6xl mx-auto">
+    <FadeInWhenVisible className="max-w-6xl mx-auto relative">
+
+        {/* Decorative anchor */}
+        <ParallaxWrapper offset={-20} className="absolute top-20 right-8 hidden md:block pointer-events-none z-0">
+          <Anchor className="w-6 h-6 text-[#D88D66] opacity-30 animate-float" aria-hidden="true" />
+        </ParallaxWrapper>
 
         <div className="text-center mb-3 md:mb-4">
 
@@ -3565,7 +2921,7 @@ const ExploreGoa = () => {
                     <div className="space-y-5 md:space-y-6 pt-0 md:pt-0">
                       {section.items.map((item, i) => (
                         <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#EDEDE3]/50 transition-colors" whileHover={{ x: 6 }}>
-                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#FDF9F4] border-2 border-[#D4CDC2] flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-[#FDF9F4] group-hover:border-[#D88D66] transition-all shadow-sm group-hover:shadow-md">
+                          <div className="w-10 h-10 md:w-12 h-12 rounded-full bg-[#FDF9F4] border-2 border-[#D4CDC2] flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-[#FDF9F4] group-hover:border-[#D88D66] transition-all shadow-sm group-hover:shadow-md">
                             {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
                             {item.type === 'food' && <SketchIcon type="plate" className="w-5 h-5" />}
                             {item.type === 'beach' && <Sun className="w-5 h-5" />}
@@ -3628,7 +2984,7 @@ const Travel = ({ isFamilyMode }) => (
 
     <SectionDivider />
 
-    <FadeInWhenVisible className="max-w-5xl mx-auto">
+    <FadeInWhenVisible className="max-w-6xl mx-auto">
 
       <div className="text-center mb-3 md:mb-4">
 
@@ -3640,7 +2996,7 @@ const Travel = ({ isFamilyMode }) => (
 
 
 
-      <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} lg:${SPACE_GRID_LG}`}>
+      <div className="grid md:grid-cols-2 gap-8 md:gap-10 lg:gap-12">
 
         {/* Card 1: Journey - Ticket Style */}
 
@@ -3649,7 +3005,7 @@ const Travel = ({ isFamilyMode }) => (
           style={{
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
             maskImage: 'radial-gradient(circle at left center, transparent 10px, black 10px)',
-            boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)'
+            boxShadow: '0 8px 16px rgba(216, 141, 102, 0.15)'
           }}
         >
 
@@ -3733,6 +3089,9 @@ const Travel = ({ isFamilyMode }) => (
 
           <div className="absolute left-16 top-0 bottom-0 w-[2px] border-l-2 border-dashed border-[#D4CDC2]/80"></div>
 
+          {/* Subtle visual connector to base camp */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full w-8 h-[1px] border-t border-dashed border-[#D4CDC2]/30 hidden md:block"></div>
+
         </FadeInWhenVisible>
 
         
@@ -3742,7 +3101,7 @@ const Travel = ({ isFamilyMode }) => (
         <FadeInWhenVisible
           delay={0.15}
           className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden hidden md:block md:hover:-translate-y-1 md:hover:shadow-lg md:hover:rotate-[0.5deg] transition-all duration-250`}
-          style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
+          style={{ boxShadow: '0 8px 16px rgba(216, 141, 102, 0.15)' }}
         >
 
           <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-36 h-10 bg-[#EBBA9A]/50 rounded-full blur-[2px] opacity-80"></div>
@@ -3767,7 +3126,7 @@ const Travel = ({ isFamilyMode }) => (
 
               <div className={`flex flex-wrap items-center gap-4 justify-between bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_SM} shadow-sm`}>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.25em] text-navy/60">Check-in window</p>
+                  <p className="text-xs uppercase tracking-[0.25em] text-navy">Check-in window</p>
                   <p className="font-hand text-xl text-navy">12:00 PM • March 18–22</p>
                 </div>
                 <a
@@ -3910,7 +3269,7 @@ const QnA = () => {
 
   <section id="q-a" className={`${SECTION_SPACING} ${SECTION_PADDING} bg-[#FDF9F4]`} aria-label="Questions & Answers">
 
-    <FadeInWhenVisible className="max-w-5xl mx-auto">
+    <FadeInWhenVisible className="max-w-6xl mx-auto">
 
         <div className="text-center mb-3 md:mb-4">
 
@@ -3920,7 +3279,7 @@ const QnA = () => {
 
 
 
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
 
           {questions.map((item, i) => (
 
@@ -3985,6 +3344,8 @@ const RSVP = () => {
     song: ''
   });
   const [submittedAttendance, setSubmittedAttendance] = useState(null);
+  const modalRef = useRef(null);
+  const submitButtonRef = useRef(null);
 
   const FORMSPREE_ENDPOINT = "https://formspree.io/f/mnnwwold";
 
@@ -4084,11 +3445,16 @@ const RSVP = () => {
 
       <SectionDivider />
 
+      {/* Decorative anchor */}
+      <ParallaxWrapper offset={15} className="absolute top-16 right-12 hidden md:block pointer-events-none z-0">
+        <Heart className="w-6 h-6 text-[#EBBA9A] opacity-30 animate-float" aria-hidden="true" />
+      </ParallaxWrapper>
+
       <FadeInWhenVisible className="max-w-3xl mx-auto relative">
 
         <Postcard>
           {!submitted && (
-            <div className="text-center mb-10 md:mb-12">
+            <div className="text-center mb-12 md:mb-14">
               <h2 className={`${TYPO_H1} text-navy mb-4`}>R.S.V.P.</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-4"></div>
               <p className={`${TYPO_BODY} text-navy font-hand mb-2`}>We want you there.</p>
@@ -4222,6 +3588,7 @@ const RSVP = () => {
               disabled={isSubmitting}
               className="w-full bg-[#D88D66] text-[#FDF9F4] font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#C97452] transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] hover:-translate-y-[2px] active:scale-[0.98] active:translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#D88D66] disabled:hover:scale-100 disabled:hover:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBBA9A] focus-visible:ring-offset-2"
               aria-label="Submit RSVP form"
+              ref={submitButtonRef}
             >
                 {isSubmitting ? 'Sending...' : 'Submit RSVP'}
             </button>
@@ -4241,6 +3608,10 @@ const RSVP = () => {
                 setSubmitted(false);
                 setSubmittedAttendance(null);
               }}
+              ref={modalRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="rsvp-modal-title"
             >
               <motion.div
                 initial={{ scale: 0.95, opacity: 0 }}
@@ -4266,8 +3637,8 @@ const RSVP = () => {
                     {submittedAttendance === 'Count Me In' ? (
                       <>
                         <CheckCircle size={64} className="mx-auto text-[#D88D66]" />
-                        <h3 className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
-                        <p className="text-navy/60">We can't wait to celebrate with you.</p>
+                        <h3 id="rsvp-modal-title" className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
+                        <p className="text-navy">We can't wait to celebrate with you.</p>
                         <button
                           type="button"
                           className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors underline"
@@ -4282,11 +3653,11 @@ const RSVP = () => {
                     ) : (
                       <>
                         <X size={56} className="mx-auto text-navy/50" />
-                        <h3 className="text-3xl font-bold text-navy font-hand">We'll Miss You</h3>
+                        <h3 id="rsvp-modal-title" className="text-3xl font-bold text-navy font-hand">We'll Miss You</h3>
                         <p className={`${TYPO_BODY} text-navy max-w-md mx-auto`}>
                           Thank you for letting us know. We'll share photos and stories after the festivities so you can celebrate from afar.
                         </p>
-                        <p className="text-sm text-navy/60">If plans change, just resubmit the form - we'll make room.</p>
+                        <p className="text-sm text-navy">If plans change, just resubmit the form - we'll make room.</p>
                         <button
                           type="button"
                           className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors underline"
@@ -4328,7 +3699,7 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
 
     <div className="absolute inset-0 footer-gradient w-full" style={{ backgroundColor: 'var(--page-canvas)' }}></div>
 
-    <div className="relative z-10 max-w-4xl mx-auto space-y-10 md:space-y-14 lg:space-y-18 px-2">
+    <div className="relative z-10 max-w-6xl mx-auto space-y-10 md:space-y-14 lg:space-y-18 px-2">
 
       {/* Main message */}
       <FadeInWhenVisible>
@@ -4362,8 +3733,8 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
         <div className="flex flex-col items-center mt-6 md:mt-8">
           <button
             onClick={onOpenGame}
-            className="flex items-center gap-2 md:gap-4 bg-[#EDEDE3] px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D4CDC2] rounded-lg hover:bg-[#FDF9F4] transition-all group shadow-md cursor-pointer active:scale-95 max-w-full"
-            aria-label="Cookie & Bailey"
+            className="flex items-center gap-2 md:gap-4 bg-[#EDEDE3] px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D4CDC2] rounded-lg hover:bg-[#FDF9F4] transition-all group shadow-md cursor-pointer active:scale-95 max-w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
+            aria-label="Play the Cookie & Bailey game"
           >
             <PawPrint size={20} className="md:w-7 md:h-7 text-[#3B2F2A] group-hover:scale-110 transition-transform fill-current flex-shrink-0" /> 
             <span className="text-base md:text-xl lg:text-2xl font-hand font-bold text-[#3B2F2A] whitespace-nowrap">Cookie & Bailey</span>
@@ -4502,6 +3873,8 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const containerRef = useRef(null);
+  const triggerRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -4516,6 +3889,56 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
     }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      triggerRef.current = document.activeElement;
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      if (triggerRef.current && typeof triggerRef.current.focus === 'function') {
+        triggerRef.current.focus();
+      }
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key === 'Tab') {
+        const focusableElements = containerRef.current?.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusableElements || focusableElements.length === 0) return;
+        
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    const focusableElements = containerRef.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusableElements && focusableElements.length > 0) {
+      focusableElements[0].focus();
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -4526,6 +3949,10 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
+        ref={containerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="password-modal-title"
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
@@ -4535,7 +3962,7 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
           className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} max-w-md w-full`}
           style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}
         >
-          <h3 className={`${TYPO_H2} font-hand text-navy mb-4 text-center`}>
+          <h3 id="password-modal-title" className={`${TYPO_H2} font-hand text-navy mb-4 text-center`}>
             Family Mode
           </h3>
           <p className={`${TYPO_BODY} text-navy text-center mb-6 font-hand`}>
@@ -4719,7 +4146,8 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
           whileTap={{ scale: 1.15 }}
 
-          aria-label={section.name || section.id}
+          aria-label={`Go to ${section.name || section.id} section`}
+          aria-current={isActive ? "true" : undefined}
 
         >
 
@@ -4956,6 +4384,7 @@ const App = () => {
 
 
 
+        <main id="main-content">
         <section id="hero" className="scroll-section flex items-center justify-center">
 
         <Hero onScrollToSection={scrollToSection} />
@@ -5042,6 +4471,8 @@ const App = () => {
 
         </section>
 
+        </main>
+
 
 
         <section id="footer" className="scroll-section">
@@ -5051,7 +4482,9 @@ const App = () => {
           onOpenGame={() => setIsGameOpen(true)}
         />
 
-          <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
+          <Suspense fallback={null}>
+            <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
+          </Suspense>
 
         </section>
 
