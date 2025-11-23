@@ -728,7 +728,7 @@ const styles = `
   }
 
   .signboard--dark .signboard__text {
-    color: #EDEDE3;
+    color: white;
   }
 
   .signboard--dark::before,
