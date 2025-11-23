@@ -1373,9 +1373,9 @@ const Hero = ({ onScrollToSection }) => (
                 style={{ objectPosition: 'center' }}
                 width={1024}
                 height={890}
-                 initial={{ scale: 1.2 }}
-                 animate={{ scale: 1 }}
-                transition={{ duration: 1.2, ease: 'easeOut' }}
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
                  loading="eager"
               />
             </motion.div>
@@ -2388,6 +2388,8 @@ const KidenaHouseCarousel = memo(() => {
     { src: '/images/kidena-house3.jpg', alt: 'Kidena House - View 3' },
     { src: '/images/kidena-house4.jpg', alt: 'Kidena House - View 4' },
     { src: '/images/kidena-house5.jpg', alt: 'Kidena House - View 5' },
+    { src: '/images/hall.jpg', alt: 'Kidena House - Hall' },
+    { src: '/images/top.jpg', alt: 'Kidena House - Top View' },
     { src: '/images/spa.jpg', alt: 'Kidena House - Spa' },
     { src: '/images/boat.jpg', alt: 'Kidena House - Boat' },
   ], []);
@@ -2891,36 +2893,36 @@ const Celebration = ({ isFamilyMode }) => (
 
       </div>
 
-      <div className="mt-12 flex flex-wrap gap-3">
+      <div className="mt-8 flex flex-wrap gap-2 justify-center">
         <a
           href={GOOGLE_CALENDAR_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border border-[#D88D66]/40 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
+          className="sketchy-border border border-[#D88D66]/40 bg-white/90 text-navy text-xs font-semibold tracking-wide px-3 py-2 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Add wedding to Google Calendar"
         >
-          <Calendar size={18} />
-          Add to Google Calendar
+          <Calendar size={14} />
+          <span className="hidden sm:inline">Add to</span> Calendar
         </a>
         <a
           href={VENUE_GOOGLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border border-[#D88D66]/30 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
+          className="sketchy-border border border-[#D88D66]/30 bg-white/90 text-navy text-xs font-semibold tracking-wide px-3 py-2 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Open venue in Google Maps"
         >
-          <MapPin size={18} />
-          Google Maps Pin
+          <MapPin size={14} />
+          <span className="hidden sm:inline">Google</span> Maps
         </a>
         <a
           href={VENUE_APPLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className="sketchy-border border border-[#EBBA9A]/40 bg-white/90 text-navy text-sm font-semibold tracking-wide px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:-translate-y-0.5 transition-all"
+          className="sketchy-border border border-[#EBBA9A]/40 bg-white/90 text-navy text-xs font-semibold tracking-wide px-3 py-2 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:-translate-y-0.5 transition-all"
           aria-label="Open venue in Apple Maps"
         >
-          <MapPin size={18} />
-          Apple Maps Pin
+          <MapPin size={14} />
+          <span className="hidden sm:inline">Apple</span> Maps
         </a>
       </div>
 
