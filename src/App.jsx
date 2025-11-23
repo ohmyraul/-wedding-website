@@ -3659,7 +3659,7 @@ const Travel = ({ isFamilyMode }) => (
 
           </div>
 
-          <div className={`pl-24 pr-8 ${CARD_PAD_MD} md:${CARD_PAD_LG} relative`}>
+          <div className={`pl-24 pr-8 py-6 md:py-10 relative`}>
 
              <div className="absolute top-4 right-4 opacity-30">
 
