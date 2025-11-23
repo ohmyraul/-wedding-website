@@ -3100,7 +3100,7 @@ const Travel = ({ isFamilyMode }) => (
 
         <FadeInWhenVisible
           delay={0.15}
-          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden hidden md:block md:hover:-translate-y-1 md:hover:shadow-lg md:hover:rotate-[0.5deg] transition-all duration-250`}
+          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden md:hover:-translate-y-1 md:hover:shadow-lg md:hover:rotate-[0.5deg] transition-all duration-250`}
           style={{ boxShadow: '0 8px 16px rgba(216, 141, 102, 0.15)' }}
         >
 
