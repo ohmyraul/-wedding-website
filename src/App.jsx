@@ -2457,20 +2457,27 @@ const KidenaHouseCarousel = memo(() => {
     <div className="relative w-full max-w-5xl md:max-w-6xl mx-auto">
       {/* Carousel Container */}
       <div 
-        className="relative w-full overflow-hidden rounded-lg"
+        className="relative w-full"
+        style={{ 
+          overflow: 'hidden',
+          paddingTop: '28px',
+          paddingBottom: '28px',
+          paddingLeft: '28px',
+          paddingRight: '28px'
+        }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
         <div 
-          className="flex w-full py-4"
+          className="flex w-full"
           style={{ 
             transform: `translateX(-${currentIndex * 100}%)`,
             transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
           }}
         >
           {endlessImages.map((image, index) => (
-            <div key={index} className="min-w-full flex-shrink-0 w-full px-4">
-              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl m-2">
+            <div key={index} className="min-w-full flex-shrink-0 w-full">
+              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
                 <div 
                   className="relative bg-white w-full overflow-hidden"
                   style={{ maxHeight: '70vh' }}
