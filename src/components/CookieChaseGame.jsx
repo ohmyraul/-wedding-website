@@ -19,6 +19,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   const [level, setLevel] = useState(1);
   const [speed, setSpeed] = useState(500);
   const [cookieLane, setCookieLane] = useState(1);
+  const [cookiePosition, setCookiePosition] = useState(0); // Horizontal position: -1 (left), 0 (center), 1 (right)
   const [obstacles, setObstacles] = useState([]);
   const [showDialogue, setShowDialogue] = useState(null);
   const [groundOffset, setGroundOffset] = useState(0);
@@ -193,15 +194,26 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   }, [isOpen]);
 
   const moveCookie = (direction) => {
-    const normalizedDirection = direction === 'left' ? 'up' : direction === 'right' ? 'down' : direction;
     if (!isPlaying || isGameOver || isPaused) return;
     triggerHaptic();
-    setCookieLane(prev => {
-      const newLane = normalizedDirection === 'up' 
-        ? Math.max(0, prev - 1)
-        : Math.min(LANES - 1, prev + 1);
-      return newLane;
-    });
+    
+    if (direction === 'up' || direction === 'down') {
+      // Vertical movement (lane change)
+      setCookieLane(prev => {
+        const newLane = direction === 'up' 
+          ? Math.max(0, prev - 1)
+          : Math.min(LANES - 1, prev + 1);
+        return newLane;
+      });
+    } else if (direction === 'left' || direction === 'right') {
+      // Horizontal movement
+      setCookiePosition(prev => {
+        const newPos = direction === 'left'
+          ? Math.max(-1, prev - 1)
+          : Math.min(1, prev + 1);
+        return newPos;
+      });
+    }
   };
 
   const startGame = () => {
@@ -217,6 +229,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     setLevel(1);
     setSpeed(500);
     setCookieLane(1);
+    setCookiePosition(0);
     setObstacles([]);
     setIsGameOver(false);
     setIsPlaying(true);
@@ -294,8 +307,9 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         const processed = new Set(); // Track processed obstacles to prevent double-triggering
         let shouldEndGame = false;
         moved.forEach(obs => {
-          // Only process if in collision range, same lane, and not already processed
-          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5 && !processed.has(obs.id)) {
+          // Only process if in collision range, same lane, same horizontal position, and not already processed
+          const horizontalMatch = obs.horizontalPos === undefined || obs.horizontalPos === cookiePosition;
+          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5 && horizontalMatch && !processed.has(obs.id)) {
             processed.add(obs.id); // Mark as processed
             if (obs.type === 'avoid' && !isInvincible) {
               // Mark obstacle for removal and flag game over
@@ -363,6 +377,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
           filtered.push({
             id: obstacleIdRef.current++,
             lane: Math.floor(Math.random() * LANES),
+            horizontalPos: Math.floor(Math.random() * 3) - 1, // -1, 0, or 1
             position: 10,
             type: randomItem.type,
             emoji: randomItem.emoji,
@@ -383,7 +398,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         gameIntervalRef.current = null;
       }
     };
-  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, level, score, highScore, isInvincible]);
+  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, cookiePosition, level, score, highScore, isInvincible]);
 
   // Keyboard controls
   useEffect(() => {
@@ -399,6 +414,12 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
       } else if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
         event.preventDefault();
         moveCookie('down');
+      } else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
+        event.preventDefault();
+        moveCookie('left');
+      } else if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
+        event.preventDefault();
+        moveCookie('right');
       } else if (event.key === ' ' || event.key === 'Enter') {
         event.preventDefault();
         if (isGameOver || (!isPlaying && !isGameOver)) {
@@ -470,20 +491,20 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-[150] flex items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4"
+      className="fixed inset-0 z-[150] flex flex-col items-center justify-center bg-gradient-to-b from-[#B8D4E8]/20 to-[#F5F0E8] px-4 py-4"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       <div
         className="relative w-full max-w-2xl game-sketchy-border overflow-hidden"
-        style={{ height: 'clamp(320px, 85vh, 640px)' }}
+        style={{ height: 'clamp(320px, 70vh, 640px)' }}
       >
         <div className="game-texture-overlay"></div>
         
         <button
           onClick={closeGame}
-          className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
+          className="absolute -top-2 -right-2 z-50 w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all sketchy-border"
           aria-label="Close game"
         >
           <X size={20} />
@@ -552,7 +573,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               Catch Goan food • Avoid obstacles • Survive the chaos!
             </p>
             <p className="text-xs text-navy/60 mb-8 text-center font-hand">
-              Use ↑↓ or W/S keys • Swipe on mobile
+              Use ↑↓←→ or WASD keys • Swipe on mobile
             </p>
             <button
               onClick={startGame}
@@ -641,15 +662,20 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                 {/* Cookie sticker */}
                 {cookieLane === laneIndex && (
                   <motion.div
-                    className="absolute left-8 z-10"
-                    style={{ top: '50%', transform: 'translateY(-50%)' }}
+                    className="absolute z-10"
+                    style={{ 
+                      top: '50%', 
+                      left: `${50 + cookiePosition * 25}%`,
+                      transform: 'translate(-50%, -50%)'
+                    }}
                     animate={{ 
                       y: [0, -3, 0],
                       scale: isInvincible ? [1, 1.1, 1] : 1
                     }}
                     transition={{ 
                       y: { repeat: Infinity, duration: 0.5, ease: 'easeInOut' },
-                      scale: { repeat: Infinity, duration: 0.3 }
+                      scale: { repeat: Infinity, duration: 0.3 },
+                      left: { duration: 0.2, ease: 'easeOut' }
                     }}
                   >
                     <div className={`w-24 h-24 rounded-full bg-white border-4 border-white shadow-2xl p-0.5 flex items-center justify-center overflow-hidden sketchy-border ${isInvincible ? 'ring-4 ring-[#D4A5A5]' : ''}`}>
@@ -675,9 +701,9 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                       key={obs.id}
                       className="absolute z-5"
                       style={{
-                        left: `${obs.position * 10}%`,
+                        left: `${obs.position * 10 + (obs.horizontalPos || 0) * 25}%`,
                         top: '50%',
-                        transform: 'translateY(-50%)'
+                        transform: 'translate(-50%, -50%)'
                       }}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ 
@@ -700,44 +726,45 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
           </div>
         )}
 
-        {/* Mobile controls - Paw print buttons */}
-        {isPlaying && (
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 md:hidden z-20">
-            <div className="flex flex-col items-center gap-3">
+      </div>
+
+      {/* Mobile controls - Paw print buttons */}
+      {isPlaying && (
+        <div className="w-full max-w-2xl mt-6 md:hidden">
+          <div className="flex flex-col items-center gap-4">
+            <button
+              onClick={() => handleButtonPress('up')}
+              className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
+              aria-label="Move up"
+            >
+              <span className="text-2xl text-[#D88D66] font-semibold">△</span>
+            </button>
+            <div className="flex items-center gap-8">
               <button
-                onClick={() => handleButtonPress('up')}
-                className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
-                aria-label="Move up"
+                onClick={() => handleButtonPress('left')}
+                className={`paw-button ${buttonPressed === 'left' ? 'pressed' : ''}`}
+                aria-label="Move left"
               >
-                <span className="text-2xl text-[#D88D66] font-semibold">△</span>
+                <span className="text-2xl text-[#3B2F2A] font-semibold">◀</span>
               </button>
-              <div className="flex items-center gap-6">
-                <button
-                  onClick={() => handleButtonPress('left')}
-                  className={`paw-button ${buttonPressed === 'left' ? 'pressed' : ''}`}
-                  aria-label="Move up"
-                >
-                  <span className="text-2xl text-[#3B2F2A] font-semibold">□</span>
-                </button>
-                <button
-                  onClick={() => handleButtonPress('down')}
-                  className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
-                  aria-label="Move down"
-                >
-                  <span className="text-2xl text-[#D88D66] font-semibold">✕</span>
-                </button>
-                <button
-                  onClick={() => handleButtonPress('right')}
-                  className={`paw-button ${buttonPressed === 'right' ? 'pressed' : ''}`}
-                  aria-label="Move down"
-                >
-                  <span className="text-2xl text-[#EBBA9A] font-semibold">◯</span>
-                </button>
-              </div>
+              <button
+                onClick={() => handleButtonPress('down')}
+                className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
+                aria-label="Move down"
+              >
+                <span className="text-2xl text-[#D88D66] font-semibold">▽</span>
+              </button>
+              <button
+                onClick={() => handleButtonPress('right')}
+                className={`paw-button ${buttonPressed === 'right' ? 'pressed' : ''}`}
+                aria-label="Move right"
+              >
+                <span className="text-2xl text-[#EBBA9A] font-semibold">▶</span>
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
