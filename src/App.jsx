@@ -2355,7 +2355,7 @@ const FamilyItinerary = () => (
     <div className="absolute inset-0 opacity-5 pointer-events-none">
     </div>
 
-     <FadeInWhenVisible className="max-w-5xl mx-auto relative z-10">
+     <FadeInWhenVisible className="max-w-6xl mx-auto relative z-10">
 
         <div className="text-center mb-3 md:mb-4">
 
@@ -2589,7 +2589,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                   <FadeInWhenVisible key={item.event} delay={i * 0.05} className="relative pl-10 md:pl-12 group">
 
-                      <div className="absolute -left-[28px] md:-left-[34px] top-0 w-14 h-14 md:w-16 md:h-16 bg-[#FDF9F4] border-3 border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-110 transition-all duration-200" style={{ boxShadow: '0 10px 15px -3px rgba(216, 141, 102, 0.15)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 15px 20px -3px rgba(216, 141, 102, 0.2)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(216, 141, 102, 0.15)'}>
+                      <div className="absolute -left-[28px] md:-left-[34px] top-0 w-14 h-14 md:w-16 md:h-16 bg-[#FDF9F4] border-[3px] border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-110 transition-all duration-200" style={{ boxShadow: '0 10px 15px -3px rgba(216, 141, 102, 0.15)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 15px 20px -3px rgba(216, 141, 102, 0.2)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(216, 141, 102, 0.15)'}>
 
                          {item.type ? 
 
@@ -3344,6 +3344,7 @@ const RSVP = () => {
     song: ''
   });
   const [submittedAttendance, setSubmittedAttendance] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const modalRef = useRef(null);
   const submitButtonRef = useRef(null);
 
@@ -3357,16 +3358,19 @@ const RSVP = () => {
     const trimmedEmail = (formData.email || '').trim();
     const trimmedPhone = (formData.phone || '').trim();
     
+    // Clear any previous errors
+    setErrorMessage(null);
+
     // Validate required fields
     if (!trimmedName || !trimmedEmail || !trimmedPhone || !formData.attending) {
-      alert('Please fill in all required fields.');
+      setErrorMessage('Please fill in all required fields.');
       return;
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
-      alert('Please enter a valid email address.');
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
 
@@ -3415,20 +3419,20 @@ const RSVP = () => {
         setIsSubmitting(false);
         
         if (responseData.error) {
-          alert('Error: ' + responseData.error);
+          setErrorMessage('Error: ' + responseData.error);
         } else if (responseData.errors) {
           const errorMessages = Array.isArray(responseData.errors) 
             ? responseData.errors.map(e => e.message || e).join(', ')
             : JSON.stringify(responseData.errors);
-          alert('Error: ' + errorMessages);
+          setErrorMessage('Error: ' + errorMessages);
         } else {
-          alert('Something went wrong. Status: ' + response.status + '. Check console (F12) for details.');
+          setErrorMessage('Something went wrong. Please try again or check your connection.');
         }
       }
     } catch (error) {
       setIsSubmitting(false);
       console.error('Submission error:', error);
-      alert('Network error. Please check your connection and try again.');
+      setErrorMessage('Network error. Please check your connection and try again.');
     }
   };
 
@@ -3437,7 +3441,23 @@ const RSVP = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
+    // Clear error when user starts typing
+    if (errorMessage) {
+      setErrorMessage(null);
+    }
   };
+
+  // Scroll lock for RSVP modals
+  useEffect(() => {
+    if (submitted) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [submitted]);
 
   return (
 
@@ -3464,6 +3484,11 @@ const RSVP = () => {
 
         {!submitted && (
           <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-7 md:space-y-8">
+            {errorMessage && (
+              <div className="bg-[#D88D66]/10 border border-[#D88D66] text-navy px-4 py-3 rounded-lg text-sm font-hand">
+                {errorMessage}
+              </div>
+            )}
             <div>
                 <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
               <input 
@@ -3474,7 +3499,8 @@ const RSVP = () => {
                 onChange={handleChange}
                 className="modern-input" 
                 placeholder="Who are we celebrating with?" 
-                required 
+                required
+                maxLength={100}
               />
             </div>
 
@@ -3489,7 +3515,8 @@ const RSVP = () => {
                      onChange={handleChange}
                      className="modern-input" 
                      placeholder="name@email.com" 
-                     required 
+                     required
+                     maxLength={254}
                    />
                 </div>
                 <div>
@@ -3502,7 +3529,8 @@ const RSVP = () => {
                      onChange={handleChange}
                      className="modern-input" 
                      placeholder="+91..." 
-                     required 
+                     required
+                     maxLength={20}
                    />
                 </div>
             </div>
@@ -3532,7 +3560,8 @@ const RSVP = () => {
                     value={formData.dietary}
                     onChange={handleChange}
                     className="modern-input" 
-                    placeholder="Allergies, vegetarian preferences, etc." 
+                    placeholder="Allergies, vegetarian preferences, etc."
+                    maxLength={200}
                   />
                 </div>
               </div>
@@ -3546,7 +3575,8 @@ const RSVP = () => {
                   value={formData.song}
                   onChange={handleChange}
                   className="modern-input" 
-                  placeholder="What will guarantee you on the dance floor?" 
+                  placeholder="What will guarantee you on the dance floor?"
+                  maxLength={100}
                 />
             </div>
 
@@ -4482,7 +4512,16 @@ const App = () => {
           onOpenGame={() => setIsGameOpen(true)}
         />
 
-          <Suspense fallback={null}>
+          <Suspense fallback={
+            isGameOpen ? (
+              <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                <div className="text-center text-navy font-hand">
+                  <div className="inline-block w-8 h-8 border-2 border-[#D88D66] border-t-transparent rounded-full animate-spin mb-2"></div>
+                  <p className="text-sm">Loading Cookie & Bailey...</p>
+                </div>
+              </div>
+            ) : null
+          }>
             <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
           </Suspense>
 

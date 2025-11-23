@@ -27,7 +27,7 @@ const FadeInWhenVisible = memo(({ children, delay = 0, className = '' }) => {
         visible: { 
           opacity: 1, 
           y: 0,
-          transition: { duration: 0.6, delay, ease: 'easeOut' }
+          transition: { duration: 0.4, delay, ease: [0.25, 0.1, 0.25, 1] }
         }
       }}
     >
