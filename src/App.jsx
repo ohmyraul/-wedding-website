@@ -717,7 +717,7 @@ const styles = `
     letter-spacing: 0.04em;
     font-size: 1rem;
     text-transform: uppercase;
-    color: white;
+    color: white !important;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
   }
 
