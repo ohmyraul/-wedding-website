@@ -242,7 +242,10 @@ const styles = `
   .sketchy-border::before {
     content: '';
     position: absolute;
-    inset: 0;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
     border: 2px solid var(--ink);
     border-radius: inherit;
     z-index: -1;
@@ -2459,14 +2462,14 @@ const KidenaHouseCarousel = memo(() => {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div 
-          className="flex w-full"
+          className="flex w-full py-2"
           style={{ 
             transform: `translateX(-${currentIndex * 100}%)`,
             transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
           }}
         >
           {endlessImages.map((image, index) => (
-            <div key={index} className="min-w-full flex-shrink-0 w-full">
+            <div key={index} className="min-w-full flex-shrink-0 w-full px-2">
               <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
                 <div 
                   className="relative bg-white w-full overflow-hidden"
