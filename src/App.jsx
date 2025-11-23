@@ -2385,8 +2385,9 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
 // Kidena House Image Carousel Component (defined first since KidenaHouse uses it)
 const KidenaHouseCarousel = memo(() => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1); // Start at 1 because we duplicate first image at start
   const [isPaused, setIsPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const images = useMemo(() => [
     { src: '/images/kidena-house.jpg', alt: 'Kidena House - Main View' },
     { src: '/images/kidena-house2.jpg', alt: 'Kidena House - View 2' },
@@ -2397,28 +2398,61 @@ const KidenaHouseCarousel = memo(() => {
     { src: '/images/boat.jpg', alt: 'Kidena House - Boat' },
   ], []);
 
+  // Create endless carousel by duplicating first and last images
+  const endlessImages = useMemo(() => [
+    images[images.length - 1], // Clone last image at start
+    ...images,
+    images[0], // Clone first image at end
+  ], [images]);
+
   const nextImage = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev + 1);
   };
 
   const prevImage = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev - 1);
   };
 
   const goToImage = (index) => {
-    setCurrentIndex(index);
+    setIsTransitioning(true);
+    setCurrentIndex(index + 1); // +1 because of the cloned first image
   };
+
+  // Handle seamless looping
+  useEffect(() => {
+    if (!isTransitioning) return;
+
+    const timer = setTimeout(() => {
+      // If at the cloned last image (index = endlessImages.length - 1), jump to real first image (index = 1)
+      if (currentIndex === endlessImages.length - 1) {
+        setIsTransitioning(false);
+        setCurrentIndex(1);
+      }
+      // If at the cloned first image (index = 0), jump to real last image (index = images.length)
+      else if (currentIndex === 0) {
+        setIsTransitioning(false);
+        setCurrentIndex(images.length);
+      } else {
+        setIsTransitioning(false);
+      }
+    }, 500); // Match transition duration
+
+    return () => clearTimeout(timer);
+  }, [currentIndex, isTransitioning, endlessImages.length, images.length]);
 
   // Auto-advance carousel every 5 seconds (pauses on hover)
   useEffect(() => {
     if (isPaused) return;
     
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
+      setIsTransitioning(true);
+      setCurrentIndex((prev) => prev + 1);
     }, 5000); // Change image every 5 seconds
 
     return () => clearInterval(interval);
-  }, [images.length, isPaused]);
+  }, [isPaused]);
 
   return (
     <div className="relative w-full max-w-5xl md:max-w-6xl mx-auto">
@@ -2429,10 +2463,13 @@ const KidenaHouseCarousel = memo(() => {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div 
-          className="flex w-full transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          className="flex w-full"
+          style={{ 
+            transform: `translateX(-${currentIndex * 100}%)`,
+            transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
+          }}
         >
-          {images.map((image, index) => (
+          {endlessImages.map((image, index) => (
             <div key={index} className="min-w-full flex-shrink-0 w-full">
               <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
                 <div 
@@ -2487,19 +2524,23 @@ const KidenaHouseCarousel = memo(() => {
 
         {/* Dots Indicator - Only one set */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToImage(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${
-                index === currentIndex
-                  ? 'bg-white w-8'
-                  : 'bg-white/50 hover:bg-white/75'
-              }`}
-              aria-label={`Go to image ${index + 1}`}
-              type="button"
-            />
-          ))}
+          {images.map((_, index) => {
+            // Map to actual index (currentIndex - 1 because of cloned first image)
+            const actualIndex = currentIndex === 0 ? images.length - 1 : currentIndex === endlessImages.length - 1 ? 0 : currentIndex - 1;
+            return (
+              <button
+                key={index}
+                onClick={() => goToImage(index)}
+                className={`w-2.5 h-2.5 rounded-full transition-all ${
+                  index === actualIndex
+                    ? 'bg-white w-8'
+                    : 'bg-white/50 hover:bg-white/75'
+                }`}
+                aria-label={`Go to image ${index + 1}`}
+                type="button"
+              />
+            );
+          })}
                         </div>
       </div>
     </div>
