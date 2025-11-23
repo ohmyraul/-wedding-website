@@ -193,10 +193,11 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   }, [isOpen]);
 
   const moveCookie = (direction) => {
+    const normalizedDirection = direction === 'left' ? 'up' : direction === 'right' ? 'down' : direction;
     if (!isPlaying || isGameOver || isPaused) return;
     triggerHaptic();
     setCookieLane(prev => {
-      const newLane = direction === 'up' 
+      const newLane = normalizedDirection === 'up' 
         ? Math.max(0, prev - 1)
         : Math.min(LANES - 1, prev + 1);
       return newLane;
@@ -474,7 +475,10 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative w-full max-w-2xl game-sketchy-border overflow-hidden" style={{ height: '85vh', maxHeight: '600px', minHeight: '500px' }}>
+      <div
+        className="relative w-full max-w-2xl game-sketchy-border overflow-hidden"
+        style={{ height: 'clamp(320px, 85vh, 640px)' }}
+      >
         <div className="game-texture-overlay"></div>
         
         <button
@@ -698,21 +702,39 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
         {/* Mobile controls - Paw print buttons */}
         {isPlaying && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 md:hidden z-20">
-            <button
-              onClick={() => handleButtonPress('up')}
-              className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
-              aria-label="Move up"
-            >
-              <PawPrint size={32} className="text-[#D4A5A5]" />
-            </button>
-            <button
-              onClick={() => handleButtonPress('down')}
-              className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
-              aria-label="Move down"
-            >
-              <PawPrint size={32} className="text-[#B8D4E8]" />
-            </button>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 md:hidden z-20">
+            <div className="flex flex-col items-center gap-3">
+              <button
+                onClick={() => handleButtonPress('up')}
+                className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
+                aria-label="Move up"
+              >
+                <span className="text-2xl text-[#D88D66] font-semibold">△</span>
+              </button>
+              <div className="flex items-center gap-6">
+                <button
+                  onClick={() => handleButtonPress('left')}
+                  className={`paw-button ${buttonPressed === 'left' ? 'pressed' : ''}`}
+                  aria-label="Move up"
+                >
+                  <span className="text-2xl text-[#3B2F2A] font-semibold">□</span>
+                </button>
+                <button
+                  onClick={() => handleButtonPress('down')}
+                  className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
+                  aria-label="Move down"
+                >
+                  <span className="text-2xl text-[#D88D66] font-semibold">✕</span>
+                </button>
+                <button
+                  onClick={() => handleButtonPress('right')}
+                  className={`paw-button ${buttonPressed === 'right' ? 'pressed' : ''}`}
+                  aria-label="Move down"
+                >
+                  <span className="text-2xl text-[#EBBA9A] font-semibold">◯</span>
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>

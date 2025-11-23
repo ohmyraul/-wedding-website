@@ -2667,7 +2667,7 @@ const FamilyItinerary = () => (
                     day: "Thursday, March 19", 
                     time: "All Day",
                     title: "Arrival & Pool Party", 
-                    summary: "Land, dump bags, straight into the pool.",
+                    summary: "Land, drop your bags, straight into the pool.",
                     desc: "You're finally here. We'll have cars waiting at the airport to bring you straight to Kidena House. Take your time unpacking and settling into your rooms. We'll order the best Goan food we can find for dinner. Then: pool party. Later that evening, some of us are heading to Panjim for a pub crawl. Joseph's Bar, Miguel's, all our favorite haunts from the past seven years. Come along if you want, or stay back at the house and relax by the pool. Whatever feels right.",
                     icon: Home,
                     color: "#D88D66"
@@ -2678,7 +2678,7 @@ const FamilyItinerary = () => (
                     time: "Morning",
                     title: "Rehearsal Day", 
                     summary: "Breakfast together, then rehearsal for ceremony crew.",
-                    desc: "We'll all have breakfast together at the house. Slow morning, good coffee, no rush. Then those of us actually in the ceremony will head to Blu Missel for rehearsal. Kids can absolutely stay back at Kidena and enjoy the pool. No need to drag them to a boring rehearsal.",
+                    desc: "We'll all have breakfast together at the house. Slow morning, good coffee, no rush. Then those of us actually in the ceremony will head to Blu Missel for rehearsal. Kids can stay back at Kidena and enjoy the pool. No need to bring them to rehearsal.",
                     icon: Sun,
                     color: "#EBBA9A"
                 },
@@ -2848,8 +2848,8 @@ const Celebration = ({ isFamilyMode }) => (
 
                <div className="bg-white/85 backdrop-blur-sm p-5 md:p-6 rounded-2xl border border-[#D88D66]/20 shadow-inner">
 
-                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">Good food, dancing, chaos</p>
-                   <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: Good food & lots of dancing, marking a night we won't forget – made better by you.</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed">A ceremony, a celebration</p>
+                   <p className="text-base md:text-lg text-navy/80 leading-relaxed mt-3">What follows: We'll take our vows with God at the center and our loved ones by our side. Then we'll feast, dance, and celebrate until the stars come out.</p>
 
                 </div>
 
@@ -2869,19 +2869,17 @@ const Celebration = ({ isFamilyMode }) => (
 
               {[
 
-                  { time: '4:30 PM', event: 'The Vows', note: 'Join us as we take our vows committing to our forever, with God at the centre, and our family by our side.', icon: Heart },
-
-                  { time: '4:30 PM', event: 'Ceremony', note: 'Bless us as we commit to our forever surrounded by the people we love most.', icon: Heart },
+                  { time: '4:30 PM', event: 'Ceremony', note: 'Witness us exchange our vows and commit to forever, surrounded by the people we love most.', icon: Heart },
 
                   { time: '4:30 PM', event: 'Hi-Tea & Photos', note: "Grab refreshments, snap some Polaroids at the stand and stick them in our album. Meanwhile, we'll be off with the photo crew chasing golden hour – back soon!", icon: SketchIcon, type: 'wine' },
 
-                  { time: '6:00 PM', event: 'Cocktails', note: "The bar opens, we'll be with you soon. Pace yourselves.", icon: SketchIcon, type: 'wine' },
+                  { time: '6:00 PM', event: 'Cocktails', note: "The bar opens. We'll join you at 6:30. Pace yourselves - the dance floor comes later.", icon: SketchIcon, type: 'wine' },
 
                   { time: '7:15 PM', event: 'Dance Floor', note: "Come dance with us. That's where we'll be most of the night.", icon: Music },
 
-                  { time: '8:00 PM', event: 'Dinner', note: 'Dinner opens, we\'ll keep it open post 10 PM.', icon: SketchIcon, type: 'plate' },
+                  { time: '9:00 PM', event: 'Dinner', note: 'Dinner opens, we\'ll keep it open post 10 PM.', icon: SketchIcon, type: 'plate' },
 
-                  { time: '10:30 PM', event: 'Last Call', note: "The music ends, but does the party really?", icon: Sun }
+                  { time: '10:00 PM', event: 'Last Call', note: "The music ends, but the night is yours.", icon: Sun }
 
               ].map((item, i) => (
 
@@ -3086,7 +3084,7 @@ const DressCode = () => {
                 ))}
               </div>
               <p className="text-xs text-navy/70 font-hand italic text-center mt-4">
-                Click to copy • But honestly, wear whatever you want.
+                Click to copy colors • Or don't. Wear what feels right.
               </p>
             </FadeInWhenVisible>
           </div>
@@ -3168,9 +3166,7 @@ const ExploreGoa = () => {
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-6"></div>
 
           <p className="text-navy/60 text-lg md:text-xl max-w-2xl mx-auto">
-
-            Come for us, but make it more wholesome. We have some ideas for your time around…
-
+            Come for the wedding, stay for the food and feni. We have some ideas for your time around…
           </p>
 
         </div>
@@ -3267,13 +3263,9 @@ const ExploreGoa = () => {
 
 
         <div className="mt-16 md:mt-20 p-8 md:p-10 bg-gradient-to-br from-[#EBBA9A]/20 to-[#D88D66]/10 sketchy-border text-center border-2 border-navy/10 max-w-3xl mx-auto shadow-lg">
-
           <p className="text-navy/80 italic font-hand text-lg md:text-xl leading-relaxed">
-
-            Columb Bay is where we learned to slow live together. Palolem is where we spent most of our times in the water. He proposed to me in Columb Bay, they're special to us. Hope you make it there too.
-
+            Colomb Bay is where they learned to slow down together. Palolem is where they spent most of their time in the water. He proposed at Colomb. These places are special to them. Hope you make it there too.
           </p>
-
         </div>
 
       </FadeInWhenVisible>
@@ -3425,7 +3417,7 @@ const Travel = ({ isFamilyMode }) => (
               </div>
 
               <div className="bg-[#FDF9F4]/85 border border-[#D4CDC2] rounded-2xl px-4 py-3 text-sm text-navy/75 leading-relaxed shadow-sm">
-                Six bedrooms, nine baths, a stocked pantry, chefs, butlers, a pool, a private lake, lawns for the kids, and space for every cousin. Just arrive-everything else is sorted.
+                Six bedrooms, nine baths, a stocked pantry, chefs, butlers, a pool, a private lake, lawns for the kids, and space for every cousin. Just arrive - everything else is sorted.
               </div>
 
               <div className="flex flex-wrap items-center gap-4 justify-between bg-[#FDF9F4]/90 border border-[#D4CDC2] rounded-2xl px-5 py-4 shadow-sm">
@@ -3554,11 +3546,11 @@ const QnA = () => {
 
     { q: "Are kids invited?", a: "Yes! Cookie & Bailey are demanding playmates. Bring the little ones." },
 
-    { q: "What about plus ones?", a: "If your invitation says 'and guest', absolutely bring them. If it doesn't, we're keeping numbers intimate. Nothing personal." },
+    { q: "What about plus ones?", a: "If your invitation says 'and guest', absolutely bring them. If not, we're keeping the celebration intimate." },
 
     { q: "Open bar?", a: "Yes. We want you celebrating with us all night." },
 
-    { q: "What about gifts?", a: "Your presence is the greatest gift. Truly. If you'd like to give something, a contribution toward our honeymoon would help us keep exploring the world together - but only if you want to." },
+    { q: "What about gifts?", a: "Your presence is the greatest gift. Truly." },
 
     { q: "Dietary restrictions?", a: "We'll have both vegetarian and non-vegetarian options. Let us know your specific restrictions or allergies in the RSVP form below." }
 
@@ -3985,7 +3977,7 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
         <div className="flex flex-col items-center">
           <button
             onClick={onOpenGame}
-            className="flex items-center gap-2 md:gap-4 bg-[#EDEDE3] px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D88D66] rounded-lg hover:bg-[#FDF9F4] transition-all group shadow-md cursor-pointer active:scale-95 max-w-full"
+            className="flex items-center gap-2 md:gap-4 bg-[#EDEDE3] px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D4CDC2] rounded-lg hover:bg-[#FDF9F4] transition-all group shadow-md cursor-pointer active:scale-95 max-w-full"
             aria-label="Cookie & Bailey"
           >
             <PawPrint size={20} className="md:w-7 md:h-7 text-[#3B2F2A] group-hover:scale-110 transition-transform fill-current flex-shrink-0" /> 
