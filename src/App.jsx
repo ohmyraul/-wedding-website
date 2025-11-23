@@ -3361,11 +3361,11 @@ const DressCode = () => {
               hoverEffect 
               className="relative max-w-lg w-full"
             >
-              <div className={`${CARD_PRIMARY} overflow-hidden flex items-center justify-center`} style={{ aspectRatio: '2 / 3' }}>
+              <div className={`${CARD_PRIMARY} overflow-hidden`}>
                 <img 
                   src="/images/warddrobe.jpg" 
                   alt="Wedding wardrobe inspiration"
-                  className="w-full h-full object-contain"
+                  className="w-full h-auto object-cover"
                   style={{ objectPosition: 'center top' }}
                   loading="lazy"
                   width={400}
