@@ -242,10 +242,10 @@ const styles = `
   .sketchy-border::before {
     content: '';
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
     border: 2px solid var(--ink);
     border-radius: inherit;
     z-index: -1;
@@ -2462,15 +2462,15 @@ const KidenaHouseCarousel = memo(() => {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div 
-          className="flex w-full py-2"
+          className="flex w-full py-4"
           style={{ 
             transform: `translateX(-${currentIndex * 100}%)`,
             transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
           }}
         >
           {endlessImages.map((image, index) => (
-            <div key={index} className="min-w-full flex-shrink-0 w-full px-2">
-              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
+            <div key={index} className="min-w-full flex-shrink-0 w-full px-4">
+              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl m-2">
                 <div 
                   className="relative bg-white w-full overflow-hidden"
                   style={{ maxHeight: '70vh' }}
