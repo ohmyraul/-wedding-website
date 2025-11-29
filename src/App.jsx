@@ -85,6 +85,10 @@ const CARD_PAD_LG = 'p-8 md:p-10'; // Large card padding
 const SECTION_PADDING = 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16'; // Section horizontal padding
 const SECTION_SPACING = 'py-8 md:py-12 lg:py-16 xl:py-20'; // Section vertical spacing
 
+// URL constants
+const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River+Fondvem+Ribandar+Goa';
+const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs+%26+Alysha+Wedding+Celebration&dates=20260320T100000Z/20260322T173000Z&details=Join+us+for+our+wedding+celebration+in+Goa%2C+India&location=Blu+Missel+by+the+River%2C+Fondvem%2C+Ribandar%2C+Goa';
+
 /* --- Mario Miranda Style Components --- */
 
 const SignboardHeading = ({ children, variant = 'light' }) => {
