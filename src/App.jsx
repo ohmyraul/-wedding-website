@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
-import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
+import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { TYPE_SCALE, LINE_HEIGHT, LETTER_SPACING, SPACING } from './constants/design-tokens';
