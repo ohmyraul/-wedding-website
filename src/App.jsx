@@ -753,7 +753,7 @@ const Hero = ({ onScrollToSection }) => (
           </p>
 
           <p className={`${TYPO_BODY} text-navy mt-1 md:mt-2 italic px-2`}>
-            Your presence would mean the world to us.
+            We want you there.
           </p>
          </div>
 
@@ -843,7 +843,6 @@ const Story = () => (
 
               <p>House party in Bangalore. Her place. His friend insisted he come along.</p>
 
-              <p>They talked for hours that night. Bengali boy from Assam meets Goan girl from Abu Dhabi. The conversation came easy.</p>
               <p>They talked for hours that night. Bengali boy from Assam meets Goan girl from Abu Dhabi. The conversation came easy.</p>
 
               <p>Then the party ended. They didn't exchange numbers. Three years of complete radio silence.</p>
@@ -2177,13 +2176,6 @@ const ExploreGoa = () => {
 
 
 
-        <div className="mt-16 md:mt-20 p-8 md:p-10 bg-gradient-to-br from-[#EBBA9A]/20 to-[#D88D66]/10 sketchy-border text-center border-2 border-navy/10 max-w-3xl mx-auto shadow-lg">
-          <p className={`${TYPO_BODY} italic font-hand text-navy`}>
-            Colomb Bay is where they learned to slow down together. <br className="hidden md:block" />
-            Palolem is where they spent most of their time in the water. <br className="hidden md:block" />
-            He proposed at Colomb. Go if you can.
-          </p>
-        </div>
 
       </FadeInWhenVisible>
 
@@ -2242,7 +2234,7 @@ const Travel = ({ isFamilyMode }) => (
 
              <h3 className={`${TYPO_H2} mb-1 font-hand uppercase tracking-wider`}>Boarding Pass</h3>
 
-             <p className={`${TYPO_LABEL} opacity-50 mb-6`}>Ticket to Paradise</p>
+             <p className={`${TYPO_LABEL} opacity-50 mb-6`}>GETTING THERE</p>
 
              
 
@@ -2250,32 +2242,16 @@ const Travel = ({ isFamilyMode }) => (
 
                 <div className="border-b border-dashed border-[#D4CDC2] pb-3 mb-3">
                     <div className="flex justify-between pb-2">
-                    <span className="opacity-60">DESTINATION</span>
+                    <span className="opacity-60">FROM THE AIRPORT</span>
                     </div>
-                    <div className="space-y-2">
-                       <div className="flex justify-between">
-                    <span className="font-bold text-lg">Dabolim (GOI)</span>
-                          <span className="text-sm opacity-70 font-semibold">28.1 km</span>
+                    <div className="space-y-3">
+                       <div>
+                          <div className="font-bold text-lg mb-1">Dabolim (GOI)</div>
+                          <div className="text-sm opacity-70 font-semibold">28 km · 35–50 min</div>
                        </div>
-                       <div className="flex justify-between">
-                          <span className="font-bold text-lg">Mopa (GOX)</span>
-                          <span className="text-sm opacity-70 font-semibold">34 km</span>
-                       </div>
-                    </div>
-                 </div>
-
-                <div className="border-b border-dashed border-[#D4CDC2] pb-3 mb-3">
-                    <div className="flex justify-between pb-2">
-                    <span className="opacity-60">TRANSFER</span>
-                    </div>
-                    <div className="space-y-2">
-                       <div className="flex justify-between">
-                          <span className="font-bold text-lg">Dabolim</span>
-                          <span className="text-sm opacity-90 font-semibold">35–50 min</span>
-                       </div>
-                       <div className="flex justify-between">
-                          <span className="font-bold text-lg">Mopa</span>
-                          <span className="text-sm opacity-90 font-semibold">45 min–1 hr 15 min</span>
+                       <div>
+                          <div className="font-bold text-lg mb-1">Mopa (GOX)</div>
+                          <div className="text-sm opacity-70 font-semibold">34 km · 45 min–1 hr 15 min</div>
                        </div>
                     </div>
                  </div>
@@ -2438,15 +2414,6 @@ const Travel = ({ isFamilyMode }) => (
 
                </li>
 
-               <li className="pt-4">
-                  <div className={`max-w-sm mx-auto bg-[#FDF9F4] ${CARD_SECONDARY} border-[#D88D66]/30 ${CARD_PAD_SM} shadow-sm text-center`}>
-                    <p className={`font-hand ${TYPO_BODY} text-[#3B2F2A]`}>
-                      <span className="font-bold text-[#D88D66] block">Important</span>
-                      Book early — March is peak wedding season in Goa.
-                    </p>
-                  </div>
-               </li>
-
             </ul>
             </>
 
@@ -2468,7 +2435,7 @@ const QnA = () => {
 
   const questions = [
 
-    { q: "Are kids invited?", a: "Yes! Cookie & Bailey are demanding playmates. Bring the little ones." },
+    { q: "Are kids invited?", a: "Yes. We'd love to have them there." },
 
     { q: "What about plus ones?", a: "If your invitation says 'and guest', bring them. If not, we're keeping it intimate." },
 
@@ -2695,7 +2662,7 @@ const RSVP = () => {
               <h2 className={`${TYPO_H1} text-navy mb-4`}>R.S.V.P.</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-4"></div>
               <p className={`${TYPO_BODY} text-navy font-hand mb-2`}>We want you there.</p>
-              <p className="text-navy/60 text-sm md:text-base font-hand">Please let us know if you can make it by January 20, 2026.</p>
+              <p className="text-navy/60 text-sm md:text-base font-hand">RSVP by January 20, 2026.</p>
             </div>
           )}
 
@@ -2885,7 +2852,7 @@ const RSVP = () => {
                       <>
                         <CheckCircle size={64} className="mx-auto text-[#D88D66]" />
                         <h3 id="rsvp-modal-title" className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
-                        <p className="text-navy">We can't wait to celebrate with you.</p>
+                        <p className="text-navy">See you in Goa.</p>
                         <button
                           type="button"
                           className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors underline"
@@ -2902,7 +2869,7 @@ const RSVP = () => {
                         <X size={56} className="mx-auto text-navy/50" />
                         <h3 id="rsvp-modal-title" className="text-3xl font-bold text-navy font-hand">We'll Miss You</h3>
                         <p className={`${TYPO_BODY} text-navy max-w-md mx-auto`}>
-                          Thank you for letting us know. We'll share photos and stories after the festivities so you can celebrate from afar.
+                          We'll miss you. We'll send you enough photos to feel like you were there.
                         </p>
                         <p className="text-sm text-navy">If plans change, just resubmit the form - we'll make room.</p>
                         <button
@@ -2960,9 +2927,6 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
           <div className="pt-6 md:pt-8 space-y-2">
             <p className={`${TYPO_BODY} font-hand text-[#3B2F2A] text-center`}>
               Shubs & Alysha
-            </p>
-            <p className={`${TYPO_BODY} font-hand text-[#3B2F2A] text-center`}>
-              March 20, 2026
             </p>
           </div>
         </div>

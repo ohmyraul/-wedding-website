@@ -19,7 +19,6 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   const [level, setLevel] = useState(1);
   const [speed, setSpeed] = useState(500);
   const [cookieLane, setCookieLane] = useState(1);
-  const [cookiePosition, setCookiePosition] = useState(0); // Horizontal position: -1 (left), 0 (center), 1 (right)
   const [obstacles, setObstacles] = useState([]);
   const [showDialogue, setShowDialogue] = useState(null);
   const [groundOffset, setGroundOffset] = useState(0);
@@ -34,6 +33,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   const touchEndY = useRef(0);
   const containerRef = useRef(null);
   const triggerRef = useRef(null);
+  const highScoreRef = useRef(highScore);
 
   // Level names
   const levelNames = {
@@ -153,10 +153,16 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     try {
       localStorage.setItem('cookieGameHighScore', newScore.toString());
       setHighScore(newScore);
+      highScoreRef.current = newScore;
     } catch (e) {
       console.error('Failed to save high score:', e);
     }
   };
+  
+  // Update highScoreRef when highScore state changes
+  useEffect(() => {
+    highScoreRef.current = highScore;
+  }, [highScore]);
 
   // Share score
   const shareScore = async () => {
@@ -210,21 +216,13 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     if (!isPlaying || isGameOver || isPaused) return;
     triggerHaptic();
     
+    // Only vertical movement (up/down) like Flappy Bird
     if (direction === 'up' || direction === 'down') {
-      // Vertical movement (lane change)
       setCookieLane(prev => {
         const newLane = direction === 'up' 
           ? Math.max(0, prev - 1)
           : Math.min(LANES - 1, prev + 1);
         return newLane;
-      });
-    } else if (direction === 'left' || direction === 'right') {
-      // Horizontal movement
-      setCookiePosition(prev => {
-        const newPos = direction === 'left'
-          ? Math.max(-1, prev - 1)
-          : Math.min(1, prev + 1);
-        return newPos;
       });
     }
   }, [isPlaying, isGameOver, isPaused]);
@@ -242,7 +240,6 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     setLevel(1);
     setSpeed(500);
     setCookieLane(1);
-    setCookiePosition(0);
     setObstacles([]);
     setIsGameOver(false);
     setIsPlaying(true);
@@ -320,22 +317,20 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         const processed = new Set(); // Track processed obstacles to prevent double-triggering
         let shouldEndGame = false;
         moved.forEach(obs => {
-          // Only process if in collision range, same lane, same horizontal position, and not already processed
-          const baseLeft = obs.position * 10;
-          const obsHorizontalOffset = (obs.horizontalPos || 0) * 30;
-          const obsFinalLeft = baseLeft + obsHorizontalOffset;
-          const cookieLeft = 50 + cookiePosition * 30;
-          const horizontalCollision = Math.abs(obsFinalLeft - cookieLeft) < 15; // 15% tolerance for collision
-          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5 && horizontalCollision && !processed.has(obs.id)) {
+          // Only check lane collision (no horizontal position check) - Flappy Bird style
+          if (obs.lane === cookieLane && obs.position <= 1.5 && obs.position >= -0.5 && !processed.has(obs.id)) {
             processed.add(obs.id); // Mark as processed
             if (obs.type === 'avoid' && !isInvincible) {
               // Mark obstacle for removal and flag game over
               toRemove.add(obs.id);
               shouldEndGame = true;
-              const finalScore = score;
-              if (finalScore > highScore) {
-                saveHighScore(finalScore);
-              }
+              // Use functional update to get current score and check high score
+              setScore(currentScore => {
+                if (currentScore > highScoreRef.current) {
+                  saveHighScore(currentScore);
+                }
+                return currentScore;
+              });
               const gameOverDialogue = getDialogue('gameOver');
               setShowDialogue(gameOverDialogue);
             } else if (obs.type === 'catch' || obs.type === 'powerup') {
@@ -362,6 +357,12 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                   }
                   return prevLevel;
                 });
+                
+                // Save high score when it's updated (use ref to avoid stale state)
+                if (newScore > highScoreRef.current) {
+                  saveHighScore(newScore);
+                }
+                
                 return newScore;
               });
               
@@ -394,7 +395,6 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
           filtered.push({
             id: obstacleIdRef.current++,
             lane: Math.floor(Math.random() * LANES),
-            horizontalPos: Math.floor(Math.random() * 3) - 1, // -1, 0, or 1
             position: 10,
             type: randomItem.type,
             emoji: randomItem.emoji,
@@ -415,7 +415,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         gameIntervalRef.current = null;
       }
     };
-  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, cookiePosition, level, score, highScore, isInvincible]);
+  }, [speed, isPlaying, isGameOver, isPaused, cookieLane, level, highScore, isInvincible]);
 
   // Keyboard controls
   useEffect(() => {
@@ -437,16 +437,6 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         event.preventDefault();
         if (isPlaying && !isPaused) {
           moveCookie('down');
-        }
-      } else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
-        event.preventDefault();
-        if (isPlaying && !isPaused) {
-          moveCookie('left');
-        }
-      } else if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
-        event.preventDefault();
-        if (isPlaying && !isPaused) {
-          moveCookie('right');
         }
       } else if (event.key === ' ' || event.key === 'Enter') {
         event.preventDefault();
@@ -603,7 +593,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               Catch Goan food • Avoid obstacles • Survive the chaos!
             </p>
             <p className="text-xs text-navy/60 mb-8 text-center font-hand">
-              Use ↑↓←→ or WASD keys • Use ←↑↓→ buttons below on mobile
+              Use ↑↓ or W/S keys • Use ↑↓ buttons below on mobile
             </p>
             <button
               onClick={startGame}
@@ -700,12 +690,11 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                     animate={{ 
                       y: [0, -3, 0],
                       scale: isInvincible ? [1, 1.1, 1] : 1,
-                      left: `${50 + cookiePosition * 30}%`,
+                      left: '50%',
                     }}
                     transition={{ 
                       y: { repeat: Infinity, duration: 0.5, ease: 'easeInOut' },
-                      scale: { repeat: Infinity, duration: 0.3 },
-                      left: { duration: 0.15, ease: 'easeOut' }
+                      scale: { repeat: Infinity, duration: 0.3 }
                     }}
                     initial={false}
                   >
@@ -728,15 +717,12 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                 {obstacles
                   .filter(obs => obs.lane === laneIndex)
                   .map(obs => {
-                    const baseLeft = obs.position * 10; // Base position from left (0-100%)
-                    const horizontalOffset = (obs.horizontalPos || 0) * 30; // Horizontal offset (-30, 0, or +30)
-                    const finalLeft = Math.max(0, Math.min(100, baseLeft + horizontalOffset));
                     return (
                     <motion.div
                       key={obs.id}
                       className="absolute z-5"
                       style={{
-                        left: `${finalLeft}%`,
+                        left: '50%',
                         top: '50%',
                         transform: 'translate(-50%, -50%)'
                       }}
@@ -764,11 +750,11 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
 
       </div>
 
-      {/* Mobile controls - D-pad layout with better spacing */}
+      {/* Mobile controls - Up/Down only (Flappy Bird style) */}
       {isPlaying && (
         <div className="w-full max-w-2xl mt-6 pb-6 md:hidden relative z-50">
-          <div className="flex flex-col items-center justify-center gap-4 px-4">
-            {/* Up button - Top */}
+          <div className="flex flex-col items-center justify-center gap-6 px-4">
+            {/* Up button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -780,46 +766,12 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               }}
               className={`paw-button ${buttonPressed === 'up' ? 'pressed' : ''}`}
               aria-label="Move up"
-              style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
+              style={{ minWidth: '100px', minHeight: '100px', position: 'relative', zIndex: 100 }}
             >
-              <span className="text-2xl text-[#D88D66] font-semibold">△</span>
+              <span className="text-3xl text-[#D88D66] font-semibold">△</span>
             </button>
             
-            {/* Left and Right buttons - Middle row */}
-            <div className="flex items-center justify-center gap-8">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleButtonPress('left');
-                }}
-                onTouchStart={(e) => {
-                  e.stopPropagation();
-                  handleButtonPress('left');
-                }}
-                className={`paw-button ${buttonPressed === 'left' ? 'pressed' : ''}`}
-                aria-label="Move left"
-                style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
-              >
-                <span className="text-2xl text-[#3B2F2A] font-semibold">◀</span>
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleButtonPress('right');
-                }}
-                onTouchStart={(e) => {
-                  e.stopPropagation();
-                  handleButtonPress('right');
-                }}
-                className={`paw-button ${buttonPressed === 'right' ? 'pressed' : ''}`}
-                aria-label="Move right"
-                style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
-              >
-                <span className="text-2xl text-[#EBBA9A] font-semibold">▶</span>
-              </button>
-            </div>
-            
-            {/* Down button - Bottom */}
+            {/* Down button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -831,9 +783,9 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               }}
               className={`paw-button ${buttonPressed === 'down' ? 'pressed' : ''}`}
               aria-label="Move down"
-              style={{ minWidth: '80px', minHeight: '80px', position: 'relative', zIndex: 100 }}
+              style={{ minWidth: '100px', minHeight: '100px', position: 'relative', zIndex: 100 }}
             >
-              <span className="text-2xl text-[#D88D66] font-semibold">▽</span>
+              <span className="text-3xl text-[#D88D66] font-semibold">▽</span>
             </button>
           </div>
         </div>
