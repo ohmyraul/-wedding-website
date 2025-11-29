@@ -82,6 +82,8 @@ const SPACE_GRID_LG = 'gap-12'; // Large grid gaps
 const CARD_PAD_SM = 'p-4 md:p-5'; // Small card padding
 const CARD_PAD_MD = 'p-6 md:p-8'; // Medium card padding
 const CARD_PAD_LG = 'p-8 md:p-10'; // Large card padding
+const SECTION_PADDING = 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16'; // Section horizontal padding
+const SECTION_SPACING = 'py-8 md:py-12 lg:py-16 xl:py-20'; // Section vertical spacing
 
 /* --- Mario Miranda Style Components --- */
 
