@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
-import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
+import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { TYPE_SCALE, LINE_HEIGHT, LETTER_SPACING, SPACING } from './constants/design-tokens';
 
 let confettiInstance = null;
 
@@ -61,26 +62,26 @@ const fireConfetti = async (options = {}) => {
 // CSS styles have been moved to src/styles/global.css
 
 
-// Typography constants
-const TYPO_H1 = 'text-3xl md:text-4xl lg:text-5xl font-hand font-bold'; // Section titles
-const TYPO_H2 = 'text-2xl md:text-3xl font-hand font-bold'; // Major card titles
-const TYPO_BODY = 'text-base md:text-lg font-normal leading-relaxed'; // Body text
-const TYPO_LABEL = 'text-xs md:text-sm font-hand font-semibold uppercase tracking-wider'; // Labels/captions
+// Typography constants - using design tokens
+const TYPO_H1 = `${TYPE_SCALE['3xl']} md:${TYPE_SCALE['4xl']} lg:${TYPE_SCALE['5xl']} font-hand font-bold`; // Section titles
+const TYPO_H2 = `${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-hand font-bold`; // Major card titles
+const TYPO_BODY = `${TYPE_SCALE.base} md:${TYPE_SCALE.lg} font-normal ${LINE_HEIGHT.relaxed}`; // Body text
+const TYPO_LABEL = `${TYPE_SCALE.xs} md:${TYPE_SCALE.sm} font-hand font-semibold uppercase ${LETTER_SPACING.wider}`; // Labels/captions
 
 // Card pattern constants
 const CARD_PRIMARY = 'rounded-2xl border border-[#D4CDC2]'; // Primary narrative cards
 const CARD_SECONDARY = 'rounded-xl border border-[#D4CDC2]'; // Secondary cards
 const CARD_PHOTO = 'sketchy-border'; // Photo frames (uses CSS class)
 
-// Spacing constants
-const SPACE_GRID_SM = 'gap-6'; // Small grid gaps
-const SPACE_GRID_MD = 'gap-8'; // Medium grid gaps
-const SPACE_GRID_LG = 'gap-12'; // Large grid gaps
-const CARD_PAD_SM = 'p-4 md:p-5'; // Small card padding
-const CARD_PAD_MD = 'p-6 md:p-8'; // Medium card padding
-const CARD_PAD_LG = 'p-8 md:p-10'; // Large card padding
-const SECTION_PADDING = 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16'; // Section horizontal padding
-const SECTION_SPACING = 'py-8 md:py-12 lg:py-16 xl:py-20'; // Section vertical spacing
+// Spacing constants - using design tokens
+const SPACE_GRID_SM = SPACING.gap.md; // 24px
+const SPACE_GRID_MD = SPACING.gap.lg; // 32px
+const SPACE_GRID_LG = SPACING.gap.xl; // 48px
+const CARD_PAD_SM = SPACING.card.sm; // 16px
+const CARD_PAD_MD = SPACING.card.md; // 24px
+const CARD_PAD_LG = SPACING.card.lg; // 32px
+const SECTION_PADDING = SPACING.sectionPadding; // Responsive horizontal padding
+const SECTION_SPACING = SPACING.section; // Responsive vertical spacing
 
 // URL constants
 const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River+Fondvem+Ribandar+Goa';
@@ -604,7 +605,7 @@ const CountdownTimer = () => {
               repeatDelay: 1
             }}
           >
-            <span className="countdown-number text-[#3B2F2A] text-2xl md:text-3xl font-bold font-mono">
+            <span className={`countdown-number text-[#3B2F2A] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold font-mono`}>
               {unit.value.toString().padStart(2, '0')}
             </span>
             <span className={`countdown-label ${TYPO_LABEL} text-[#3B2F2A] mt-1 block`}>{unit.label}</span>
@@ -726,7 +727,7 @@ const Hero = ({ onScrollToSection }) => (
       </div>
 
       {/* Mobile: Text Content Second */}
-      <div className="order-2 md:order-1 text-center space-y-4 md:space-y-6 mt-6 md:mt-0 overflow-visible">
+      <div className={`order-2 md:order-1 text-center ${SPACING.spaceY.sm} md:${SPACING.spaceY.md} mt-6 md:mt-0 overflow-visible`}>
         {/* Opening Message - More prominent */}
         <p className={`${TYPO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2 overflow-visible`}>
           After seven years of choosing each other,<br className="hidden md:block" />
@@ -809,7 +810,7 @@ const Story = () => (
         <Heart className="w-6 h-6 text-[#EBBA9A] opacity-30 animate-float" aria-hidden="true" />
       </ParallaxWrapper>
 
-      <div className="space-y-20 md:space-y-28 lg:space-y-32 relative pt-10 md:pt-12">
+      <div className={`${SPACING.spaceY['20']} md:space-y-28 lg:space-y-32 relative pt-10 md:pt-12`}>
 
 
 
@@ -836,7 +837,7 @@ const Story = () => (
             <FadeInWhenVisible delay={0.12}>
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The First Time</h3>
 
-              <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
+              <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
               <p>House party in Bangalore. Her place. His friend insisted he come along.</p>
 
@@ -864,7 +865,7 @@ const Story = () => (
 
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Reunion</h3>
 
-              <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
+              <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
               <p>She starts new job, walks down office corridor, there he is.</p>
 
@@ -935,7 +936,7 @@ const Story = () => (
 
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>Building a Life</h3>
 
-              <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
+              <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
               <p>She took him to Goa. Made it a ritual. Twice a year, every single year. Palolem Beach, Colomb Bay. Their sanctuary. The place they'd go to reset and remember what mattered.</p>
 
@@ -965,7 +966,7 @@ const Story = () => (
 
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Question</h3>
 
-              <div className={`${TYPO_BODY} text-navy space-y-2 md:space-y-3`}>
+              <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
               <p>Back at Palolem Beach. He'd made plans. Plan A: underwater proposal (ring might sink, she might panic). Plan B: Kakolem Beach at sunset (neither wanted the trek that day).</p>
 
@@ -1580,7 +1581,7 @@ const FamilyItinerary = () => (
 
         
 
-        <div className="space-y-8 md:space-y-10">
+        <div className={`${SPACING.spaceY.lg} md:${SPACING.spaceY['10']}`}>
 
             {[
 
@@ -1646,9 +1647,9 @@ const FamilyItinerary = () => (
 
                                 </div>
 
-                                <div className="flex-1 space-y-1 text-left">
+                                <div className={`flex-1 ${SPACING.spaceY.xs} text-left`}>
 
-                                    <div className="font-hand font-bold text-navy text-lg md:text-xl">{item.day}</div>
+                                    <div className={`font-hand font-bold text-navy ${TYPE_SCALE.lg} md:${TYPE_SCALE.xl}`}>{item.day}</div>
 
                                     {item.time && (
 
@@ -1661,13 +1662,13 @@ const FamilyItinerary = () => (
                             </div>
 
                             {/* Content column */}
-                            <div className="flex-1 text-left space-y-3">
+                            <div className={`flex-1 text-left ${SPACING.spaceY['3']}`}>
 
-                                <h3 className="font-hand font-bold text-2xl md:text-3xl" style={{ color: item.color }}>{item.title}</h3>
+                                <h3 className={`font-hand font-bold ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']}`} style={{ color: item.color }}>{item.title}</h3>
 
                                 {/* Bold one-liner summary */}
                                 {item.summary && (
-                                    <p className="font-hand font-bold text-lg md:text-xl text-navy leading-tight">{item.summary}</p>
+                                    <p className={`font-hand font-bold ${TYPE_SCALE.lg} md:${TYPE_SCALE.xl} text-navy ${LINE_HEIGHT.tight}`}>{item.summary}</p>
                                 )}
 
                                 <p className={`font-hand ${TYPO_BODY} text-navy`}>{item.desc}</p>
@@ -1737,7 +1738,7 @@ const Celebration = ({ isFamilyMode }) => (
 
             </div>
 
-             <div className={`${CARD_PAD_MD} space-y-6`}>
+             <div className={`${CARD_PAD_MD} ${SPACING.spaceY.md}`}>
 
                 <h3 className={`${TYPO_H2} text-navy`}>Friday, March 20, 2026</h3>
 
@@ -1782,7 +1783,7 @@ const Celebration = ({ isFamilyMode }) => (
 
         <div className="relative pt-4 md:pt-8 pl-8 md:pl-12">
 
-           <div className="space-y-14 md:space-y-16">
+           <div className={`${SPACING.spaceY['14']} md:space-y-16`}>
 
               {[
 
@@ -1940,13 +1941,13 @@ const DressCode = () => {
           </FadeInWhenVisible>
 
           {/* Guidance + Palette */}
-          <div className="space-y-5">
+          <div className={SPACING.spaceY['5']}>
             <FadeInWhenVisible className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_MD} shadow-sm`}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-[#EBBA9A]/35 flex items-center justify-center">
                   <Sun className="w-5 h-5 text-[#D88D66]" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-[#3B2F2A] font-hand">Beach Formal</h3>
+                <h3 className={`${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold text-[#3B2F2A] font-hand`}>Beach Formal</h3>
               </div>
               <p className={`font-hand ${TYPO_BODY} text-navy mb-3`}>
                 Flowing dresses, mid-length skirts, linen suits, easy sandals. We’re on grass,
@@ -1988,7 +1989,7 @@ const DressCode = () => {
                       )}
                     </motion.div>
                     <h4 className="font-bold text-sm font-hand text-[#3B2F2A] mb-0.5">{color.name}</h4>
-                    <p className="font-mono text-xs text-navy/60">{color.hex.toUpperCase()}</p>
+                    <p className="font-mono text-xs text-navy/70">{color.hex.toUpperCase()}</p>
                   </motion.div>
                 ))}
               </div>
@@ -2108,7 +2109,7 @@ const ExploreGoa = () => {
                       </div>
                       <span>{section.category}</span>
                     </div>
-                    {isExpanded ? <ChevronUp size={20} className="text-[#D88D66]" /> : <ChevronDown size={20} className="text-navy/60" />}
+                    {isExpanded ? <ChevronUp size={20} className="text-[#D88D66]" /> : <ChevronDown size={20} className="text-navy/70" />}
                   </button>
 
                   {/* Desktop: Static header */}
@@ -2131,7 +2132,7 @@ const ExploreGoa = () => {
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="overflow-hidden md:!h-auto md:!opacity-100"
                   >
-                    <div className="space-y-5 md:space-y-6 pt-0 md:pt-0">
+                    <div className={`${SPACING.spaceY['5']} md:${SPACING.spaceY.md} pt-0 md:pt-0`}>
                       {section.items.map((item, i) => (
                         <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#EDEDE3]/50 transition-colors" whileHover={{ x: 6 }}>
                           <div className="w-10 h-10 md:w-12 h-12 rounded-full bg-[#FDF9F4] border-2 border-[#D4CDC2] flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-[#FDF9F4] group-hover:border-[#D88D66] transition-all shadow-sm group-hover:shadow-md">
@@ -2142,7 +2143,7 @@ const ExploreGoa = () => {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-start justify-between gap-2 mb-1">
-                              <h4 className="font-bold text-lg md:text-xl text-navy">{item.name}</h4>
+                              <h4 className={`font-bold ${TYPE_SCALE.lg} md:${TYPE_SCALE.xl} text-navy`}>{item.name}</h4>
                               {item.mapUrl && (
                                 <a
                                   href={item.mapUrl}
@@ -2156,7 +2157,7 @@ const ExploreGoa = () => {
                                 </a>
                               )}
                             </div>
-                            {item.location && <p className="text-xs md:text-sm text-navy/50 mb-2 italic">{item.location}</p>}
+                            {item.location && <p className={`${TYPE_SCALE.xs} md:${TYPE_SCALE.sm} text-navy/70 mb-2 italic`}>{item.location}</p>}
                             <p className={`${TYPO_BODY} text-navy`}>{item.desc}</p>
                           </div>
                         </motion.div>
@@ -2235,13 +2236,13 @@ const Travel = ({ isFamilyMode }) => (
 
              
 
-             <div className={`space-y-4 font-hand ${TYPO_BODY}`}>
+             <div className={`${SPACING.spaceY.sm} font-hand ${TYPO_BODY}`}>
 
                 <div className="border-b border-dashed border-[#D4CDC2] pb-3 mb-3">
                     <div className="flex justify-between pb-2">
                     <span className="opacity-60">FROM THE AIRPORT</span>
                     </div>
-                    <div className="space-y-3">
+                    <div className={SPACING.spaceY['3']}>
                        <div>
                           <div className="font-bold text-lg mb-1">Dabolim (GOI)</div>
                           <div className="text-sm opacity-70 font-semibold">28 km · 35–50 min</div>
@@ -2301,8 +2302,8 @@ const Travel = ({ isFamilyMode }) => (
 
           {isFamilyMode ? (
 
-            <div className="space-y-6 relative z-10">
-              <div className="space-y-3 text-left">
+            <div className={`${SPACING.spaceY.md} relative z-10`}>
+              <div className={`${SPACING.spaceY['3']} text-left`}>
                   <p className={`${TYPO_LABEL} text-navy`}>Your Stay</p>
                 <h3 className={`${TYPO_H2} text-[#D88D66]`}>Kidena House</h3>
                 <p className={`${TYPO_BODY} text-navy`}>
@@ -2337,7 +2338,7 @@ const Travel = ({ isFamilyMode }) => (
             <>
               <h3 className={`${TYPO_H2} mb-6 md:mb-8 font-hand text-center`}>Our Recommendations</h3>
 
-            <ul className={`font-hand ${TYPO_BODY} space-y-5`}>
+            <ul className={`font-hand ${TYPO_BODY} ${SPACING.spaceY['5']}`}>
 
                <li className="flex gap-3 items-start border-b border-[#D4CDC2] pb-4">
 
@@ -2468,7 +2469,7 @@ const QnA = () => {
 
                <h4 className={`font-bold ${TYPO_H2} font-hand text-navy mb-3 flex items-start gap-3`}>
 
-                 <span className="text-[#D88D66] text-2xl md:text-3xl leading-none flex-shrink-0">?</span> 
+                 <span className={`text-[#D88D66] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} leading-none flex-shrink-0`}>?</span> 
                  <span>{item.q}</span>
 
                </h4>
@@ -2489,7 +2490,7 @@ const QnA = () => {
 
              </h4>
 
-             <div className={`${TYPO_BODY} text-navy ml-8 space-y-2`}>
+             <div className={`${TYPO_BODY} text-navy ml-8 ${SPACING.spaceY.xs}`}>
 
                 <p className="font-bold text-navy">Contact our coordinator Priya Sharma</p>
                 <p>+91 98765 43210</p>
@@ -2659,19 +2660,19 @@ const RSVP = () => {
               <h2 className={`${TYPO_H1} text-navy mb-4`}>R.S.V.P.</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-4"></div>
               <p className={`${TYPO_BODY} text-navy font-hand mb-2`}>We want you there.</p>
-              <p className="text-navy/60 text-sm md:text-base font-hand">RSVP by January 20, 2026.</p>
+              <p className={`text-navy/70 ${TYPE_SCALE.sm} md:${TYPE_SCALE.base} font-hand`}>RSVP by January 20, 2026.</p>
             </div>
           )}
 
         {!submitted && (
-          <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-7 md:space-y-8">
+          <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className={SPACING.spaceY.lg}>
             {errorMessage && (
               <div className="bg-[#D88D66]/10 border border-[#D88D66] text-navy px-4 py-3 rounded-lg text-sm font-hand">
                 {errorMessage}
               </div>
             )}
             <div>
-                <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Full Name(s)</label>
+                <label htmlFor="rsvp-name" className="block text-xs font-bold uppercase tracking-widest text-navy/70 mb-2">Full Name(s)</label>
               <input 
                   id="rsvp-name"
                 type="text" 
@@ -2687,7 +2688,7 @@ const RSVP = () => {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="rsvp-email" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Email</label>
+                  <label htmlFor="rsvp-email" className="block text-xs font-bold uppercase tracking-widest text-navy/70 mb-2">Email</label>
                    <input 
                     id="rsvp-email"
                      type="email" 
@@ -2701,7 +2702,7 @@ const RSVP = () => {
                    />
                 </div>
                 <div>
-                  <label htmlFor="rsvp-phone" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Phone</label>
+                  <label htmlFor="rsvp-phone" className="block text-xs font-bold uppercase tracking-widest text-navy/70 mb-2">Phone</label>
                    <input 
                     id="rsvp-phone"
                      type="tel" 
@@ -2718,7 +2719,7 @@ const RSVP = () => {
 
               <div className="grid md:grid-cols-2 gap-6">
             <div>
-                  <label htmlFor="rsvp-guests" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Number of Guests</label>
+                  <label htmlFor="rsvp-guests" className="block text-xs font-bold uppercase tracking-widest text-navy/70 mb-2">Number of Guests</label>
                 <select 
                     id="rsvp-guests"
                   name="guests"
@@ -2733,7 +2734,7 @@ const RSVP = () => {
                 </select>
                 </div>
                 <div>
-                  <label htmlFor="rsvp-dietary" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2">Dietary Restrictions</label>
+                  <label htmlFor="rsvp-dietary" className="block text-xs font-bold uppercase tracking-widest text-navy/70 mb-2">Dietary Restrictions</label>
                   <input 
                     id="rsvp-dietary"
                     type="text" 
@@ -2748,7 +2749,7 @@ const RSVP = () => {
               </div>
 
               <div>
-                <label htmlFor="rsvp-song" className="block text-xs font-bold uppercase tracking-widest text-navy/50 mb-2 flex items-center gap-2">Song Request</label>
+                <label htmlFor="rsvp-song" className="block text-xs font-bold uppercase tracking-widest text-navy/70 mb-2 flex items-center gap-2">Song Request</label>
                 <input 
                   id="rsvp-song"
                   type="text" 
@@ -2788,7 +2789,7 @@ const RSVP = () => {
                   required
                 />
                 <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D88D66]/20 transition-all hover:bg-gray-50">
-                  <X className="w-8 h-8 mx-auto mb-2 text-navy/60" />
+                  <X className="w-8 h-8 mx-auto mb-2 text-navy/70" />
                   <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
                 </div>
               </label>
@@ -2844,7 +2845,7 @@ const RSVP = () => {
                   <X size={18} />
                 </button>
                 <Postcard>
-                  <div className="text-center space-y-6">
+                  <div className={`text-center ${SPACING.spaceY.md}`}>
                     {submittedAttendance === 'Count Me In' ? (
                       <>
                         <CheckCircle size={64} className="mx-auto text-[#D88D66]" />
@@ -2910,18 +2911,18 @@ const Footer = ({ isFamilyMode }) => (
 
     <div className="absolute inset-0 footer-gradient w-full" style={{ backgroundColor: 'var(--page-canvas)' }}></div>
 
-    <div className="relative z-10 max-w-6xl mx-auto space-y-10 md:space-y-14 lg:space-y-18 px-2">
+    <div className={`relative z-10 max-w-6xl mx-auto ${SPACING.spaceY['10']} md:${SPACING.spaceY['14']} lg:space-y-18 px-2`}>
 
       {/* Main message */}
       <FadeInWhenVisible>
-        <div className="space-y-5 md:space-y-6 lg:space-y-8 max-w-3xl mx-auto px-4">
+        <div className={`${SPACING.spaceY['5']} md:${SPACING.spaceY.md} lg:${SPACING.spaceY.lg} max-w-3xl mx-auto px-4`}>
           <p className={`${TYPO_BODY} font-hand text-[#3B2F2A] text-center`}>
             Seven years ago, we found each other again.<br /> Every day since, we've chosen each other.
           </p>
           <p className={`${TYPO_H1} font-hand text-[#3B2F2A] mt-6 md:mt-8 text-center`}>
             Now we're making it official — and we want you there when we say it out loud.
           </p>
-          <div className="pt-6 md:pt-8 space-y-2">
+          <div className={`pt-6 md:pt-8 ${SPACING.spaceY.xs}`}>
             <p className={`${TYPO_BODY} font-hand text-[#3B2F2A] text-center`}>
               Shubs & Alysha
             </p>
@@ -2938,11 +2939,11 @@ const Footer = ({ isFamilyMode }) => (
 
       {/* Bottom section */}
       <FadeInWhenVisible delay={0.25}>
-        <div className="border-t border-[#D4CDC2] pt-8 md:pt-10 lg:pt-12 space-y-3 md:space-y-4 px-2" style={{ backgroundColor: 'var(--page-canvas)' }}>
-          <p className="text-sm md:text-base lg:text-lg uppercase tracking-widest text-[#3B2F2A] font-hand font-semibold">
+        <div className={`border-t border-[#D4CDC2] pt-8 md:pt-10 lg:pt-12 ${SPACING.spaceY['3']} md:${SPACING.spaceY.sm} px-2`} style={{ backgroundColor: 'var(--page-canvas)' }}>
+          <p className={`${TYPE_SCALE.sm} md:${TYPE_SCALE.base} lg:${TYPE_SCALE.lg} uppercase ${LETTER_SPACING.widest} text-[#3B2F2A] font-hand font-semibold`}>
             Made with love, momos & feni
           </p>
-          <p className="text-xs md:text-sm lg:text-base text-[#3B2F2A]/80 font-medium">
+          <p className={`${TYPE_SCALE.xs} md:${TYPE_SCALE.sm} lg:${TYPE_SCALE.base} text-[#3B2F2A]/80 font-medium`}>
             Goa 2026
           </p>
         </div>
@@ -2957,84 +2958,6 @@ const Footer = ({ isFamilyMode }) => (
 
 
 
-const MusicPlayer = () => {
-
-  const [playing, setPlaying] = useState(false);
-      
-  const audioRef = useRef(null);
-
-
-
-  useEffect(() => {
-
-    return () => {
-
-      if (audioRef.current) {
-
-        audioRef.current.pause();
-
-      }
-
-    };
-
-  }, []);
-
-
-
-  const togglePlayback = () => {
-
-    const audio = audioRef.current;
-
-    if (!audio) return;
-
-
-
-    if (playing) {
-
-      audio.pause();
-
-    } else {
-
-      audio.play().catch(() => {});
-
-    }
-
-
-
-    setPlaying(!playing);
-
-  };
-
-
-
-  return (
-
-    <>
-
-      <button 
-
-        onClick={togglePlayback}
-
-        className="fixed bottom-6 left-6 z-[100] w-16 h-16 md:w-20 md:h-20 bg-[#EDEDE3] sketchy-border border-[3px] border-[#D4CDC2] shadow-md flex flex-col items-center justify-center hover:scale-105 hover:rotate-1 transition-all font-hand font-semibold group"
-        style={{ position: 'fixed' }}
-
-        aria-label={playing ? 'Pause background music' : 'Play background music'}
-
-      >
-
-        <Music className="w-6 h-6 text-[#3B2F2A] group-hover:text-[#D88D66] transition-colors" />
-
-        <span className="text-[9px] mt-0.5 tracking-tight text-[#3B2F2A] group-hover:text-[#D88D66] transition-colors">music</span>
-
-      </button>
-
-      <audio ref={audioRef} src="/music/goa-mix.mp3" loop preload="none" />
-
-    </>
-
-  );
-
-};
 
 
 
@@ -3046,7 +2969,7 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
       onClick={() => onScrollToRSVP('rsvp')}
 
-      className="fixed bottom-6 right-6 z-[100] bg-[#D88D66] text-[#FDF9F4] sketchy-border border-[3px] border-[#FDF9F4] shadow-md px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold text-sm md:text-base group"
+      className={`fixed bottom-6 right-6 z-[100] bg-[#D88D66] text-[#FDF9F4] sketchy-border border-[3px] border-[#FDF9F4] shadow-md px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold ${TYPE_SCALE.sm} md:${TYPE_SCALE.base} group`}
       style={{ position: 'fixed' }}
 
       aria-label="Go to RSVP"
@@ -3311,7 +3234,7 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
   return (
 
-    <div className="fixed right-4 xl:right-10 top-1/2 -translate-y-1/2 z-40 space-y-3 hidden xl:flex flex-col">
+    <div className={`fixed right-4 xl:right-10 top-1/2 -translate-y-1/2 z-40 ${SPACING.spaceY['3']} hidden xl:flex flex-col`}>
 
       {sections.map((section, i) => {
 
@@ -3537,7 +3460,6 @@ const App = () => {
 
 
       {/* Floating Action Buttons - Outside scroll container for proper fixed positioning */}
-      <MusicPlayer />
       <FloatingRSVPButton onScrollToRSVP={scrollToSection} />
       <PasswordModal
         isOpen={showPasswordModal}
