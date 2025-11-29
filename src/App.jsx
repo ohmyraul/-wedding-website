@@ -1,11 +1,8 @@
-import React, { useState, useRef, useEffect, useMemo, memo, Suspense, lazy } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
 import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-
-// Lazy load heavy components
-const CookieChaseGame = lazy(() => import('./components/CookieChaseGame'));
 
 let confettiInstance = null;
 
@@ -2900,7 +2897,7 @@ const RSVP = () => {
 
 
 
-const Footer = ({ isFamilyMode, onOpenGame }) => (
+const Footer = ({ isFamilyMode }) => (
 
   <footer className="relative text-[#3B2F2A] text-center overflow-hidden py-16 md:py-24 lg:py-32 w-full" style={{ backgroundColor: 'var(--page-canvas)' }}>
 
@@ -2936,21 +2933,6 @@ const Footer = ({ isFamilyMode, onOpenGame }) => (
       <FadeInWhenVisible delay={0.1}>
         <div className="flex justify-center p-4">
           <CountdownTimer />
-        </div>
-      </FadeInWhenVisible>
-
-      {/* Cookie & Bailey section */}
-      <FadeInWhenVisible delay={0.15}>
-        <div className="flex flex-col items-center mt-6 md:mt-8">
-          <button
-            onClick={onOpenGame}
-            className="flex items-center gap-2 md:gap-4 bg-[#EDEDE3] px-4 md:px-8 py-3 md:py-5 sketchy-border border-[3px] border-[#D4CDC2] rounded-lg hover:bg-[#FDF9F4] transition-all group shadow-md cursor-pointer active:scale-95 max-w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
-            aria-label="Play the Cookie & Bailey game"
-          >
-            <PawPrint size={20} className="md:w-7 md:h-7 text-[#3B2F2A] group-hover:scale-110 transition-transform fill-current flex-shrink-0" /> 
-            <span className="text-base md:text-xl lg:text-2xl font-hand font-bold text-[#3B2F2A] whitespace-nowrap">Cookie & Bailey</span>
-            <PawPrint size={20} className="md:w-7 md:h-7 text-[#3B2F2A] group-hover:scale-110 transition-transform fill-current flex-shrink-0" />
-          </button>
         </div>
       </FadeInWhenVisible>
 
@@ -3400,8 +3382,6 @@ const App = () => {
 
   const [activeSection, setActiveSection] = useState(0);
 
-  const [isGameOpen, setIsGameOpen] = useState(false);
-
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const containerRef = useRef(null);
@@ -3689,21 +3669,7 @@ const App = () => {
 
         <Footer 
           isFamilyMode={isFamilyMode}
-          onOpenGame={() => setIsGameOpen(true)}
         />
-
-          <Suspense fallback={
-            isGameOpen ? (
-              <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                <div className="text-center text-navy font-hand">
-                  <div className="inline-block w-8 h-8 border-2 border-[#D88D66] border-t-transparent rounded-full animate-spin mb-2"></div>
-                  <p className="text-sm">Loading Cookie & Bailey...</p>
-                </div>
-              </div>
-            ) : null
-          }>
-            <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
-          </Suspense>
 
         </section>
 
