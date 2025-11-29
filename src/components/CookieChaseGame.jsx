@@ -32,6 +32,8 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
   const cookieImageRef = useRef(null);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
+  const containerRef = useRef(null);
+  const triggerRef = useRef(null);
 
   // Level names
   const levelNames = {
@@ -176,7 +178,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
     }
   };
 
-  // Reset game state when closed
+  // Reset game state when closed and manage focus
   useEffect(() => {
     if (!isOpen) {
       setIsPlaying(false);
@@ -190,7 +192,18 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
         clearInterval(groundIntervalRef.current);
         groundIntervalRef.current = null;
       }
+      // Return focus to trigger button
+      if (triggerRef.current && typeof triggerRef.current.focus === 'function') {
+        triggerRef.current.focus();
+      }
+    } else {
+      // Store the element that triggered the game
+      triggerRef.current = document.activeElement;
+      document.body.style.overflow = 'hidden';
     }
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
   const moveCookie = useCallback((direction) => {
@@ -585,7 +598,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
                 />
               </div>
             </div>
-            <h4 className="text-4xl font-hand text-navy mb-3 font-bold">Cookie's Goan Chase</h4>
+            <h4 id="cookie-game-title" className="text-4xl font-hand text-navy mb-3 font-bold">Cookie's Goan Chase</h4>
             <p className="text-sm text-navy/70 mb-2 text-center max-w-md font-hand">
               Catch Goan food • Avoid obstacles • Survive the chaos!
             </p>

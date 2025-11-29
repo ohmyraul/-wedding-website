@@ -3,6 +3,8 @@ import React, { useState, useRef, useEffect, useMemo, memo, Suspense, lazy } fro
 import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import './styles/global.css';
+import GameLoader from './components/shared/GameLoader';
 
 // Lazy load heavy components
 const CookieChaseGame = lazy(() => import('./components/CookieChaseGame'));
@@ -61,804 +63,8 @@ const fireConfetti = async (options = {}) => {
 
 /* --- CSS & FONTS --- */
 
-const styles = `
+// CSS styles have been moved to src/styles/global.css
 
-  /* Fonts are now loaded via <link> tags in index.html for faster rendering */
-
-
-
-  :root {
-
-    --stone: #EDEDE3;
-    --stone-muted: #D4CDC2;
-    --peach-deep: #D88D66;
-    --peach-soft: #EBBA9A;
-    --ink: #3B2F2A;
-    --ink-soft: #3B2F2A;
-    --canvas: #FDF9F4;
-
-    --paper-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cdefs%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='%23fdf9f4'/%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.07'/%3E%3Cline x1='0' y1='0' x2='0' y2='140' stroke='%23d4cdc2' stroke-width='0.35' opacity='0.23'/%3E%3Cline x1='0' y1='0' x2='140' y2='0' stroke='%23d4cdc2' stroke-width='0.35' opacity='0.2'/%3E%3C/svg%3E");
-
-  }
-
-
-
-  html { 
-    scroll-behavior: smooth; 
-  }
-
-  .scroll-container {
-    scroll-snap-type: y proximity;
-    scroll-behavior: smooth;
-    overflow-y: scroll;
-    height: 100vh;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Disable scroll-snap on mobile for better usability */
-  @media (max-width: 768px) {
-    .scroll-container {
-      scroll-snap-type: none;
-    }
-  }
-
-  .scroll-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    min-height: 100vh;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Footer section should allow full-width backgrounds */
-  #footer.scroll-section {
-    display: block;
-    width: 100%;
-  }
-
-  /* Remove snap-stop from long content sections for smoother scrolling */
-  .scroll-section-long {
-    scroll-snap-stop: normal;
-    min-height: 60vh;
-  }
-
-
-
-  body {
-
-    background-color: var(--canvas);
-
-    background-image: var(--paper-texture);
-
-    color: var(--ink);
-
-    font-family: 'Inter', sans-serif;
-
-    overflow: hidden;
-
-    -webkit-font-smoothing: antialiased;
-
-    -moz-osx-font-smoothing: grayscale;
-
-  }
-
-
-
-  h1, h2, h3, .font-hand {
-
-    font-family: 'Crimson Pro', serif;
-    font-weight: 600;
-
-  }
-
-  /* Allow font-bold to override the default weight */
-  h1.font-bold, h2.font-bold, h3.font-bold, .font-hand.font-bold {
-    font-weight: 700 !important;
-  }
-
-
-
-  .font-script {
-
-    font-family: 'Kalam', cursive;
-    font-weight: 400;
-
-  }
-
-
-
-  /* --- Utility Classes for Custom Colors (Fixes Contrast Issues) --- */
-
-  .text-navy { color: var(--ink) !important; }
-
-  .text-navy\/80 { color: rgba(59, 47, 42, 0.8) !important; }
-
-  .text-navy\/75 { color: rgba(59, 47, 42, 0.75) !important; }
-
-  .text-navy\/70 { color: rgba(59, 47, 42, 0.7) !important; }
-
-  .text-navy\/60 { color: rgba(59, 47, 42, 0.6) !important; }
-
-  .text-navy\/50 { color: rgba(59, 47, 42, 0.5) !important; }
-
-  .text-navy\/30 { color: rgba(59, 47, 42, 0.3) !important; }
-
-  .text-espresso { color: var(--ink-soft); }
-
-  .bg-navy { background-color: var(--ink); }
-
-  .bg-espresso { background-color: var(--ink-soft); }
-
-  .text-cream { color: var(--stone); }
-
-  .border-navy\/20 { border-color: rgba(212, 205, 194, 0.4) !important; }
-
-  .border-navy\/10 { border-color: rgba(212, 205, 194, 0.2) !important; }
-
-  .nav-shell {
-    background: linear-gradient(180deg, rgba(253, 249, 244, 0.95), rgba(237, 237, 227, 0.95));
-    border-radius: 999px;
-    border: 1px solid rgba(212, 205, 194, 0.6);
-    box-shadow: 0 18px 45px rgba(59, 47, 42, 0.12);
-  }
-
-  .nav-link {
-    color: var(--ink);
-    transition: color 0.2s ease, transform 0.2s ease;
-  }
-
-  .nav-link:hover,
-  .nav-link:focus-visible {
-    color: var(--peach-deep);
-  }
-
-  /* Skip link for accessibility */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-
-  .sr-only:focus {
-    position: fixed;
-    width: auto;
-    height: auto;
-    padding: 0.5rem 1rem;
-    margin: 0;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-    z-index: 9999;
-  }
-
-  .nav-panel {
-    background: linear-gradient(180deg, rgba(253, 249, 244, 0.98), rgba(237, 237, 227, 0.96));
-    border-radius: 28px;
-    border: 1px solid rgba(212, 205, 194, 0.6);
-    box-shadow: 0 20px 45px rgba(59, 47, 42, 0.12);
-  }
-
-  :root {
-    --page-canvas: #FDF9F4;
-  }
-
-  .footer-gradient {
-    background: var(--page-canvas);
-  }
-
-  
-
-  /* --- Sketchy Effects --- */
-
-  .sketchy-border {
-    position: relative;
-    isolation: isolate;
-    border-radius: 18px;
-    box-shadow: 2px 2px 0px rgba(58, 49, 43, 0.12);
-    transition: transform 0.3s ease;
-  }
-
-  
-
-  .sketchy-border::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    border: 2px solid var(--ink);
-    border-radius: inherit;
-    z-index: -1;
-    pointer-events: none;
-  }
-
-
-
-  .sketchy-text {
-    text-shadow: 2px 2px 0px rgba(216, 141, 102, 0.35);
-  }
-
-
-
-  .watercolor-bg {
-
-    background: radial-gradient(circle at 28% 32%, rgba(216, 141, 102, 0.55) 0%, transparent 46%),
-
-                radial-gradient(circle at 70% 72%, rgba(235, 186, 154, 0.55) 0%, transparent 50%);
-
-    filter: blur(60px) opacity(0.38);
-
-    position: absolute;
-
-    top: -20%;
-
-    left: -20%;
-
-    right: -20%;
-
-    bottom: -20%;
-
-    width: 140%;
-
-    height: 140%;
-
-    z-index: -1;
-
-    pointer-events: none;
-
-  }
-
-
-
-  .modern-input {
-
-    width: 100%;
-
-    border: 2px solid var(--text-navy);
-
-    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-
-    padding: 12px 16px;
-
-    background: rgba(255, 255, 255, 0.8);
-
-    color: var(--text-navy);
-
-    font-family: 'Patrick Hand', cursive;
-
-    font-size: 1.2rem;
-
-    transition: all 0.2s;
-
-  }
-
-
-
-  @media (prefers-reduced-motion: reduce) {
-
-    html,
-    .scroll-container {
-      scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-
-  }
-
-  .modern-input:focus {
-    outline: none;
-    border-color: var(--accent-pink);
-    transform: scale(1.01) rotate(-0.5deg);
-    box-shadow: 4px 4px 0px rgba(184, 212, 232, 0.4), 0 0 0 3px rgba(212, 165, 165, 0.2);
-  }
-
-  .modern-input:focus-visible {
-    outline: 2px solid var(--accent-pink);
-    outline-offset: 2px;
-  }
-
-
-
-  .washi-tape {
-
-    position: absolute;
-
-    height: 35px;
-
-    width: 110px;
-
-    background-color: var(--accent-pink);
-
-    opacity: 0.9;
-
-    transform: rotate(-2deg);
-
-    z-index: 10;
-
-    mask-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='100%25' height='100%25' fill='black'/%3E%3C/svg%3E");
-
-    -webkit-mask-box-image: url("data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 20 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L10 10 L20 0 Z' fill='black'/%3E%3C/svg%3E");
-
-  }
-
-
-
-  @keyframes float {
-
-    0% { transform: translateY(0px) rotate(0deg); }
-
-    50% { transform: translateY(-10px) rotate(2deg); }
-
-    100% { transform: translateY(0px) rotate(0deg); }
-
-  }
-
-  .animate-float { animation: float 4s ease-in-out infinite; }
-
-  
-
-  @keyframes fadeInUp {
-
-    from {
-
-      opacity: 0;
-
-      transform: translateY(30px);
-
-    }
-
-    to {
-
-      opacity: 1;
-
-      transform: translateY(0);
-
-    }
-
-  }
-
-  /* --- Cookie Game Styles --- */
-  .game-sketchy-border {
-    border: 4px solid #3B2F2A;
-    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-    position: relative;
-    background: #EDEDE3;
-  }
-
-  .game-sketchy-border::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border: 2px solid rgba(212, 165, 165, 0.3);
-    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-    pointer-events: none;
-  }
-
-  .game-texture-overlay {
-    background-image: 
-      radial-gradient(circle at 2px 2px, rgba(0,0,0,0.08) 1px, transparent 0),
-      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
-    background-size: 8px 8px, 12px 12px;
-    opacity: 0.3;
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .dotted-background {
-    background-image: 
-      radial-gradient(circle at 1px 1px, rgba(59, 47, 42, 0.18) 1.5px, transparent 0);
-    background-size: 20px 20px;
-    background-position: 0 0;
-  }
-
-  .game-beach-bg {
-    background: 
-      linear-gradient(to bottom, #EBBA9A 0%, #EBBA9A 40%, #EDEDE3 40%, #EDEDE3 100%),
-      radial-gradient(ellipse at bottom, rgba(255,255,255,0.3) 0%, transparent 70%);
-    position: relative;
-  }
-
-  .game-beach-bg::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 20%;
-    background: 
-      repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.1) 20px, rgba(255,255,255,0.1) 21px),
-      linear-gradient(to top, #3B2F2A 0%, #D4CDC2 100%);
-  }
-
-  .palm-tree {
-    position: absolute;
-    width: 40px;
-    height: 80px;
-    background: #3B2F2A;
-    clip-path: polygon(30% 0%, 70% 0%, 65% 100%, 35% 100%);
-  }
-
-  .palm-tree::before {
-    content: '🌴';
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 30px;
-  }
-
-  .cookie-dialogue {
-    position: relative;
-    background: white;
-    border: 3px solid #3B2F2A;
-    border-radius: 20px 20px 20px 5px;
-    padding: 10px 12px;
-    font-family: 'Kalam', cursive;
-    font-size: 12px;
-    color: #3B2F2A;
-    box-shadow: 4px 4px 0px rgba(212, 165, 165, 0.3);
-    max-width: 220px;
-    line-height: 1.4;
-  }
-  
-  @media (min-width: 768px) {
-    .cookie-dialogue {
-      padding: 12px 16px;
-      font-size: 14px;
-      max-width: 250px;
-    }
-  }
-
-  .cookie-dialogue::before {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 20px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid white;
-  }
-
-  .cookie-dialogue::after {
-    content: '';
-    position: absolute;
-    bottom: -11px;
-    left: 19px;
-    width: 0;
-    height: 0;
-    border-left: 9px solid transparent;
-    border-right: 9px solid transparent;
-    border-top: 9px solid #3B2F2A;
-  }
-
-  .paw-button {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: white;
-    border: 4px solid #3B2F2A;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 0 2px rgba(212, 165, 165, 0.3);
-    transition: all 0.2s;
-    position: relative;
-  }
-
-  .paw-button:active {
-    transform: scale(0.9);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
-
-  .paw-button::before {
-    content: '';
-    position: absolute;
-    inset: 2px;
-    border: 2px solid rgba(212, 165, 165, 0.2);
-    border-radius: 50%;
-  }
-
-  @keyframes buttonPress {
-    0% { transform: scale(1); }
-    50% { transform: scale(0.85); }
-    100% { transform: scale(1); }
-  }
-
-  .paw-button.pressed {
-    animation: buttonPress 0.15s ease-out;
-  }
-
-  /* --- Countdown Timer Styles --- */
-  .countdown-box {
-    position: relative;
-    border-radius: 28px;
-  }
-
-  .countdown-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 70px;
-  }
-
-  .countdown-number {
-    font-family: 'Kalam', cursive;
-    font-weight: 700;
-    font-size: 1.75rem;
-    line-height: 1;
-  }
-
-  .countdown-label {
-    font-family: 'Kalam', cursive;
-    font-size: 0.65rem;
-    letter-spacing: 0.05em;
-    margin-top: 0.25rem;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-
-  .countdown-milestone {
-    animation: pulse 0.5s ease-in-out;
-  }
-
-  .animate-fade-in {
-
-    animation: fadeInUp 0.6s ease-out forwards;
-
-  }
-
-  
-
-  .photo-frame {
-
-    padding: 12px;
-
-    background: var(--canvas);
-
-    box-shadow: 0 10px 15px -3px rgba(216, 141, 102, 0.1);
-
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  }
-
-  .photo-frame:hover {
-
-    transform: scale(1.02) rotate(0deg) !important;
-
-    box-shadow: 0 20px 25px -5px rgba(216, 141, 102, 0.15), 0 10px 10px -5px rgba(216, 141, 102, 0.1);
-
-    z-index: 10;
-
-  }
-
-  /* --- Game Styles --- */
-  
-  @keyframes gamePulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-
-  .game-obstacle-catch {
-    animation: gamePulse 0.3s ease-out;
-  }
-
-  /* --- Mario Miranda Style Components --- */
-  
-  .page-shell {
-    min-height: 100vh;
-    background-color: var(--canvas);
-    background-image: var(--paper-texture);
-    background-size: cover;
-  }
-
-  .section-panel {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 3.5rem 1.75rem;
-    border-radius: 20px;
-    border: 2px solid rgba(58, 49, 43, 0.14);
-    box-shadow: 0 12px 30px rgba(58, 49, 43, 0.12);
-    background: var(--panel-bg, #FDF9F4);
-    position: relative;
-  }
-
-  .section-panel::before {
-    content: '';
-    position: absolute;
-    inset: 10px;
-    border-radius: 18px;
-    border: 1px dashed rgba(58, 49, 43, 0.08);
-    pointer-events: none;
-  }
-
-  .section-panel--sunset { --panel-bg: #FDF9F4; }
-  .section-panel--ocean { --panel-bg: #FDF9F4; }
-
-  .signboard {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1.8rem;
-    margin-bottom: 2rem;
-    background: linear-gradient(135deg, #EBBA9A, #D88D66);
-    border-radius: 999px;
-    position: relative;
-    box-shadow: 0 6px 0 rgba(58, 49, 43, 0.35);
-    max-width: 100%;
-  }
-
-  @media (min-width: 768px) {
-    .signboard {
-      padding: 0.75rem 2.5rem;
-      margin-bottom: 2.5rem;
-    }
-  }
-
-  .signboard::before,
-  .signboard::after {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    background: var(--bg-ivory);
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .signboard::before { left: -18px; }
-  .signboard::after { right: -18px; }
-
-  @media (max-width: 768px) {
-    .signboard::before,
-    .signboard::after {
-      display: none;
-    }
-  }
-
-  .signboard__text {
-    font-family: 'Kalam', system-ui, sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    font-size: 1rem;
-    text-transform: uppercase;
-    color: white !important;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-  }
-
-  @media (min-width: 768px) {
-    .signboard__text {
-      font-size: 1.25rem;
-    }
-  }
-
-  .signboard--dark .signboard__text {
-    color: white;
-  }
-
-  .signboard--dark::before,
-  .signboard--dark::after {
-    background: var(--text-navy);
-  }
-
-  .postcard {
-    background: #FDF9F4;
-    border-radius: 16px;
-    border: 1px solid rgba(0,0,0,0.18);
-    padding: 1.75rem 1.5rem;
-    position: relative;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.10);
-    background-image: linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
-    background-size: 12px 100%;
-  }
-
-  /* Decorative stamp removed to keep the postcard minimal */
-
-  .section-divider {
-    position: relative;
-    height: 1px;
-    margin: 3rem 0;
-  }
-
-  .section-divider::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    border-top: 1px solid rgba(58,49,43,0.12);
-    transform: translateY(-50%);
-  }
-
-  @keyframes sway {
-    0%, 100% { transform: rotate(-1deg); }
-    50% { transform: rotate(1deg); }
-  }
-
-  .string-lights {
-    transform-origin: 0 0;
-    animation: sway 6s ease-in-out infinite;
-  }
-
-  .goa-mini-map {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    aspect-ratio: 3 / 4;
-    margin: 0 auto;
-    border-radius: 18px;
-    border: 2px solid rgba(58,49,43,0.22);
-    background: linear-gradient(to bottom, #FDF9F4 55%, #FDF9F4 55%);
-    overflow: hidden;
-  }
-
-  .goa-mini-map::before {
-    content: '';
-    position: absolute;
-    left: 40%;
-    top: 30%;
-    width: 120%;
-    height: 200%;
-    background: radial-gradient(circle at 0 50%, #FDF9F4 40%, transparent 41%);
-    opacity: 0.85;
-  }
-
-  .goa-mini-map__pin {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-radius: 999px;
-    border: 2px solid var(--text-navy);
-    background: var(--accent-pink);
-    box-shadow: 0 0 0 3px rgba(216,141,102,0.35);
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-
-  .goa-mini-map__pin.is-active {
-    transform: scale(1.25);
-    z-index: 10;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .string-lights {
-      animation: none;
-    }
-  }
-
-`;
-
-const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs%20%26%20Alysha%20Wedding%20Celebration&dates=20260320T140000Z/20260320T180000Z&details=Celebrate%20with%20us%20in%20Goa.%20RSVP%20and%20travel%20info%20on%20our%20site.&location=Blu%20Missel%20by%20the%20River%2C%20Fondvem%2C%20Ribandar%2C%20Goa%2C%20India';
-const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River,+Fondvem,+Ribandar,+Goa,+India';
-// Consistent spacing scale for better visual rhythm - reduced for seamless sections
-const SECTION_PADDING = 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16';
-const SECTION_SPACING = 'py-8 md:py-12 lg:py-16 xl:py-20';
 
 // Typography constants
 const TYPO_H1 = 'text-3xl md:text-4xl lg:text-5xl font-hand font-bold'; // Section titles
@@ -883,7 +89,14 @@ const CARD_PAD_LG = 'p-8 md:p-10'; // Large card padding
 
 const SignboardHeading = ({ children, variant = 'light' }) => {
   return (
-    <div className={`signboard ${variant === 'dark' ? 'signboard--dark' : ''}`}>
+    <div 
+      className={`signboard ${variant === 'dark' ? 'signboard--dark' : ''}`}
+      role="heading"
+      aria-level="2"
+      tabIndex={-1}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={(e) => e.preventDefault()}
+    >
       <h2 className="signboard__text">{children}</h2>
     </div>
   );
@@ -1967,7 +1180,7 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-[201] w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+          className="absolute top-4 right-4 z-[201] w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
           aria-label="Close"
         >
           <X size={24} />
@@ -1977,14 +1190,14 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
         <div className="absolute top-4 left-4 z-[201] flex gap-2">
           <button
             onClick={() => setScale(prev => Math.min(prev + 0.25, 3))}
-            className="w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+            className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
             aria-label="Zoom in"
           >
             <ZoomIn size={20} />
           </button>
           <button
             onClick={() => setScale(prev => Math.max(prev - 0.25, 0.5))}
-            className="w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+            className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
             aria-label="Zoom out"
           >
             <ZoomOut size={20} />
@@ -1992,7 +1205,7 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
           {scale > 1 && (
             <button
               onClick={resetZoom}
-              className="w-12 h-12 rounded-full bg-white/95 hover:bg-white shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+              className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
               aria-label="Reset zoom"
             >
               <Maximize2 size={20} />
@@ -2022,7 +1235,7 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
 
         {/* Image Counter */}
         {images.length > 1 && (
-          <div id="image-modal-title" className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[201] bg-white/95 px-4 py-2 rounded-full shadow-lg text-navy text-sm">
+          <div id="image-modal-title" className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[201] bg-[#FDF9F4]/95 px-4 py-2 rounded-full shadow-lg text-navy text-sm">
             {currentIndex + 1} / {images.length}
           </div>
         )}
@@ -2179,7 +1392,7 @@ const KidenaHouseCarousel = memo(() => {
         >
           {endlessImages.map((image, index) => (
             <div key={index} className="min-w-full flex-shrink-0 w-full">
-              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-white rotate-1 shadow-2xl">
+              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-[#FDF9F4] rotate-1 shadow-2xl">
                 <div 
                   className="relative bg-white w-full overflow-hidden cursor-pointer"
                   style={{ maxHeight: '70vh' }}
@@ -2216,7 +1429,7 @@ const KidenaHouseCarousel = memo(() => {
         {/* Navigation Arrows - Only one set */}
         <button
           onClick={prevImage}
-          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A] transition-all hover:scale-110"
+          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 bg-[#FDF9F4] hover:bg-[#FDF9F4] backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A] transition-all hover:scale-110"
           aria-label="Previous image"
           type="button"
         >
@@ -2224,7 +1437,7 @@ const KidenaHouseCarousel = memo(() => {
         </button>
         <button
           onClick={nextImage}
-          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 bg-white hover:bg-white backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A] transition-all hover:scale-110"
+          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 bg-[#FDF9F4] hover:bg-[#FDF9F4] backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A] transition-all hover:scale-110"
           aria-label="Next image"
           type="button"
         >
@@ -3543,7 +2756,7 @@ const RSVP = () => {
                   name="guests"
                   value={formData.guests}
                   onChange={handleChange}
-                  className="modern-input bg-white"
+                  className="modern-input bg-[#FDF9F4]"
                 >
                   <option value="1">1 Guest</option>
                   <option value="2">2 Guests</option>
@@ -3657,7 +2870,7 @@ const RSVP = () => {
                     setSubmitted(false);
                     setSubmittedAttendance(null);
                   }}
-                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white hover:bg-gray-100 shadow-md flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#FDF9F4] hover:bg-[#EDEDE3] shadow-md flex items-center justify-center text-navy/60 hover:text-navy transition-all"
                   aria-label="Close"
                 >
                   <X size={18} />
@@ -4168,7 +3381,7 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
                 ? 'border-[#D88D66] bg-[#D88D66]'
 
-                : 'border-navy/20 bg-white/80 hover:border-[#D88D66]/60 hover:bg-[#D88D66]/20'
+                : 'border-navy/20 bg-[#FDF9F4]/80 hover:border-[#D88D66]/60 hover:bg-[#D88D66]/20'
 
           }`}
 
@@ -4374,7 +3587,6 @@ const App = () => {
 
     <>
 
-      <style>{styles}</style>
 
       {/* Floating Action Buttons - Outside scroll container for proper fixed positioning */}
       <MusicPlayer />
@@ -4514,12 +3726,7 @@ const App = () => {
 
           <Suspense fallback={
             isGameOpen ? (
-              <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                <div className="text-center text-navy font-hand">
-                  <div className="inline-block w-8 h-8 border-2 border-[#D88D66] border-t-transparent rounded-full animate-spin mb-2"></div>
-                  <p className="text-sm">Loading Cookie & Bailey...</p>
-                </div>
-              </div>
+              <GameLoader message="Cookie is waking up..." />
             ) : null
           }>
             <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
