@@ -13,6 +13,11 @@
   --ink-soft: #3B2F2A;
   --canvas: #FDF9F4;
 
+  /* Additional CSS variables used throughout */
+  --text-navy: #3B2F2A;
+  --accent-pink: #D88D66;
+  --bg-ivory: #FDF9F4;
+
   --paper-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cdefs%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='%23fdf9f4'/%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.07'/%3E%3Cline x1='0' y1='0' x2='0' y2='140' stroke='%23d4cdc2' stroke-width='0.35' opacity='0.23'/%3E%3Cline x1='0' y1='0' x2='140' y2='0' stroke='%23d4cdc2' stroke-width='0.35' opacity='0.2'/%3E%3C/svg%3E");
 
 }
