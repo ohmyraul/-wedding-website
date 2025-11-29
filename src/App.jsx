@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect, useMemo, memo, Suspense, lazy } fro
 import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import './styles/global.css';
 import GameLoader from './components/shared/GameLoader';
 
 // Lazy load heavy components

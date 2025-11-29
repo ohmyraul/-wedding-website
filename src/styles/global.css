@@ -807,44 +807,44 @@ h1.font-bold, h2.font-bold, h3.font-bold, .font-hand.font-bold {
   z-index: 10;
 }
 
-  @media (prefers-reduced-motion: reduce) {
-    .string-lights {
-      animation: none;
-    }
+@media (prefers-reduced-motion: reduce) {
+  .string-lights {
+    animation: none;
   }
+}
 
-  /* --- Skeleton Loaders --- */
-  @keyframes skeletonPulse {
-    0%, 100% {
-      opacity: 0.6;
-    }
-    50% {
-      opacity: 1;
-    }
+/* --- Skeleton Loaders --- */
+@keyframes skeletonPulse {
+  0%, 100% {
+    opacity: 0.6;
   }
+  50% {
+    opacity: 1;
+  }
+}
 
-  .skeleton-loader {
-    background: linear-gradient(
-      90deg,
-      #EDEDE3 0%,
-      #FDF9F4 50%,
-      #EDEDE3 100%
-    );
-    background-size: 200% 100%;
-    animation: skeletonPulse 1.5s ease-in-out infinite;
-  }
+.skeleton-loader {
+  background: linear-gradient(
+    90deg,
+    #EDEDE3 0%,
+    #FDF9F4 50%,
+    #EDEDE3 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
 
-  .skeleton-loader::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    border: 2px solid rgba(216, 141, 102, 0.2);
-    border-radius: inherit;
-    z-index: -1;
-    pointer-events: none;
-    animation: skeletonPulse 1.5s ease-in-out infinite;
-  }
+.skeleton-loader::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 2px solid rgba(216, 141, 102, 0.2);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
 
