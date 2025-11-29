@@ -3725,7 +3725,12 @@ const App = () => {
 
           <Suspense fallback={
             isGameOpen ? (
-              <GameLoader message="Cookie is waking up..." />
+              <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                <div className="text-center text-navy font-hand">
+                  <div className="inline-block w-8 h-8 border-2 border-[#D88D66] border-t-transparent rounded-full animate-spin mb-2"></div>
+                  <p className="text-sm">Loading Cookie & Bailey...</p>
+                </div>
+              </div>
             ) : null
           }>
             <CookieChaseGame isOpen={isGameOpen} onClose={() => setIsGameOpen(false)} />
