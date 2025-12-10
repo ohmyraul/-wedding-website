@@ -1585,20 +1585,23 @@ const KidenaHouseCarousel = memo(() => {
                         }
                       }}
                     />
-                    {isCurrentImage && zoomState.scale > 1 && (
+                  </div>
+                  {isCurrentImage && zoomState.scale > 1 && (
+                    <div className="mt-3 flex justify-center">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setZoomState({ scale: 1, x: 0, y: 0 });
                           setIsZooming(false);
                         }}
-                        className="absolute top-2 right-2 bg-[#D88D66] text-white rounded-full p-2 shadow-lg z-10 hover:bg-[#C77A55] transition-colors"
+                        className="bg-[#D88D66] text-white rounded-full px-4 py-2 shadow-lg hover:bg-[#C77A55] transition-colors flex items-center gap-2 font-hand font-semibold text-sm"
                         aria-label="Reset zoom"
                       >
-                        <ZoomOut size={20} />
+                        <ZoomOut size={18} />
+                        <span>Reset Zoom</span>
                       </button>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </ParallaxWrapper>
               </div>
             );
@@ -2272,7 +2275,7 @@ const ExploreGoa = () => {
             
             return (
               <FadeInWhenVisible key={section.category} delay={idx * 0.1}>
-                <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} transition-all h-full flex flex-col`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+                <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} transition-all md:h-full md:flex md:flex-col`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                   
                   {/* Mobile: Collapsible button header */}
                   <button
@@ -2312,9 +2315,9 @@ const ExploreGoa = () => {
                       opacity: isExpanded ? 1 : 0
                     }}
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="overflow-hidden md:!h-auto md:!opacity-100 flex-1"
+                    className="overflow-hidden md:!h-auto md:!opacity-100 md:flex-1"
                   >
-                    <div className={`${SPACING.spaceY['5']} md:${SPACING.spaceY.md} pt-0 md:pt-0 flex-1`}>
+                    <div className={`${SPACING.spaceY['5']} md:${SPACING.spaceY.md} pt-0 md:pt-0 md:flex-1`}>
                       {section.items.map((item, i) => (
                         <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#EDEDE3]/50 transition-colors" whileHover={{ x: 6 }}>
                           <div className="w-10 h-10 md:w-12 h-12 rounded-full bg-[#FDF9F4] border-2 border-[#D4CDC2] flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-[#FDF9F4] group-hover:border-[#D88D66] transition-all shadow-sm group-hover:shadow-md">
