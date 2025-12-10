@@ -435,7 +435,17 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
     <header className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
       <nav className="max-w-6xl mx-auto nav-shell px-6 py-3 flex justify-between items-center" aria-label="Main navigation">
 
-        <a href="#" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            if (onNavigate) {
+              onNavigate('hero');
+            }
+            setIsOpen(false);
+          }}
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+          aria-label="Go to homepage"
+        >
           <img 
             src="/images/s-a-logo.png" 
             alt="S & A" 
@@ -451,7 +461,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
             }}
           />
           {isFamilyMode && <span className="text-xs bg-[#E8927C] text-white px-2 py-0.5 font-sans rotate-3 rounded-sm ml-1">FAMILY</span>}
-        </a>
+        </button>
 
         
 
