@@ -18,9 +18,9 @@ const Button = ({
   const baseClasses = 'font-hand font-bold transition-all duration-200 sketchy-border focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2';
   
   const variantClasses = {
-    primary: 'bg-[#D88D66] text-[#FDF9F4] hover:bg-[#C97452] hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-xl active:scale-[0.98] active:translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#D88D66] disabled:hover:scale-100 disabled:hover:translate-y-0',
-    secondary: 'bg-[#FDF9F4] text-navy border-[#D88D66]/30 hover:border-[#D88D66]/60 hover:bg-[#D88D66]/20 hover:-translate-y-0.5',
-    floating: 'bg-[#D88D66] text-[#FDF9F4] rounded-full shadow-md hover:scale-105 hover:rotate-1',
+    primary: 'bg-[#D88D66] text-[#FDF9F4] hover:bg-[#C77A55] hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-xl active:scale-[0.98] active:translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#D88D66] disabled:hover:scale-100 disabled:hover:translate-y-0 transition-all duration-300 ease-out',
+    secondary: 'bg-[#FDF9F4] text-navy border-[#D88D66]/30 hover:border-[#D88D66]/60 hover:bg-[#D88D66]/20 hover:-translate-y-[2px] hover:shadow-lg transition-all duration-300 ease-out',
+    floating: 'bg-[#D88D66] text-[#FDF9F4] rounded-full shadow-md hover:scale-105 hover:rotate-1 hover:shadow-xl transition-all duration-300 ease-out',
   };
   
   const sizeClasses = {

@@ -13,6 +13,8 @@ export const TYPE_SCALE = {
   '3xl': 'text-3xl',       // 30px
   '4xl': 'text-4xl',       // 36px
   '5xl': 'text-5xl',       // 48px
+  '6xl': 'text-6xl',       // 60px
+  '7xl': 'text-7xl',       // 72px
 };
 
 export const LINE_HEIGHT = {
@@ -36,7 +38,7 @@ export const SPACING = {
   section: 'py-16 md:py-24 lg:py-32',  // 64px / 96px / 128px
   
   // Section horizontal padding
-  sectionPadding: 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16',  // 16px / 24px / 32px / 48px / 64px
+  sectionPadding: 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20',  // 16px / 24px / 32px / 48px / 64px / 80px
   
   // Card padding (8px base unit)
   card: {

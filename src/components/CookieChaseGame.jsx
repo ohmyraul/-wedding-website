@@ -328,7 +328,7 @@ const CookieChaseGame = ({ isOpen: externalIsOpen, onClose }) => {
               setScore(currentScore => {
                 if (currentScore > highScoreRef.current) {
                   saveHighScore(currentScore);
-                }
+              }
                 return currentScore;
               });
               const gameOverDialogue = getDialogue('gameOver');

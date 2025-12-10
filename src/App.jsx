@@ -63,9 +63,11 @@ const fireConfetti = async (options = {}) => {
 
 
 // Typography constants - using design tokens
-const TYPO_H1 = `${TYPE_SCALE['3xl']} md:${TYPE_SCALE['4xl']} lg:${TYPE_SCALE['5xl']} font-hand font-bold`; // Section titles
-const TYPO_H2 = `${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-hand font-bold`; // Major card titles
+const TYPO_H1 = `${TYPE_SCALE['3xl']} md:${TYPE_SCALE['4xl']} lg:${TYPE_SCALE['5xl']} font-hand font-bold ${LETTER_SPACING.tight}`; // Section titles
+const TYPO_HERO_H1 = `${TYPE_SCALE['4xl']} md:${TYPE_SCALE['5xl']} lg:${TYPE_SCALE['6xl']} xl:${TYPE_SCALE['7xl']} font-hand font-bold ${LETTER_SPACING.tight}`; // Hero section title
+const TYPO_H2 = `${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-hand font-bold ${LETTER_SPACING.tight}`; // Major card titles
 const TYPO_BODY = `${TYPE_SCALE.base} md:${TYPE_SCALE.lg} font-normal ${LINE_HEIGHT.relaxed}`; // Body text
+const TYPO_HERO_BODY = `${TYPE_SCALE.lg} md:${TYPE_SCALE.xl} lg:${TYPE_SCALE['2xl']} font-normal ${LINE_HEIGHT.loose}`; // Hero body text
 const TYPO_LABEL = `${TYPE_SCALE.xs} md:${TYPE_SCALE.sm} font-hand font-semibold uppercase ${LETTER_SPACING.wider}`; // Labels/captions
 
 // Card pattern constants
@@ -307,7 +309,7 @@ const ApprovedStamp = () => (
 
 
 
-const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNavigate }) => {
+const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNavigate, activeSectionId }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
@@ -397,12 +399,22 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
     <header className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
       <nav className="max-w-6xl mx-auto nav-shell px-6 py-3 flex justify-between items-center" aria-label="Main navigation">
 
-        <a href="#" className="text-3xl text-navy font-hand font-bold tracking-wide flex items-center gap-2 sketchy-text">
-
-          S & A 
-
-          {isFamilyMode && <span className="text-xs bg-[#D88D66] text-white px-2 py-0.5 font-sans rotate-3 rounded-sm">FAMILY</span>}
-
+        <a href="#" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <img 
+            src="/images/s-a-logo.png" 
+            alt="S & A" 
+            className="h-7 md:h-8 w-auto object-contain"
+            style={{ maxHeight: '32px' }}
+            onError={(e) => {
+              // Fallback to text if image doesn't load
+              e.target.style.display = 'none';
+              const fallback = document.createElement('span');
+              fallback.className = 'text-2xl md:text-3xl text-navy font-hand font-bold tracking-wide sketchy-text';
+              fallback.textContent = 'S & A';
+              e.target.parentNode.insertBefore(fallback, e.target);
+            }}
+          />
+          {isFamilyMode && <span className="text-xs bg-[#D88D66] text-white px-2 py-0.5 font-sans rotate-3 rounded-sm ml-1">FAMILY</span>}
         </a>
 
         
@@ -410,21 +422,32 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
         {/* Desktop Navigation - lg and above */}
         <div className="hidden lg:flex gap-8 items-center">
 
-          {desktopLinks.map(link => (
+          {desktopLinks.map(link => {
+            const sectionId = link.href.replace('#', '');
+            const isActive = activeSectionId === sectionId;
 
-            <a 
-              key={link.name} 
-              href={link.href} 
-              onClick={(e) => handleLinkClick(e, link.href)}
-              className="text-lg font-hand font-bold nav-link hover:rotate-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded"
-              aria-label={`Navigate to ${link.name} section`}
-            >
-
-              {link.name}
-
-            </a>
-
-          ))}
+            return (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                onClick={(e) => handleLinkClick(e, link.href)}
+                className={`text-lg font-hand font-bold nav-link hover:rotate-2 transition-all duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded relative ${
+                  isActive ? 'text-[#D88D66] font-bold' : ''
+                }`}
+                aria-label={`Navigate to ${link.name} section`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {link.name}
+                {isActive && (
+                  <motion.div 
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#D88D66]"
+                    layoutId="activeSection"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </a>
+            );
+          })}
 
           {/* Family Mode Button - Desktop */}
           <button
@@ -464,19 +487,37 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
         </button>
 
       {/* Mobile Hamburger Menu - only show when not in family mode or when hamburger is clicked */}
-      {isOpen && (
-        <div className="absolute top-24 right-6 left-6 nav-panel p-6 flex flex-col gap-4 lg:hidden rotate-1 z-50">
-          {allLinks.map(link => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              onClick={(e) => handleLinkClick(e, link.href, true)} 
-              className="text-2xl font-hand font-semibold nav-link text-center border-b border-gray-100 pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
-              aria-label={`Navigate to ${link.name} section`}
-            >
-              {link.name}
-            </a>
-          ))}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-24 right-6 left-6 nav-panel backdrop-blur-md bg-[#FDF9F4]/95 p-6 flex flex-col gap-4 lg:hidden rotate-1 z-50"
+          >
+          {allLinks.map((link, index) => {
+            const sectionId = link.href.replace('#', '');
+            const isActive = activeSectionId === sectionId;
+
+            return (
+              <motion.a 
+                key={link.name} 
+                href={link.href} 
+                onClick={(e) => handleLinkClick(e, link.href, true)} 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.05 }}
+                className={`text-2xl font-hand font-semibold nav-link text-center border-b border-gray-100 pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 transition-colors ${
+                  isActive ? 'text-[#D88D66] font-bold' : ''
+                }`}
+                aria-label={`Navigate to ${link.name} section`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {link.name}
+              </motion.a>
+            );
+          })}
 
           {/* Family Mode Button */}
           <button
@@ -502,8 +543,9 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
               </>
             )}
           </button>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       </nav>
     </header>
@@ -593,30 +635,39 @@ const CountdownTimer = () => {
         <div className="w-16 h-1 bg-[#D88D66] mx-auto mt-3 rounded-full opacity-60"></div>
         </div>
       <div className="flex items-center justify-center gap-2 md:gap-3">
-        {units.map((unit, index) => (
-          <motion.div
-            key={unit.label}
-            className="countdown-unit bg-[#FDF9F4] border border-[#D4CDC2] rounded-2xl px-4 py-3 text-center"
-            animate={unit.value === 0 ? {} : { scale: [1, 1.05, 1] }}
-            transition={{ 
-              duration: 0.3, 
-              delay: index * 0.05,
-              repeat: Infinity,
-              repeatDelay: 1
-            }}
-          >
-            <span className={`countdown-number text-[#3B2F2A] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold font-mono`}>
-              {unit.value.toString().padStart(2, '0')}
-            </span>
-            <span className={`countdown-label ${TYPO_LABEL} text-[#3B2F2A] mt-1 block`}>{unit.label}</span>
-          </motion.div>
-        ))}
+        {units.map((unit, index) => {
+          // Check if this is a milestone (100, 50, 30, 7, 1 days)
+          const isMilestone = unit.label === 'Days' && [100, 50, 30, 7, 1].includes(unit.value);
+          
+          return (
+            <motion.div
+              key={unit.label}
+              className="countdown-unit bg-[#FDF9F4] border border-[#D4CDC2] rounded-2xl px-4 py-3 text-center"
+              animate={isMilestone ? { 
+                scale: [1, 1.08, 1],
+                boxShadow: ['0 4px 8px rgba(216, 141, 102, 0.1)', '0 8px 16px rgba(216, 141, 102, 0.25)', '0 4px 8px rgba(216, 141, 102, 0.1)']
+              } : unit.value === 0 ? {} : { scale: [1, 1.05, 1] }}
+              transition={{ 
+                duration: isMilestone ? 0.5 : 0.3, 
+                delay: index * 0.05,
+                repeat: isMilestone ? 3 : Infinity,
+                repeatDelay: isMilestone ? 0.5 : 1
+              }}
+            >
+              <span className={`countdown-number text-[#D88D66] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold font-mono`}>
+                {unit.value.toString().padStart(2, '0')}
+              </span>
+              <span className={`countdown-label ${TYPO_LABEL} text-[#3B2F2A] mt-1 block`}>{unit.label}</span>
+            </motion.div>
+          );
+        })}
       </div>
       {timeLeft.days <= 1 && timeLeft.days > 0 && (
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={`text-center mt-3 ${TYPO_LABEL} text-[#3B2F2A] font-bold`}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 200 }}
+          className={`text-center mt-3 ${TYPO_LABEL} text-[#D88D66] font-bold`}
         >
           Almost there! 🎉
         </motion.p>
@@ -726,7 +777,7 @@ const Hero = ({ onScrollToSection }) => (
             className="w-full bg-[#EDEDE3] overflow-hidden relative" 
             style={{ minHeight: '280px', maxHeight: '400px' }}
           >
-             <img 
+             <motion.img 
                src="/images/hero.jpg" 
                alt="Shubs and Alysha" 
                className="w-full h-full object-cover"
@@ -734,15 +785,18 @@ const Hero = ({ onScrollToSection }) => (
                width={1024}
                height={890}
                loading="eager"
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               transition={{ duration: 0.6, ease: 'easeOut' }}
              />
           </div>
         </div>
       </div>
 
       {/* Mobile: Text Content Second */}
-      <div className={`order-2 md:order-1 text-center ${SPACING.spaceY.sm} md:${SPACING.spaceY.md} mt-6 md:mt-0 overflow-visible`}>
+      <div className={`order-2 md:order-1 text-center ${SPACING.spaceY.md} md:${SPACING.spaceY.lg} lg:${SPACING.spaceY.xl} mt-8 md:mt-12 lg:mt-16 overflow-visible`}>
         {/* Opening Message */}
-        <p className={`${TYPO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2 overflow-visible mb-4 md:mb-6`}>
+        <p className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2 overflow-visible mb-6 md:mb-8 lg:mb-10`}>
           After seven years of choosing each other,<br className="hidden md:block" />
           <span className="md:hidden"> </span>we're making it forever.
         </p>
@@ -751,26 +805,26 @@ const Hero = ({ onScrollToSection }) => (
         <HeroLogo />
 
         {/* Names and Invitation */}
-        <div className="flex flex-col items-center gap-3 md:gap-4 rotate-[-1deg]">
-          <h1 className={`${TYPO_H1} text-navy relative`}>
+        <div className="flex flex-col items-center gap-4 md:gap-5 lg:gap-6 rotate-[-1deg]">
+          <h1 className={`${TYPO_HERO_H1} text-navy relative`}>
             Shubs & Alysha
-            <svg className="absolute -bottom-2 md:-bottom-3 left-0 w-full h-2 md:h-2.5" viewBox="0 0 100 10" preserveAspectRatio="none">
+            <svg className="absolute -bottom-2 md:-bottom-3 lg:-bottom-4 left-0 w-full h-2 md:h-2.5 lg:h-3" viewBox="0 0 100 10" preserveAspectRatio="none">
                <path d="M0,5 Q50,10 100,5" stroke="#D88D66" strokeWidth="2" fill="none" />
             </svg>
           </h1>
 
-          <p className={`${TYPO_BODY} text-navy max-w-xl mx-auto px-2`}>
+          <p className={`${TYPO_HERO_BODY} text-navy max-w-xl mx-auto px-2`}>
             invite you to witness our wedding
           </p>
 
-          <p className={`${TYPO_BODY} text-navy mt-1 md:mt-2 italic px-2`}>
+          <p className={`${TYPO_HERO_BODY} text-navy mt-2 md:mt-3 lg:mt-4 italic px-2`}>
             We want you there.
           </p>
          </div>
 
-        {/* Event Details - More prominent */}
-        <div className="max-w-2xl mx-auto mt-8 md:mt-10 lg:mt-12">
-          <div className={`${CARD_SECONDARY} bg-[#FDF9F4] border-[#D88D66]/30 ${CARD_PAD_MD} md:${CARD_PAD_LG} text-navy`} style={{ boxShadow: '0 8px 16px -2px rgba(216, 141, 102, 0.15)' }}>
+        {/* Event Details - Enhanced with gradient and border accent */}
+        <div className="max-w-2xl mx-auto mt-10 md:mt-12 lg:mt-16">
+          <div className={`${CARD_SECONDARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-l-4 border-[#D88D66] border-[#D88D66]/30 ${CARD_PAD_MD} md:${CARD_PAD_LG} text-navy relative`} style={{ boxShadow: '0 8px 16px -2px rgba(216, 141, 102, 0.15)' }}>
             <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-3 md:gap-3">
               <div className="flex items-center gap-1.5 md:gap-1.5">
                 <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
@@ -793,13 +847,20 @@ const Hero = ({ onScrollToSection }) => (
 
     </FadeInWhenVisible>
 
-    {/* Scroll Indicator - Smaller on mobile */}
+    {/* Scroll Indicator - Enhanced with opacity pulse and accent color */}
     <motion.div 
-      className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 text-navy/30"
-      animate={{ y: [0, -10, 0] }}
-      transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+      className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2"
+      animate={{ 
+        y: [0, -8, 0],
+        opacity: [0.4, 0.7, 0.4]
+      }}
+      transition={{ 
+        repeat: Infinity, 
+        duration: 2.5, 
+        ease: 'easeInOut' 
+      }}
     >
-      <ArrowDown size={24} className="md:w-8 md:h-8" aria-hidden="true" />
+      <ArrowDown size={28} className="md:w-10 md:h-10 text-[#D88D66]/40" aria-hidden="true" />
     </motion.div>
 
   </section>
@@ -834,8 +895,8 @@ const Story = () => (
           <FadeInWhenVisible delay={0.2} variant="subtle">
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-2 order-2 md:order-1 photo-frame">
 
-            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center`} style={{ aspectRatio: '3 / 4' }}>
-               <img src="/images/firsttime.jpg" className="w-full h-full object-contain sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
+            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30`} style={{ aspectRatio: '3 / 4' }}>
+               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
             </div>
 
             <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Hello, goodbye, sea you in three years</p>
@@ -892,10 +953,10 @@ const Story = () => (
 
           </div>
 
-            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] -rotate-2 photo-frame">
+            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-[-1deg] photo-frame">
 
-            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center`} style={{ aspectRatio: '3 / 4' }}>
-               <img src="/images/office.jpg" className="w-full h-full object-contain sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} fetchPriority="low" decoding="async" />
+            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30`} style={{ aspectRatio: '3 / 4' }}>
+               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} fetchPriority="low" decoding="async" />
             </div>
 
              <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>From slack DMs to slacking off together</p>
@@ -995,9 +1056,9 @@ const Story = () => (
 
           </div>
 
-            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] -rotate-1 photo-frame">
-             <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center`} style={{ aspectRatio: '3 / 4' }}>
-                <img src="/images/proposal.jpg" className="w-full h-full object-contain" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
+            <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-[1deg] photo-frame">
+             <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30`} style={{ aspectRatio: '3 / 4' }}>
+                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
              </div>
              <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Ring. Sand. Forever.</p>
             </ParallaxWrapper>
@@ -1734,7 +1795,7 @@ const Celebration = ({ isFamilyMode }) => (
 
             <div className={`w-full overflow-hidden border-2 border-navy ${CARD_PRIMARY} bg-[#FDF9F4]`}>
 
-               <img 
+               <motion.img 
 
                  src="/images/blu-missel.jpeg" 
 
@@ -1745,6 +1806,10 @@ const Celebration = ({ isFamilyMode }) => (
                  className="w-full h-auto block"
                  width={1024}
                  height={683}
+                 initial={{ opacity: 0 }}
+                 whileInView={{ opacity: 1 }}
+                 viewport={{ once: true }}
+                 transition={{ duration: 0.5, ease: 'easeOut' }}
 
                />
 
@@ -1849,17 +1914,17 @@ const Celebration = ({ isFamilyMode }) => (
           href={GOOGLE_CALENDAR_URL}
           target="_blank"
           rel="noreferrer"
-          className={`${CARD_SECONDARY} border-[#D88D66]/40 bg-[#FDF9F4] text-navy text-xs font-semibold tracking-wide px-3 py-2 flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-md active:scale-[0.98] active:translate-y-[1px] transition-all duration-200`}
+          className={`${CARD_SECONDARY} border-[#D88D66] bg-[#D88D66] text-white text-xs font-semibold tracking-wide px-4 py-2.5 flex items-center justify-center gap-1.5 shadow-md hover:bg-[#C77A55] hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-xl active:scale-[0.98] active:translate-y-[1px] transition-all duration-300 ease-out`}
           aria-label="Add wedding to Google Calendar"
         >
-          <Calendar size={14} />
+          <Calendar size={16} />
           Add to Calendar
         </a>
         <a
           href={VENUE_GOOGLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className={`${CARD_SECONDARY} border-[#D88D66]/30 bg-[#FDF9F4] text-navy text-xs font-semibold tracking-wide px-3 py-2 flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-md active:scale-[0.98] active:translate-y-[1px] transition-all duration-200`}
+          className={`${CARD_SECONDARY} border-[#D88D66] bg-[#D88D66] text-white text-xs font-semibold tracking-wide px-4 py-2.5 flex items-center justify-center gap-1.5 shadow-md hover:bg-[#C77A55] hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-xl active:scale-[0.98] active:translate-y-[1px] transition-all duration-300 ease-out`}
           aria-label="Open venue in Google Maps"
         >
           {/* Google/Android logo - simple G icon */}
@@ -2096,14 +2161,14 @@ const ExploreGoa = () => {
 
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 md:items-stretch">
 
           {recommendations.map((section, idx) => {
             const isExpanded = expandedSection === section.category;
             
             return (
               <FadeInWhenVisible key={section.category} delay={idx * 0.1}>
-                <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} transition-all`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+                <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} transition-all h-full flex flex-col`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                   
                   {/* Mobile: Collapsible button header */}
                   <button
@@ -2143,9 +2208,9 @@ const ExploreGoa = () => {
                       opacity: isExpanded ? 1 : 0
                     }}
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="overflow-hidden md:!h-auto md:!opacity-100"
+                    className="overflow-hidden md:!h-auto md:!opacity-100 flex-1"
                   >
-                    <div className={`${SPACING.spaceY['5']} md:${SPACING.spaceY.md} pt-0 md:pt-0`}>
+                    <div className={`${SPACING.spaceY['5']} md:${SPACING.spaceY.md} pt-0 md:pt-0 flex-1`}>
                       {section.items.map((item, i) => (
                         <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#EDEDE3]/50 transition-colors" whileHover={{ x: 6 }}>
                           <div className="w-10 h-10 md:w-12 h-12 rounded-full bg-[#FDF9F4] border-2 border-[#D4CDC2] flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-[#FDF9F4] group-hover:border-[#D88D66] transition-all shadow-sm group-hover:shadow-md">
@@ -2304,7 +2369,7 @@ const Travel = ({ isFamilyMode }) => (
 
         <FadeInWhenVisible
           delay={0.15}
-          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden md:hover:-translate-y-1 md:hover:shadow-lg md:hover:rotate-[0.5deg] transition-all duration-250`}
+          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden md:hover:-translate-y-2 md:hover:shadow-xl md:hover:rotate-[0.3deg] md:transition-all md:duration-300 md:ease-out`}
           style={{ boxShadow: '0 8px 16px rgba(216, 141, 102, 0.15)' }}
         >
 
@@ -2602,12 +2667,43 @@ const RSVP = () => {
         setSubmittedAttendance(formData.attending);
         setSubmitted(true);
         setIsSubmitting(false);
+        // Enhanced celebration for "yes" responses
         if (formData.attending === 'Count Me In') {
+          // Multiple confetti bursts for more celebration
           fireConfetti({
-            particleCount: 120,
-            spread: 70,
+            particleCount: 150,
+            spread: 80,
             origin: { y: 0.6 },
-            colors: ['#D88D66', '#EBBA9A', '#3B2F2A', '#EDEDE3']
+            colors: ['#D88D66', '#EBBA9A', '#3B2F2A', '#EDEDE3'],
+            gravity: 0.8
+          });
+          // Second burst after delay
+          setTimeout(() => {
+            fireConfetti({
+              particleCount: 100,
+              spread: 60,
+              origin: { y: 0.4, x: 0.3 },
+              colors: ['#D88D66', '#EBBA9A'],
+              gravity: 0.9
+            });
+          }, 300);
+          setTimeout(() => {
+            fireConfetti({
+              particleCount: 100,
+              spread: 60,
+              origin: { y: 0.4, x: 0.7 },
+              colors: ['#D88D66', '#EBBA9A'],
+              gravity: 0.9
+            });
+          }, 600);
+        } else {
+          // Subtle celebration for "no" responses too
+          fireConfetti({
+            particleCount: 50,
+            spread: 50,
+            origin: { y: 0.5 },
+            colors: ['#EBBA9A', '#D4CDC2'],
+            gravity: 0.6
           });
         }
       } else {
@@ -3487,6 +3583,7 @@ const App = () => {
           onFamilyModeToggle={handleFamilyModeToggle}
           onRequestFamilyAccess={handleFamilyModeToggle}
           onNavigate={scrollToSection}
+          activeSectionId={sections[activeSection]?.id}
         />
 
         <DotNav 
