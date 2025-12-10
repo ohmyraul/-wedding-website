@@ -925,7 +925,7 @@ const Hero = ({ onScrollToSection }) => (
               className="w-full bg-[#EDEDE3] overflow-hidden relative" 
               style={{ minHeight: '280px', maxHeight: '400px' }}
             >
-               <motion.img 
+               <img 
                  src="/images/hero.jpg" 
                  alt="Shubs and Alysha" 
                  className="w-full h-full object-cover"
@@ -933,8 +933,6 @@ const Hero = ({ onScrollToSection }) => (
                  width={1024}
                  height={890}
                  loading="eager"
-                 initial={{ opacity: 1, scale: 1 }}
-                 animate={{ opacity: 1, scale: 1 }}
                />
             </div>
           </div>
@@ -2083,7 +2081,7 @@ const Celebration = ({ isFamilyMode }) => (
 
             <div className={`w-full overflow-hidden border-2 border-navy bg-transparent`}>
 
-               <motion.img 
+               <img 
 
                  src="/images/blu-missel.jpeg" 
 
@@ -2094,9 +2092,6 @@ const Celebration = ({ isFamilyMode }) => (
                  className="w-full h-auto block"
                  width={1024}
                  height={683}
-                 initial={{ opacity: 1, scale: 1 }}
-                 whileInView={{ opacity: 1, scale: 1 }}
-                 viewport={{ once: true }}
 
                />
 
