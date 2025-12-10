@@ -729,8 +729,8 @@ const HeroLogo = memo(() => {
       <img 
         src="/images/facelogo.png" 
         alt="S & A Monogram with Shubs & Alysha" 
-        className="w-48 md:w-64 lg:w-80 xl:w-96 h-auto object-contain"
-        style={{ maxWidth: '400px' }}
+        className="w-64 sm:w-72 md:w-64 lg:w-80 xl:w-96 h-auto object-contain"
+        style={{ maxWidth: '100%' }}
         onError={(e) => {
           // Fallback to original logo if facelogo doesn't exist
           e.target.src = '/images/s-a-logo.png';
@@ -802,31 +802,8 @@ const Hero = ({ onScrollToSection }) => (
 
     <FadeInWhenVisible className="w-full max-w-6xl mx-auto relative z-10 flex flex-col md:flex-col overflow-visible">
       
-      {/* Mobile: Photo First */}
-      <div className="order-1 md:order-2 mb-4 md:mb-0">
-        <div className="relative w-full max-w-xl mx-auto">
-          <div 
-            className="w-full bg-[#EDEDE3] overflow-hidden relative" 
-            style={{ minHeight: '280px', maxHeight: '400px' }}
-          >
-             <motion.img 
-               src="/images/hero.jpg" 
-               alt="Shubs and Alysha" 
-               className="w-full h-full object-cover"
-               style={{ objectPosition: 'center center' }}
-               width={1024}
-               height={890}
-               loading="eager"
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               transition={{ duration: 0.6, ease: 'easeOut' }}
-             />
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile: Text Content Second */}
-      <div className={`order-2 md:order-1 text-center ${SPACING.spaceY.md} md:${SPACING.spaceY.lg} lg:${SPACING.spaceY.xl} mt-8 md:mt-12 lg:mt-16 overflow-visible`}>
+      {/* Mobile: Text Content First */}
+      <div className={`order-1 md:order-1 text-center ${SPACING.spaceY.md} md:${SPACING.spaceY.lg} lg:${SPACING.spaceY.xl} mt-8 md:mt-12 lg:mt-16 overflow-visible`}>
         {/* Opening Message */}
         <p className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-4 sm:px-6 overflow-visible mb-6 md:mb-8 lg:mb-10`}>
           After seven years of choosing each other,<br className="hidden md:block" />
@@ -884,6 +861,29 @@ const Hero = ({ onScrollToSection }) => (
                 <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#E8927C] flex-shrink-0 group-hover:scale-110 transition-transform" />
                 <span className={`${TYPO_BODY} text-navy group-hover:text-[#E8927C] transition-colors`}>Blu Missel, Ribandar, Goa</span>
               </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile: Photo Below Event Details */}
+        <div className="order-2 md:order-2 mt-8 md:mt-0 mb-4 md:mb-0">
+          <div className="relative w-full max-w-xl mx-auto">
+            <div 
+              className="w-full bg-[#EDEDE3] overflow-hidden relative" 
+              style={{ minHeight: '280px', maxHeight: '400px' }}
+            >
+               <motion.img 
+                 src="/images/hero.jpg" 
+                 alt="Shubs and Alysha" 
+                 className="w-full h-full object-cover"
+                 style={{ objectPosition: 'center center' }}
+                 width={1024}
+                 height={890}
+                 loading="eager"
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 transition={{ duration: 0.6, ease: 'easeOut' }}
+               />
             </div>
           </div>
         </div>
