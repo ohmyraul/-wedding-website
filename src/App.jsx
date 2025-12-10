@@ -255,9 +255,6 @@ const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffe
   const y = useTransform(scrollYProgress, [0, 1], [adjustedOffset, -adjustedOffset]);
 
   const smoothY = prefersReducedMotion ? 0 : useSpring(y, { stiffness: 120, damping: 20, mass: 0.2 });
-  
-  // Opacity fade for scroll storytelling
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3]);
 
 
 
@@ -266,8 +263,7 @@ const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffe
     <motion.div 
       ref={ref} 
       style={{ 
-        y: prefersReducedMotion ? 0 : smoothY,
-        opacity: prefersReducedMotion ? 1 : opacity
+        y: prefersReducedMotion ? 0 : smoothY
       }} 
       className={className}
       whileHover={hoverEffect && !prefersReducedMotion ? { 
