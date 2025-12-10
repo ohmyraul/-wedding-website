@@ -729,7 +729,7 @@ const HeroLogo = memo(() => {
       <img 
         src="/images/facelogo.png" 
         alt="S & A Monogram with Shubs & Alysha" 
-        className="w-[320px] sm:w-[360px] md:w-[320px] lg:w-[400px] xl:w-[480px] h-auto object-contain"
+        className="w-[400px] sm:w-[450px] md:w-[400px] lg:w-[500px] xl:w-[600px] h-auto object-contain"
         style={{ maxWidth: '100%' }}
         onError={(e) => {
           // Fallback to original logo if facelogo doesn't exist
