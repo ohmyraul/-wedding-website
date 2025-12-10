@@ -745,8 +745,8 @@ const HeroLogo = memo(() => {
   return (
     <motion.div
       className="flex justify-center items-center mt-4 md:mt-6 mb-3 md:mb-4"
-      initial={prefersReducedMotion ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      initial={prefersReducedMotion ? {} : { scale: 0.9 }}
+      animate={{ scale: 1 }}
       transition={prefersReducedMotion 
         ? { duration: 0.3, ease: 'easeOut' }
         : { type: 'spring', stiffness: 120, damping: 14 }
@@ -793,9 +793,8 @@ const VenueCardWithPulse = memo(({ children }) => {
       initial="hidden"
       animate={controls}
       variants={{
-        hidden: { opacity: 0, y: 12 },
+        hidden: { y: 12 },
         visible: {
-          opacity: 1,
           y: 0,
           transition: {
             duration: 0.28,
