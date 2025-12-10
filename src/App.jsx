@@ -207,12 +207,12 @@ const FadeInWhenVisible = memo(({ children, delay = 0, className = '', variant =
       variants={{
 
         hidden: prefersReducedMotion 
-          ? { opacity: 0 }
-          : { opacity: 0, y: translateY },
+          ? {}
+          : { y: translateY },
 
         visible: prefersReducedMotion
-          ? { opacity: 1 }
-          : { opacity: 1, y: 0 }
+          ? {}
+          : { y: 0 }
 
       }}
 
