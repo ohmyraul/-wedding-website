@@ -975,7 +975,7 @@ const Story = () => (
 
           <div>
 
-              <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>July 2018 — The Reunion</span>
+              <span className={`inline-block bg-[#E8927C] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>July 2018</span>
 
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Reunion</h3>
 
@@ -1074,7 +1074,7 @@ const Story = () => (
 
           <div>
 
-              <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-4 md:px-5 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>January 6, 2025</span>
+              <span className={`inline-block bg-[#E8927C] text-[#FDF9F4] px-4 md:px-5 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>January 6, 2025</span>
 
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Question</h3>
 
