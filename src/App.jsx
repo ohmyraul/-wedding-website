@@ -718,7 +718,7 @@ const HeroLogo = memo(() => {
 
   return (
     <motion.div
-      className="flex justify-center items-center mt-6 md:mt-8 mb-4 md:mb-6"
+      className="flex justify-center items-center mt-4 md:mt-6 mb-3 md:mb-4"
       initial={prefersReducedMotion ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={prefersReducedMotion 
