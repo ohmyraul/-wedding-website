@@ -828,7 +828,7 @@ const Hero = ({ onScrollToSection }) => (
       {/* Mobile: Text Content Second */}
       <div className={`order-2 md:order-1 text-center ${SPACING.spaceY.md} md:${SPACING.spaceY.lg} lg:${SPACING.spaceY.xl} mt-8 md:mt-12 lg:mt-16 overflow-visible`}>
         {/* Opening Message */}
-        <p className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2 overflow-visible mb-6 md:mb-8 lg:mb-10`}>
+        <p className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-4 sm:px-6 overflow-visible mb-6 md:mb-8 lg:mb-10`}>
           After seven years of choosing each other,<br className="hidden md:block" />
           <span className="md:hidden"> </span>we're making it forever.
         </p>
@@ -845,11 +845,11 @@ const Hero = ({ onScrollToSection }) => (
             </svg>
           </h1>
 
-          <p className={`${TYPO_HERO_BODY} text-navy max-w-xl mx-auto px-2`}>
+          <p className={`${TYPO_HERO_BODY} text-navy max-w-xl mx-auto px-4 sm:px-6`}>
             invite you to witness our wedding
           </p>
 
-          <p className={`${TYPO_HERO_BODY} text-navy mt-2 md:mt-3 lg:mt-4 italic px-2`}>
+          <p className={`${TYPO_HERO_BODY} text-navy mt-2 md:mt-3 lg:mt-4 italic px-4 sm:px-6`}>
             We want you there.
           </p>
          </div>
