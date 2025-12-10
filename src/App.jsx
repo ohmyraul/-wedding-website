@@ -2270,15 +2270,15 @@ const ExploreGoa = () => {
 
       items: [
 
-        { name: "Joseph's Bar", type: "drink", location: "Fontainhas, Panjim", desc: "Tiny tavern run by Gundu, pouring Tambde Rosa (feni + kokum) in clay cups with old jazz crackling in the background. Ten seats, tons of stories.", mapUrl: "https://maps.app.goo.gl/4QUDG3gTQzyw3MPL6" },
+        { name: "Joseph's Bar", type: "drink", location: "Fontainhas, Panjim", desc: "Old watch shop. Tambde Rosa (feni + kokum) goes down easy. Barman Gundu remembers everyone. Ten seats, tons of stories.", mapUrl: "https://maps.app.goo.gl/4QUDG3gTQzyw3MPL6" },
 
-        { name: "Miguel's", type: "drink", location: "Fontainhas, Panjim", desc: "Art deco cocktail room inside a heritage home. Feni old-fashioneds, Burma teak, and small plates that taste like Goa + Lisbon had a chat.", mapUrl: "https://maps.app.goo.gl/8rU2f6Vg1JqZFShcA" },
+        { name: "Miguel's", type: "drink", location: "Fontainhas, Panjim", desc: "Serious cocktails. End with Boa Noite: tobacco Baileys, chocolate mousse, edible cigar, espresso rum-tini. Ridiculous and perfect.", mapUrl: "https://maps.app.goo.gl/8rU2f6Vg1JqZFShcA" },
 
-        { name: "Bombil", type: "food", location: "Campal, Panjim", desc: "Lunch-only thali joint with clam stir fry, dried bombil, giant rice mounds, ceiling fans and grandma-level cooking. Loud, sweaty, perfect.", mapUrl: "https://maps.app.goo.gl/woeqeypdMobEHExQ7" },
+        { name: "Bombil", type: "food", location: "Campal, Panjim", desc: "Chaotic lunch spot. Fish thali, ask for the pickles. No AC, just fans and fried fish smell. Elbow-to-elbow with locals. Perfect.", mapUrl: "https://maps.app.goo.gl/woeqeypdMobEHExQ7" },
 
-        { name: "Kokum Curry", type: "food", location: "Candolim (also in Panjim)", desc: "Saraswat Brahmin home food: coconut-rich curries, six versions of kokum, zero vinegar. A rare peek into Goan Hindu kitchens.", mapUrl: "https://maps.app.goo.gl/iNEK8NQGHXGa9XT48" },
+        { name: "Kokum Curry", type: "food", location: "Candolim (also in Panjim)", desc: "Xinanyo in shell, churichuri bombil fry. Three kinds of Bombay duck. Saraswat home cooking you won't find anywhere else.", mapUrl: "https://maps.app.goo.gl/iNEK8NQGHXGa9XT48" },
 
-        { name: "Bar Outrigger", type: "drink", location: "Dona Paula", desc: "Rum den hidden in a fishing village. You literally get a treasure map, then 100+ rums, tiki glassware, and waves smacking the rocks.", mapUrl: "https://maps.app.goo.gl/Ui7Q6Ds1WzgrH71d7" }
+        { name: "Bar Outrigger", type: "drink", location: "Dona Paula", desc: "We found this while scouting for our wedding venue. Picante el pastor is Shubs' pick, off-menu whiskey drinks for Alysha. Walk to empty beach after.", mapUrl: "https://maps.app.goo.gl/Ui7Q6Ds1WzgrH71d7" }
 
       ]
 
@@ -2290,15 +2290,15 @@ const ExploreGoa = () => {
 
       items: [
 
-        { name: "Tejas Bar", type: "food", location: "Talpona Beach", desc: "Beach shack legends for kalwa sukka (oysters in coconut masala). Eat with your hands, chase with cold beer, lick the spice off.", mapUrl: "https://maps.app.goo.gl/Km7FEL987PiJXUMa6" },
+        { name: "Tejas Bar", type: "food", location: "Talpona Beach", desc: "Most authentic Goan food. Kalwa sukka - oysters in coconut masala. Remote beach, one of two shacks. UPI only. Worth the drive.", mapUrl: "https://maps.app.goo.gl/Km7FEL987PiJXUMa6" },
 
-        { name: "Kala Bahia", type: "party", location: "Colomb Bay", desc: "Euro-Goan house party vibes. DJs, espresso martinis, great gigs. Dancing, partying, and good times. Nobody judges your dance face.", mapUrl: "https://maps.app.goo.gl/HiKQ1DyQM28Y9tZc8" },
+        { name: "Kala Bahia", type: "party", location: "Colomb Bay", desc: "Every weekend here. Mediterranean food, DJs. 10pm noise curfew but party continues quietly. Show up for lunch, leave at midnight.", mapUrl: "https://maps.app.goo.gl/HiKQ1DyQM28Y9tZc8" },
 
-        { name: "Kakolem Beach", type: "beach", location: "Tiger Beach", desc: "15-minute scramble down a private staircase to a hidden horseshoe bay with a freshwater fall. Bring water, leave nothing.", mapUrl: "https://maps.app.goo.gl/mSfg3UnLz28dPdVV9" },
+        { name: "Le Petit Patnem", type: "party", location: "Patnem Beach", desc: "When Palolem got too crowded. Random parties Tues/Fri nights. French-owned, good drinks, better crowd. Seasonal only.", mapUrl: "https://maps.app.goo.gl/cmcbjYpNst3scLet8" },
 
-        { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "The postcard crescent. Hit sunrise before the boat guys wake up - mirror water, palms silhouetted, just you.", mapUrl: "https://maps.app.goo.gl/oTJGboCKsGPkTmCs5" },
+        { name: "Kakolem Beach", type: "beach", location: "Tiger Beach", desc: "Two waterfalls on the sand. Steep rocky trail down or boat from Palolem. No facilities, no signal. November-March. Worth it.", mapUrl: "https://maps.app.goo.gl/mSfg3UnLz28dPdVV9" },
 
-        { name: "Le Petit Patnem", type: "party", location: "Patnem Beach", desc: "Daytime grilled fish + rosé, nighttime house/techno and barefoot dancing. Turns into a secret party pad after sunset.", mapUrl: "https://maps.app.goo.gl/cmcbjYpNst3scLet8" }
+        { name: "Palolem Beach", type: "beach", location: "South Goa", desc: "We swam here three times a day. Where we fell in love. One-mile crescent. Our favourite beach to swim in.", mapUrl: "https://maps.app.goo.gl/oTJGboCKsGPkTmCs5" }
 
       ]
 
