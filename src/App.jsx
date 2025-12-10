@@ -712,7 +712,7 @@ const CountdownTimer = () => {
   );
 };
 
-// Hero Logo component with decorative S&A image
+// Hero Logo component with decorative S&A image with faces
 const HeroLogo = memo(() => {
   const prefersReducedMotion = useReducedMotion();
 
@@ -727,18 +727,14 @@ const HeroLogo = memo(() => {
       }
     >
       <img 
-        src="/images/s-a-logo.png" 
-        alt="S & A Monogram" 
-        className="w-48 md:w-64 lg:w-80 h-auto object-contain"
-        style={{ maxWidth: '320px' }}
+        src="/images/facelogo.png" 
+        alt="S & A Monogram with Shubs & Alysha" 
+        className="w-48 md:w-64 lg:w-80 xl:w-96 h-auto object-contain"
+        style={{ maxWidth: '400px' }}
         onError={(e) => {
-          // Fallback to text if image doesn't exist yet
-          e.target.style.display = 'none';
-          const fallback = document.createElement('h1');
-          fallback.className = 'text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text inline-block';
-          fallback.style.textShadow = '2px 2px 0px rgba(212, 165, 165, 0.2)';
-          fallback.innerHTML = 'S<span style="color: #E8927C;">&</span>A';
-          e.target.parentNode.appendChild(fallback);
+          // Fallback to original logo if facelogo doesn't exist
+          e.target.src = '/images/s-a-logo.png';
+          e.target.alt = 'S & A Monogram';
         }}
       />
     </motion.div>
