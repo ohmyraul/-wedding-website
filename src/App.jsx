@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
-import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
+import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { TYPE_SCALE, LINE_HEIGHT, LETTER_SPACING, SPACING } from './constants/design-tokens';
@@ -1334,39 +1334,14 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
               </div>
             )}
 
-            {/* Zoom Controls and Close Button */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setScale(prev => Math.min(prev + 0.25, 3))}
-                className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-                aria-label="Zoom in"
-              >
-                <ZoomIn size={20} />
-              </button>
-              <button
-                onClick={() => setScale(prev => Math.max(prev - 0.25, 0.5))}
-                className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-                aria-label="Zoom out"
-              >
-                <ZoomOut size={20} />
-              </button>
-              {scale > 1 && (
-                <button
-                  onClick={resetZoom}
-                  className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-                  aria-label="Reset zoom"
-                >
-                  <Maximize2 size={20} />
-                </button>
-              )}
-              <button
-                onClick={onClose}
-                className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-                aria-label="Close"
-              >
-                <X size={24} />
-              </button>
-            </div>
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+              aria-label="Close"
+            >
+              <X size={24} />
+            </button>
           </div>
         </motion.div>
       </motion.div>
