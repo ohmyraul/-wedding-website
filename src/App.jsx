@@ -953,11 +953,11 @@ const Story = () => (
 
               <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
-              <p>House party in Bangalore. Her place. His friend insisted he come along.</p>
+              <p>House party in Bangalore. Her place. His friend dragged him along.</p>
 
-              <p>They talked for hours that night. Bengali boy from Assam meets Goan girl from Abu Dhabi. The conversation came easy.</p>
+              <p>They talked for hours that night. Bengali boy from Assam meets Goan girl from Abu Dhabi. The conversation came easy - the kind that makes you forget there's a party happening around you.</p>
 
-              <p>Then the party ended. They didn't exchange numbers. Three years of complete radio silence.</p>
+              <p>Then everyone left. They didn't exchange numbers. Three years of complete radio silence.</p>
 
             </div>
             </FadeInWhenVisible>
@@ -975,17 +975,17 @@ const Story = () => (
 
           <div>
 
-              <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>July 2018</span>
+              <span className={`inline-block bg-[#EBBA9A] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>July 2018 — The Reunion</span>
 
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Reunion</h3>
 
               <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
-              <p>She starts new job, walks down office corridor, there he is.</p>
+              <p>She starts a new job, walks down the office corridor, there he is.</p>
 
-              <p>Coffee runs became a daily thing. Then late nights at the office turned into dinners after work. Felt like really good friendship.</p>
+              <p>Coffee runs became a daily thing. Late nights at the office turned into dinners after work. It felt safe. Easy. The kind of friendship where you don't ask too many questions about why you're always together.</p>
 
-              <p>Then someone threw him a half-hearted birthday party. She showed up and realized something had shifted. She cared way more than friends should care about someone's birthday.</p>
+              <p>Then someone threw him a half-hearted birthday party. She showed up and realized she'd been lying to herself. Friends don't care this much about someone's birthday.</p>
 
               <p>Two weeks later, he kissed her. They were official by the end of July.</p>
 
@@ -1054,9 +1054,7 @@ const Story = () => (
 
               <p>She took him to Goa. Made it a ritual. Twice a year, every single year. Palolem Beach, Colomb Bay. Their sanctuary. The place they'd go to reset and remember what mattered.</p>
 
-              <p>He didn't trust the ocean at first. She taught him to dive, to let go underwater. He taught her how to stay calm when life felt chaotic.</p>
-
-              <p>Then COVID hit. Bailey had puppies during lockdown. Six of them. They kept four, lost two. First of the toughest things in life they had to face together. When it was time, Shubs brought Bailey to Bangalore. Cookie and Bailey became family.</p>
+              <p>They traveled. Did life together. Raised two beautiful dogs - Cookie and Bailey. Learned how to be a team when things got hard, and how to celebrate when things were good.</p>
 
             </div>
 
@@ -1082,7 +1080,9 @@ const Story = () => (
 
               <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
-              <p>Back at Palolem Beach. He'd made plans. Plan A: underwater proposal (ring might sink, she might panic). Plan B: Kakolem Beach at sunset (neither wanted the trek that day).</p>
+              <p>Back at Palolem Beach. He'd made plans.</p>
+
+              <p>Plan A: underwater proposal (ring might sink). Plan B: Kakolem Beach at sunset (neither wanted the trek that day).</p>
 
               <p>Plan C won. Keep it simple. Wing it.</p>
 
