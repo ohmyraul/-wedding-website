@@ -73,6 +73,10 @@ const TYPO_LABEL = `${TYPE_SCALE.xs} md:${TYPE_SCALE.sm} font-hand font-semibold
 // Card pattern constants
 const CARD_PRIMARY = 'rounded-2xl border border-[#D4CDC2]'; // Primary narrative cards
 const CARD_SECONDARY = 'rounded-xl border border-[#D4CDC2]'; // Secondary cards
+
+// Logo colors - exact colors from logo
+const LOGO_CORAL = '#E8927C'; // "A" letter color - coral
+const LOGO_PEACHY_BEIGE = '#EBBA9A'; // "S" letter color - peachy beige
 const CARD_PHOTO = 'sketchy-border'; // Photo frames (uses CSS class)
 
 // Spacing constants - using design tokens
@@ -327,7 +331,7 @@ const SketchIcon = ({ type, className }) => {
 
 const ApprovedStamp = () => (
 
-  <div className="absolute -top-6 -right-6 bg-[#D88D66] text-white font-hand text-xl p-4 rounded-full rotate-12 shadow-lg animate-float z-20 border-4 border-white border-dashed transform hover:scale-110 transition-transform cursor-pointer">
+  <div className="absolute -top-6 -right-6 bg-[#E8927C] text-white font-hand text-xl p-4 rounded-full rotate-12 shadow-lg animate-float z-20 border-4 border-white border-dashed transform hover:scale-110 transition-transform cursor-pointer">
 
     <div className="text-center leading-tight font-bold">
 
@@ -446,7 +450,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
               e.target.parentNode.insertBefore(fallback, e.target);
             }}
           />
-          {isFamilyMode && <span className="text-xs bg-[#D88D66] text-white px-2 py-0.5 font-sans rotate-3 rounded-sm ml-1">FAMILY</span>}
+          {isFamilyMode && <span className="text-xs bg-[#E8927C] text-white px-2 py-0.5 font-sans rotate-3 rounded-sm ml-1">FAMILY</span>}
         </a>
 
         
@@ -463,8 +467,8 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
                 key={link.name} 
                 href={link.href} 
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className={`text-lg font-hand font-bold nav-link hover:rotate-2 transition-all duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded relative ${
-                  isActive ? 'text-[#D88D66] font-bold' : ''
+                className={`text-lg font-hand font-bold nav-link hover:rotate-2 transition-all duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8927C] focus-visible:ring-offset-2 focus-visible:rounded relative ${
+                  isActive ? 'text-[#E8927C] font-bold' : ''
                 }`}
                 aria-label={`Navigate to ${link.name} section`}
                 aria-current={isActive ? 'page' : undefined}
@@ -472,7 +476,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
                 {link.name}
                 {isActive && (
                   <motion.div 
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#D88D66]"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#E8927C]"
                     layoutId="activeSection"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
@@ -490,7 +494,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
                 onRequestFamilyAccess();
               }
             }}
-            className="ml-4 text-lg font-hand font-bold nav-link hover:rotate-2 transition-all flex items-center gap-2 border-l border-navy/20 pl-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2"
+            className="ml-4 text-lg font-hand font-bold nav-link hover:rotate-2 transition-all flex items-center gap-2 border-l border-navy/20 pl-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8927C] focus-visible:ring-offset-2"
             aria-label={isFamilyMode ? "Switch to guest view" : "Switch to family view"}
           >
             {isFamilyMode ? (
@@ -511,7 +515,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
         {/* Hamburger menu button - show on mobile/tablet for all modes */}
         <button 
           onClick={() => setIsOpen(!isOpen)} 
-          className="lg:hidden text-navy focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 focus-visible:rounded" 
+          className="lg:hidden text-navy focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8927C] focus-visible:ring-offset-2 focus-visible:rounded" 
           aria-label="Toggle navigation menu" 
           aria-expanded={isOpen}
         >
@@ -540,8 +544,8 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.05 }}
-                className={`text-2xl font-hand font-semibold nav-link text-center border-b border-gray-100 pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 transition-colors ${
-                  isActive ? 'text-[#D88D66] font-bold' : ''
+                className={`text-2xl font-hand font-semibold nav-link text-center border-b border-gray-100 pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8927C] focus-visible:ring-offset-2 transition-colors ${
+                  isActive ? 'text-[#E8927C] font-bold' : ''
                 }`}
                 aria-label={`Navigate to ${link.name} section`}
                 aria-current={isActive ? 'page' : undefined}
@@ -627,7 +631,7 @@ const CountdownTimer = () => {
               particleCount: 50,
               spread: 60,
               origin: { y: 0.5 },
-              colors: ['#D88D66', '#EBBA9A', '#3B2F2A']
+              colors: ['#E8927C', '#EBBA9A', '#3B2F2A']
             });
           }
         });
@@ -664,7 +668,7 @@ const CountdownTimer = () => {
         <p className={`${TYPO_BODY} text-[#3B2F2A] font-semibold`}>
           March 20, 2026
         </p>
-        <div className="w-16 h-1 bg-[#D88D66] mx-auto mt-3 rounded-full opacity-60"></div>
+        <div className="w-16 h-1 bg-[#E8927C] mx-auto mt-3 rounded-full opacity-60"></div>
         </div>
       <div className="flex items-center justify-center gap-2 md:gap-3">
         {units.map((unit, index) => {
@@ -677,7 +681,7 @@ const CountdownTimer = () => {
               className="countdown-unit bg-[#FDF9F4] border border-[#D4CDC2] rounded-2xl px-4 py-3 text-center"
               animate={isMilestone ? { 
                 scale: [1, 1.08, 1],
-                boxShadow: ['0 4px 8px rgba(216, 141, 102, 0.1)', '0 8px 16px rgba(216, 141, 102, 0.25)', '0 4px 8px rgba(216, 141, 102, 0.1)']
+                boxShadow: ['0 4px 8px rgba(232, 146, 124, 0.1)', '0 8px 16px rgba(232, 146, 124, 0.25)', '0 4px 8px rgba(232, 146, 124, 0.1)']
               } : unit.value === 0 ? {} : { scale: [1, 1.05, 1] }}
               transition={{ 
                 duration: isMilestone ? 0.5 : 0.3, 
@@ -686,7 +690,7 @@ const CountdownTimer = () => {
                 repeatDelay: isMilestone ? 0.5 : 1
               }}
             >
-              <span className={`countdown-number text-[#D88D66] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold font-mono`}>
+              <span className={`countdown-number text-[#E8927C] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold font-mono`}>
                 {unit.value.toString().padStart(2, '0')}
               </span>
               <span className={`countdown-label ${TYPO_LABEL} text-[#3B2F2A] mt-1 block`}>{unit.label}</span>
@@ -699,7 +703,7 @@ const CountdownTimer = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: 'spring', stiffness: 200 }}
-          className={`text-center mt-3 ${TYPO_LABEL} text-[#D88D66] font-bold`}
+          className={`text-center mt-3 ${TYPO_LABEL} text-[#E8927C] font-bold`}
         >
           Almost there! 🎉
         </motion.p>
@@ -733,7 +737,7 @@ const HeroLogo = memo(() => {
           const fallback = document.createElement('h1');
           fallback.className = 'text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text inline-block';
           fallback.style.textShadow = '2px 2px 0px rgba(212, 165, 165, 0.2)';
-          fallback.innerHTML = 'S<span style="color: #D88D66;">&</span>A';
+          fallback.innerHTML = 'S<span style="color: #E8927C;">&</span>A';
           e.target.parentNode.appendChild(fallback);
         }}
       />
@@ -793,7 +797,7 @@ const Hero = ({ onScrollToSection }) => (
 
     {/* Doodles - Hidden on mobile to reduce clutter */}
     <ParallaxWrapper offset={30} className="absolute top-24 left-10 hidden md:block">
-      <Sun className="w-12 h-12 text-[#D88D66] opacity-60 rotate-12 animate-float" />
+      <Sun className="w-12 h-12 text-[#E8927C] opacity-60 rotate-12 animate-float" />
     </ParallaxWrapper>
 
     <ParallaxWrapper offset={-30} className="absolute bottom-32 right-8 hidden md:block">
@@ -841,7 +845,7 @@ const Hero = ({ onScrollToSection }) => (
           <h1 className={`${TYPO_HERO_H1} text-navy relative`}>
             Shubs & Alysha
             <svg className="absolute -bottom-2 md:-bottom-3 lg:-bottom-4 left-0 w-full h-2 md:h-2.5 lg:h-3" viewBox="0 0 100 10" preserveAspectRatio="none">
-               <path d="M0,5 Q50,10 100,5" stroke="#D88D66" strokeWidth="2" fill="none" />
+               <path d="M0,5 Q50,10 100,5" stroke="#E8927C" strokeWidth="2" fill="none" />
             </svg>
           </h1>
 
@@ -856,33 +860,33 @@ const Hero = ({ onScrollToSection }) => (
 
         {/* Event Details - Enhanced with gradient and border accent */}
         <div className="max-w-2xl mx-auto mt-10 md:mt-12 lg:mt-16">
-          <div className={`${CARD_SECONDARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-l-4 border-[#D88D66] border-[#D88D66]/30 ${CARD_PAD_MD} md:${CARD_PAD_LG} text-navy relative`} style={{ boxShadow: '0 8px 16px -2px rgba(216, 141, 102, 0.15)' }}>
+          <div className={`${CARD_SECONDARY} bg-gradient-to-br from-[#FDF9F4] via-[#F5F0E8] to-[#EBBA9A]/20 border-l-4 border-[#E8927C] border-[#E8927C]/30 ${CARD_PAD_MD} md:${CARD_PAD_LG} text-navy relative`} style={{ boxShadow: '0 8px 16px -2px rgba(232, 146, 124, 0.15)' }}>
             <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-3 md:gap-3">
               <button
                 onClick={createCalendarEvent}
                 className="flex items-center gap-1.5 md:gap-1.5 hover:opacity-70 transition-opacity cursor-pointer group"
                 aria-label="Add wedding date to calendar"
               >
-                <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0 group-hover:scale-110 transition-transform" />
-                <span className={`${TYPO_BODY} text-navy group-hover:text-[#D88D66] transition-colors`}>Friday, March 20, 2026</span>
+                <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#E8927C] flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span className={`${TYPO_BODY} text-navy group-hover:text-[#E8927C] transition-colors`}>Friday, March 20, 2026</span>
               </button>
-              <span className="hidden md:block text-[#D88D66] text-xs">·</span>
+              <span className="hidden md:block text-[#E8927C] text-xs">·</span>
               <button
                 onClick={createTimeReminder}
                 className="flex items-center gap-1.5 md:gap-1.5 hover:opacity-70 transition-opacity cursor-pointer group"
                 aria-label="Set reminder for wedding time"
               >
-                <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0 group-hover:scale-110 transition-transform" />
-                <span className={`${TYPO_BODY} text-navy group-hover:text-[#D88D66] transition-colors`}>3:30 PM onwards</span>
+                <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#E8927C] flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span className={`${TYPO_BODY} text-navy group-hover:text-[#E8927C] transition-colors`}>3:30 PM onwards</span>
               </button>
-              <span className="hidden md:block text-[#D88D66] text-xs">·</span>
+              <span className="hidden md:block text-[#E8927C] text-xs">·</span>
               <button
                 onClick={openGoogleMaps}
                 className="flex items-center gap-1.5 md:gap-1.5 text-center hover:opacity-70 transition-opacity cursor-pointer group"
                 aria-label="Open venue location in Google Maps"
               >
-                <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0 group-hover:scale-110 transition-transform" />
-                <span className={`${TYPO_BODY} text-navy group-hover:text-[#D88D66] transition-colors`}>Blu Missel, Ribandar, Goa</span>
+                <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#E8927C] flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span className={`${TYPO_BODY} text-navy group-hover:text-[#E8927C] transition-colors`}>Blu Missel, Ribandar, Goa</span>
               </button>
             </div>
           </div>
@@ -904,7 +908,7 @@ const Hero = ({ onScrollToSection }) => (
         ease: 'easeInOut' 
       }}
     >
-      <ArrowDown size={28} className="md:w-10 md:h-10 text-[#D88D66]/40" aria-hidden="true" />
+      <ArrowDown size={28} className="md:w-10 md:h-10 text-[#E8927C]/40" aria-hidden="true" />
     </motion.div>
 
   </section>
@@ -950,7 +954,7 @@ const Story = () => (
 
           <div className="order-1 md:order-2">
             <FadeInWhenVisible delay={0} variant="subtle">
-              <span className={`inline-block bg-[#D88D66] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-2deg] shadow-sm`}>2015</span>
+              <span className={`inline-block bg-[#E8927C] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-2deg] shadow-sm`}>2015</span>
             </FadeInWhenVisible>
             <FadeInWhenVisible delay={0.12}>
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The First Time</h3>
@@ -1050,7 +1054,7 @@ const Story = () => (
 
           <div className="order-1 md:order-2">
 
-              <span className={`inline-block bg-[#D88D66] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-1deg] shadow-sm`}>2018-2025</span>
+              <span className={`inline-block bg-[#E8927C] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-1deg] shadow-sm`}>2018-2025</span>
 
               <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>Building a Life</h3>
 
@@ -1660,7 +1664,7 @@ const KidenaHouseCarousel = memo(() => {
                           setZoomState({ scale: 1, x: 0, y: 0 });
                           setIsZooming(false);
                         }}
-                        className="bg-[#D88D66] text-white rounded-full px-4 py-2 shadow-lg hover:bg-[#C77A55] transition-colors flex items-center gap-2 font-hand font-semibold text-sm"
+                        className="bg-[#E8927C] text-white rounded-full px-4 py-2 shadow-lg hover:bg-[#D67A65] transition-colors flex items-center gap-2 font-hand font-semibold text-sm"
                         aria-label="Reset zoom"
                       >
                         <ZoomOut size={18} />
@@ -1751,13 +1755,13 @@ const KidenaHouse = () => (
         {/* Features Grid - 2x2 Layout */}
         <div className="grid md:grid-cols-2 gap-8 mt-14 mb-14">
             
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#D88D66] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#E8927C] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
-                        <Home className="w-5 h-5 text-[#D88D66]" />
+                    <div className="w-12 h-12 rounded-full bg-[#E8927C]/20 flex items-center justify-center flex-shrink-0">
+                        <Home className="w-5 h-5 text-[#E8927C]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>The House</h3>
+                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#E8927C]`}>The House</h3>
                         <p className={`font-hand ${TYPO_BODY} text-navy`}>6 bedrooms, 9 bathrooms. Private pool and private lake. Three acres. Enough room for everyone.</p>
                     </div>
                 </div>
@@ -1769,19 +1773,19 @@ const KidenaHouse = () => (
                         <SketchIcon type="plate" className="w-5 h-5 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>No Cooking, No Cleaning</h3>
+                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#E8927C]`}>No Cooking, No Cleaning</h3>
                         <p className={`font-hand ${TYPO_BODY} text-navy`}>Personal chefs cook whatever you're craving - breakfast, lunch, dinner, midnight snacks. Meals get billed to your room. Butlers handle everything else.</p>
                     </div>
                 </div>
             </div>
 
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#D88D66] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#E8927C] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
                 <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#D88D66]/20 flex items-center justify-center flex-shrink-0">
-                        <Sun className="w-5 h-5 text-[#D88D66]" />
+                    <div className="w-12 h-12 rounded-full bg-[#E8927C]/20 flex items-center justify-center flex-shrink-0">
+                        <Sun className="w-5 h-5 text-[#E8927C]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>Spa & Steam Room</h3>
+                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#E8927C]`}>Spa & Steam Room</h3>
                         <p className={`font-hand ${TYPO_BODY} text-navy`}>There's a spa room and steam room. Book a massage with advance notice - we'll arrange it.</p>
                     </div>
                 </div>
@@ -1793,7 +1797,7 @@ const KidenaHouse = () => (
                         <Music className="w-5 h-5 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#D88D66]`}>Keep Busy (or Don't)</h3>
+                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#E8927C]`}>Keep Busy (or Don't)</h3>
                         <p className={`font-hand ${TYPO_BODY} text-navy`}>Pool table, PlayStation, bicycles, coracles on the private lake. Or just lounge by the pool all day.</p>
                     </div>
                 </div>
@@ -1838,7 +1842,7 @@ const FamilyItinerary = () => (
                     title: "Arrival & Pool Party", 
                     desc: "Cars will be waiting at the airport. Unpack at your own pace. We'll be serving the best Goan food while everyone hits the pool. Later that night, some of us are heading to Panjim for a pub crawl - Joseph's Bar, Miguel's, all our old haunts. Come along or stay back by the pool.",
                     icon: Home,
-                    color: "#D88D66"
+                    color: "#E8927C"
                 },
 
                 { 
@@ -1847,7 +1851,7 @@ const FamilyItinerary = () => (
                     title: "Rehearsal Day", 
                     desc: "Breakfast together at the house. Slow morning, good coffee, no rush. Then the ceremony crew heads to Blu Missel for rehearsal. Kids stay back at Kidena with the pool.",
                     icon: Sun,
-                    color: "#D88D66"
+                    color: "#E8927C"
                 },
 
                 { 
@@ -1856,7 +1860,7 @@ const FamilyItinerary = () => (
                     title: "The Wedding", 
                     desc: "The wedding. Cars leave Kidena House at 2:30 PM sharp. We'll sort out the mix of rentals and cabs closer to the date. Just be ready on time. (Yes, we're talking to specific family members who are always fashionably late.)",
                     icon: Heart,
-                    color: "#D88D66"
+                    color: "#E8927C"
                 },
 
                 { 
@@ -1865,7 +1869,7 @@ const FamilyItinerary = () => (
                     title: "Recovery & Chill", 
                     desc: "Sleep as late as you want. No agenda. No schedule. Pool, spa, naps - whatever. Later in the evening, we'll meet at Bar Outrigger. Gorgeous spot by the beach with a little cove, perfect for sunset. We'll have drinks and watch the day end together.",
                     icon: Anchor,
-                    color: "#D88D66"
+                    color: "#E8927C"
                 },
 
                 { 
@@ -1874,7 +1878,7 @@ const FamilyItinerary = () => (
                     title: "Rest & Goodbyes", 
                     desc: "Leave whenever your flight leaves. Take your time checking out. We'll be around all day to say proper goodbyes and squeeze in a few more hours together. Thank you for being here for all of this.",
                     icon: Coffee,
-                    color: "#D88D66"
+                    color: "#E8927C"
                 }
 
             ].map((item, i) => (
@@ -1963,7 +1967,7 @@ const Celebration = ({ isFamilyMode }) => (
             offset={25}
             hoverEffect
             className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-[#EBBA9A]/30 ${CARD_PAD_MD} rotate-1`}
-            style={{ boxShadow: '0 8px 16px rgba(216, 141, 102, 0.15)' }}
+            style={{ boxShadow: '0 8px 16px rgba(232, 146, 124, 0.15)' }}
           >
 
             <div className={`w-full overflow-hidden border-2 border-navy ${CARD_PRIMARY} bg-[#FDF9F4]`}>
@@ -1995,7 +1999,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                 <div className="flex items-start gap-4">
 
-                   <SketchIcon type="palm" className="w-8 h-8 md:w-10 md:h-10 text-[#D88D66] flex-shrink-0" />
+                   <SketchIcon type="palm" className="w-8 h-8 md:w-10 md:h-10 text-[#E8927C] flex-shrink-0" />
 
                    <div className={`font-hand ${TYPO_BODY} leading-tight`}>
 
@@ -2007,7 +2011,7 @@ const Celebration = ({ isFamilyMode }) => (
                        href={VENUE_GOOGLE_MAPS_URL}
                        target="_blank"
                        rel="noreferrer"
-                       className={`inline-flex items-center gap-2 mt-2 ${TYPO_BODY} text-navy hover:text-[#D88D66] transition-colors`}
+                       className={`inline-flex items-center gap-2 mt-2 ${TYPO_BODY} text-navy hover:text-[#E8927C] transition-colors`}
                        aria-label="Open Blu Missel location in Google Maps"
                      >
                        <MapPin size={16} />
@@ -2018,7 +2022,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                 </div>
 
-              <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} border-[#D88D66]/20 ${CARD_PAD_SM}`}>
+              <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} border-[#E8927C]/20 ${CARD_PAD_SM}`}>
                 <p className={`${TYPO_BODY} text-navy font-bold`}>A ceremony, a celebration</p>
                 <p className={`${TYPO_BODY} text-navy mt-3`}>
                   We'll take our vows with God at the center and our loved ones by our side. Then we feast, dance, and stay until the stars come out.
@@ -2054,7 +2058,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                   <FadeInWhenVisible key={item.event} delay={i * 0.05} className="relative pl-10 md:pl-12 group">
 
-                      <div className="absolute -left-[28px] md:-left-[34px] top-0 w-14 h-14 md:w-16 md:h-16 bg-[#FDF9F4] border-[3px] border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-110 transition-all duration-200" style={{ boxShadow: '0 10px 15px -3px rgba(216, 141, 102, 0.15)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 15px 20px -3px rgba(216, 141, 102, 0.2)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(216, 141, 102, 0.15)'}>
+                      <div className="absolute -left-[28px] md:-left-[34px] top-0 w-14 h-14 md:w-16 md:h-16 bg-[#FDF9F4] border-[3px] border-navy rounded-full flex items-center justify-center z-10 group-hover:scale-110 transition-all duration-200" style={{ boxShadow: '0 10px 15px -3px rgba(232, 146, 124, 0.15)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 15px 20px -3px rgba(232, 146, 124, 0.2)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(232, 146, 124, 0.15)'}>
 
                          {item.type ? 
 
@@ -2087,7 +2091,7 @@ const Celebration = ({ isFamilyMode }) => (
           href={GOOGLE_CALENDAR_URL}
           target="_blank"
           rel="noreferrer"
-          className={`${CARD_SECONDARY} border-[#D88D66] bg-[#D88D66] text-white text-xs font-semibold tracking-wide px-4 py-2.5 flex items-center justify-center gap-1.5 shadow-md hover:bg-[#C77A55] hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-xl active:scale-[0.98] active:translate-y-[1px] transition-all duration-300 ease-out`}
+          className={`${CARD_SECONDARY} border-[#E8927C] bg-[#E8927C] text-white text-xs font-semibold tracking-wide px-4 py-2.5 flex items-center justify-center gap-1.5 shadow-md hover:bg-[#D67A65] hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-xl active:scale-[0.98] active:translate-y-[1px] transition-all duration-300 ease-out`}
           aria-label="Add wedding to Google Calendar"
         >
           <Calendar size={16} />
@@ -2097,7 +2101,7 @@ const Celebration = ({ isFamilyMode }) => (
           href={VENUE_GOOGLE_MAPS_URL}
           target="_blank"
           rel="noreferrer"
-          className={`${CARD_SECONDARY} border-[#D88D66] bg-[#D88D66] text-white text-xs font-semibold tracking-wide px-4 py-2.5 flex items-center justify-center gap-1.5 shadow-md hover:bg-[#C77A55] hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-xl active:scale-[0.98] active:translate-y-[1px] transition-all duration-300 ease-out`}
+          className={`${CARD_SECONDARY} border-[#E8927C] bg-[#E8927C] text-white text-xs font-semibold tracking-wide px-4 py-2.5 flex items-center justify-center gap-1.5 shadow-md hover:bg-[#D67A65] hover:scale-[1.02] hover:-translate-y-[2px] hover:shadow-xl active:scale-[0.98] active:translate-y-[1px] transition-all duration-300 ease-out`}
           aria-label="Open venue in Google Maps"
         >
           {/* Google/Android logo - simple G icon */}
@@ -2123,7 +2127,7 @@ const DressCode = () => {
   const [copiedColor, setCopiedColor] = useState(null);
 
   const colors = [
-    { name: 'Terracotta', hex: '#D88D66', bg: '#D88D66' },
+    { name: 'Terracotta', hex: '#E8927C', bg: '#E8927C' },
     { name: 'Blush Sand', hex: '#EBBA9A', bg: '#EBBA9A' },
     { name: 'Linen Ivory', hex: '#EDEDE3', bg: '#EDEDE3' }
   ];
@@ -2196,7 +2200,7 @@ const DressCode = () => {
             <FadeInWhenVisible className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_MD} shadow-sm`}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-[#EBBA9A]/35 flex items-center justify-center">
-                  <Sun className="w-5 h-5 text-[#D88D66]" />
+                  <Sun className="w-5 h-5 text-[#E8927C]" />
                 </div>
                 <h3 className={`${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold text-[#3B2F2A] font-hand`}>Beach Formal</h3>
               </div>
@@ -2208,7 +2212,7 @@ const DressCode = () => {
 
             <FadeInWhenVisible delay={0.1} className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_MD} shadow-sm`}>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-[#D88D66]/30 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-[#E8927C]/30 flex items-center justify-center">
                   <Palette className="w-5 h-5 text-[#3B2F2A]" />
                 </div>
                 <h3 className={`${TYPO_H2} font-hand text-[#3B2F2A]`}>Palette Notes</h3>
@@ -2320,7 +2324,7 @@ const ExploreGoa = () => {
 
         {/* Decorative anchor */}
         <ParallaxWrapper offset={-20} className="absolute top-20 right-8 hidden md:block pointer-events-none z-0">
-          <Anchor className="w-6 h-6 text-[#D88D66] opacity-30 animate-float" aria-hidden="true" />
+          <Anchor className="w-6 h-6 text-[#E8927C] opacity-30 animate-float" aria-hidden="true" />
         </ParallaxWrapper>
 
         <div className="text-center mb-3 md:mb-4">
@@ -2346,12 +2350,12 @@ const ExploreGoa = () => {
                   {/* Mobile: Collapsible button header */}
                   <button
                     onClick={() => setExpandedSection(isExpanded ? null : section.category)}
-                    className="md:hidden w-full flex items-center justify-between text-2xl font-bold text-navy pb-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D88D66] focus-visible:ring-offset-2 transition-all group"
+                    className="md:hidden w-full flex items-center justify-between text-2xl font-bold text-navy pb-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8927C] focus-visible:ring-offset-2 transition-all group"
                     aria-expanded={isExpanded}
                     aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${section.category} section`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-6 h-6 rounded-full border-2 border-navy flex items-center justify-center transition-all ${isExpanded ? 'bg-[#D88D66] border-[#D88D66]' : 'bg-[#FDF9F4] group-hover:bg-[#D88D66]/10'}`}>
+                      <div className={`w-6 h-6 rounded-full border-2 border-navy flex items-center justify-center transition-all ${isExpanded ? 'bg-[#E8927C] border-[#E8927C]' : 'bg-[#FDF9F4] group-hover:bg-[#E8927C]/10'}`}>
                         {section.category === 'North Goa' ? (
                           <ArrowUp size={14} className={isExpanded ? 'text-white' : 'text-navy'} />
                         ) : (
@@ -2360,17 +2364,17 @@ const ExploreGoa = () => {
                       </div>
                       <span>{section.category}</span>
                     </div>
-                    {isExpanded ? <ChevronUp size={20} className="text-[#D88D66]" /> : <ChevronDown size={20} className="text-navy/70" />}
+                    {isExpanded ? <ChevronUp size={20} className="text-[#E8927C]" /> : <ChevronDown size={20} className="text-navy/70" />}
                   </button>
 
                   {/* Desktop: Static header */}
-                  <h3 className={`hidden md:block ${TYPO_H2} text-navy border-b-2 border-[#D88D66]/40 pb-4 mb-6`}>
+                  <h3 className={`hidden md:block ${TYPO_H2} text-navy border-b-2 border-[#E8927C]/40 pb-4 mb-6`}>
                     {section.category}
                   </h3>
                   
                   {/* Mobile divider - only show when expanded */}
                   {isExpanded && (
-                    <div className="md:hidden border-b-2 border-[#D88D66]/40 pb-4 mb-6"></div>
+                    <div className="md:hidden border-b-2 border-[#E8927C]/40 pb-4 mb-6"></div>
                   )}
 
                   {/* Content area - always visible on desktop, collapsible on mobile */}
@@ -2386,7 +2390,7 @@ const ExploreGoa = () => {
                     <div className={`${SPACING.spaceY['5']} md:${SPACING.spaceY.md} pt-0 md:pt-0 md:flex-1`}>
                       {section.items.map((item, i) => (
                         <motion.div key={item.name} className="flex gap-4 md:gap-5 items-start group p-3 rounded-lg hover:bg-[#EDEDE3]/50 transition-colors" whileHover={{ x: 6 }}>
-                          <div className="w-10 h-10 md:w-12 h-12 rounded-full bg-[#FDF9F4] border-2 border-[#D4CDC2] flex items-center justify-center flex-shrink-0 group-hover:bg-[#D88D66] group-hover:text-[#FDF9F4] group-hover:border-[#D88D66] transition-all shadow-sm group-hover:shadow-md">
+                          <div className="w-10 h-10 md:w-12 h-12 rounded-full bg-[#FDF9F4] border-2 border-[#D4CDC2] flex items-center justify-center flex-shrink-0 group-hover:bg-[#E8927C] group-hover:text-[#FDF9F4] group-hover:border-[#E8927C] transition-all shadow-sm group-hover:shadow-md">
                             {item.type === 'drink' && <SketchIcon type="wine" className="w-5 h-5" />}
                             {item.type === 'food' && <SketchIcon type="plate" className="w-5 h-5" />}
                             {item.type === 'beach' && <Sun className="w-5 h-5" />}
@@ -2400,7 +2404,7 @@ const ExploreGoa = () => {
                                   href={item.mapUrl}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="flex-shrink-0 text-navy hover:text-[#D88D66] transition-colors"
+                                  className="flex-shrink-0 text-navy hover:text-[#E8927C] transition-colors"
                                   aria-label={`Open ${item.name} in Google Maps`}
                                   title="Open in Google Maps"
                                 >
@@ -2459,15 +2463,15 @@ const Travel = ({ isFamilyMode }) => (
         {/* Card 1: Journey - Ticket Style */}
 
         <FadeInWhenVisible
-          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-t-[#D88D66]/30 relative group hover:-translate-y-1 transition-transform duration-300`}
+          className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-t-[#E8927C]/30 relative group hover:-translate-y-1 transition-transform duration-300`}
           style={{
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
             maskImage: 'radial-gradient(circle at left center, transparent 10px, black 10px)',
-            boxShadow: '0 8px 16px rgba(216, 141, 102, 0.15)'
+            boxShadow: '0 8px 16px rgba(232, 146, 124, 0.15)'
           }}
         >
 
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-[#D88D66] flex items-center justify-center border-r-2 border-dashed border-[#D4CDC2]">
+          <div className="absolute left-0 top-0 bottom-0 w-16 bg-[#E8927C] flex items-center justify-center border-r-2 border-dashed border-[#D4CDC2]">
 
              <div className="-rotate-90 font-hand font-bold text-xl text-white whitespace-nowrap tracking-widest">GOA EXPRESS</div>
 
@@ -2543,7 +2547,7 @@ const Travel = ({ isFamilyMode }) => (
         <FadeInWhenVisible
           delay={0.15}
           className={`${CARD_PRIMARY} bg-gradient-to-br from-[#EDEDE3] via-[#FDF9F4] to-[#EDEDE3] text-[#3B2F2A] border-l-[#EBBA9A]/30 ${CARD_PAD_LG} relative overflow-hidden md:hover:-translate-y-2 md:hover:shadow-xl md:hover:rotate-[0.3deg] md:transition-all md:duration-300 md:ease-out`}
-          style={{ boxShadow: '0 8px 16px rgba(216, 141, 102, 0.15)' }}
+          style={{ boxShadow: '0 8px 16px rgba(232, 146, 124, 0.15)' }}
         >
 
           <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-36 h-10 bg-[#EBBA9A]/50 rounded-full blur-[2px] opacity-80"></div>
@@ -2556,7 +2560,7 @@ const Travel = ({ isFamilyMode }) => (
             <div className={`${SPACING.spaceY.md} relative z-10`}>
               <div className={`${SPACING.spaceY['3']} text-left`}>
                   <p className={`${TYPO_LABEL} text-navy`}>Your Stay</p>
-                <h3 className={`${TYPO_H2} text-[#D88D66]`}>Kidena House</h3>
+                <h3 className={`${TYPO_H2} text-[#E8927C]`}>Kidena House</h3>
                 <p className={`${TYPO_BODY} text-navy`}>
                   You're with us for the full four days. Rooms are assigned. Fridge is stocked. Pool is ready. Just show up.
                 </p>
@@ -2575,7 +2579,7 @@ const Travel = ({ isFamilyMode }) => (
                   href="https://maps.app.goo.gl/jftGUT8cBxf2zH1X8"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#E8927C] hover:text-navy transition-colors"
                   aria-label="View Kidena House on Google Maps"
                 >
                   <MapPin size={18} />
@@ -2601,7 +2605,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=The+Crown+Goa+Panaji"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-navy hover:text-[#D88D66] transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-[#E8927C] transition-colors"
                         aria-label="Open The Crown Goa in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -2625,7 +2629,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=DoubleTree+by+Hilton+Goa+Panaji"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-navy hover:text-[#D88D66] transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-[#E8927C] transition-colors"
                         aria-label="Open DoubleTree by Hilton Goa in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -2649,7 +2653,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=The+Fern+Kadamba+Hotel+Old+Goa"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-navy hover:text-[#D88D66] transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-[#E8927C] transition-colors"
                         aria-label="Open The Fern Kadamba Hotel in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -2720,7 +2724,7 @@ const QnA = () => {
 
                <h4 className={`font-bold ${TYPO_H2} font-hand text-navy mb-3 flex items-start gap-3`}>
 
-                 <span className={`text-[#D88D66] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} leading-none flex-shrink-0`}>?</span> 
+                 <span className={`text-[#E8927C] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} leading-none flex-shrink-0`}>?</span> 
                  <span>{item.q}</span>
 
                </h4>
@@ -2731,11 +2735,11 @@ const QnA = () => {
 
           ))}
 
-        <FadeInWhenVisible delay={questions.length * 0.05} className={`${CARD_SECONDARY} bg-gradient-to-br from-[#D88D66]/10 to-[#EBBA9A]/10 border-2 border-[#D88D66]/30 ${CARD_PAD_LG} -rotate-1 hover:rotate-0 transition-all shadow-sm md:col-span-2`}>
+        <FadeInWhenVisible delay={questions.length * 0.05} className={`${CARD_SECONDARY} bg-gradient-to-br from-[#E8927C]/10 to-[#EBBA9A]/10 border-2 border-[#E8927C]/30 ${CARD_PAD_LG} -rotate-1 hover:rotate-0 transition-all shadow-sm md:col-span-2`}>
 
              <h4 className={`font-bold ${TYPO_H2} font-hand text-navy mb-4 flex items-start gap-3`}>
 
-                 <Phone size={24} className="text-[#D88D66] flex-shrink-0" />
+                 <Phone size={24} className="text-[#E8927C] flex-shrink-0" />
 
                  Real Questions?
 
@@ -2847,7 +2851,7 @@ const RSVP = () => {
             particleCount: 150,
             spread: 80,
             origin: { y: 0.6 },
-            colors: ['#D88D66', '#EBBA9A', '#3B2F2A', '#EDEDE3'],
+            colors: ['#E8927C', '#EBBA9A', '#3B2F2A', '#EDEDE3'],
             gravity: 0.8
           });
           // Second burst after delay
@@ -2856,7 +2860,7 @@ const RSVP = () => {
               particleCount: 100,
               spread: 60,
               origin: { y: 0.4, x: 0.3 },
-              colors: ['#D88D66', '#EBBA9A'],
+              colors: ['#E8927C', '#EBBA9A'],
               gravity: 0.9
             });
           }, 300);
@@ -2865,7 +2869,7 @@ const RSVP = () => {
               particleCount: 100,
               spread: 60,
               origin: { y: 0.4, x: 0.7 },
-              colors: ['#D88D66', '#EBBA9A'],
+              colors: ['#E8927C', '#EBBA9A'],
               gravity: 0.9
             });
           }, 600);
@@ -2940,7 +2944,7 @@ const RSVP = () => {
           {!submitted && (
             <div className="text-center mb-12 md:mb-14">
               <h2 className={`${TYPO_H1} text-navy mb-4`}>R.S.V.P.</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D88D66] to-transparent mx-auto mb-4"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#E8927C] to-transparent mx-auto mb-4"></div>
               <p className={`${TYPO_BODY} text-navy font-hand mb-2`}>We want you there.</p>
               <p className={`text-navy/70 ${TYPE_SCALE.sm} md:${TYPE_SCALE.base} font-hand`}>RSVP by January 20, 2026.</p>
             </div>
@@ -2949,7 +2953,7 @@ const RSVP = () => {
         {!submitted && (
           <form id="rsvp-form" action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSubmit} className={SPACING.spaceY.lg}>
             {errorMessage && (
-              <div className="bg-[#D88D66]/10 border border-[#D88D66] text-navy px-4 py-3 rounded-lg text-sm font-hand">
+              <div className="bg-[#E8927C]/10 border border-[#E8927C] text-navy px-4 py-3 rounded-lg text-sm font-hand">
                 {errorMessage}
               </div>
             )}
@@ -3056,7 +3060,7 @@ const RSVP = () => {
                   required
                 />
                 <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#EBBA9A]/20 transition-all hover:bg-gray-50">
-                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#D88D66]" />
+                  <Heart className="w-8 h-8 mx-auto mb-2 text-[#E8927C]" />
                   <span className="font-bold text-navy text-sm font-hand">Count Me In</span>
                 </div>
               </label>
@@ -3070,7 +3074,7 @@ const RSVP = () => {
                   className="hidden peer" 
                   required
                 />
-                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#D88D66]/20 transition-all hover:bg-gray-50">
+                <div className="border border-navy/20 sketchy-border p-4 text-center peer-checked:border-navy peer-checked:bg-[#E8927C]/20 transition-all hover:bg-gray-50">
                   <X className="w-8 h-8 mx-auto mb-2 text-navy/70" />
                   <span className="font-bold text-navy text-sm font-hand">Cannot Attend</span>
                 </div>
@@ -3080,7 +3084,7 @@ const RSVP = () => {
             <button 
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-[#D88D66] text-[#FDF9F4] font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#C97452] transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] hover:-translate-y-[2px] active:scale-[0.98] active:translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#D88D66] disabled:hover:scale-100 disabled:hover:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBBA9A] focus-visible:ring-offset-2"
+              className="w-full bg-[#E8927C] text-[#FDF9F4] font-bold text-lg py-4 mt-2 sketchy-border font-hand hover:bg-[#C97452] transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] hover:-translate-y-[2px] active:scale-[0.98] active:translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#E8927C] disabled:hover:scale-100 disabled:hover:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBBA9A] focus-visible:ring-offset-2"
               aria-label="Submit RSVP form"
               ref={submitButtonRef}
             >
@@ -3130,12 +3134,12 @@ const RSVP = () => {
                   <div className={`text-center ${SPACING.spaceY.md}`}>
                     {submittedAttendance === 'Count Me In' ? (
                       <>
-                        <CheckCircle size={64} className="mx-auto text-[#D88D66]" />
+                        <CheckCircle size={64} className="mx-auto text-[#E8927C]" />
                         <h3 id="rsvp-modal-title" className="text-3xl font-bold text-navy font-hand">RSVP Sent!</h3>
                         <p className="text-navy">See you in Goa.</p>
                         <button
                           type="button"
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors underline"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#E8927C] hover:text-navy transition-colors underline"
                           onClick={() => {
                             setSubmitted(false);
                             setSubmittedAttendance(null);
@@ -3154,7 +3158,7 @@ const RSVP = () => {
                         <p className="text-sm text-navy">If plans change, just resubmit the form - we'll make room.</p>
                         <button
                           type="button"
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#D88D66] hover:text-navy transition-colors underline"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#E8927C] hover:text-navy transition-colors underline"
                           onClick={() => {
                             setSubmitted(false);
                             setSubmittedAttendance(null);
@@ -3251,7 +3255,7 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
       onClick={() => onScrollToRSVP('rsvp')}
 
-      className={`fixed bottom-6 right-6 z-[100] bg-[#D88D66] text-[#FDF9F4] sketchy-border border-[3px] border-[#FDF9F4] shadow-md px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold ${TYPE_SCALE.sm} md:${TYPE_SCALE.base} group`}
+      className={`fixed bottom-6 right-6 z-[100] bg-[#E8927C] text-[#FDF9F4] sketchy-border border-[3px] border-[#FDF9F4] shadow-md px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold ${TYPE_SCALE.sm} md:${TYPE_SCALE.base} group`}
       style={{ position: 'fixed' }}
 
       aria-label="Go to RSVP"
@@ -3391,7 +3395,7 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
               </button>
               <button
                 type="submit"
-                className={`flex-1 bg-[#D88D66] text-[#FDF9F4] font-hand font-bold py-3 px-4 ${CARD_SECONDARY} hover:bg-[#C97452] transition-colors`}
+                className={`flex-1 bg-[#E8927C] text-[#FDF9F4] font-hand font-bold py-3 px-4 ${CARD_SECONDARY} hover:bg-[#C97452] transition-colors`}
               >
                 Enter
               </button>
@@ -3491,7 +3495,7 @@ const FloatingMusicNotes = () => {
 
           >
 
-            <Music className="w-8 h-8 text-[#D88D66]" />
+            <Music className="w-8 h-8 text-[#E8927C]" />
 
           </motion.div>
 
@@ -3530,13 +3534,13 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
           onClick={() => onSectionClick(section.id)}
 
-            className={`w-2.5 h-2.5 rounded-full border transition-all relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D88D66]/60 ${
+            className={`w-2.5 h-2.5 rounded-full border transition-all relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#E8927C]/60 ${
 
               isActive
 
-                ? 'border-[#D88D66] bg-[#D88D66]'
+                ? 'border-[#E8927C] bg-[#E8927C]'
 
-                : 'border-navy/20 bg-[#FDF9F4]/80 hover:border-[#D88D66]/60 hover:bg-[#D88D66]/20'
+                : 'border-navy/20 bg-[#FDF9F4]/80 hover:border-[#E8927C]/60 hover:bg-[#E8927C]/20'
 
           }`}
 
