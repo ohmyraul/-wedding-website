@@ -1,9 +1,12 @@
-import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo, lazy, Suspense } from 'react';
 
 import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { TYPE_SCALE, LINE_HEIGHT, LETTER_SPACING, SPACING } from './constants/design-tokens';
+import { TYPE_SCALE, LINE_HEIGHT, LETTER_SPACING, SPACING, TYPOGRAPHY } from './constants/design-tokens';
+
+// Lazy load game component - only loads when needed
+const CookieChaseGame = lazy(() => import('./components/CookieChaseGame').then(module => ({ default: module.default })));
 
 let confettiInstance = null;
 
@@ -62,17 +65,20 @@ const fireConfetti = async (options = {}) => {
 // CSS styles have been moved to src/styles/global.css
 
 
-// Typography constants - using design tokens
-const TYPO_H1 = `${TYPE_SCALE['3xl']} md:${TYPE_SCALE['4xl']} lg:${TYPE_SCALE['5xl']} font-hand font-bold ${LETTER_SPACING.tight}`; // Section titles
-const TYPO_HERO_H1 = `${TYPE_SCALE['4xl']} md:${TYPE_SCALE['5xl']} lg:${TYPE_SCALE['6xl']} xl:${TYPE_SCALE['7xl']} font-hand font-bold ${LETTER_SPACING.tight}`; // Hero section title
-const TYPO_H2 = `${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-hand font-bold ${LETTER_SPACING.tight}`; // Major card titles
-const TYPO_BODY = `${TYPE_SCALE.base} md:${TYPE_SCALE.lg} font-normal ${LINE_HEIGHT.relaxed}`; // Body text
-const TYPO_HERO_BODY = `${TYPE_SCALE.lg} md:${TYPE_SCALE.xl} lg:${TYPE_SCALE['2xl']} font-normal ${LINE_HEIGHT.loose}`; // Hero body text
+// Typography constants - using strict hierarchy from design tokens
+const TYPO_H1 = TYPOGRAPHY.h1.full; // Hero titles only
+const TYPO_HERO_H1 = `${TYPE_SCALE['4xl']} md:${TYPE_SCALE['5xl']} lg:${TYPE_SCALE['6xl']} xl:${TYPE_SCALE['7xl']} font-hand font-bold ${LETTER_SPACING.tight}`; // Hero section title (larger)
+const TYPO_H2 = TYPOGRAPHY.h2.full; // Section headings
+const TYPO_H3 = TYPOGRAPHY.h3.full; // Card titles, subsection headings
+const TYPO_H4 = TYPOGRAPHY.h4.full; // Small headings, labels
+const TYPO_BODY = TYPOGRAPHY.body.full; // Body text
+const TYPO_HERO_BODY = `${TYPE_SCALE.lg} md:${TYPE_SCALE.xl} lg:${TYPE_SCALE['2xl']} font-normal ${LINE_HEIGHT.loose}`; // Hero body text (larger)
 const TYPO_LABEL = `${TYPE_SCALE.xs} md:${TYPE_SCALE.sm} font-hand font-semibold uppercase ${LETTER_SPACING.wider}`; // Labels/captions
 
-// Card pattern constants
-const CARD_PRIMARY = 'rounded-2xl border border-[#D4CDC2]'; // Primary narrative cards
-const CARD_SECONDARY = 'rounded-xl border border-[#D4CDC2]'; // Secondary cards
+// Card pattern constants - 3-Tier System
+const CARD_PRIMARY = 'rounded-2xl border-2 border-[#D4CDC2]'; // Primary cards: ceremony/venue - heavy shadow + border
+const CARD_SECONDARY = 'rounded-xl border border-[#D4CDC2]'; // Secondary cards: story sections - medium shadow
+const CARD_TERTIARY = 'rounded-lg border border-[#D4CDC2]/60'; // Tertiary cards: info cards - subtle shadow
 
 // Logo colors - exact colors from logo
 const LOGO_CORAL = '#E8927C'; // "A" letter color - coral
@@ -249,6 +255,9 @@ const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffe
   const y = useTransform(scrollYProgress, [0, 1], [adjustedOffset, -adjustedOffset]);
 
   const smoothY = prefersReducedMotion ? 0 : useSpring(y, { stiffness: 120, damping: 20, mass: 0.2 });
+  
+  // Opacity fade for scroll storytelling
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3]);
 
 
 
@@ -256,11 +265,19 @@ const ParallaxWrapper = memo(({ children, offset = 50, className = '', hoverEffe
 
     <motion.div 
       ref={ref} 
-      style={{ y: prefersReducedMotion ? 0 : smoothY }} 
+      style={{ 
+        y: prefersReducedMotion ? 0 : smoothY,
+        opacity: prefersReducedMotion ? 1 : opacity
+      }} 
       className={className}
-      whileHover={hoverEffect && !prefersReducedMotion ? { scale: 1.02 } : undefined}
-      whileTap={hoverEffect && !prefersReducedMotion ? { scale: 0.98 } : undefined}
-      transition={hoverEffect ? { type: 'spring', stiffness: 220, damping: 18 } : undefined}
+      whileHover={hoverEffect && !prefersReducedMotion ? { 
+        scale: 1.02,
+        transition: { type: 'spring', stiffness: 300, damping: 20 }
+      } : undefined}
+      whileTap={hoverEffect && !prefersReducedMotion ? { 
+        scale: 0.98,
+        transition: { type: 'spring', stiffness: 500, damping: 20 }
+      } : undefined}
     >
 
       {children}
@@ -478,7 +495,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
                 href={link.href} 
                 onClick={(e) => handleLinkClick(e, link.href)}
                 className={`text-lg font-hand font-bold nav-link hover:rotate-2 transition-all duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8927C] focus-visible:ring-offset-2 focus-visible:rounded relative ${
-                  isActive ? 'text-[#E8927C] font-bold' : ''
+                  isActive ? 'text-peach font-bold' : ''
                 }`}
                 aria-label={`Navigate to ${link.name} section`}
                 aria-current={isActive ? 'page' : undefined}
@@ -555,7 +572,7 @@ const Nav = ({ isFamilyMode, onFamilyModeToggle, onRequestFamilyAccess, onNaviga
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.05 }}
                 className={`text-2xl font-hand font-semibold nav-link text-center border-b border-gray-100 pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E8927C] focus-visible:ring-offset-2 transition-colors ${
-                  isActive ? 'text-[#E8927C] font-bold' : ''
+                  isActive ? 'text-peach font-bold' : ''
                 }`}
                 aria-label={`Navigate to ${link.name} section`}
                 aria-current={isActive ? 'page' : undefined}
@@ -668,8 +685,7 @@ const CountdownTimer = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.6 }}
-      className={`countdown-box ${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] ${CARD_PAD_MD}`}
-      style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
+      className={`countdown-box ${CARD_PRIMARY} card-primary bg-gradient-to-br from-[#FDF9F4] to-[#EDEDE3] ${CARD_PAD_MD}`}
     >
       <div className="text-center mb-4">
         <p className={`${TYPO_LABEL} text-[#3B2F2A] mb-2`}>
@@ -700,7 +716,7 @@ const CountdownTimer = () => {
                 repeatDelay: isMilestone ? 0.5 : 1
               }}
             >
-              <span className={`countdown-number text-[#E8927C] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold font-mono`}>
+              <span className={`countdown-number text-peach ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} font-bold font-mono`}>
                 {unit.value.toString().padStart(2, '0')}
               </span>
               <span className={`countdown-label ${TYPO_LABEL} text-[#3B2F2A] mt-1 block`}>{unit.label}</span>
@@ -713,7 +729,7 @@ const CountdownTimer = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: 'spring', stiffness: 200 }}
-          className={`text-center mt-3 ${TYPO_LABEL} text-[#E8927C] font-bold`}
+          className={`text-center mt-3 ${TYPO_LABEL} text-peach font-bold`}
         >
           Almost there! 🎉
         </motion.p>
@@ -814,27 +830,58 @@ const Hero = ({ onScrollToSection }) => (
       
       {/* Mobile: Text Content First */}
       <div className={`order-1 md:order-1 text-center ${SPACING.spaceY.md} md:${SPACING.spaceY.lg} lg:${SPACING.spaceY.xl} mt-8 md:mt-12 lg:mt-16 overflow-visible`}>
-        {/* Opening Message */}
-        <p className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-4 sm:px-6 overflow-visible mb-4 md:mb-6 lg:mb-8`}>
+        {/* Opening Message - Emotional Hook */}
+        <motion.p 
+          className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-4 sm:px-6 overflow-visible mb-4 md:mb-6 lg:mb-8`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
           After seven years of choosing each other,<br />
           we're making it forever.
-        </p>
+        </motion.p>
 
         {/* S&A Logo - Decorative monogram as visual punctuation */}
         <HeroLogo />
 
         {/* Names and Invitation */}
         <div className="flex flex-col items-center gap-4 md:gap-5 lg:gap-6 rotate-[-1deg]">
-          <h1 className={`${TYPO_HERO_H1} text-navy relative`}>
+          <motion.h1 
+            className={`${TYPO_HERO_H1} text-navy relative`}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ 
+              duration: 0.8, 
+              delay: 0.4,
+              type: "spring",
+              stiffness: 100,
+              damping: 15
+            }}
+          >
             Shubs & Alysha
             <svg className="absolute -bottom-2 md:-bottom-3 lg:-bottom-4 left-0 w-full h-2 md:h-2.5 lg:h-3" viewBox="0 0 100 10" preserveAspectRatio="none">
                <path d="M0,5 Q50,10 100,5" stroke="#E8927C" strokeWidth="2" fill="none" />
             </svg>
-          </h1>
+          </motion.h1>
 
-          <p className={`${TYPO_HERO_BODY} text-navy max-w-xl mx-auto px-4 sm:px-6`}>
-            invite you to witness our wedding
-          </p>
+          <motion.p 
+            className={`${TYPO_HERO_BODY} text-navy max-w-xl mx-auto px-4 sm:px-6`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            invite you to celebrate with us in Goa
+          </motion.p>
+          
+          {/* Tagline - Goa-infused emotional hook */}
+          <motion.p 
+            className={`text-lg md:text-xl lg:text-2xl font-hand italic text-peach max-w-2xl mx-auto px-4 sm:px-6 mt-2 md:mt-3`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            Watch us pledge forever, then dance with us after
+          </motion.p>
          </div>
 
         {/* Event Details - Enhanced with gradient and border accent */}
@@ -847,7 +894,7 @@ const Hero = ({ onScrollToSection }) => (
                 aria-label="Add wedding date to calendar"
               >
                 <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#E8927C] flex-shrink-0 group-hover:scale-110 transition-transform" />
-                <span className={`${TYPO_BODY} text-navy group-hover:text-[#E8927C] transition-colors`}>Friday, March 20, 2026</span>
+                <span className={`${TYPO_BODY} text-navy group-hover:text-peach transition-colors`}>Friday, March 20, 2026</span>
               </button>
               <span className="hidden md:block text-[#E8927C] text-xs">·</span>
               <button
@@ -856,7 +903,7 @@ const Hero = ({ onScrollToSection }) => (
                 aria-label="Set reminder for wedding time"
               >
                 <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#E8927C] flex-shrink-0 group-hover:scale-110 transition-transform" />
-                <span className={`${TYPO_BODY} text-navy group-hover:text-[#E8927C] transition-colors`}>3:30 PM onwards</span>
+                <span className={`${TYPO_BODY} text-navy group-hover:text-peach transition-colors`}>3:30 PM onwards</span>
               </button>
               <span className="hidden md:block text-[#E8927C] text-xs">·</span>
               <button
@@ -865,7 +912,7 @@ const Hero = ({ onScrollToSection }) => (
                 aria-label="Open venue location in Google Maps"
               >
                 <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#E8927C] flex-shrink-0 group-hover:scale-110 transition-transform" />
-                <span className={`${TYPO_BODY} text-navy group-hover:text-[#E8927C] transition-colors`}>Blu Missel, Ribandar, Goa</span>
+                <span className={`${TYPO_BODY} text-navy group-hover:text-peach transition-colors`}>Blu Missel, Ribandar, Goa</span>
               </button>
             </div>
           </div>
@@ -886,9 +933,8 @@ const Hero = ({ onScrollToSection }) => (
                  width={1024}
                  height={890}
                  loading="eager"
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 transition={{ duration: 0.6, ease: 'easeOut' }}
+                 initial={{ opacity: 1, scale: 1 }}
+                 animate={{ opacity: 1, scale: 1 }}
                />
             </div>
           </div>
@@ -929,6 +975,14 @@ const Story = () => (
         <SignboardHeading>Our Story</SignboardHeading>
       </div>
 
+      {/* Narrative Introduction */}
+      <FadeInWhenVisible className="max-w-3xl mx-auto mb-12 md:mb-16 text-center">
+        <p className={`${TYPO_BODY} text-navy/80 font-hand italic px-4 sm:px-6`}>
+          Seven years ago, we found each other again. Every day since, we've chosen each other. 
+          This is how we got here - from a house party in Bangalore to saying "I do" in Goa.
+        </p>
+      </FadeInWhenVisible>
+
       {/* Decorative anchor */}
       <ParallaxWrapper offset={20} className="absolute top-32 left-8 hidden md:block pointer-events-none z-0">
         <Heart className="w-6 h-6 text-[#EBBA9A] opacity-30 animate-float" aria-hidden="true" />
@@ -942,24 +996,32 @@ const Story = () => (
 
         <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} items-center mb-20 md:mb-32`}>
 
-          <FadeInWhenVisible delay={0.2} variant="subtle">
+          <FadeInWhenVisible delay={0.1} variant="subtle">
+            <motion.div
+              whileHover={{ 
+                scale: 1.02,
+                rotate: 2.5,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+            >
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-2 order-2 md:order-1 photo-frame">
 
-            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30`} style={{ aspectRatio: '3 / 4' }}>
+            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-transparent`} style={{ aspectRatio: '3 / 4' }}>
                <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
             </div>
 
             <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Hello, goodbye, sea you in three years</p>
 
             </ParallaxWrapper>
+            </motion.div>
           </FadeInWhenVisible>
 
           <div className="order-1 md:order-2">
             <FadeInWhenVisible delay={0} variant="subtle">
               <span className={`inline-block bg-[#E8927C] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-2deg] shadow-sm`}>2015</span>
             </FadeInWhenVisible>
-            <FadeInWhenVisible delay={0.12}>
-              <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The First Time</h3>
+            <FadeInWhenVisible delay={0.2}>
+              <h3 className={`${TYPO_H3} font-bold text-navy mb-3 md:mb-4`}>The First Time</h3>
 
               <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
@@ -968,6 +1030,8 @@ const Story = () => (
               <p>They talked for hours that night. Bengali boy from Assam meets Goan girl from Abu Dhabi. The conversation came easy - the kind that makes you forget there's a party happening around you.</p>
 
               <p>Then everyone left. They didn't exchange numbers. Three years of complete radio silence.</p>
+
+              <p className="mt-4 md:mt-6 font-hand italic text-peach">Sometimes the best stories start with what you don't say.</p>
 
             </div>
             </FadeInWhenVisible>
@@ -979,7 +1043,7 @@ const Story = () => (
 
         {/* 2018 */}
 
-        <FadeInWhenVisible delay={0.15}>
+        <FadeInWhenVisible delay={0.3}>
 
           <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} items-center mb-20 md:mb-32`}>
 
@@ -987,31 +1051,41 @@ const Story = () => (
 
               <span className={`inline-block bg-[#E8927C] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>July 2018</span>
 
-              <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Reunion</h3>
+              <h3 className={`${TYPO_H3} font-bold text-navy mb-3 md:mb-4`}>The Reunion</h3>
 
               <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
               <p>She starts a new job, walks down the office corridor, there he is.</p>
 
-              <p>Coffee runs became a daily thing. Late nights at the office turned into dinners after work. It felt safe. Easy. The kind of friendship where you don't ask too many questions about why you're always together.</p>
+              <p>Coffee runs became a daily thing. Late nights at the office turned into dinners after work.</p>
 
               <p>Then someone threw him a half-hearted birthday party. She showed up and realized she'd been lying to herself. Friends don't care this much about someone's birthday.</p>
 
               <p>Two weeks later, he kissed her. They were official by the end of July.</p>
 
+              <p className="mt-4 md:mt-6 font-hand italic text-peach">Sometimes you just know. Even when you try not to.</p>
+
             </div>
 
           </div>
 
+            <motion.div
+              whileHover={{ 
+                scale: 1.02,
+                rotate: -1.5,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+            >
             <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-[-1deg] photo-frame">
 
-            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30`} style={{ aspectRatio: '3 / 4' }}>
+            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-transparent`} style={{ aspectRatio: '3 / 4' }}>
                <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} fetchPriority="low" decoding="async" />
             </div>
 
              <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>From slack DMs to slacking off together</p>
 
             </ParallaxWrapper>
+            </motion.div>
 
         </div>
 
@@ -1021,13 +1095,20 @@ const Story = () => (
 
         {/* GOA Years */}
 
-        <FadeInWhenVisible delay={0.2}>
+        <FadeInWhenVisible delay={0.4}>
 
           <div className={`grid md:grid-cols-2 ${SPACE_GRID_MD} items-center mb-20 md:mb-32`}>
 
+            <motion.div
+              whileHover={{ 
+                scale: 1.02,
+                rotate: 1.5,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+            >
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-1 order-2 md:order-1 photo-frame">
 
-            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30 flex items-center justify-center w-full`} style={{ aspectRatio: '3 / 4' }}>
+            <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-transparent flex items-center justify-center w-full`} style={{ aspectRatio: '3 / 4' }}>
                <img 
                  src="/images/goa-scooter.jpg" 
                  className="w-full h-auto object-contain" 
@@ -1053,18 +1134,21 @@ const Story = () => (
             <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Goa, dogs & growing together</p>
 
             </ParallaxWrapper>
+            </motion.div>
 
           <div className="order-1 md:order-2">
 
               <span className={`inline-block bg-[#E8927C] text-[#FDF9F4] px-3 md:px-4 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[-1deg] shadow-sm`}>2018-2025</span>
 
-              <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>Building a Life</h3>
+              <h3 className={`${TYPO_H3} font-bold text-navy mb-3 md:mb-4`}>Building a Life</h3>
 
               <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
               <p>She took him to Goa. Made it a ritual. Twice a year, every single year. Palolem Beach, Colomb Bay. Their sanctuary. The place they'd go to reset and remember what mattered.</p>
 
               <p>They traveled. Did life together. Raised two beautiful dogs - Cookie and Bailey. Learned how to be a team when things got hard, and how to celebrate when things were good.</p>
+
+              <p className="mt-4 md:mt-6 font-hand italic text-peach">Seven years of choosing each other, every single day.</p>
 
             </div>
 
@@ -1078,7 +1162,7 @@ const Story = () => (
 
         {/* Proposal */}
 
-        <FadeInWhenVisible delay={0.25}>
+        <FadeInWhenVisible delay={0.5}>
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
 
@@ -1086,7 +1170,7 @@ const Story = () => (
 
               <span className={`inline-block bg-[#E8927C] text-[#FDF9F4] px-4 md:px-5 py-1 ${TYPO_LABEL} mb-3 md:mb-4 rotate-[2deg] shadow-sm`}>January 6, 2025</span>
 
-              <h3 className={`${TYPO_H2} font-bold text-navy mb-3 md:mb-4`}>The Question</h3>
+              <h3 className={`${TYPO_H3} font-bold text-navy mb-3 md:mb-4`}>The Question</h3>
 
               <div className={`${TYPO_BODY} text-navy ${SPACING.spaceY.xs} md:${SPACING.spaceY['3']}`}>
 
@@ -1102,22 +1186,32 @@ const Story = () => (
 
               <p>He was on his knees. Ring in hand. She said yes before he finished asking.</p>
 
+              <p className="mt-4 md:mt-6 font-hand italic text-peach">And now, we're making it forever.</p>
+
             </div>
 
           </div>
 
+            <motion.div
+              whileHover={{ 
+                scale: 1.02,
+                rotate: 1.5,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+            >
             <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-[1deg] photo-frame">
-             <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-[#EDEDE3]/30`} style={{ aspectRatio: '3 / 4' }}>
+             <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-transparent`} style={{ aspectRatio: '3 / 4' }}>
                 <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
              </div>
              <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Ring. Sand. Forever.</p>
             </ParallaxWrapper>
+            </motion.div>
 
-      </div>
+          </div>
 
         </FadeInWhenVisible>
 
-    </div>
+      </div>
 
     </FadeInWhenVisible>
 
@@ -1681,22 +1775,38 @@ const KidenaHouseCarousel = memo(() => {
         </div>
 
         {/* Navigation Arrows - Only one set */}
-        <button
+        <motion.button
           onClick={prevImage}
-          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 bg-[#FDF9F4] hover:bg-[#FDF9F4] backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A] transition-all hover:scale-110"
+          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 bg-[#FDF9F4] backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A]"
           aria-label="Previous image"
           type="button"
+          whileHover={{ 
+            scale: 1.1,
+            transition: { type: "spring", stiffness: 400, damping: 17 }
+          }}
+          whileTap={{ 
+            scale: 0.95,
+            transition: { type: "spring", stiffness: 500, damping: 20 }
+          }}
         >
           <ChevronLeft size={28} className="md:w-8 md:h-8 text-[#3B2F2A]" />
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           onClick={nextImage}
-          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 bg-[#FDF9F4] hover:bg-[#FDF9F4] backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A] transition-all hover:scale-110"
+          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 bg-[#FDF9F4] backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl border-2 border-[#3B2F2A]"
           aria-label="Next image"
           type="button"
+          whileHover={{ 
+            scale: 1.1,
+            transition: { type: "spring", stiffness: 400, damping: 17 }
+          }}
+          whileTap={{ 
+            scale: 0.95,
+            transition: { type: "spring", stiffness: 500, damping: 20 }
+          }}
         >
           <ChevronRight size={28} className="md:w-8 md:h-8 text-[#3B2F2A]" />
-        </button>
+        </motion.button>
 
         {/* Dots Indicator - Only one set */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
@@ -1757,49 +1867,49 @@ const KidenaHouse = () => (
         {/* Features Grid - 2x2 Layout */}
         <div className="grid md:grid-cols-2 gap-8 mt-14 mb-14">
             
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#E8927C] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} card-secondary border border-[#E8927C] ${CARD_PAD_MD} transition-shadow`}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#E8927C]/20 flex items-center justify-center flex-shrink-0">
                         <Home className="w-5 h-5 text-[#E8927C]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#E8927C]`}>The House</h3>
+                        <h3 className={`font-hand ${TYPO_H3} mb-3 text-peach`}>The House</h3>
                         <p className={`font-hand ${TYPO_BODY} text-navy`}>6 bedrooms, 9 bathrooms. Private pool and private lake. Three acres. Enough room for everyone.</p>
                     </div>
                 </div>
         </div>
 
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} card-secondary border border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
                         <SketchIcon type="plate" className="w-5 h-5 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#E8927C]`}>No Cooking, No Cleaning</h3>
+                        <h3 className={`font-hand ${TYPO_H3} mb-3 text-peach`}>No Cooking, No Cleaning</h3>
                         <p className={`font-hand ${TYPO_BODY} text-navy`}>Personal chefs cook whatever you're craving - breakfast, lunch, dinner, midnight snacks. Meals get billed to your room. Butlers handle everything else.</p>
                     </div>
                 </div>
             </div>
 
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#E8927C] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} card-secondary border border-[#E8927C] ${CARD_PAD_MD} transition-shadow`}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#E8927C]/20 flex items-center justify-center flex-shrink-0">
                         <Sun className="w-5 h-5 text-[#E8927C]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#E8927C]`}>Spa & Steam Room</h3>
+                        <h3 className={`font-hand ${TYPO_H3} mb-3 text-peach`}>Spa & Steam Room</h3>
                         <p className={`font-hand ${TYPO_BODY} text-navy`}>There's a spa room and steam room. Book a massage with advance notice - we'll arrange it.</p>
                     </div>
                 </div>
         </div>
 
-            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} border border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+            <div className={`bg-[#FDF9F4] text-navy ${CARD_SECONDARY} card-secondary border border-[#EBBA9A] ${CARD_PAD_MD} transition-shadow`}>
                 <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full bg-[#EBBA9A]/20 flex items-center justify-center flex-shrink-0">
                         <Music className="w-5 h-5 text-[#EBBA9A]" />
                     </div>
                     <div className="flex-1">
-                        <h3 className={`font-hand ${TYPO_H2} mb-3 text-[#E8927C]`}>Keep Busy (or Don't)</h3>
+                        <h3 className={`font-hand ${TYPO_H3} mb-3 text-peach`}>Keep Busy (or Don't)</h3>
                         <p className={`font-hand ${TYPO_BODY} text-navy`}>Pool table, PlayStation, bicycles, coracles on the private lake. Or just lounge by the pool all day.</p>
                     </div>
                 </div>
@@ -1968,11 +2078,10 @@ const Celebration = ({ isFamilyMode }) => (
           <ParallaxWrapper
             offset={25}
             hoverEffect
-            className={`${CARD_PRIMARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-[#EBBA9A]/30 ${CARD_PAD_MD} rotate-1`}
-            style={{ boxShadow: '0 8px 16px rgba(232, 146, 124, 0.15)' }}
+            className={`${CARD_PRIMARY} card-primary bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-[#EBBA9A]/30 ${CARD_PAD_MD} rotate-1`}
           >
 
-            <div className={`w-full overflow-hidden border-2 border-navy ${CARD_PRIMARY} bg-[#FDF9F4]`}>
+            <div className={`w-full overflow-hidden border-2 border-navy bg-transparent`}>
 
                <motion.img 
 
@@ -1985,10 +2094,9 @@ const Celebration = ({ isFamilyMode }) => (
                  className="w-full h-auto block"
                  width={1024}
                  height={683}
-                 initial={{ opacity: 0 }}
-                 whileInView={{ opacity: 1 }}
+                 initial={{ opacity: 1, scale: 1 }}
+                 whileInView={{ opacity: 1, scale: 1 }}
                  viewport={{ once: true }}
-                 transition={{ duration: 0.5, ease: 'easeOut' }}
 
                />
 
@@ -1997,7 +2105,7 @@ const Celebration = ({ isFamilyMode }) => (
 
              <div className={`${CARD_PAD_MD} ${SPACING.spaceY.md}`}>
 
-                <h3 className={`${TYPO_H2} text-navy`}>Friday, March 20, 2026</h3>
+                <h3 className={`${TYPO_H3} text-navy`}>Friday, March 20, 2026</h3>
 
                 <div className="flex items-start gap-4">
 
@@ -2013,7 +2121,7 @@ const Celebration = ({ isFamilyMode }) => (
                        href={VENUE_GOOGLE_MAPS_URL}
                        target="_blank"
                        rel="noreferrer"
-                       className={`inline-flex items-center gap-2 mt-2 ${TYPO_BODY} text-navy hover:text-[#E8927C] transition-colors`}
+                       className={`inline-flex items-center gap-2 mt-2 ${TYPO_BODY} text-navy hover:text-peach transition-colors underline decoration-[#C97452] decoration-1 underline-offset-2`}
                        aria-label="Open Blu Missel location in Google Maps"
                      >
                        <MapPin size={16} />
@@ -2072,7 +2180,7 @@ const Celebration = ({ isFamilyMode }) => (
 
                       </div>
 
-                      <h3 className={`font-hand ${TYPO_H2} text-navy mb-2`}>{item.event}</h3>
+                      <h3 className={`font-hand ${TYPO_H3} text-navy mb-2`}>{item.event}</h3>
 
                       <p className={`font-hand ${TYPO_BODY} text-navy font-bold mb-3`}>{item.time}</p>
 
@@ -2183,7 +2291,7 @@ const DressCode = () => {
               hoverEffect 
               className="relative max-w-lg w-full"
             >
-              <div className={`${CARD_PRIMARY} overflow-hidden`}>
+              <div className={`${CARD_PRIMARY} overflow-hidden bg-transparent`}>
                 <img 
                   src="/images/warddrobe.jpg" 
                   alt="Wedding wardrobe inspiration"
@@ -2217,7 +2325,7 @@ const DressCode = () => {
                 <div className="w-10 h-10 rounded-full bg-[#E8927C]/30 flex items-center justify-center">
                   <Palette className="w-5 h-5 text-[#3B2F2A]" />
                 </div>
-                <h3 className={`${TYPO_H2} font-hand text-[#3B2F2A]`}>Palette Notes</h3>
+                <h3 className={`${TYPO_H3} font-hand text-[#3B2F2A]`}>Palette Notes</h3>
               </div>
               <div className="grid grid-cols-3 gap-3 md:gap-4">
                 {colors.map((color) => (
@@ -2288,7 +2396,7 @@ const ExploreGoa = () => {
 
         { name: "Kokum Curry", type: "food", location: "Candolim (also in Panjim)", desc: "Xinanyo in shell, churichuri bombil fry. Three kinds of Bombay duck. Saraswat home cooking you won't find anywhere else.", mapUrl: "https://maps.app.goo.gl/iNEK8NQGHXGa9XT48" },
 
-        { name: "Bar Outrigger", type: "drink", location: "Dona Paula", desc: "We found this while scouting for our wedding venue. Picante el pastor is Shubs' pick, off-menu whiskey drinks for Alysha. Walk to empty beach after.", mapUrl: "https://maps.app.goo.gl/Ui7Q6Ds1WzgrH71d7" }
+        { name: "Bar Outrigger", type: "drink", location: "Dona Paula", desc: "#55 Asia's Best Bars. Shubs orders the picante el pastor, Alysha always goes off-menu. Steps inside lead down to your own private beach cove.", mapUrl: "https://maps.app.goo.gl/Ui7Q6Ds1WzgrH71d7" }
 
       ]
 
@@ -2347,7 +2455,7 @@ const ExploreGoa = () => {
             
             return (
               <FadeInWhenVisible key={section.category} delay={idx * 0.1}>
-                <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} transition-all md:h-full md:flex md:flex-col`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+                <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} card-secondary ${CARD_PAD_LG} transition-all md:h-full md:flex md:flex-col`}>
                   
                   {/* Mobile: Collapsible button header */}
                   <button
@@ -2370,7 +2478,7 @@ const ExploreGoa = () => {
                   </button>
 
                   {/* Desktop: Static header */}
-                  <h3 className={`hidden md:block ${TYPO_H2} text-navy border-b-2 border-[#E8927C]/40 pb-4 mb-6`}>
+                  <h3 className={`hidden md:block ${TYPO_H3} text-navy border-b-2 border-[#E8927C]/40 pb-4 mb-6`}>
                     {section.category}
                   </h3>
                   
@@ -2406,7 +2514,7 @@ const ExploreGoa = () => {
                                   href={item.mapUrl}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="flex-shrink-0 text-navy hover:text-[#E8927C] transition-colors"
+                                  className="flex-shrink-0 text-navy hover:text-peach transition-colors underline decoration-[#C97452] decoration-1 underline-offset-2"
                                   aria-label={`Open ${item.name} in Google Maps`}
                                   title="Open in Google Maps"
                                 >
@@ -2487,7 +2595,7 @@ const Travel = ({ isFamilyMode }) => (
 
              </div>
 
-             <h3 className={`${TYPO_H2} mb-1 font-hand uppercase tracking-wider`}>Boarding Pass</h3>
+             <h3 className={`${TYPO_H3} mb-1 font-hand uppercase tracking-wider`}>Boarding Pass</h3>
 
              <p className={`${TYPO_LABEL} opacity-50 mb-6`}>GETTING THERE</p>
 
@@ -2562,14 +2670,14 @@ const Travel = ({ isFamilyMode }) => (
             <div className={`${SPACING.spaceY.md} relative z-10`}>
               <div className={`${SPACING.spaceY['3']} text-left`}>
                   <p className={`${TYPO_LABEL} text-navy`}>Your Stay</p>
-                <h3 className={`${TYPO_H2} text-[#E8927C]`}>Kidena House</h3>
+                <h3 className={`${TYPO_H3} text-peach`}>Kidena House</h3>
                 <p className={`${TYPO_BODY} text-navy`}>
                   You're with us for the full four days. Rooms are assigned. Fridge is stocked. Pool is ready. Just show up.
                 </p>
               </div>
 
               <div className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_SM} ${TYPO_BODY} text-navy shadow-sm`}>
-                Six bedrooms, nine bathrooms. Private pool, private lake. Personal chefs, butlers, stocked pantry. Lawns for the kids. Space for every cousin. Just arrive - everything else is sorted.
+                Six bedrooms, nine bathrooms. Private pool, private lake. Personal chefs, butlers, stocked pantry. Lawns for the kids. Space for all of us. Just arrive - everything else is sorted.
               </div>
 
               <div className={`flex flex-wrap items-center gap-4 justify-between bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_SM} shadow-sm`}>
@@ -2593,7 +2701,7 @@ const Travel = ({ isFamilyMode }) => (
           ) : (
 
             <>
-              <h3 className={`${TYPO_H2} mb-6 md:mb-8 font-hand text-center`}>Our Recommendations</h3>
+              <h3 className={`${TYPO_H3} mb-6 md:mb-8 font-hand text-center`}>Our Recommendations</h3>
 
             <ul className={`font-hand ${TYPO_BODY} ${SPACING.spaceY['5']}`}>
 
@@ -2607,7 +2715,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=The+Crown+Goa+Panaji"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-navy hover:text-[#E8927C] transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-peach transition-colors underline decoration-[#C97452] decoration-1 underline-offset-2"
                         aria-label="Open The Crown Goa in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -2631,7 +2739,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=DoubleTree+by+Hilton+Goa+Panaji"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-navy hover:text-[#E8927C] transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-peach transition-colors underline decoration-[#C97452] decoration-1 underline-offset-2"
                         aria-label="Open DoubleTree by Hilton Goa in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -2655,7 +2763,7 @@ const Travel = ({ isFamilyMode }) => (
                         href="https://www.google.com/maps/search/?api=1&query=The+Fern+Kadamba+Hotel+Old+Goa"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 text-navy hover:text-[#E8927C] transition-colors"
+                        className="flex-shrink-0 text-navy hover:text-peach transition-colors underline decoration-[#C97452] decoration-1 underline-offset-2"
                         aria-label="Open The Fern Kadamba Hotel in Google Maps"
                         title="Open in Google Maps"
                       >
@@ -2722,11 +2830,11 @@ const QnA = () => {
 
           {questions.map((item, i) => (
 
-          <FadeInWhenVisible key={item.q} delay={i * 0.05} className={`${CARD_SECONDARY} bg-[#FDF9F4] ${CARD_PAD_MD} rotate-1 hover:rotate-0 transition-all duration-300`} style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}>
+          <FadeInWhenVisible key={item.q} delay={i * 0.05} className={`${CARD_SECONDARY} card-secondary bg-[#FDF9F4] ${CARD_PAD_MD} rotate-1 hover:rotate-0 transition-all duration-300`}>
 
-               <h4 className={`font-bold ${TYPO_H2} font-hand text-navy mb-3 flex items-start gap-3`}>
+               <h4 className={`font-bold ${TYPO_H4} font-hand text-navy mb-3 flex items-start gap-3`}>
 
-                 <span className={`text-[#E8927C] ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} leading-none flex-shrink-0`}>?</span> 
+                 <span className={`text-peach ${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} leading-none flex-shrink-0`}>?</span> 
                  <span>{item.q}</span>
 
                </h4>
@@ -2739,7 +2847,7 @@ const QnA = () => {
 
         <FadeInWhenVisible delay={questions.length * 0.05} className={`${CARD_SECONDARY} bg-gradient-to-br from-[#E8927C]/10 to-[#EBBA9A]/10 border-2 border-[#E8927C]/30 ${CARD_PAD_LG} -rotate-1 hover:rotate-0 transition-all shadow-sm md:col-span-2`}>
 
-             <h4 className={`font-bold ${TYPO_H2} font-hand text-navy mb-4 flex items-start gap-3`}>
+             <h4 className={`font-bold ${TYPO_H4} font-hand text-navy mb-4 flex items-start gap-3`}>
 
                  <Phone size={24} className="text-[#E8927C] flex-shrink-0" />
 
@@ -3120,7 +3228,7 @@ const RSVP = () => {
                 transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                 onClick={(e) => e.stopPropagation()}
                 className={`relative bg-[#FDF9F4] ${CARD_PRIMARY} max-w-md w-full ${CARD_PAD_LG}`}
-                style={{ boxShadow: '0 8px 16px rgba(59, 47, 42, 0.1)' }}
+                style={{ boxShadow: '0 8px 16px rgba(232, 146, 124, 0.15)' }}
               >
                 <button
                   onClick={() => {
@@ -3141,7 +3249,7 @@ const RSVP = () => {
                         <p className="text-navy">See you in Goa.</p>
                         <button
                           type="button"
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#E8927C] hover:text-navy transition-colors underline"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-peach hover:text-navy transition-colors underline decoration-[#C97452] decoration-1 underline-offset-2"
                           onClick={() => {
                             setSubmitted(false);
                             setSubmittedAttendance(null);
@@ -3160,7 +3268,7 @@ const RSVP = () => {
                         <p className="text-sm text-navy">If plans change, just resubmit the form - we'll make room.</p>
                         <button
                           type="button"
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-[#E8927C] hover:text-navy transition-colors underline"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-peach hover:text-navy transition-colors underline decoration-[#C97452] decoration-1 underline-offset-2"
                           onClick={() => {
                             setSubmitted(false);
                             setSubmittedAttendance(null);
@@ -3253,14 +3361,23 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
   return (
 
-      <button
+      <motion.button
 
       onClick={() => onScrollToRSVP('rsvp')}
 
-      className={`fixed bottom-6 right-6 z-[100] bg-[#E8927C] text-[#FDF9F4] sketchy-border border-[3px] border-[#FDF9F4] shadow-md px-6 py-3 flex items-center gap-2 hover:scale-105 hover:rotate-1 transition-all font-hand font-bold ${TYPE_SCALE.sm} md:${TYPE_SCALE.base} group`}
-      style={{ position: 'fixed' }}
+      className={`fixed bottom-6 right-6 z-[100] bg-[#E8927C] text-[#FDF9F4] sketchy-border border-[3px] border-[#FDF9F4] px-6 py-3 md:px-8 md:py-4 flex items-center gap-2 transition-all font-hand font-bold ${TYPE_SCALE.base} md:${TYPE_SCALE.lg} group rsvp-button-pulse`}
+      style={{ 
+        position: 'fixed',
+        boxShadow: '0 8px 24px rgba(232, 146, 124, 0.3)'
+      }}
 
       aria-label="Go to RSVP"
+      
+      whileHover={{ 
+        scale: 1.05,
+        boxShadow: '0 12px 32px rgba(232, 146, 124, 0.4)'
+      }}
+      whileTap={{ scale: 0.98 }}
 
     >
 
@@ -3268,7 +3385,7 @@ const FloatingRSVPButton = ({ onScrollToRSVP }) => {
 
       <span className="font-bold">RSVP</span>
 
-    </button>
+    </motion.button>
 
   );
 
@@ -3364,9 +3481,9 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
           exit={{ scale: 0.9, opacity: 0 }}
           onClick={(e) => e.stopPropagation()}
           className={`bg-[#FDF9F4] ${CARD_SECONDARY} ${CARD_PAD_LG} max-w-md w-full`}
-          style={{ boxShadow: '0 4px 6px -1px rgba(59, 47, 42, 0.08)' }}
+          style={{ boxShadow: '0 4px 6px -1px rgba(232, 146, 124, 0.12)' }}
         >
-          <h3 id="password-modal-title" className={`${TYPO_H2} font-hand text-navy mb-4 text-center`}>
+          <h3 id="password-modal-title" className={`${TYPO_H3} font-hand text-navy mb-4 text-center`}>
             Family Mode
           </h3>
           <p className={`${TYPO_BODY} text-navy text-center mb-6 font-hand`}>
@@ -3388,19 +3505,36 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
               <p className="text-red-600 text-sm mb-4 text-center font-hand">{error}</p>
             )}
             <div className="flex gap-3">
-              <button
+              <motion.button
                 type="button"
                 onClick={onClose}
-                className="flex-1 bg-[#EDEDE3] text-[#3B2F2A] font-hand font-bold py-3 px-4 rounded-lg border border-[#D4CDC2] hover:bg-[#D4CDC2] transition-colors"
+                className="flex-1 bg-[#EDEDE3] text-[#3B2F2A] font-hand font-bold py-3 px-4 rounded-lg border border-[#D4CDC2]"
+                whileHover={{ 
+                  backgroundColor: '#D4CDC2',
+                  transition: { type: "spring", stiffness: 400, damping: 17 }
+                }}
+                whileTap={{ 
+                  scale: 0.98,
+                  transition: { type: "spring", stiffness: 500, damping: 20 }
+                }}
               >
                 Cancel
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 type="submit"
-                className={`flex-1 bg-[#E8927C] text-[#FDF9F4] font-hand font-bold py-3 px-4 ${CARD_SECONDARY} hover:bg-[#C97452] transition-colors`}
+                className={`flex-1 bg-[#E8927C] text-[#FDF9F4] font-hand font-bold py-3 px-4 ${CARD_SECONDARY}`}
+                whileHover={{ 
+                  backgroundColor: '#C97452',
+                  scale: 1.02,
+                  transition: { type: "spring", stiffness: 400, damping: 17 }
+                }}
+                whileTap={{ 
+                  scale: 0.98,
+                  transition: { type: "spring", stiffness: 500, damping: 20 }
+                }}
               >
                 Enter
-              </button>
+              </motion.button>
             </div>
           </form>
         </motion.div>
@@ -3420,12 +3554,10 @@ const PasswordModal = ({ isOpen, onClose, onConfirm }) => {
 const FloatingPalmTree = () => {
 
   const { scrollY } = useScroll();
+  const prefersReducedMotion = useReducedMotion();
 
-  const y = useTransform(scrollY, [0, 2000], [0, -200]);
-
-  const rotate = useTransform(scrollY, [0, 2000], [0, 15]);
-
-
+  const y = useTransform(scrollY, [0, 2000], [0, prefersReducedMotion ? 0 : -200]);
+  const rotate = useTransform(scrollY, [0, 2000], [0, prefersReducedMotion ? 0 : 15]);
 
   return (
 
@@ -3433,7 +3565,11 @@ const FloatingPalmTree = () => {
 
       className="fixed bottom-0 right-0 w-24 md:w-32 lg:w-48 h-auto z-30 pointer-events-none opacity-10 md:opacity-20"
 
-      style={{ y, rotate }}
+      style={{ 
+        y, 
+        rotate,
+        willChange: prefersReducedMotion ? 'auto' : 'transform'
+      }}
 
     >
 
@@ -3450,6 +3586,7 @@ const FloatingPalmTree = () => {
 const FloatingMusicNotes = () => {
 
   const { scrollY } = useScroll();
+  const prefersReducedMotion = useReducedMotion();
 
   const notes = [0, 1, 2];
 
@@ -3477,11 +3614,11 @@ const FloatingMusicNotes = () => {
 
       {notes.map((i) => {
 
-        const x = useTransform(scrollY, [0, 3000], [windowWidth + 100, -100]);
+        const x = useTransform(scrollY, [0, 3000], [windowWidth + 100, prefersReducedMotion ? windowWidth + 100 : -100]);
 
-        const y = useTransform(scrollY, [0, 3000], [100 + i * 150, 100 + i * 150]);
+        const y = useTransform(scrollY, [0, 3000], [100 + i * 150, prefersReducedMotion ? 100 + i * 150 : 100 + i * 150]);
 
-        const rotate = useTransform(scrollY, [0, 3000], [i * 20, i * 20 + 360]);
+        const rotate = useTransform(scrollY, [0, 3000], [i * 20, prefersReducedMotion ? i * 20 : i * 20 + 360]);
 
 
 
@@ -3493,7 +3630,12 @@ const FloatingMusicNotes = () => {
 
             className="fixed z-30 pointer-events-none opacity-5 md:opacity-10"
 
-            style={{ x, y, rotate }}
+            style={{ 
+              x: prefersReducedMotion ? 0 : x, 
+              y: prefersReducedMotion ? 0 : y, 
+              rotate: prefersReducedMotion ? 0 : rotate,
+              willChange: prefersReducedMotion ? 'auto' : 'transform'
+            }}
 
           >
 
@@ -3578,6 +3720,60 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
         );
 
       })}
+
+    </div>
+
+  );
+
+};
+
+/* --- MOBILE DOT NAVIGATION --- */
+
+const MobileDotNav = ({ sections, activeSection, onSectionClick }) => {
+
+  return (
+
+    <div className="xl:hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-40">
+
+      <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm px-4 py-2.5 rounded-full shadow-lg border border-[#D4CDC2]/30" style={{ boxShadow: '0 8px 16px rgba(232, 146, 124, 0.15)' }}>
+
+        {sections.map((section, idx) => {
+
+          const isActive = idx === activeSection;
+
+          return (
+
+            <motion.button
+
+              key={section.id}
+
+              onClick={() => onSectionClick(section.id)}
+
+              className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#E8927C]/60 ${
+
+                isActive
+
+                  ? 'bg-[#E8927C] w-8'
+
+                  : 'bg-[#D4CDC2] w-2 hover:bg-[#E8927C]/50'
+
+              }`}
+
+              whileHover={{ scale: 1.1 }}
+
+              whileTap={{ scale: 0.9 }}
+
+              aria-label={`Go to ${section.name || section.id} section`}
+
+              aria-current={isActive ? "true" : undefined}
+
+            />
+
+          );
+
+        })}
+
+      </div>
 
     </div>
 
@@ -3766,6 +3962,16 @@ const App = () => {
         />
 
         <DotNav 
+
+          sections={sections} 
+
+          activeSection={activeSection} 
+
+          onSectionClick={scrollToSection}
+
+        />
+
+        <MobileDotNav 
 
           sections={sections} 
 
