@@ -625,23 +625,36 @@ const CountdownTimer = () => {
   );
 };
 
-// Hero Logo component with reduced motion support
+// Hero Logo component with decorative S&A image
 const HeroLogo = memo(() => {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <motion.h1 
-      className="text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text inline-block mt-8 md:mt-12" 
-      style={{ textShadow: '2px 2px 0px rgba(212, 165, 165, 0.2)' }}
-      initial={prefersReducedMotion ? { opacity: 0 } : { scale: 0.8, opacity: 0 }}
+    <motion.div
+      className="flex justify-center items-center mt-6 md:mt-8 mb-4 md:mb-6"
+      initial={prefersReducedMotion ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={prefersReducedMotion 
         ? { duration: 0.3, ease: 'easeOut' }
         : { type: 'spring', stiffness: 120, damping: 14 }
       }
     >
-      S<span className="text-[#D88D66]">&</span>A
-    </motion.h1>
+      <img 
+        src="/images/s-a-logo.png" 
+        alt="S & A Monogram" 
+        className="w-48 md:w-64 lg:w-80 h-auto object-contain"
+        style={{ maxWidth: '320px' }}
+        onError={(e) => {
+          // Fallback to text if image doesn't exist yet
+          e.target.style.display = 'none';
+          const fallback = document.createElement('h1');
+          fallback.className = 'text-[4rem] md:text-[5rem] lg:text-[6rem] leading-[0.9] text-navy font-hand select-none relative z-10 sketchy-text inline-block';
+          fallback.style.textShadow = '2px 2px 0px rgba(212, 165, 165, 0.2)';
+          fallback.innerHTML = 'S<span style="color: #D88D66;">&</span>A';
+          e.target.parentNode.appendChild(fallback);
+        }}
+      />
+    </motion.div>
   );
 });
 
@@ -728,17 +741,17 @@ const Hero = ({ onScrollToSection }) => (
 
       {/* Mobile: Text Content Second */}
       <div className={`order-2 md:order-1 text-center ${SPACING.spaceY.sm} md:${SPACING.spaceY.md} mt-6 md:mt-0 overflow-visible`}>
-        {/* Opening Message - More prominent */}
-        <p className={`${TYPO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2 overflow-visible`}>
+        {/* Opening Message */}
+        <p className={`${TYPO_BODY} font-semibold text-navy max-w-2xl mx-auto px-2 overflow-visible mb-4 md:mb-6`}>
           After seven years of choosing each other,<br className="hidden md:block" />
           <span className="md:hidden"> </span>we're making it forever.
         </p>
 
-        {/* S&A Logo */}
+        {/* S&A Logo - Decorative monogram as visual punctuation */}
         <HeroLogo />
 
         {/* Names and Invitation */}
-        <div className="flex flex-col items-center gap-3 md:gap-4 mt-1 md:mt-2 rotate-[-1deg]">
+        <div className="flex flex-col items-center gap-3 md:gap-4 rotate-[-1deg]">
           <h1 className={`${TYPO_H1} text-navy relative`}>
             Shubs & Alysha
             <svg className="absolute -bottom-2 md:-bottom-3 left-0 w-full h-2 md:h-2.5" viewBox="0 0 100 10" preserveAspectRatio="none">
