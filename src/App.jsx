@@ -1354,6 +1354,74 @@ const KidenaHouseCarousel = memo(() => {
   const [isPaused, setIsPaused] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [modalImageIndex, setModalImageIndex] = useState(null);
+  const [zoomState, setZoomState] = useState({ scale: 1, x: 0, y: 0 });
+  const [isZooming, setIsZooming] = useState(false);
+  const touchStartDistance = useRef(null);
+  const touchStartCenter = useRef(null);
+  const imageContainerRef = useRef(null);
+
+  // Calculate distance between two touch points
+  const getDistance = (touch1, touch2) => {
+    const dx = touch2.clientX - touch1.clientX;
+    const dy = touch2.clientY - touch1.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+
+  // Calculate center point between two touches
+  const getCenter = (touch1, touch2) => {
+    return {
+      x: (touch1.clientX + touch2.clientX) / 2,
+      y: (touch1.clientY + touch2.clientY) / 2
+    };
+  };
+
+  // Handle touch start for pinch zoom
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      setIsZooming(true);
+      const distance = getDistance(e.touches[0], e.touches[1]);
+      touchStartDistance.current = distance;
+      touchStartCenter.current = getCenter(e.touches[0], e.touches[1]);
+    }
+  };
+
+  // Handle touch move for pinch zoom
+  const handleTouchMove = (e) => {
+    if (e.touches.length === 2 && isZooming) {
+      e.preventDefault();
+      const distance = getDistance(e.touches[0], e.touches[1]);
+      const scale = Math.max(1, Math.min(3, (distance / touchStartDistance.current) * zoomState.scale));
+      
+      const center = getCenter(e.touches[0], e.touches[1]);
+      const deltaX = center.x - touchStartCenter.current.x;
+      const deltaY = center.y - touchStartCenter.current.y;
+      
+      setZoomState({
+        scale,
+        x: zoomState.x + deltaX,
+        y: zoomState.y + deltaY
+      });
+      
+      touchStartDistance.current = distance;
+      touchStartCenter.current = center;
+    }
+  };
+
+  // Handle touch end - reset if single touch, maintain zoom if still pinching
+  const handleTouchEnd = (e) => {
+    if (e.touches.length < 2) {
+      setIsZooming(false);
+      touchStartDistance.current = null;
+      touchStartCenter.current = null;
+    }
+  };
+
+  // Reset zoom when image changes
+  useEffect(() => {
+    setZoomState({ scale: 1, x: 0, y: 0 });
+    setIsZooming(false);
+  }, [currentIndex]);
   const images = useMemo(() => [
     { src: '/images/kidena-house.jpg', alt: 'Kidena House - Main View' },
     { src: '/images/kidena-house2.jpg', alt: 'Kidena House - View 2' },
@@ -1465,40 +1533,76 @@ const KidenaHouseCarousel = memo(() => {
             transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
           }}
         >
-          {endlessImages.map((image, index) => (
-            <div key={index} className="min-w-full flex-shrink-0 w-full">
-              <ParallaxWrapper offset={25} hoverEffect className="sketchy-border p-3 bg-[#FDF9F4] rotate-1 shadow-2xl">
-                <div 
-                  className="relative bg-white w-full overflow-hidden cursor-pointer"
-                  style={{ maxHeight: '70vh' }}
-                  onClick={() => openModal(index)}
-                >
-                  <img 
-                    src={image.src} 
-                    alt={image.alt} 
-                    className="w-full h-auto object-contain block"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    width={1024}
-                    height={768}
-                    decoding="async"
-                    onError={(e) => {
-                      console.error(`Failed to load image: ${image.src}`);
-                      console.error('Attempting to reload with cache bust...');
-                      const img = e.target;
-                      const originalSrc = img.src;
-                      // Try reloading with cache bust parameter
-                      img.src = originalSrc.split('?')[0] + '?v=' + Date.now();
+          {endlessImages.map((image, index) => {
+            const isCurrentImage = index === currentIndex;
+            return (
+              <div key={index} className="min-w-full flex-shrink-0 w-full">
+                <ParallaxWrapper offset={25} hoverEffect={!isZooming} className="sketchy-border p-3 bg-[#FDF9F4] rotate-1 shadow-2xl">
+                  <div 
+                    ref={isCurrentImage ? imageContainerRef : null}
+                    className="relative bg-white w-full overflow-hidden cursor-pointer touch-none"
+                    style={{ 
+                      maxHeight: '70vh',
+                      touchAction: 'none'
                     }}
-                    onLoad={() => {
-                      if (image.src.includes('kidena-house5')) {
-                        console.log(`✓ Successfully loaded: ${image.src}`);
+                    onClick={(e) => {
+                      if (!isZooming && zoomState.scale === 1) {
+                        openModal(index);
                       }
                     }}
-                  />
-                </div>
-              </ParallaxWrapper>
-            </div>
-          ))}
+                    onTouchStart={isCurrentImage ? handleTouchStart : undefined}
+                    onTouchMove={isCurrentImage ? handleTouchMove : undefined}
+                    onTouchEnd={isCurrentImage ? handleTouchEnd : undefined}
+                  >
+                    <img 
+                      src={image.src} 
+                      alt={image.alt} 
+                      className="w-full h-auto object-contain block select-none"
+                      style={{
+                        transform: isCurrentImage 
+                          ? `translate(${zoomState.x}px, ${zoomState.y}px) scale(${zoomState.scale})`
+                          : 'none',
+                        transformOrigin: 'center center',
+                        transition: isZooming ? 'none' : 'transform 0.2s ease-out',
+                        touchAction: 'none'
+                      }}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      width={1024}
+                      height={768}
+                      decoding="async"
+                      draggable={false}
+                      onError={(e) => {
+                        console.error(`Failed to load image: ${image.src}`);
+                        console.error('Attempting to reload with cache bust...');
+                        const img = e.target;
+                        const originalSrc = img.src;
+                        // Try reloading with cache bust parameter
+                        img.src = originalSrc.split('?')[0] + '?v=' + Date.now();
+                      }}
+                      onLoad={() => {
+                        if (image.src.includes('kidena-house5')) {
+                          console.log(`✓ Successfully loaded: ${image.src}`);
+                        }
+                      }}
+                    />
+                    {isCurrentImage && zoomState.scale > 1 && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setZoomState({ scale: 1, x: 0, y: 0 });
+                          setIsZooming(false);
+                        }}
+                        className="absolute top-2 right-2 bg-[#D88D66] text-white rounded-full p-2 shadow-lg z-10 hover:bg-[#C77A55] transition-colors"
+                        aria-label="Reset zoom"
+                      >
+                        <ZoomOut size={20} />
+                      </button>
+                    )}
+                  </div>
+                </ParallaxWrapper>
+              </div>
+            );
+          })}
         </div>
 
         {/* Navigation Arrows - Only one set */}
@@ -3029,7 +3133,7 @@ const Footer = ({ isFamilyMode }) => (
             Seven years ago, we found each other again.<br /> Every day since, we've chosen each other.
           </p>
           <p className={`${TYPO_H1} font-hand text-[#3B2F2A] mt-6 md:mt-8 text-center`}>
-            Now we're making it official — and we want you there when we say it out loud.
+            Now we're making it official - and we want you there when we say it out loud.
           </p>
           <div className={`pt-6 md:pt-8 ${SPACING.spaceY.xs}`}>
             <p className={`${TYPO_BODY} font-hand text-[#3B2F2A] text-center`}>
