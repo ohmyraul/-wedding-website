@@ -806,8 +806,8 @@ const Hero = ({ onScrollToSection }) => (
       <div className={`order-1 md:order-1 text-center ${SPACING.spaceY.md} md:${SPACING.spaceY.lg} lg:${SPACING.spaceY.xl} mt-8 md:mt-12 lg:mt-16 overflow-visible`}>
         {/* Opening Message */}
         <p className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-4 sm:px-6 overflow-visible mb-6 md:mb-8 lg:mb-10`}>
-          After seven years of choosing each other,<br className="hidden md:block" />
-          <span className="md:hidden"> </span>we're making it forever.
+          After seven years of choosing each other,<br />
+          we're making it forever.
         </p>
 
         {/* S&A Logo - Decorative monogram as visual punctuation */}
