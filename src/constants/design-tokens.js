@@ -123,3 +123,56 @@ export const OPACITY = {
   },
 };
 
+/**
+ * Typography Hierarchy
+ * Strict type scale for consistent heading hierarchy
+ */
+export const TYPOGRAPHY = {
+  // H1 - Hero titles only
+  h1: {
+    mobile: `${TYPE_SCALE['4xl']} font-hand font-bold ${LETTER_SPACING.tight}`, // 36px
+    tablet: `${TYPE_SCALE['5xl']} font-hand font-bold ${LETTER_SPACING.tight}`, // 48px
+    desktop: `${TYPE_SCALE['6xl']} font-hand font-bold ${LETTER_SPACING.tight}`, // 60px
+    full: `${TYPE_SCALE['4xl']} md:${TYPE_SCALE['5xl']} lg:${TYPE_SCALE['6xl']} font-hand font-bold ${LETTER_SPACING.tight}`,
+  },
+  
+  // H2 - Section headings
+  h2: {
+    mobile: `${TYPE_SCALE['2xl']} font-hand font-bold ${LETTER_SPACING.tight}`, // 24px
+    tablet: `${TYPE_SCALE['3xl']} font-hand font-bold ${LETTER_SPACING.tight}`, // 30px
+    desktop: `${TYPE_SCALE['4xl']} font-hand font-bold ${LETTER_SPACING.tight}`, // 36px
+    full: `${TYPE_SCALE['2xl']} md:${TYPE_SCALE['3xl']} lg:${TYPE_SCALE['4xl']} font-hand font-bold ${LETTER_SPACING.tight}`,
+  },
+  
+  // H3 - Card titles, subsection headings
+  h3: {
+    mobile: `${TYPE_SCALE.xl} font-hand font-semibold ${LETTER_SPACING.normal}`, // 20px
+    tablet: `${TYPE_SCALE['2xl']} font-hand font-semibold ${LETTER_SPACING.normal}`, // 24px
+    desktop: `${TYPE_SCALE['3xl']} font-hand font-semibold ${LETTER_SPACING.normal}`, // 30px
+    full: `${TYPE_SCALE.xl} md:${TYPE_SCALE['2xl']} lg:${TYPE_SCALE['3xl']} font-hand font-semibold ${LETTER_SPACING.normal}`,
+  },
+  
+  // H4 - Small headings, labels
+  h4: {
+    mobile: `${TYPE_SCALE.base} font-hand font-semibold ${LETTER_SPACING.normal}`, // 16px
+    tablet: `${TYPE_SCALE.lg} font-hand font-semibold ${LETTER_SPACING.normal}`, // 18px
+    desktop: `${TYPE_SCALE.xl} font-hand font-semibold ${LETTER_SPACING.normal}`, // 20px
+    full: `${TYPE_SCALE.base} md:${TYPE_SCALE.lg} lg:${TYPE_SCALE.xl} font-hand font-semibold ${LETTER_SPACING.normal}`,
+  },
+  
+  // Body - Standard text
+  body: {
+    mobile: `${TYPE_SCALE.base} font-normal ${LINE_HEIGHT.relaxed}`, // 16px
+    tablet: `${TYPE_SCALE.lg} font-normal ${LINE_HEIGHT.relaxed}`, // 18px
+    desktop: `${TYPE_SCALE.xl} font-normal ${LINE_HEIGHT.relaxed}`, // 20px
+    full: `${TYPE_SCALE.base} md:${TYPE_SCALE.lg} lg:${TYPE_SCALE.xl} font-normal ${LINE_HEIGHT.relaxed}`,
+  },
+  
+  // Small - Captions, helper text
+  small: {
+    mobile: `${TYPE_SCALE.sm} font-normal ${LINE_HEIGHT.normal}`, // 14px
+    tablet: `${TYPE_SCALE.base} font-normal ${LINE_HEIGHT.normal}`, // 16px
+    full: `${TYPE_SCALE.sm} md:${TYPE_SCALE.base} font-normal ${LINE_HEIGHT.normal}`,
+  },
+};
+
