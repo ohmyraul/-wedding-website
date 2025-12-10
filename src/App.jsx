@@ -1086,6 +1086,7 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [isPinching, setIsPinching] = useState(false);
   const imageRef = useRef(null);
   const containerRef = useRef(null);
   const triggerRef = useRef(null);
@@ -1182,18 +1183,24 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
     setIsDragging(false);
   };
 
+  const touchStartDistance = useRef(null);
+  const touchStartScale = useRef(null);
+
   const handleTouchStart = (e) => {
     if (e.touches.length === 2) {
       // Pinch zoom
+      e.preventDefault();
+      e.stopPropagation();
+      setIsPinching(true);
       const touch1 = e.touches[0];
       const touch2 = e.touches[1];
       const distance = Math.hypot(
         touch2.clientX - touch1.clientX,
         touch2.clientY - touch1.clientY
       );
-      e.touchDistance = distance;
-      e.touchScale = scale;
-    } else if (scale > 1) {
+      touchStartDistance.current = distance;
+      touchStartScale.current = scale;
+    } else if (scale > 1 && !isPinching) {
       setIsDragging(true);
       setDragStart({ x: e.touches[0].clientX - position.x, y: e.touches[0].clientY - position.y });
     }
@@ -1202,17 +1209,20 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
   const handleTouchMove = (e) => {
     if (e.touches.length === 2) {
       e.preventDefault();
+      e.stopPropagation();
+      setIsPinching(true);
       const touch1 = e.touches[0];
       const touch2 = e.touches[1];
       const distance = Math.hypot(
         touch2.clientX - touch1.clientX,
         touch2.clientY - touch1.clientY
       );
-      if (e.touchDistance) {
-        const newScale = (distance / e.touchDistance) * e.touchScale;
+      if (touchStartDistance.current && touchStartScale.current !== null) {
+        const newScale = (distance / touchStartDistance.current) * touchStartScale.current;
         setScale(Math.max(0.5, Math.min(3, newScale)));
       }
-    } else if (isDragging && scale > 1) {
+    } else if (isDragging && scale > 1 && !isPinching) {
+      e.preventDefault();
       setPosition({
         x: e.touches[0].clientX - dragStart.x,
         y: e.touches[0].clientY - dragStart.y
@@ -1220,8 +1230,13 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e) => {
     setIsDragging(false);
+    if (!e.touches || e.touches.length < 2) {
+      setIsPinching(false);
+      touchStartDistance.current = null;
+      touchStartScale.current = null;
+    }
   };
 
   const resetZoom = () => {
@@ -1252,41 +1267,6 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
         aria-modal="true"
         aria-labelledby="image-modal-title"
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-[201] w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-          aria-label="Close"
-        >
-          <X size={24} />
-        </button>
-
-        {/* Zoom Controls - Moved below nav bar */}
-        <div className="absolute top-20 md:top-4 left-1/2 -translate-x-1/2 md:left-4 md:translate-x-0 z-[201] flex gap-2">
-          <button
-            onClick={() => setScale(prev => Math.min(prev + 0.25, 3))}
-            className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-            aria-label="Zoom in"
-          >
-            <ZoomIn size={20} />
-          </button>
-          <button
-            onClick={() => setScale(prev => Math.max(prev - 0.25, 0.5))}
-            className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-            aria-label="Zoom out"
-          >
-            <ZoomOut size={20} />
-          </button>
-          {scale > 1 && (
-            <button
-              onClick={resetZoom}
-              className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
-              aria-label="Reset zoom"
-            >
-              <Maximize2 size={20} />
-            </button>
-          )}
-        </div>
 
         {/* Navigation Arrows */}
         {images.length > 1 && (
@@ -1308,38 +1288,86 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
           </>
         )}
 
-        {/* Image Counter */}
-        {images.length > 1 && (
-          <div id="image-modal-title" className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[201] bg-[#FDF9F4]/95 px-4 py-2 rounded-full shadow-lg text-navy text-sm">
-            {currentIndex + 1} / {images.length}
-          </div>
-        )}
-
         {/* Image */}
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="relative max-w-full max-h-full"
+          className="relative max-w-full max-h-full flex flex-col items-center"
           style={{
             cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
-            touchAction: 'none'
           }}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
-          onClick={(e) => e.stopPropagation()}
         >
-          <img
-            ref={imageRef}
-            src={image.src}
-            alt={image.alt}
-            className="max-w-full max-h-[90vh] object-contain select-none"
+          <div
+            className="relative"
             style={{
-              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-              transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+              touchAction: 'none'
             }}
-            draggable={false}
-          />
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              ref={imageRef}
+              src={image.src}
+              alt={image.alt}
+              className="max-w-full max-h-[90vh] object-contain select-none"
+              style={{
+                transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+                transition: isDragging || isPinching ? 'none' : 'transform 0.1s ease-out'
+              }}
+              draggable={false}
+            />
+          </div>
+
+          {/* Controls Below Image */}
+          <div className="mt-4 flex flex-col items-center gap-3 z-[201]">
+            {/* Image Counter */}
+            {images.length > 1 && (
+              <div id="image-modal-title" className="bg-[#FDF9F4]/95 px-4 py-2 rounded-full shadow-lg text-navy text-sm">
+                {currentIndex + 1} / {images.length}
+              </div>
+            )}
+
+            {/* Zoom Controls and Close Button */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setScale(prev => Math.min(prev + 0.25, 3))}
+                className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+                aria-label="Zoom in"
+              >
+                <ZoomIn size={20} />
+              </button>
+              <button
+                onClick={() => setScale(prev => Math.max(prev - 0.25, 0.5))}
+                className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+                aria-label="Zoom out"
+              >
+                <ZoomOut size={20} />
+              </button>
+              {scale > 1 && (
+                <button
+                  onClick={resetZoom}
+                  className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+                  aria-label="Reset zoom"
+                >
+                  <Maximize2 size={20} />
+                </button>
+              )}
+              <button
+                onClick={onClose}
+                className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
+                aria-label="Close"
+              >
+                <X size={24} />
+              </button>
+            </div>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
