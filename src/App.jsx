@@ -1261,8 +1261,8 @@ const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext,
           <X size={24} />
         </button>
 
-        {/* Zoom Controls */}
-        <div className="absolute top-4 left-4 z-[201] flex gap-2">
+        {/* Zoom Controls - Moved below nav bar */}
+        <div className="absolute top-20 md:top-4 left-1/2 -translate-x-1/2 md:left-4 md:translate-x-0 z-[201] flex gap-2">
           <button
             onClick={() => setScale(prev => Math.min(prev + 0.25, 3))}
             className="w-12 h-12 rounded-full bg-[#FDF9F4]/95 hover:bg-[#FDF9F4] shadow-lg flex items-center justify-center text-navy/60 hover:text-navy transition-all"
@@ -1379,7 +1379,9 @@ const KidenaHouseCarousel = memo(() => {
   const handleTouchStart = (e) => {
     if (e.touches.length === 2) {
       e.preventDefault();
+      e.stopPropagation();
       setIsZooming(true);
+      setIsPaused(true); // Pause carousel auto-advance when zooming
       const distance = getDistance(e.touches[0], e.touches[1]);
       touchStartDistance.current = distance;
       touchStartCenter.current = getCenter(e.touches[0], e.touches[1]);
@@ -1388,20 +1390,32 @@ const KidenaHouseCarousel = memo(() => {
 
   // Handle touch move for pinch zoom
   const handleTouchMove = (e) => {
-    if (e.touches.length === 2 && isZooming) {
+    if (e.touches.length === 2) {
       e.preventDefault();
+      e.stopPropagation();
+      
+      if (!isZooming || !touchStartDistance.current) {
+        setIsZooming(true);
+        setIsPaused(true);
+        const distance = getDistance(e.touches[0], e.touches[1]);
+        touchStartDistance.current = distance;
+        touchStartCenter.current = getCenter(e.touches[0], e.touches[1]);
+        return;
+      }
+      
       const distance = getDistance(e.touches[0], e.touches[1]);
-      const scale = Math.max(1, Math.min(3, (distance / touchStartDistance.current) * zoomState.scale));
+      const initialScale = zoomState.scale || 1;
+      const scale = Math.max(1, Math.min(3, (distance / touchStartDistance.current) * initialScale));
       
       const center = getCenter(e.touches[0], e.touches[1]);
-      const deltaX = center.x - touchStartCenter.current.x;
-      const deltaY = center.y - touchStartCenter.current.y;
+      const deltaX = center.x - (touchStartCenter.current?.x || center.x);
+      const deltaY = center.y - (touchStartCenter.current?.y || center.y);
       
-      setZoomState({
+      setZoomState(prev => ({
         scale,
-        x: zoomState.x + deltaX,
-        y: zoomState.y + deltaY
-      });
+        x: prev.x + deltaX * 0.5,
+        y: prev.y + deltaY * 0.5
+      }));
       
       touchStartDistance.current = distance;
       touchStartCenter.current = center;
@@ -1412,6 +1426,7 @@ const KidenaHouseCarousel = memo(() => {
   const handleTouchEnd = (e) => {
     if (e.touches.length < 2) {
       setIsZooming(false);
+      setIsPaused(false); // Resume carousel auto-advance
       touchStartDistance.current = null;
       touchStartCenter.current = null;
     }
@@ -1521,7 +1536,8 @@ const KidenaHouseCarousel = memo(() => {
           paddingTop: '28px',
           paddingBottom: '28px',
           paddingLeft: '28px',
-          paddingRight: '28px'
+          paddingRight: '28px',
+          touchAction: isZooming ? 'none' : 'pan-x'
         }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -1530,7 +1546,7 @@ const KidenaHouseCarousel = memo(() => {
           className="flex w-full"
           style={{ 
             transform: `translateX(-${currentIndex * 100}%)`,
-            transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
+            transition: isTransitioning && !isZooming ? 'transform 0.5s ease-in-out' : 'none'
           }}
         >
           {endlessImages.map((image, index) => {
@@ -1540,10 +1556,13 @@ const KidenaHouseCarousel = memo(() => {
                 <ParallaxWrapper offset={25} hoverEffect={!isZooming} className="sketchy-border p-3 bg-[#FDF9F4] rotate-1 shadow-2xl">
                   <div 
                     ref={isCurrentImage ? imageContainerRef : null}
-                    className="relative bg-white w-full overflow-hidden cursor-pointer touch-none"
+                    className="relative bg-white w-full overflow-hidden cursor-pointer"
                     style={{ 
                       maxHeight: '70vh',
-                      touchAction: 'none'
+                      touchAction: 'none',
+                      WebkitTouchCallout: 'none',
+                      WebkitUserSelect: 'none',
+                      userSelect: 'none'
                     }}
                     onClick={(e) => {
                       if (!isZooming && zoomState.scale === 1) {
