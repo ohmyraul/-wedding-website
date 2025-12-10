@@ -805,7 +805,7 @@ const Hero = ({ onScrollToSection }) => (
       {/* Mobile: Text Content First */}
       <div className={`order-1 md:order-1 text-center ${SPACING.spaceY.md} md:${SPACING.spaceY.lg} lg:${SPACING.spaceY.xl} mt-8 md:mt-12 lg:mt-16 overflow-visible`}>
         {/* Opening Message */}
-        <p className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-4 sm:px-6 overflow-visible mb-6 md:mb-8 lg:mb-10`}>
+        <p className={`${TYPO_HERO_BODY} font-semibold text-navy max-w-2xl mx-auto px-4 sm:px-6 overflow-visible mb-4 md:mb-6 lg:mb-8`}>
           After seven years of choosing each other,<br />
           we're making it forever.
         </p>
@@ -825,14 +825,10 @@ const Hero = ({ onScrollToSection }) => (
           <p className={`${TYPO_HERO_BODY} text-navy max-w-xl mx-auto px-4 sm:px-6`}>
             invite you to witness our wedding
           </p>
-
-          <p className={`${TYPO_HERO_BODY} text-navy mt-2 md:mt-3 lg:mt-4 italic px-4 sm:px-6`}>
-            We want you there.
-          </p>
          </div>
 
         {/* Event Details - Enhanced with gradient and border accent */}
-        <div className="max-w-2xl mx-auto mt-10 md:mt-12 lg:mt-16">
+        <div className="max-w-2xl mx-auto mt-8 md:mt-10 lg:mt-12">
           <div className={`${CARD_SECONDARY} bg-gradient-to-br from-[#FDF9F4] via-[#F5F0E8] to-[#EBBA9A]/20 border-l-4 border-[#E8927C] border-[#E8927C]/30 ${CARD_PAD_MD} md:${CARD_PAD_LG} text-navy relative`} style={{ boxShadow: '0 8px 16px -2px rgba(232, 146, 124, 0.15)' }}>
             <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-3 md:gap-3">
               <button
@@ -866,7 +862,7 @@ const Hero = ({ onScrollToSection }) => (
         </div>
 
         {/* Mobile: Photo Below Event Details */}
-        <div className="order-2 md:order-2 mt-8 md:mt-0 mb-4 md:mb-0">
+        <div className="order-2 md:order-2 mt-6 md:mt-0 mb-4 md:mb-0">
           <div className="relative w-full max-w-xl mx-auto">
             <div 
               className="w-full bg-[#EDEDE3] overflow-hidden relative" 
