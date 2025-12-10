@@ -89,6 +89,38 @@ const SECTION_SPACING = SPACING.section; // Responsive vertical spacing
 const VENUE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Blu+Missel+by+the+River+Fondvem+Ribandar+Goa';
 const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Shubs+%26+Alysha+Wedding+Celebration&dates=20260320T100000Z/20260322T173000Z&details=Join+us+for+our+wedding+celebration+in+Goa%2C+India&location=Blu+Missel+by+the+River%2C+Fondvem%2C+Ribandar%2C+Goa';
 
+// Helper functions for clickable event details
+const createCalendarEvent = () => {
+  // March 20, 2026 at 3:30 PM IST (UTC+5:30) = 10:00 AM UTC
+  // Event runs from 3:30 PM to 11:00 PM IST (3:30 PM IST = 10:00 AM UTC, 11:00 PM IST = 5:30 PM UTC same day)
+  const startDate = '20260320T100000Z'; // 3:30 PM IST = 10:00 AM UTC
+  const endDate = '20260320T173000Z'; // 11:00 PM IST = 5:30 PM UTC
+  const title = encodeURIComponent("Shubs & Alysha's Wedding");
+  const details = encodeURIComponent("Join us for our wedding celebration in Goa, India");
+  const location = encodeURIComponent("Blu Missel, Ribandar, Goa");
+  
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+};
+
+const createTimeReminder = () => {
+  // Create a calendar event with reminder set to 3:30 PM on March 20, 2026
+  // When users add this to their calendar, they can set up notifications/alarms through their calendar app
+  // This works on both Android and iPhone - the calendar app will sync and create notifications
+  const startDate = '20260320T100000Z'; // 3:30 PM IST = 10:00 AM UTC
+  const endDate = '20260320T110000Z'; // 4:30 PM IST = 11:00 AM UTC (1 hour event for reminder)
+  const title = encodeURIComponent("Shubs & Alysha's Wedding - Reminder");
+  const details = encodeURIComponent("Wedding ceremony starts at 3:30 PM. See you there!");
+  const location = encodeURIComponent("Blu Missel, Ribandar, Goa");
+  
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+};
+
+const openGoogleMaps = () => {
+  window.open(VENUE_GOOGLE_MAPS_URL, '_blank', 'noopener,noreferrer');
+};
+
 /* --- Mario Miranda Style Components --- */
 
 const SignboardHeading = ({ children, variant = 'light' }) => {
@@ -826,20 +858,32 @@ const Hero = ({ onScrollToSection }) => (
         <div className="max-w-2xl mx-auto mt-10 md:mt-12 lg:mt-16">
           <div className={`${CARD_SECONDARY} bg-gradient-to-br from-[#FDF9F4] via-[#FDF9F4] to-[#EDEDE3] border-l-4 border-[#D88D66] border-[#D88D66]/30 ${CARD_PAD_MD} md:${CARD_PAD_LG} text-navy relative`} style={{ boxShadow: '0 8px 16px -2px rgba(216, 141, 102, 0.15)' }}>
             <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-3 md:gap-3">
-              <div className="flex items-center gap-1.5 md:gap-1.5">
-                <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
-                <span className={`${TYPO_BODY} text-navy`}>Friday, March 20, 2026</span>
-              </div>
+              <button
+                onClick={createCalendarEvent}
+                className="flex items-center gap-1.5 md:gap-1.5 hover:opacity-70 transition-opacity cursor-pointer group"
+                aria-label="Add wedding date to calendar"
+              >
+                <Calendar size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span className={`${TYPO_BODY} text-navy group-hover:text-[#D88D66] transition-colors`}>Friday, March 20, 2026</span>
+              </button>
               <span className="hidden md:block text-[#D88D66] text-xs">·</span>
-              <div className="flex items-center gap-1.5 md:gap-1.5">
-                <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
-                <span className={`${TYPO_BODY} text-navy`}>3:30 PM onwards</span>
-              </div>
+              <button
+                onClick={createTimeReminder}
+                className="flex items-center gap-1.5 md:gap-1.5 hover:opacity-70 transition-opacity cursor-pointer group"
+                aria-label="Set reminder for wedding time"
+              >
+                <Clock size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span className={`${TYPO_BODY} text-navy group-hover:text-[#D88D66] transition-colors`}>3:30 PM onwards</span>
+              </button>
               <span className="hidden md:block text-[#D88D66] text-xs">·</span>
-              <div className="flex items-center gap-1.5 md:gap-1.5 text-center">
-                <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0" />
-                <span className={`${TYPO_BODY} text-navy`}>Blu Missel, Ribandar, Goa</span>
-              </div>
+              <button
+                onClick={openGoogleMaps}
+                className="flex items-center gap-1.5 md:gap-1.5 text-center hover:opacity-70 transition-opacity cursor-pointer group"
+                aria-label="Open venue location in Google Maps"
+              >
+                <MapPin size={14} className="md:w-[16px] md:h-[16px] text-[#D88D66] flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span className={`${TYPO_BODY} text-navy group-hover:text-[#D88D66] transition-colors`}>Blu Missel, Ribandar, Goa</span>
+              </button>
             </div>
           </div>
         </div>
