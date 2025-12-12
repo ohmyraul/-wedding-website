@@ -2552,7 +2552,7 @@ const Travel = ({ isFamilyMode }) => (
 
         <SignboardHeading variant="dark">Travel & Stay</SignboardHeading>
 
-          <p className={`${TYPO_BODY} font-hand text-navy max-w-lg mx-auto mt-2`}>Pack your sunscreen and sunglasses. We're taking care of the vibes.</p>
+          <p className={`${TYPO_BODY} font-hand text-navy max-w-lg mx-auto mt-2`}>Pack your sunglasses and sunscreen - you'll need them. Here's how to get to Goa and where we recommend staying:</p>
 
       </div>
 
@@ -3717,59 +3717,6 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
 };
 
-/* --- MOBILE DOT NAVIGATION --- */
-
-const MobileDotNav = ({ sections, activeSection, onSectionClick }) => {
-
-  return (
-
-    <div className="xl:hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-40">
-
-      <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm px-4 py-2.5 rounded-full shadow-lg border border-[#D4CDC2]/30" style={{ boxShadow: '0 8px 16px rgba(232, 146, 124, 0.15)' }}>
-
-        {sections.map((section, idx) => {
-
-          const isActive = idx === activeSection;
-
-          return (
-
-            <motion.button
-
-              key={section.id}
-
-              onClick={() => onSectionClick(section.id)}
-
-              className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#E8927C]/60 ${
-
-                isActive
-
-                  ? 'bg-[#E8927C] w-8'
-
-                  : 'bg-[#D4CDC2] w-2 hover:bg-[#E8927C]/50'
-
-              }`}
-
-              whileHover={{ scale: 1.1 }}
-
-              whileTap={{ scale: 0.9 }}
-
-              aria-label={`Go to ${section.name || section.id} section`}
-
-              aria-current={isActive ? "true" : undefined}
-
-            />
-
-          );
-
-        })}
-
-      </div>
-
-    </div>
-
-  );
-
-};
 
 
 
@@ -3961,15 +3908,6 @@ const App = () => {
 
         />
 
-        <MobileDotNav 
-
-          sections={sections} 
-
-          activeSection={activeSection} 
-
-          onSectionClick={scrollToSection}
-
-        />
 
 
 
