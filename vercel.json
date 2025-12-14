@@ -1,11 +1,11 @@
 {
   "headers": [
     {
-      "source": "/images/facebook.jpg",
+      "source": "/images/facebook.png",
       "headers": [
         {
           "key": "Content-Type",
-          "value": "image/jpeg"
+          "value": "image/png"
         },
         {
           "key": "Content-Disposition",
@@ -18,6 +18,15 @@
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/images/(.*\\.png)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/png"
         }
       ]
     },
