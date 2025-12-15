@@ -1,12 +1,9 @@
-import React, { useState, useRef, useEffect, useMemo, memo, lazy, Suspense } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 
 import { Menu, X, ArrowDown, ArrowUp, CheckCircle, Lock, Unlock, Phone, Calendar, Home, PawPrint, Music, Heart, Sun, Anchor, Coffee, MapPin, Clock, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Palette, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { TYPE_SCALE, LINE_HEIGHT, LETTER_SPACING, SPACING, TYPOGRAPHY } from './constants/design-tokens';
-
-// Lazy load game component - only loads when needed
-const CookieChaseGame = lazy(() => import('./components/CookieChaseGame').then(module => ({ default: module.default })));
 
 let confettiInstance = null;
 
@@ -1000,7 +997,7 @@ const Story = () => (
             <ParallaxWrapper offset={15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-2 order-2 md:order-1 photo-frame">
 
             <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-transparent`} style={{ aspectRatio: '3 / 4' }}>
-               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
+               <img src="/images/firsttime.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The First Time" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchpriority="low" decoding="async" />
             </div>
 
             <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Hello, goodbye, sea you in three years</p>
@@ -1072,7 +1069,7 @@ const Story = () => (
             <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-[-1deg] photo-frame">
 
             <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-transparent`} style={{ aspectRatio: '3 / 4' }}>
-               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} fetchPriority="low" decoding="async" />
+               <img src="/images/office.jpg" className="w-full h-full object-cover sepia-[.3]" alt="The Reunion" style={{ objectPosition: 'center bottom' }} loading="lazy" width={666} height={1024} fetchpriority="low" decoding="async" />
             </div>
 
              <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>From slack DMs to slacking off together</p>
@@ -1109,7 +1106,7 @@ const Story = () => (
                  loading="lazy" 
                  width={765} 
                  height={1024} 
-                 fetchPriority="low" 
+                 fetchpriority="low" 
                  decoding="async"
                  onError={(e) => {
                    console.error('Failed to load goa-scooter.jpg, attempting cache bust...');
@@ -1194,7 +1191,7 @@ const Story = () => (
             >
             <ParallaxWrapper offset={-15} hoverEffect={false} className="sketchy-border p-3 bg-[#FDF9F4] rotate-[1deg] photo-frame">
              <div className={`overflow-hidden relative ${CARD_PRIMARY} bg-transparent`} style={{ aspectRatio: '3 / 4' }}>
-                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchPriority="low" decoding="async" />
+                <img src="/images/proposal.jpg" className="w-full h-full object-cover" alt="The Proposal" style={{ objectPosition: 'center bottom' }} loading="lazy" width={696} height={1024} fetchpriority="low" decoding="async" />
              </div>
              <p className={`text-center font-hand text-navy mt-2 ${TYPO_LABEL}`}>Ring. Sand. Forever.</p>
             </ParallaxWrapper>
@@ -1214,8 +1211,6 @@ const Story = () => (
 
 
 
-// CookieChaseGame is now lazy-loaded from ./components/CookieChaseGame
-// Removed inline definition to avoid redeclaration
 
 // Image Modal Component with Zoom
 const ImageModal = memo(({ isOpen, image, images, currentIndex, onClose, onNext, onPrev }) => {
@@ -1942,7 +1937,7 @@ const FamilyItinerary = () => (
             {[
 
                 { 
-                    day: "Thursday, March 19", 
+                    day: "Wednesday, March 18", 
                     time: "All Day",
                     title: "Arrival & Pool Party", 
                     desc: "Cars will be waiting at the airport. Unpack at your own pace. We'll be serving the best Goan food while everyone hits the pool. Later that night, some of us are heading to Panjim for a pub crawl - Joseph's Bar, Miguel's, all our old haunts. Come along or stay back by the pool.",
@@ -1951,7 +1946,7 @@ const FamilyItinerary = () => (
                 },
 
                 { 
-                    day: "Friday, March 20", 
+                    day: "Thursday, March 19", 
                     time: "Morning",
                     title: "Rehearsal Day", 
                     desc: "Breakfast together at the house. Slow morning, good coffee, no rush. Then the ceremony crew heads to Blu Missel for rehearsal. Kids stay back at Kidena with the pool.",
@@ -3721,7 +3716,6 @@ const DotNav = ({ sections, activeSection, onSectionClick }) => {
 
 
 const App = () => {
-
   const [isFamilyMode, setIsFamilyMode] = useState(false);
 
   const [activeSection, setActiveSection] = useState(0);
@@ -3729,6 +3723,8 @@ const App = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const containerRef = useRef(null);
+
+  // Log component mount (in useEffect to avoid render side effects)
 
   const handleFamilyModeToggle = () => {
     if (isFamilyMode) {
@@ -3745,33 +3741,24 @@ const App = () => {
 
 
   // Define sections for navigation
-  const sections = useMemo(() => [
+  const sections = useMemo(() => {
+    const sectionsArray = [
+      { id: 'hero', name: 'Home', component: Hero },
+      { id: 'the-celebration', name: 'Ceremony', component: Celebration },
+      { id: 'travel', name: 'Travel', component: Travel },
+      ...(isFamilyMode ? [
+        { id: 'kidena-house', name: 'Kidena', component: KidenaHouse },
+        { id: 'family-itinerary', name: 'Itinerary', component: FamilyItinerary }
+      ] : []),
+      { id: 'rsvp', name: 'RSVP', component: RSVP },
+      { id: 'dress-code', name: 'Dress', component: DressCode },
+      { id: 'our-story', name: 'Story', component: Story },
+      { id: 'explore-goa', name: 'Goa', component: ExploreGoa },
+      { id: 'q-a', name: 'Q&A', component: QnA }
+    ];
+    return sectionsArray;
+  }, [isFamilyMode]);
 
-    { id: 'hero', name: 'Home', component: Hero },
-
-    { id: 'the-celebration', name: 'Ceremony', component: Celebration },
-
-    { id: 'travel', name: 'Travel', component: Travel },
-
-    ...(isFamilyMode ? [
-
-      { id: 'kidena-house', name: 'Kidena', component: KidenaHouse },
-
-      { id: 'family-itinerary', name: 'Itinerary', component: FamilyItinerary }
-
-    ] : []),
-
-    { id: 'rsvp', name: 'RSVP', component: RSVP },
-
-    { id: 'dress-code', name: 'Dress', component: DressCode },
-
-    { id: 'our-story', name: 'Story', component: Story },
-
-    { id: 'explore-goa', name: 'Goa', component: ExploreGoa },
-
-    { id: 'q-a', name: 'Q&A', component: QnA }
-
-  ], [isFamilyMode]);
 
 
 
@@ -3784,12 +3771,8 @@ const App = () => {
     if (!container) return;
 
     const handleScroll = () => {
-
       const scrollTop = container.scrollTop;
-
       const viewportCenter = scrollTop + container.clientHeight / 2;
-
-      
 
       // Find which section is currently in view (check which section's center is closest to viewport center)
 
@@ -3826,8 +3809,6 @@ const App = () => {
         }
 
       }
-
-      
 
       setActiveSection(closestSection);
 
